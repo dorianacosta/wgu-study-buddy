@@ -1,7 +1,8 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
  * Saved progress: `c952-study-v1` (name unchanged; fields added since are missing from older saves: load fills in
- * `courses` and `completed`, and a course's `cards` and `examDate` stay optional), the practice meaning of decision 7,
+ * `courses` and `completed`, and a course's `cards`, `examDate` and `best` and an attempt's `course` stay optional;
+ * decision 60 files every course's exam attempts in the one `history`), the practice meaning of decision 7,
  * the helpers of CHANGES.md step 3 and the plan counts Home needs, completed courses (decision 56), flashcard marks
  * (decision 57), exam dates and their local-day helpers (decision 58), the save suspension a restore sets and the
  * checks shared with src/lib/backup.ts (decision 59), and the one-time fixes and C952 bank switch of decision 8, which
@@ -28,7 +29,13 @@ export const C952_STASH_KEY = "wgu-study-buddy-c952-stash-v1"
 /** The public bank of 60 original C952 questions: the first move to it, with marks, shows "New C952 questions". */
 export const ORIGINAL_BANK = "original-1"
 
+/** One submitted practice exam in the logbook (`history`). */
 export interface Attempt {
+  /**
+   * The exam's course ("c952", "d281"); absent in attempts saved before decision 60, which are all C952's. New attempts
+   * always write it. Read it with attemptCourse or attemptsOf (src/lib/exam.ts).
+   */
+  course?: string
   mode: string
   score: number
   total: number
@@ -54,13 +61,20 @@ export interface CourseProgress {
   cards?: Record<number, boolean>
   /** the student's planned exam date, "YYYY-MM-DD" read as a local date (decision 58). Use setExamDate and examDateOf. */
   examDate?: string
+  /**
+   * a guide's best Full exam score, 0 to 100 (decision 60); C952 keeps its own in `best`. Written by recordExam and read
+   * by bestOf (src/lib/exam.ts).
+   */
+  best?: number
 }
 
 export interface Store {
   mastered: Record<number, boolean>
   miss: Record<number, number>
   plan: Record<number, boolean>
+  /** every course's practice exams, oldest first; each names its course (one with none is C952's, decision 60) */
   history: Attempt[]
+  /** C952's best Full exam score; a guide's is `courses[slug].best` */
   best: number | null
   /** added in v2; absent in progress saved by the original app */
   courses: Record<string, CourseProgress>
@@ -610,7 +624,8 @@ function moveBank(
 /**
  * The C952 bank switch, on every load: when the marks belong to another bank, stash them under it, restore this
  * bank's (or none) and save the bank. `history`, `best`, `plan` and `courses` stay shared: C952's flashcard marks
- * (`courses.c952.cards`) belong to its Cheat Sheet's deck, not to a question bank, so they never move. Every save
+ * (`courses.c952.cards`) belong to its Cheat Sheet's deck, not to a question bank, so they never move, and neither do
+ * a guide's exam attempts in `history` or its `courses[slug].best` (decision 60). Every save
  * repeats the check (save above), for a tab of an older copy, with another bank, that loaded meanwhile.
  */
 function switchBank(local: StorageLike, bank: string, report: MigrationReport) {

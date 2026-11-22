@@ -2,7 +2,8 @@
 /**
  * `#cheat/<slug>` for a guide course (decision 22; CourseTools, Cheat Sheet): The exam, Key facts (filterable) and
  * Pitfalls on one page, as C952's Cheat Sheet. Key facts ends with the way on to Practice's Flashcards, which drill
- * the same facts (decision 57): a secondary "Drill as flashcards" link, as Topics ends with "Start practice". The jump
+ * the same facts (decision 57): a secondary "Drill as flashcards" link, as Topics ends with "Start practice"; while
+ * this course's own exam runs, a line saying to submit or quit it instead (decision 60), under the exam's Alert. The jump
  * bar, its scroll-spy, the section window and the filter row are copied from src/views/Cheat.tsx (_build/CONTRACTS.md,
  * Assignments), generalized to the sections this guide has. Built from the collected 21st.dev components: shadcn Card,
  * Table, Button, Input, Kbd, Separator and Alert, ReUI Badge, Magic UI BlurFade, serafimcloud EmptyState and the Motiq
@@ -18,6 +19,7 @@ import type { GuideCheatProps } from "@/views/types"
 import {
   Bullets,
   HEADER,
+  HEADER_AFTER_NOTICE,
   HEADING,
   LEAD,
   PageTitle,
@@ -31,6 +33,7 @@ import {
 import { GuideGate } from "@/views/course/GuideGate"
 import { GuidePending } from "@/views/course/GuideLearn"
 import { Rich, SafeRich } from "@/components/kit"
+import { ExamInProgressNotice } from "@/components/notices"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/base-badge"
 import { BlurFade } from "@/components/ui/blur-fade"
@@ -262,13 +265,16 @@ const FACT_NAME = "[overflow-wrap:break-word] max-md:hyphens-auto max-sm:px-3"
 
 export function GuideCheat(props: GuideCheatProps) {
   return (
-    <GuideGate course={props.course} title="Cheat Sheet">
-      {(guide) => <GuideCheatPage {...props} guide={guide} />}
-    </GuideGate>
+    <>
+      <ExamInProgressNotice exam={props.runningExam} navigate={props.navigate} className={HEADER} />
+      <GuideGate course={props.course} title="Cheat Sheet" afterNotice={!!props.runningExam}>
+        {(guide) => <GuideCheatPage {...props} guide={guide} />}
+      </GuideGate>
+    </>
   )
 }
 
-function GuideCheatPage({ course, navigate, store, guide }: GuideCheatProps & { guide: Guide | null }) {
+function GuideCheatPage({ course, navigate, store, runningExam, guide }: GuideCheatProps & { guide: Guide | null }) {
   const code = codeOf(course)
   const barRef = useRef<HTMLDivElement>(null)
   const pillsRef = useRef<HTMLUListElement>(null)
@@ -352,19 +358,22 @@ function GuideCheatPage({ course, navigate, store, guide }: GuideCheatProps & { 
     filterRef.current?.focus()
   }
 
-  if (!guide) return <GuidePending course={course} navigate={navigate} />
+  if (!guide) return <GuidePending course={course} navigate={navigate} afterNotice={!!runningExam} />
   const numbered = (id: string) => ({ index: sections.findIndex((s) => s.id === id), total: sections.length })
   const sectionOf = (id: string) => sections.find((s) => s.id === id)!
   // Practice, opened on Flashcards: its cards are these key facts, on the card list the student used last, or All when
   // that list has no cards now (drillPatch), so the link never lands on an empty list
   const practice = hrefFor("exam", course)
   const drill = () => navigate(practice, drillPatch(course, facts.length, store))
+  // while this course's own exam runs, #exam/<slug> is its runner, so the drill row says how to get there instead;
+  // another course's exam doesn't block it (decision 60)
+  const ownExam = runningExam?.course === course
 
   return (
     <>
       {/* The page header: nothing frames it (it sits on the dimmed field) and it takes no BlurFade, since the h1
-          decrypt is its one entrance */}
-      <header className={HEADER}>
+          decrypt is its one entrance. Under the exam-in-progress Alert (GuideCheat) it takes mt-8 */}
+      <header className={runningExam ? HEADER_AFTER_NOTICE : HEADER}>
         <Badge variant="secondary">
           <BookMarked aria-hidden="true" />
           {code} · Reference
@@ -549,13 +558,21 @@ function GuideCheatPage({ course, navigate, store, guide }: GuideCheatProps & { 
               Cheat Sheet has no gold fill) */}
           <Separator className="mt-8" />
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <p className="font-sans text-sm text-muted-foreground">Done reading? Test yourself one card at a time.</p>
-            <Button variant="secondary" asChild>
-              <a href={practice} data-focus-key="cheat:drill-flashcards" onClick={onPlainClick(drill)}>
-                <ClipboardCheck className="mr-2 h-4 w-4" aria-hidden="true" />
-                Drill as flashcards
-              </a>
-            </Button>
+            {ownExam ? (
+              <p className="font-sans text-sm text-muted-foreground">
+                Done reading? Submit or quit your {code} exam to drill these key facts as flashcards.
+              </p>
+            ) : (
+              <>
+                <p className="font-sans text-sm text-muted-foreground">Done reading? Test yourself one card at a time.</p>
+                <Button variant="secondary" asChild>
+                  <a href={practice} data-focus-key="cheat:drill-flashcards" onClick={onPlainClick(drill)}>
+                    <ClipboardCheck className="mr-2 h-4 w-4" aria-hidden="true" />
+                    Drill as flashcards
+                  </a>
+                </Button>
+              </>
+            )}
           </div>
         </CheatSection>
       )}

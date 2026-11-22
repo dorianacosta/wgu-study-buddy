@@ -116,7 +116,7 @@ export interface EntryState {
   learnTopic?: TopicId
   /** A guide Practice's list of questions (`#exam/<guide slug>` only) */
   practiceFilter?: PracticeFilter
-  /** Practice's mode, Questions or Flashcards (`#exam/<slug>`, C952's start screen included; decision 57) */
+  /** Practice's mode, Exam, Questions or Flashcards (`#exam/<slug>`, C952's start screen included; decisions 57 and 60) */
   practiceMode?: PracticeMode
   /** Practice's list of flashcards (`#exam/<slug>`, C952's included; decision 57) */
   cardFilter?: CardFilter
@@ -161,7 +161,7 @@ function fitPatch(p: RawPatch, route: Route): EntryPatch {
     const t = p.courseTab
     if (isRecord(t) && t.slug === route.course && isLearnTab(t.tab)) out.courseTab = { slug: route.course, tab: t.tab }
   } else if (route.view === "exam") {
-    // C952's Practice Exam has no question lists: its Questions mode is the exam's mode picker
+    // C952's Practice Exam has no question lists: its modes are Exam (the mode picker) and Flashcards
     if (route.course !== C952 && isPracticeFilter(p.practiceFilter)) out.practiceFilter = p.practiceFilter
     if (isPracticeMode(p.practiceMode)) out.practiceMode = p.practiceMode
     if (isCardFilter(p.cardFilter)) out.cardFilter = p.cardFilter
@@ -186,29 +186,37 @@ function mergePatches(...patches: (EntryPatch | null | undefined)[]): EntryPatch
   return out
 }
 
+/** The modes in their "Practice with" order: a mode without data falls back to the first one with some. */
+const PRACTICE_ORDER: readonly PracticeMode[] = ["exam", "questions", "cards"]
+
 /**
- * A Practice mode the course has data for: Flashcards needs cards (keyFacts, or C952's deck), Questions needs practice
- * questions (C952 always has its exam's; `practiceTotal` counts only a guide's).
+ * A Practice mode the course has data for (decisions 57 and 60): Exam needs exam questions (C952's bank, or a guide's
+ * practice questions), Questions a guide's practice questions (C952 has none: its old entries' "questions", its mode
+ * picker before decision 60, is its Exam now), Flashcards cards (keyFacts, or C952's deck). A mode without data gives
+ * the first that has some, in Exam, Questions, Flashcards order.
  */
 function fitMode(info: CourseInfo | null, wanted: PracticeMode): PracticeMode {
   if (!info) return wanted
-  const questions = info.kind === "c952" || info.practiceTotal > 0
-  if (wanted === "cards" && info.cardTotal === 0) return "questions"
-  if (wanted === "questions" && !questions && info.cardTotal > 0) return "cards"
-  return wanted
+  const has: Record<PracticeMode, boolean> = {
+    exam: info.kind === "c952" || info.practiceTotal > 0,
+    questions: info.kind === "guide" && info.practiceTotal > 0,
+    cards: info.cardTotal > 0,
+  }
+  if (has[wanted]) return wanted
+  return PRACTICE_ORDER.find((m) => has[m]) ?? wanted
 }
 
 /**
- * The Practice mode an entry opens on (decision 57): the one it names (every link that starts a C952 exam names
- * Questions); else the mode of the one list it names (My Misses' "Practice my misses" names the missed questions, so
- * it opens on Questions); else the course's mode remembered this visit; else Questions. Always a mode the course has
- * data for.
+ * The Practice mode an entry opens on (decisions 57 and 60): the one it names (every link that starts or names an exam
+ * names Exam); else the mode of the one list it names (My Misses' "Practice my misses" names the missed questions, so
+ * it opens on Questions); else the course's mode remembered this visit; else Exam. Always a mode the course has data
+ * for, so an old `#exam/c952` entry that says "questions" opens Exam.
  */
 function practiceModeFor(slug: string, fields: EntryPatch): PracticeMode {
   const named =
     fields.practiceMode ??
     (fields.practiceFilter && !fields.cardFilter ? "questions" : fields.cardFilter && !fields.practiceFilter ? "cards" : null)
-  return fitMode(courseInfo(slug), named ?? rememberedMode(slug) ?? "questions")
+  return fitMode(courseInfo(slug), named ?? rememberedMode(slug) ?? "exam")
 }
 
 /** C952 Learn's first topic: where `#learn/c952` opens when no topic is named or remembered. */
@@ -216,7 +224,7 @@ const FIRST_TOPIC: TopicId = "t1"
 
 /**
  * The in-page state an entry opens on (Navigation, History): the fields it has, else, for each field its route uses,
- * the course's value remembered this visit, else the default (Topic 01, Overview, All, Questions). The router pins
+ * the course's value remembered this visit, else the default (Topic 01, Overview, All, Exam). The router pins
  * it on every entry it pushes, and on every entry it enters without one (load, Back, Forward), so Back, Forward and
  * reload reopen what the entry first showed, never what a later entry left in the per-visit memory. A guide tab the
  * guide lacks counts as none; so does a Practice mode it has no data for.
@@ -240,7 +248,7 @@ function withInitial(route: Route, fields: EntryPatch): EntryPatch {
     // the mode first: it reads which list, if any, the fields name
     const practiceMode = practiceModeFor(route.course, fields)
     const cardFilter = fields.cardFilter ?? rememberedCardList(route.course) ?? "all"
-    // C952's Practice Exam: the mode and the card list, and no question list (its Questions are the exam modes)
+    // C952's Practice Exam: the mode and the card list, and no question list (its Exam mode is the mode picker)
     if (kind === "c952") return { ...fields, practiceMode, cardFilter }
     return {
       ...fields,
@@ -948,32 +956,39 @@ export function initialPracticeFilter(slug: string, entry: Readonly<EntryState>)
 }
 
 /**
- * Practice's mode, a guide's or C952's (its Practice Exam start screen): the entry's, else remembered, else Questions;
+ * Practice's mode, a guide's or C952's (its Practice Exam start screen): the entry's, else remembered, else Exam;
  * always one the course has data for.
  */
 export function initialPracticeMode(slug: string, entry: Readonly<EntryState>): PracticeMode {
   return practiceModeFor(slug, entry)
 }
 
-/** What `#exam/c952` opens an entry on (examEntryOpens). */
+/** What `#exam/<slug>` opens an entry on (examEntryOpens). */
 export interface ExamEntryOpening {
-  /** The mode the entry opens on: Questions while an exam is shown, else the entry's (initialPracticeMode) */
+  /** The mode the entry opens on: Exam while the course's exam is shown, else the entry's (initialPracticeMode) */
   mode: PracticeMode
-  /** A finished exam's Results give way to Flashcards: the page drops the exam, as Results' "Other modes" does */
+  /** A finished exam's Results give way to the mode named: the page drops the exam, as Results' "Other modes" does */
   dropResults: boolean
 }
 
 /**
- * What `#exam/c952` shows when an entry opens there (decision 57), given App's exam. A running exam takes the page, on
- * Questions, whatever the entry names, so Quit comes back to the mode picker. A finished exam's Results show on an
- * entry that names Questions; an entry that names Flashcards (the Cheat Sheet's "Drill as flashcards", Back or Forward
- * to a Flashcards entry) drops the finished exam and opens Flashcards. With no exam, the entry's mode.
+ * What `#exam/<course>` shows when an entry opens there (decisions 57 and 60), given App's exam, which counts only when
+ * it is this course's (one exam slot for the whole app; a saved exam with no course is C952's). The course's running
+ * exam takes the page, on Exam, whatever the entry names, so Quit comes back to the mode picker. Its finished exam's
+ * Results show on an entry that names Exam; an entry that names Questions or Flashcards (the Cheat Sheet's "Drill as
+ * flashcards", "Practice my misses", Back or Forward to such an entry) drops the finished exam and opens that mode.
+ * With no exam of this course, the entry's mode.
  */
-export function examEntryOpens(exam: Pick<Exam, "done"> | null, entry: Readonly<EntryState>): ExamEntryOpening {
-  const mode = initialPracticeMode(C952, entry)
-  if (!exam) return { mode, dropResults: false }
-  if (exam.done && mode === "cards") return { mode, dropResults: true }
-  return { mode: "questions", dropResults: false }
+export function examEntryOpens(
+  exam: Pick<Exam, "done" | "course"> | null,
+  course: string,
+  entry: Readonly<EntryState>,
+): ExamEntryOpening {
+  const mode = initialPracticeMode(course, entry)
+  const mine = exam && (exam.course || C952) === course ? exam : null
+  if (!mine) return { mode, dropResults: false }
+  if (mine.done && mode !== "exam") return { mode, dropResults: true }
+  return { mode: "exam", dropResults: false }
 }
 
 /** Practice's list of flashcards, a guide's or C952's: the entry's, else remembered, else All. */

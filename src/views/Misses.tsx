@@ -9,6 +9,7 @@
 import { useId, useRef, useState } from "react"
 import { ArrowRight, Check, Eraser, Target } from "lucide-react"
 import { QUESTIONS, QUESTION_BY_N, TOPICS, TOPIC_BY_ID, correctOf, type Question } from "@/data"
+import { C952_BANK } from "@/lib/exam"
 import { hrefFor } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import type { C952MissesProps } from "@/views/types"
@@ -137,7 +138,7 @@ export default function Misses({ navigate, store, update, startExam, runningExam
     action.focus()
   }
 
-  const quiz = () => startExam("miss")
+  const quiz = () => startExam(C952_BANK, "miss")
 
   const clear = () => {
     justCleared.current = true
@@ -150,8 +151,8 @@ export default function Misses({ navigate, store, update, startExam, runningExam
   return (
     // The dialog root wraps the page so its Trigger can sit in the header; it renders no element of its own.
     <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-      {/* While a C952 exam runs: the exam Alert at the top (decision 28), taking the header's top margin; the header
-          then mt-8 (CONTRACTS, open question 17) */}
+      {/* While an exam runs (any course's, decision 60): its Alert at the top (decision 28), taking the header's top
+          margin; the header then mt-8 (CONTRACTS, open question 17) */}
       <ExamInProgressNotice exam={runningExam} navigate={navigate} className="mt-12 sm:mt-16 short:mt-6" />
       {/* The page header: nothing frames it (it sits on the dimmed field) and it takes no BlurFade, since the h1
           decrypt is its one entrance */}
@@ -205,8 +206,8 @@ export default function Misses({ navigate, store, update, startExam, runningExam
               description="Questions you get wrong in Learn or in an exam show up here, so you can hit your weak spots."
               action={{
                 label: "Take a practice exam",
-                // it names the exam, so it opens the mode picker, never Flashcards (decision 57)
-                onClick: () => navigate(hrefFor("exam", "c952"), { practiceMode: "questions" }),
+                // it names the exam, so it opens the mode picker, never Flashcards (decisions 57 and 60)
+                onClick: () => navigate(hrefFor("exam", "c952"), { practiceMode: "exam" }),
               }}
             />
           </div>

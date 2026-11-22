@@ -6,8 +6,10 @@
  * - No network and no form: the file is made with a Blob and a script-made `<a download>`, and read with `File.text()`
  *   (the CSP has `default-src 'none'` and `form-action 'none'`).
  * - A backup holds the five localStorage keys the app writes: the progress record (`c952-study-v1`), the C952 bank tag
- *   and stash, the migrations record and the active course. Never the running C952 exam (sessionStorage) or device
+ *   and stash, the migrations record and the active course. Never the running exam (sessionStorage) or device
  *   settings.
+ * - The file format is version 2 (BACKUP_VERSION): exam attempts name their course (decision 60). Version-1 files
+ *   still restore; their attempts have no course, so they stay C952's.
  * - A restore checks every field it knows and keeps a newer version's extra fields, then writes in the bank switch's
  *   order (stash, tag, record), then the migrations record and the course. A failed write rolls every key back. On
  *   success the caller reloads the page: useStore reads storage once, and the bank switch and one-time fixes run only
@@ -37,8 +39,12 @@ import {
 /** The file's marker: `{ app, kind, version, exported, data }`. */
 export const BACKUP_APP = "wgu-study-buddy"
 export const BACKUP_KIND = "progress-backup"
-/** The format this build writes and the newest it reads. */
-export const BACKUP_VERSION = 1
+/**
+ * The format this build writes and the newest it reads. 2 (decision 60): exam attempts name their course and a guide
+ * keeps its best exam score. A version-1 reader would strip an attempt's course and file a guide's attempts under
+ * C952, so it refuses these files ("newer"); this build still reads version 1, whose attempts are all C952's.
+ */
+export const BACKUP_VERSION = 2
 /** A real backup is a few KB; a file past this isn't one. */
 export const BACKUP_MAX_BYTES = 2 * 1024 * 1024
 
@@ -96,17 +102,23 @@ function indexMarks<T>(v: unknown, keep: (x: unknown) => x is T): Record<number,
   return out
 }
 
+/** An exam attempt; its course is kept when it looks like a course key, so an attempt without one stays C952's. */
 function cleanAttempt(v: unknown): Attempt | null {
   if (!isPlainRecord(v)) return null
-  const { mode, score, total, date, time } = v
+  const { mode, score, total, date, time, course } = v
   if (typeof mode !== "string" || mode.length > 80 || typeof time !== "string" || time.length > 40) return null
   if (!isCount(score) || !isCount(total) || !isFiniteNumber(date)) return null
-  return { mode, score, total, date, time }
+  const out: Attempt = { mode, score, total, date, time }
+  if (typeof course === "string" && SLUG_LIKE.test(course)) out.course = course
+  return out
 }
 
+/** A score in percent, 0 to 100. */
+const isPercent = (x: unknown): x is number => isFiniteNumber(x) && x >= 0 && x <= 100
+
 /**
- * A course's record (`courses[slug]`, C952's included: its exam date and flashcard marks): its known fields checked,
- * any other field (a newer version's) kept.
+ * A course's record (`courses[slug]`, C952's included: its exam date and flashcard marks): its known fields checked
+ * (a guide's best exam score only from 0 to 100), any other field (a newer version's) kept.
  */
 function cleanCourse(v: unknown): Record<string, unknown> | null {
   if (!isPlainRecord(v)) return null
@@ -116,6 +128,7 @@ function cleanCourse(v: unknown): Record<string, unknown> | null {
   if (v.cards === undefined) delete out.cards
   else out.cards = indexMarks(v.cards, isBool)
   if (v.examDate === undefined || !parseLocalDay(v.examDate)) delete out.examDate
+  if (!isPercent(v.best)) delete out.best
   return out
 }
 
@@ -283,7 +296,10 @@ export interface BackupSummary {
   exported: Date | null
   /** "Nov 21, 2026"; null when the file doesn't say */
   exportedLabel: string | null
-  /** Courses with any saved progress (flashcard marks count, C952's too), completed ones included */
+  /**
+   * Courses with any saved progress (flashcard marks count, C952's too, and each exam attempt for its own course),
+   * completed ones included
+   */
   courses: number
   /** Courses marked completed */
   completed: number
@@ -296,14 +312,23 @@ const anyMark = (m: unknown) => isPlainRecord(m) && Object.keys(m).length > 0
 
 function summarize(record: Record<string, unknown>, exported: unknown): BackupSummary {
   const slugs = new Set<string>()
+  // every attempt counts for its own course (decision 60): one with no course is C952's
+  const attempts = record.history as Attempt[]
+  for (const a of attempts) if (a.course !== undefined && a.course !== "c952") slugs.add(a.course)
   const c952 =
     anyTrue(record.mastered as Record<number, boolean>) ||
     Object.values(record.miss as Record<number, number>).some((n) => n > 0) ||
     anyTrue(record.plan as Record<number, boolean>) ||
-    (record.history as Attempt[]).length > 0
+    attempts.some((a) => a.course === undefined || a.course === "c952")
   if (c952) slugs.add("c952")
   for (const [slug, c] of Object.entries(record.courses as Record<string, Record<string, unknown>>)) {
-    if (anyTrue(c.plan as Record<number, boolean>) || anyMark(c.practice) || anyMark(c.cards) || c.examDate !== undefined)
+    if (
+      anyTrue(c.plan as Record<number, boolean>) ||
+      anyMark(c.practice) ||
+      anyMark(c.cards) ||
+      c.examDate !== undefined ||
+      c.best !== undefined
+    )
       slugs.add(slug)
   }
   let completed = 0

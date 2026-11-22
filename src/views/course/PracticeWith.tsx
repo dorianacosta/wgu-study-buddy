@@ -1,14 +1,16 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
- * "Practice with" (decision 57): a Practice page's mode switch, Questions or Flashcards, as a RadioGroup of two compact
- * mode cards named by its `label`. A guide's Practice shows it in its header when the guide has both practice
- * questions and key facts (GuidePractice); C952's Practice Exam shows it in its start screen's header, never while an
- * exam runs or on Results (src/views/exam/Setup.tsx). Switching modes is a RadioGroup's job, so Tabs stay one level
- * deep. A switch moves no focus: it stays on the radio, and the group stays mounted.
+ * "Practice with" (decisions 57 and 60): a Practice page's mode switch, a RadioGroup of compact mode cards over the
+ * modes the course has data for, in this order: Exam (the practice exam's mode picker), Questions (a guide's questions
+ * graded in place) and Flashcards. A guide's Practice shows it in its header (GuidePractice: Exam · Questions ·
+ * Flashcards); C952's Practice Exam shows it in its start screen's header (Exam · Flashcards), never while an exam runs
+ * or on Results (src/views/exam/Setup.tsx). It shows only with two or more modes. Switching modes is a RadioGroup's
+ * job, so Tabs stay one level deep. A switch moves no focus: it stays on the radio, and the group stays mounted.
  */
 import { useId } from "react"
-import { ListChecks, Sigma, type LucideIcon } from "lucide-react"
+import { ClipboardCheck, ListChecks, Sigma, type LucideIcon } from "lucide-react"
 import { isPracticeMode, type PracticeMode } from "@/lib/course"
+import { cn } from "@/lib/utils"
 import { LABEL } from "@/views/course/shared"
 import { Card } from "@/components/ui/card"
 import { CornerFrame } from "@/components/ui/corner-frame"
@@ -28,29 +30,37 @@ const MODE_ICON = "size-6 origin-left transform-gpu text-muted-foreground transi
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`
 
 /**
- * One mode as a compact target window: Setup's ModeCard (src/views/exam/Setup.tsx) at the size of Learn's topic
- * cards, a Card in a four-corner CornerFrame with the mode's 24px icon (ListChecks for questions, Sigma for the key
- * facts, as their Learn badge and Cheat Sheet section show them), its RadioGroupItem, the name (its Label) and the
- * count (its description). A click anywhere on the card picks the mode; keyboard users move through the radio group.
- * Two fit side by side at 320px: the radio sits on the icon's row, so the name has the card's full width.
+ * Each mode's card: ClipboardCheck for the exam (as the bar's Practice), ListChecks for the questions and Sigma for the
+ * key facts (as their Learn badge and Cheat Sheet section show them), with the count as its description.
+ */
+const LOOK: Record<PracticeMode, { icon: LucideIcon; title: string; meta: (n: number) => string }> = {
+  exam: { icon: ClipboardCheck, title: "Exam", meta: (n) => `${plural(n, "question")}, timed` },
+  questions: { icon: ListChecks, title: "Questions", meta: (n) => plural(n, "question") },
+  cards: { icon: Sigma, title: "Flashcards", meta: (n) => plural(n, "card") },
+}
+
+/**
+ * One mode as a compact target window: Setup's ModeCard at the size of Learn's topic cards, a Card in a four-corner
+ * CornerFrame with the mode's 24px icon, its RadioGroupItem, the name (its Label) and the count (its description). A
+ * click anywhere on the card picks the mode; keyboard users move through the radio group. The radio sits on the
+ * icon's row, so the name has the card's full width; below 360px the padding is 12px, so two fit side by side at 320.
  */
 function ModeCard({
   value,
-  icon: Icon,
-  title,
-  meta,
+  count,
   onSelect,
+  className,
 }: {
   value: PracticeMode
-  icon: LucideIcon
-  title: string
-  meta: string
+  count: number
   onSelect: () => void
+  className?: string
 }) {
   const id = useId()
+  const { icon: Icon, title, meta } = LOOK[value]
   return (
     <CornerFrame asChild size="16px" thickness="2px" inset="8px" className={MODE_FRAME_ON}>
-      <Card className="group flex h-full cursor-pointer flex-col p-4" onClick={onSelect}>
+      <Card className={cn("group flex h-full cursor-pointer flex-col p-4 max-[360px]:p-3", className)} onClick={onSelect}>
         <div className="flex items-start justify-between gap-4">
           <Icon aria-hidden="true" className={MODE_ICON} />
           <RadioGroupItem value={value} id={id} aria-describedby={`${id}-m`} />
@@ -60,7 +70,7 @@ function ModeCard({
           {title}
         </Label>
         <p id={`${id}-m`} className="text-sm text-muted-foreground">
-          {meta}
+          {meta(count)}
         </p>
       </Card>
     </CornerFrame>
@@ -68,25 +78,26 @@ function ModeCard({
 }
 
 /**
- * The switch, `mt-6` under the page's lead: the `label` "Practice with" naming a RadioGroup (`aria-labelledby`) of two
- * mode cards side by side at every width, Questions ("{N} questions") and Flashcards ("{F} cards"). `onChange` runs
- * for a pick on the radio or a tap anywhere on a card, so it may name the mode already shown (a tap on a radio runs it
- * twice): the page ignores a pick of its current mode.
+ * The switch, `mt-6` under the page's lead: the `label` "Practice with" naming a RadioGroup (`aria-labelledby`) of one
+ * mode card per option. Two sit side by side at every width (`max-w-[520px]`); three sit in a row from 640
+ * (`sm:max-w-[720px]`), and below 640 the Exam card takes the first row alone, so each card fits at 320. `onChange`
+ * runs for a pick on the radio or a tap anywhere on a card, so it may name the mode already shown (a tap on a radio
+ * runs it twice): the page ignores a pick of its current mode. Renders nothing with fewer than two options.
  */
 export function PracticeWith({
   mode,
   onChange,
-  questions,
-  cards,
+  options,
 }: {
   /** the mode shown */
   mode: PracticeMode
   onChange: (mode: PracticeMode) => void
-  /** the counts on the two cards: the questions to practice and the cards in the deck */
-  questions: number
-  cards: number
+  /** the modes the course has data for, in Exam, Questions, Flashcards order, each with its count */
+  options: readonly { mode: PracticeMode; count: number }[]
 }) {
   const id = useId()
+  if (options.length < 2) return null
+  const three = options.length > 2
   return (
     <div className="mt-6">
       <p id={id} className={LABEL}>
@@ -98,16 +109,17 @@ export function PracticeWith({
           if (isPracticeMode(value)) onChange(value)
         }}
         aria-labelledby={id}
-        className="mt-2 grid max-w-[520px] grid-cols-2 gap-4"
+        className={cn("mt-2 grid grid-cols-2 gap-4", three ? "sm:max-w-[720px] sm:grid-cols-3" : "max-w-[520px]")}
       >
-        <ModeCard
-          value="questions"
-          icon={ListChecks}
-          title="Questions"
-          meta={plural(questions, "question")}
-          onSelect={() => onChange("questions")}
-        />
-        <ModeCard value="cards" icon={Sigma} title="Flashcards" meta={plural(cards, "card")} onSelect={() => onChange("cards")} />
+        {options.map((o) => (
+          <ModeCard
+            key={o.mode}
+            value={o.mode}
+            count={o.count}
+            onSelect={() => onChange(o.mode)}
+            className={three && o.mode === "exam" ? "max-sm:col-span-2" : undefined}
+          />
+        ))}
       </RadioGroup>
     </div>
   )

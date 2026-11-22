@@ -1,10 +1,17 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
+/**
+ * The running practice exam, every course's (`#exam/<slug>`; decision 60): the name, the sticky exam bar (Progress,
+ * the elapsed timer, Quit and Submit), the navigator, one question at a time with Previous, Flag for review and Next,
+ * the keys hint with the Shortcuts switch, and the Submit and Leave dialogs. The course's content adapter
+ * (src/views/exam/content.tsx) renders the stems, the choices and the bank labels: C952's as always, a guide's through
+ * the sanitizer.
+ */
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type RefObject } from "react"
 import { ArrowLeft, ArrowRight, ClipboardX, Flag, Repeat, Timer } from "lucide-react"
-import { QUESTIONS } from "@/data"
 import { fmtTime, type Exam, type ExamItem } from "@/lib/exam"
 import { cn } from "@/lib/utils"
 import type { RunnerProps } from "@/views/exam/props"
+import type { ExamContent } from "@/views/exam/content"
 import {
   OptionButton,
   QuestionButton,
@@ -284,12 +291,14 @@ function QuestionBody({
   total,
   picked,
   onChoose,
+  content,
 }: {
   item: ExamItem
   index: number
   total: number
   picked: number[]
   onChoose: (k: number) => void
+  content: ExamContent
 }) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -309,13 +318,13 @@ function QuestionBody({
       aria-label={`Question ${index + 1} of ${total}`}
       className="space-y-2 outline-none"
     >
-      <QuestionText html={item.text} code={item.code} index={pad(index + 1, total)} />
+      <QuestionText html={item.text} code={item.code} index={pad(index + 1, total)} body={content.stem(item)} />
       <QuestionOptions role="group" aria-label={item.multi ? `Answer choices, choose ${k}` : "Answer choices"}>
         {item.opts.map((o, idx) => (
           <OptionButton
             key={o.k}
             index={idx}
-            text={o.t}
+            text={content.option(o.t)}
             mono={item.mono}
             state={picked.includes(o.k) ? "sel" : ""}
             onClick={() => onChoose(o.k)}
@@ -326,7 +335,7 @@ function QuestionBody({
   )
 }
 
-function ExamRunner({ exam, setExam, submit }: RunnerProps) {
+function ExamRunner({ exam, setExam, submit, content }: RunnerProps) {
   const [submitOpen, setSubmitOpen] = useState(false)
   const [quitOpen, setQuitOpen] = useState(false)
   const [keysOn, setKeysOn] = useState(readShortcuts)
@@ -503,7 +512,7 @@ function ExamRunner({ exam, setExam, submit }: RunnerProps) {
                 <Badge variant="info" appearance="light" size="sm">
                   <Repeat aria-hidden="true" />
                   <span>
-                    Remix of <span className="font-mono">Q{pad(item.n, QUESTIONS.length)}</span>
+                    Remix of <span className="font-mono">{content.label(item.n)}</span>
                   </span>
                 </Badge>
               )}
@@ -515,7 +524,7 @@ function ExamRunner({ exam, setExam, submit }: RunnerProps) {
             </QuestionMeta>
 
             <BlurFade key={i} duration={0.25}>
-              <QuestionBody item={item} index={i} total={total} picked={picked} onChoose={choose} />
+              <QuestionBody item={item} index={i} total={total} picked={picked} onChoose={choose} content={content} />
             </BlurFade>
 
             {/* Footer stays mounted across questions so focus on Previous / Next survives a move. */}

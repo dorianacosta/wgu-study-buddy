@@ -65,8 +65,12 @@ export type LearnTab = (typeof LEARN_TABS)[number]
 export const PRACTICE_FILTERS = ["all", "missed", "new"] as const
 export type PracticeFilter = (typeof PRACTICE_FILTERS)[number]
 
-/** Practice's modes, "Questions" and "Flashcards", C952's start screen's too (decision 57). They ride on `practiceMode`. */
-export const PRACTICE_MODES = ["questions", "cards"] as const
+/**
+ * Practice's modes, "Exam" (the practice exam's mode picker, every course's; decision 60), "Questions" (a guide's
+ * questions graded in place) and "Flashcards" (decision 57). They ride on `practiceMode`. C952 has Exam and Flashcards;
+ * its old entries' "questions" (its mode picker before decision 60) read as "exam".
+ */
+export const PRACTICE_MODES = ["exam", "questions", "cards"] as const
 export type PracticeMode = (typeof PRACTICE_MODES)[number]
 
 /** The Flashcards lists, "All", "Study again" and "New" (decision 57). The values ride on `cardFilter`. */
@@ -505,11 +509,14 @@ export function saveCourse(slug: string, storage: StorageLike | null = localStor
   }
 }
 
-/** The status region's words after a course change (decision 34). */
-export function nowStudyingText(slug: string, c952ExamRunning: boolean): string {
+/**
+ * The status region's words after a course change (decision 34): "Now studying {CODE} {Name}.", and, while another
+ * course's exam runs (`examCourse`, its slug; decision 60), "Your {EXAM CODE} exam keeps running."
+ */
+export function nowStudyingText(slug: string, examCourse: string | null): string {
   const info = courseInfo(slug)
   const said = info ? `Now studying ${info.code} ${info.name}.` : `Now studying ${slug.toUpperCase()}.`
-  return c952ExamRunning && slug !== C952 ? `${said} Your C952 exam keeps running.` : said
+  return examCourse && examCourse !== slug ? `${said} Your ${codeOf(examCourse)} exam keeps running.` : said
 }
 
 /* ── Per-visit memory (memory only, no storage) ───────────────────────────── */
@@ -539,7 +546,7 @@ export function rememberList(slug: string, list: PracticeFilter): void {
 }
 export const rememberedList = (slug: string): PracticeFilter | null => lastList.get(slug) ?? null
 
-/** Practice's last mode, per course: a guide's, or C952's on the Practice Exam start screen (decision 57). */
+/** Practice's last mode, per course: a guide's, or C952's on the Practice Exam start screen (decisions 57 and 60). */
 export function rememberMode(slug: string, mode: PracticeMode): void {
   if (isCourseSlug(slug) && isPracticeMode(mode)) lastMode.set(slug, mode)
 }

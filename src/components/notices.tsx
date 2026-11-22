@@ -1,23 +1,30 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
- * The three shared Alerts, built from the system's Alert and Button with the docs' copy and roles (decisions 8, 28
- * and 34; CourseTools, A running C952 exam and The 60 original questions; Navigation, Old links and bad links;
+ * The three shared Alerts, built from the system's Alert and Button with the docs' copy and roles (decisions 8, 28,
+ * 34 and 60; CourseTools, A running exam and The 60 original questions; Navigation, Old links and bad links;
  * Surfaces, Alert). The page places them: pass its spacing as `className` (Home `mt-6`, Courses `mt-8`).
  */
 import { useEffect, useState } from "react"
 import { Info, SearchX, Timer } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { codeOf } from "@/lib/course"
 import type { RunningExam } from "@/lib/exam-session"
 import { hrefFor, NOT_FOUND_FILL_DELAY, onPlainClick, type Navigate } from "@/lib/routes"
 
 /** The data-focus-key of the "Back to exam" link, so Back from the exam returns focus to it. */
 const BACK_TO_EXAM_FOCUS_KEY = "notice:back-to-exam"
 
+/** A running exam as the replace dialog names it: "{CODE} · {name}" ("C952 · Quick 20"). */
+export function examTitle(exam: Pick<RunningExam, "course" | "name">): string {
+  return `${codeOf(exam.course)} · ${exam.name}`
+}
+
 /**
- * "C952 exam in progress" (Timer, role="note"), with an outline sm "Back to exam" to `#exam/c952`. Renders nothing
- * when `exam` is null. Shows on Home below the hero, on `#courses` under the header and at the top of C952's Learn,
- * Cheat Sheet and My Misses; never on `#exam/c952` or a guide course's pages (decision 28).
+ * "{CODE} exam in progress" (Timer, role="note"), with an outline sm "Back to exam" to `#exam/<its course>`, for any
+ * course's running exam (one exam at a time, decision 60). Renders nothing when `exam` is null. Shows on Home below
+ * the hero, on `#courses` under the header and at the top of every tool page of every course, except
+ * `#exam/<that course>`, where App passes null (decisions 28 and 60).
  */
 export function ExamInProgressNotice({
   exam,
@@ -29,23 +36,24 @@ export function ExamInProgressNotice({
   className?: string
 }) {
   if (!exam) return null
-  const href = hrefFor("exam", "c952")
+  const href = hrefFor("exam", exam.course)
   return (
     <Alert role="note" className={className}>
       <Timer className="h-4 w-4" aria-hidden="true" />
-      <AlertTitle>C952 exam in progress</AlertTitle>
+      <AlertTitle>{codeOf(exam.course)} exam in progress</AlertTitle>
       <AlertDescription>
         {exam.name} · {exam.answered} of {exam.total} answered. The timer keeps running.
       </AlertDescription>
       <div className="mt-4">
         <Button asChild variant="outline" size="sm">
-          {/* the running exam is Questions' (decision 57), so its entry names that mode */}
+          {/* the running exam is the Exam mode's (decision 60), so its entry names that mode */}
           <a
             href={href}
             data-focus-key={BACK_TO_EXAM_FOCUS_KEY}
-            onClick={onPlainClick(() => navigate(href, { practiceMode: "questions" }))}
+            onClick={onPlainClick(() => navigate(href, { practiceMode: "exam" }))}
           >
             Back to exam
+            <span className="sr-only">, {codeOf(exam.course)}</span>
           </a>
         </Button>
       </div>

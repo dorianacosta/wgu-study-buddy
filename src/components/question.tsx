@@ -1,7 +1,7 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
- * Question building blocks shared by C952's Learn, Practice Exam (runner + review) and My Misses, and a guide
- * course's Practice and My Misses.
+ * Question building blocks shared by C952's Learn and My Misses, every course's practice exam (runner + review), and a
+ * guide course's Practice and My Misses.
  *
  * The look is serafimcloud's question-tool (21st.dev, src/components/ui/question-tool.tsx): its frame, its header row
  * with the question icon and "n of N", its title row with the index, its lettered option rows and its footer buttons.
@@ -139,13 +139,26 @@ function CodeBlock({ code }: { code: string }) {
   return <Terminal title="CODE" lines={lines} typewriter={false} idleCursor={false} />
 }
 
-/** The question-tool title row (index + prompt), then the prompt's code, if any, as a Terminal window. */
-export function QuestionText({ html, code, index }: { html: string; code?: string; index?: ReactNode }) {
+/**
+ * The question-tool title row (index + prompt), then the prompt's code, if any, as a Terminal window. `body` replaces
+ * the prompt's Rich: a guide's stem renders through GuideRich, the sanitizer, instead (decision 60).
+ */
+export function QuestionText({
+  html,
+  code,
+  index,
+  body,
+}: {
+  html: string
+  code?: string
+  index?: ReactNode
+  body?: ReactNode
+}) {
   return (
     <>
       <div className={cn(QT.title, "items-start")}>
         {index !== undefined && <span className={cn(QT.titleIndex, "flex-none")}>{index}</span>}
-        <Rich className="min-w-0 max-w-[68ch] flex-1 break-words" html={html} />
+        {body ?? <Rich className="min-w-0 max-w-[68ch] flex-1 break-words" html={html} />}
       </div>
       {code && <CodeBlock code={code} />}
     </>

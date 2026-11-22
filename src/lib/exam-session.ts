@@ -1,14 +1,20 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
- * The running C952 exam, kept in sessionStorage too, so reloading the tab mid-exam doesn't lose it. Moved out of
- * App.tsx with the same key, the same checks and the same behavior. New (decisions 7 and 8): every saved session also
- * writes the bank it was built from to `wgu-study-buddy-exam-bank-v1` (absent means "private"), and clearing a
- * session removes both keys. The bank switch in store.ts drops a session whose bank differs from this build's.
+ * The running exam, kept in sessionStorage too, so reloading the tab mid-exam doesn't lose it. One exam at a time for
+ * the whole app (decision 60): a C952 exam or a guide course's, under the same key, with the same checks and the same
+ * behavior as C952's always had. Every saved exam names its course (`course`); a session saved before decision 60 has
+ * none and is C952's. Every saved session also writes the bank it was built from to `wgu-study-buddy-exam-bank-v1`
+ * (absent means "private"; decisions 7 and 8), and clearing a session removes both keys. The bank switch in store.ts
+ * drops a C952 session whose bank differs from this build's; a guide's session has no C952 bank, so it never drops one.
+ *
+ * Import order: store.ts runs dropExamFromOtherBank at module init, before src/lib/course.ts has finished loading, so
+ * this module never imports course.ts (or exam.ts, which does): the course is read from the session's own JSON and
+ * compared with the literal "c952", and App passes its item check (examItemKnown) into loadExam.
  */
 import { BANK, QUESTION_BY_N } from "@/data"
 import type { Exam } from "@/lib/exam"
 
-/** sessionStorage: the running exam (unchanged name and shape). */
+/** sessionStorage: the running exam (unchanged name and shape, plus `course`). */
 export const EXAM_KEY = "c952-exam-session-v1"
 
 /** sessionStorage: the bank of the running exam in EXAM_KEY; absent means "private". */
@@ -17,7 +23,16 @@ export const EXAM_BANK_KEY = "wgu-study-buddy-exam-bank-v1"
 /** The bank an absent or unreadable bank tag means: the only bank before this release. */
 export const PRIVATE_BANK = "private"
 
+/** C952's slug, as a literal: see the import note above. */
+const C952_SLUG = "c952"
+
 type StorageLike = Pick<Storage, "getItem" | "setItem" | "removeItem">
+
+/** Whether a saved item of `course`'s exam can still be shown (examItemKnown in src/lib/exam.ts). */
+export type ExamItemCheck = (course: string, n: number) => boolean
+
+/** Without App's check: C952's items alone, by this build's bank. */
+const c952ItemKnown: ExamItemCheck = (course, n) => course === C952_SLUG && !!QUESTION_BY_N[n]
 
 function sessionStore(): StorageLike | null {
   try {
@@ -41,13 +56,34 @@ export function readBankTag(value: string | null | undefined, bank: string = BAN
 
 const isNumArray = (a: unknown): a is number[] => Array.isArray(a) && a.every((x) => typeof x === "number")
 
-/** The saved running exam, or null. An invalid session is removed; unreadable storage gives null. Never throws. */
-export function loadExam(storage: StorageLike | null = sessionStore()): Exam | null {
+/** The course a saved exam names; none (a session from before decision 60) is C952's. */
+function courseOfSaved(e: unknown): string {
+  const course = e !== null && typeof e === "object" ? (e as { course?: unknown }).course : undefined
+  return typeof course === "string" && course ? course : C952_SLUG
+}
+
+/** The course of the session's raw JSON: C952's when it names none or can't be read (store.ts's drop rule). */
+function courseOfRaw(raw: string): string {
+  try {
+    return courseOfSaved(JSON.parse(raw))
+  } catch {
+    return C952_SLUG
+  }
+}
+
+/**
+ * The saved running exam, or null. An invalid session is removed: one whose items `known` no longer finds (an unknown
+ * course, a question this build lacks), or a guide's item without string text and options. Unreadable storage gives
+ * null. Never throws.
+ */
+export function loadExam(storage: StorageLike | null = sessionStore(), known: ExamItemCheck = c952ItemKnown): Exam | null {
   try {
     if (!storage) return null
     const raw = storage.getItem(EXAM_KEY)
     if (!raw) return null
     const e = JSON.parse(raw) as Exam
+    const course = courseOfSaved(e)
+    const guide = course !== C952_SLUG
     const valid =
       e &&
       Array.isArray(e.items) &&
@@ -56,7 +92,14 @@ export function loadExam(storage: StorageLike | null = sessionStore()): Exam | n
       e.ans.length === e.items.length &&
       e.ans.every(isNumArray) &&
       e.items.every(
-        (it) => it && QUESTION_BY_N[it.n] && Array.isArray(it.opts) && it.opts.length > 0 && isNumArray(it.correct),
+        (it) =>
+          it &&
+          known(course, it.n) &&
+          Array.isArray(it.opts) &&
+          it.opts.length > 0 &&
+          isNumArray(it.correct) &&
+          // a guide's text is rendered from here (through the sanitizer), so it must be text
+          (!guide || (typeof it.text === "string" && it.opts.every((o) => o && typeof o.t === "string" && typeof o.k === "number"))),
       ) &&
       typeof e.flags === "object" &&
       e.flags !== null &&
@@ -66,7 +109,7 @@ export function loadExam(storage: StorageLike | null = sessionStore()): Exam | n
       storage.removeItem(EXAM_KEY)
       return null
     }
-    return { ...e, i: Math.min(Math.max(0, Number(e.i) || 0), e.items.length - 1) }
+    return { ...e, course, i: Math.min(Math.max(0, Number(e.i) || 0), e.items.length - 1) }
   } catch {
     return null
   }
@@ -104,14 +147,17 @@ export function saveExam(exam: Exam | null, storage: StorageLike | null = sessio
 }
 
 /**
- * The drop rule of the bank switch (decision 8): removes the saved session, and its tag, only when the tag (absent:
- * "private") differs from `bank`. Returns true when it dropped one. Run by store.ts's runMigrations at module init,
- * before App's useState(loadExam). Never throws.
+ * The drop rule of the bank switch (decision 8): removes the saved session, and its tag, only when it is C952's (its
+ * JSON names no course, or "c952") and the tag (absent: "private") differs from `bank`. A guide's session is never
+ * dropped here. Returns true when it dropped one. Run by store.ts's runMigrations at module init, before App's
+ * useState(loadExam). Never throws.
  */
 export function dropExamFromOtherBank(bank: string = BANK, storage: StorageLike | null = sessionStore()): boolean {
   if (!storage) return false
   try {
-    if (storage.getItem(EXAM_KEY) === null) return false
+    const raw = storage.getItem(EXAM_KEY)
+    if (raw === null) return false
+    if (courseOfRaw(raw) !== C952_SLUG) return false
     if (readBankTag(storage.getItem(EXAM_BANK_KEY), bank) === bank) return false
   } catch {
     return false
@@ -120,8 +166,10 @@ export function dropExamFromOtherBank(bank: string = BANK, storage: StorageLike 
   return true
 }
 
-/** What the "C952 exam in progress" Alert says about a running exam (decision 28). */
+/** What the "{CODE} exam in progress" Alert says about a running exam (decisions 28 and 60). */
 export interface RunningExam {
+  /** The exam's course: "c952", "d281" */
+  course: string
   /** The exam's name: "Quick 20", "Topic drill: …" */
   name: string
   /** Questions with an answer */
@@ -133,5 +181,10 @@ export interface RunningExam {
 /** The running exam's summary: null when there is none or it is submitted (the Alert's "started, not submitted"). */
 export function runningExamOf(exam: Exam | null): RunningExam | null {
   if (!exam || exam.done) return null
-  return { name: exam.name, answered: exam.ans.filter((a) => a.length > 0).length, total: exam.items.length }
+  return {
+    course: courseOfSaved(exam),
+    name: exam.name,
+    answered: exam.ans.filter((a) => a.length > 0).length,
+    total: exam.items.length,
+  }
 }

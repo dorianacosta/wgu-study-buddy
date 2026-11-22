@@ -43,6 +43,11 @@ const LINK = "underline underline-offset-[3px] transition-colors hover:text-prim
 const TAP_LINK = "pointer-coarse:inline-block pointer-coarse:min-h-11 pointer-coarse:py-2.5"
 /** page headers: Surfaces' Page header, `short:mt-6` on short screens (decision 39) */
 const HEADER = "mt-12 sm:mt-16 short:mt-6"
+/**
+ * a page header under the exam-in-progress Alert, which takes HEADER's top margin instead (decision 60, as C952's
+ * Cheat Sheet and My Misses do)
+ */
+const HEADER_AFTER_NOTICE = "mt-8"
 
 /* ── Small helpers ───────────────────────────────────────────────────────── */
 
@@ -683,7 +688,7 @@ function CourseBadges({ course }: { course: Course }) {
   )
 }
 
-export { LABEL, LEAD, HEADING, PROSE, LINK, TAP_LINK, HEADER, pad, padTo, letter, percent, PageTitle }
+export { LABEL, LEAD, HEADING, PROSE, LINK, TAP_LINK, HEADER, HEADER_AFTER_NOTICE, pad, padTo, letter, percent, PageTitle }
 export { plain, safeHref, hostOf, RESOURCE_GROUPS, normalizeGuide, OUTLINE, useGuide, preloadGuide, assessmentOf, assessmentLabel }
 export { stripLetter, correctChoice, TABS, TAB_ORDER, TAB_HAS }
 export { GuideRich, Bullets, NewTab, Heading, CourseBadges, StaticChoices, GuideAnswer, FactAnswer }

@@ -6,7 +6,7 @@
  *
  * The standard page header (kicker, the decrypting h1, lead) with the Course index window (BoughIndex) beside it from
  * lg, its subject groups as folders with the active course's group open, and under the lead below, all folded; the
- * "Course not found" and "C952 exam in progress" Alerts when they apply; four stat tiles (readouts) and, under them,
+ * "Course not found" and "{CODE} exam in progress" Alerts when they apply; four stat tiles (readouts) and, under them,
  * the Degree progress window (courses and CU completed, over a Progress); then the list: Tabs "Which courses" (All,
  * Remaining, Completed, each with its live count) and one section per subject group that has cards in the chosen
  * list, each a list of CourseCards in study order (the course switcher's order, COURSE_GROUP_LIST); then the Backup
@@ -457,7 +457,7 @@ export default function Courses({ course, navigate, store, update, entry, runnin
         </BlurFade>
       </header>
 
-      {/* ── Alerts, when they apply: the bad link's, then the running C952 exam's ── */}
+      {/* ── Alerts, when they apply: the bad link's, then the running exam's (any course's) ── */}
       {notFound !== null && <CourseNotFoundNotice slug={notFound} delayed={notFoundDelayed} className="mt-8" />}
       <ExamInProgressNotice exam={runningExam} navigate={navigate} className={notFound !== null ? "mt-4" : "mt-8"} />
 

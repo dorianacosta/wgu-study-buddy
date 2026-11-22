@@ -1,8 +1,10 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
- * Practice Exam debrief: the score (gauge + ticker in a Readout frame: a Card with two muted corner brackets),
- * accuracy by topic (Table), a map of every question, then the review: each question in an Accordion item with the
- * full breakdown.
+ * The practice exam's debrief, every course's (decision 60): the score (gauge + ticker in a Readout frame: a Card with
+ * two muted corner brackets), accuracy by topic (Table) when every question has a topic (C952's), a map of every
+ * question (beside the score when there are no topics), then the review: each question in an Accordion item with the
+ * full breakdown. The course's content adapter (src/views/exam/content.tsx) renders the stems, choices, breakdowns and
+ * labels: C952's as always, a guide's through the sanitizer.
  *
  * Monochrome states: right = success badge with a check, wrong = destructive badge with ✕, skipped = outline with –.
  * "Wrong" has one meaning on this screen: every question not answered correctly. A blank answer counts as
@@ -10,14 +12,12 @@
  */
 import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "motion/react"
-import { Check, ChevronsUpDown, Minus, Repeat, Shuffle, Trophy, X } from "lucide-react"
-import { QUESTIONS, QUESTION_BY_N, TOPIC_BY_ID, type TopicId } from "@/data"
+import { Check, Minus, Repeat, Shuffle, Trophy, X } from "lucide-react"
 import { isRight, type ExamItem } from "@/lib/exam"
 import { cn } from "@/lib/utils"
 import type { ResultsProps } from "@/views/exam/props"
-import { Rich } from "@/components/kit"
+import type { ExamContent, ExamTopic } from "@/views/exam/content"
 import {
-  Explanation,
   OptionButton,
   QuestionCount,
   QuestionFrame,
@@ -27,13 +27,11 @@ import {
   type OptionState,
 } from "@/components/question"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar"
 import { Badge } from "@/components/ui/base-badge"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { CornerFrame } from "@/components/ui/corner-frame"
 import { DecryptText } from "@/components/ui/decrypt-text"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -54,16 +52,18 @@ const SCORE = "font-mono text-[clamp(64px,18vw,96px)] leading-none font-semibold
 
 /** Zero-pads a sequence number to the width of its total: `01`–`60`, `1`–`9` (README, Numbers). */
 const pad = (n: number, total: number) => String(n).padStart(String(total).length, "0")
-/** A bank question number, padded to the bank's width like Learn and My Misses (`Q05`). */
-const padQ = (n: number) => pad(n, QUESTIONS.length)
 /** When the app's modules loaded: tells a page reload straight onto old results apart from arriving via Submit. */
 const APP_START = performance.now()
 
-function debriefLine(pct: number) {
-  if (pct >= 90) return "Mission ready. Keep it sharp until exam day."
+/**
+ * The score's one-line debrief. "Keep it sharp until exam day" only for an objective-assessment course (`oa`); the topics' bars
+ * only when By topic shows (`hasTopics`).
+ */
+function debriefLine(pct: number, oa: boolean, hasTopics: boolean) {
+  if (pct >= 90) return oa ? "Mission ready. Keep it sharp until exam day." : "Mission ready. You know this material cold."
   if (pct >= 80) return "Strong run. Clean up the misses and you're set."
   if (pct >= 65) return "Getting there. Review the misses below and try again."
-  return "Good start. Study the topics with the shortest bars first."
+  return hasTopics ? "Good start. Study the topics with the shortest bars first." : "Good start. Read the review below, then try again."
 }
 
 const itemValue = (i: number) => `r-${i}`
@@ -151,7 +151,7 @@ function ScoreFigures({ pct, score, total, time }: { pct: number; score: number;
 
 /* ── By topic ───────────────────────────────────────────────────────────── */
 
-type TopicRow = { id: TopicId; r: number; n: number }
+type TopicRow = { topic: ExamTopic; r: number; n: number }
 /** wrong = every question not answered correctly; skipped = the part of it left blank. */
 type Tally = { correct: number; wrong: number; skipped: number }
 
@@ -181,11 +181,10 @@ function TopicBreakdown({ rows, tally }: { rows: TopicRow[]; tally: Tally }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map(({ id, r, n }) => {
-              const t = TOPIC_BY_ID[id]
+            {rows.map(({ topic: t, r, n }) => {
               const Icon = t.icon
               return (
-                <TableRow key={id}>
+                <TableRow key={t.id}>
                   <TableCell className="font-medium">
                     <span className="flex items-center gap-2">
                       {/* topic icon 16px, muted at rest (README, Iconography) */}
@@ -226,12 +225,12 @@ function TopicBreakdown({ rows, tally }: { rows: TopicRow[]; tally: Tally }) {
       {studyFirst.length > 0 && (
         <CardFooter className="flex-wrap gap-2">
           <span className="text-sm font-medium">Study first:</span>
-          {studyFirst.map(({ id }) => {
-            const Icon = TOPIC_BY_ID[id].icon
+          {studyFirst.map(({ topic }) => {
+            const Icon = topic.icon
             return (
-              <Badge key={id} variant="outline" size="md">
+              <Badge key={topic.id} variant="outline" size="md">
                 <Icon aria-hidden="true" />
-                {TOPIC_BY_ID[id].name}
+                {topic.name}
               </Badge>
             )
           })}
@@ -247,9 +246,19 @@ function TopicBreakdown({ rows, tally }: { rows: TopicRow[]; tally: Tally }) {
  * The navigator's cells, marked (Surfaces, Question map): correct `success` solid with Check, wrong `destructive`
  * solid with X, unanswered `outline` with Minus and a `muted-foreground` boundary; numbers zero-padded.
  */
-function QuestionMap({ right, ans, onJump }: { right: boolean[]; ans: number[][]; onJump: (i: number) => void }) {
+function QuestionMap({
+  right,
+  ans,
+  onJump,
+  className,
+}: {
+  right: boolean[]
+  ans: number[][]
+  onJump: (i: number) => void
+  className?: string
+}) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="flex-row flex-wrap items-baseline justify-between gap-x-4 gap-y-2 space-y-0">
         <h2 className={HEADING}>Question map</h2>
         <CardDescription>Tap a number to jump to it</CardDescription>
@@ -309,55 +318,25 @@ function StatusBadge({ ok, answered }: { ok: boolean; answered: boolean }) {
   )
 }
 
-/** The remix's own "why", then the original question's breakdown behind a Collapsible. */
-function RemixWhy({ item }: { item: ExamItem }) {
-  const [open, setOpen] = useState(false)
-  const q = QUESTION_BY_N[item.n]
-  return (
-    <>
-      <Alert role="note" className="mt-4">
-        <Repeat className="h-4 w-4" aria-hidden="true" />
-        {/* font-mono: this Alert sits in the review AccordionContent (sans), and Alert titles are never sans (Alert
-            README), as question.tsx's Explanation does for its titles */}
-        <AlertTitle className="font-mono">
-          Why · remix of <span className="font-mono">Q{padQ(item.n)}</span>
-        </AlertTitle>
-        <AlertDescription>
-          <Rich html={item.fwhy ?? ""} />
-        </AlertDescription>
-      </Alert>
-      <Collapsible open={open} onOpenChange={setOpen} className="mt-4 space-y-2">
-        <CollapsibleTrigger asChild>
-          <Button variant="ghost" size="sm">
-            <ChevronsUpDown className="mr-2 h-4 w-4" aria-hidden="true" />
-            {open ? "Hide" : "See"} the original Q{padQ(item.n)} breakdown
-          </Button>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <Explanation q={q} />
-        </CollapsibleContent>
-      </Collapsible>
-    </>
-  )
-}
-
 function ReviewItem({
   item,
   index,
   total,
   ok,
   picked,
+  content,
 }: {
   item: ExamItem
   index: number
   total: number
   ok: boolean
   picked: number[]
+  content: ExamContent
 }) {
-  const q = QUESTION_BY_N[item.n]
-  const topic = TOPIC_BY_ID[q.t]
-  const TopicIcon = topic.icon
+  const topic = content.topicOf(item.n)
+  const TopicIcon = topic?.icon
   const answered = picked.length > 0
+  const label = content.label(item.n)
 
   return (
     <AccordionItem value={itemValue(index)} id={itemValue(index)} className="scroll-mt-28">
@@ -366,21 +345,23 @@ function ReviewItem({
           {/* `subheading` title, zero-padded to the total (Accordion README: "Question {pad(n)}") */}
           <span>Question {pad(index + 1, total)}</span>
           <StatusBadge ok={ok} answered={answered} />
-          <Badge variant="outline" size="sm">
-            <TopicIcon aria-hidden="true" />
-            {topic.name}
-          </Badge>
+          {topic && TopicIcon && (
+            <Badge variant="outline" size="sm">
+              <TopicIcon aria-hidden="true" />
+              {topic.name}
+            </Badge>
+          )}
           {/* Q-numbers in mono, as in the exam runner */}
           {item.remix ? (
             <Badge variant="info" appearance="light" size="sm">
               <Repeat aria-hidden="true" />
               <span>
-                Remix of <span className="font-mono">Q{padQ(item.n)}</span>
+                Remix of <span className="font-mono">{label}</span>
               </span>
             </Badge>
           ) : (
             <Badge variant="outline" size="sm">
-              <span className="font-mono">Q{padQ(item.n)}</span>
+              <span className="font-mono">{label}</span>
             </Badge>
           )}
         </span>
@@ -390,7 +371,7 @@ function ReviewItem({
           <QuestionMeta right={<QuestionCount index={index + 1} total={total} />}>
             <span>Question</span>
           </QuestionMeta>
-          <QuestionText html={item.text} code={item.code} index={pad(index + 1, total)} />
+          <QuestionText html={item.text} code={item.code} index={pad(index + 1, total)} body={content.stem(item)} />
           <QuestionOptions>
             {item.opts.map((o, j) => {
               const mine = picked.includes(o.k)
@@ -399,7 +380,7 @@ function ReviewItem({
                 <OptionButton
                   key={o.k}
                   index={j}
-                  text={o.t}
+                  text={content.option(o.t)}
                   mono={item.mono}
                   state={state}
                   disabled
@@ -408,7 +389,7 @@ function ReviewItem({
               )
             })}
           </QuestionOptions>
-          {item.remix ? <RemixWhy item={item} /> : <Explanation q={q} />}
+          {content.explain(item)}
         </QuestionFrame>
       </AccordionContent>
     </AccordionItem>
@@ -417,7 +398,7 @@ function ReviewItem({
 
 /* ── View ───────────────────────────────────────────────────────────────── */
 
-export default function Results({ exam, setExam, startExam }: ResultsProps) {
+export default function Results({ exam, setExam, startExam, bank, content }: ResultsProps) {
   const total = exam.items.length
   const pct = total ? Math.round((100 * exam.score) / total) : 0
 
@@ -427,15 +408,19 @@ export default function Results({ exam, setExam, startExam }: ResultsProps) {
   const skipped = exam.ans.filter((a) => a.length === 0).length
   const tally: Tally = { correct: total - wrong, wrong, skipped }
 
-  const byTopic = new Map<TopicId, TopicRow>()
-  exam.items.forEach((item, i) => {
-    const id = QUESTION_BY_N[item.n].t
-    const row = byTopic.get(id) ?? { id, r: 0, n: 0 }
+  // By topic only when every question has one (C952's); a guide's questions have no topic tags yet
+  const topics = exam.items.map((item) => content.topicOf(item.n))
+  const hasTopics = total > 0 && topics.every((t) => t !== null)
+  const byTopic = new Map<string, TopicRow>()
+  exam.items.forEach((_, i) => {
+    const topic = topics[i]
+    if (!topic) return
+    const row = byTopic.get(topic.id) ?? { topic, r: 0, n: 0 }
     row.n += 1
     if (right[i]) row.r += 1
-    byTopic.set(id, row)
+    byTopic.set(topic.id, row)
   })
-  const topicRows = [...byTopic.values()].sort((a, b) => a.id.localeCompare(b.id))
+  const topicRows = [...byTopic.values()].sort((a, b) => a.topic.id.localeCompare(b.topic.id))
 
   const all = exam.items.map((item, i) => ({ item, i, ok: right[i] }))
   const wrongOnly = all.filter((x) => !x.ok)
@@ -493,7 +478,7 @@ export default function Results({ exam, setExam, startExam }: ResultsProps) {
   // After a perfect "My misses" run the misses list is empty, so a retake would have no questions.
   const canRetake = !(exam.mode === "miss" && wrong === 0)
   const retake = () => {
-    startExam(exam.mode, exam.opt)
+    startExam(bank, exam.mode, exam.opt)
     focusTitleIfLost()
   }
   const otherModes = () => {
@@ -522,7 +507,7 @@ export default function Results({ exam, setExam, startExam }: ResultsProps) {
     list.length > 0 ? (
       <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
         {list.map(({ item, i, ok }) => (
-          <ReviewItem key={i} item={item} index={i} total={total} ok={ok} picked={exam.ans[i] ?? []} />
+          <ReviewItem key={i} item={item} index={i} total={total} ok={ok} picked={exam.ans[i] ?? []} content={content} />
         ))}
       </Accordion>
     ) : (
@@ -539,7 +524,7 @@ export default function Results({ exam, setExam, startExam }: ResultsProps) {
   return (
     <>
       <header className="mt-12 sm:mt-16 short:mt-6">
-        <p className={cn(LABEL, "text-muted-foreground")}>C952 · Debrief</p>
+        <p className={cn(LABEL, "text-muted-foreground")}>{content.code} · Debrief</p>
         {/* Title decrypt (Surfaces): tabIndex -1 keeps focus landing on `#app h1` (App, focusTitleIfLost) */}
         <DecryptText
           as="h1"
@@ -566,7 +551,7 @@ export default function Results({ exam, setExam, startExam }: ResultsProps) {
             <Card className="flex h-full flex-col gap-6 p-6">
               <div className="space-y-2">
                 <h2 className={HEADING}>Your score</h2>
-                <CardDescription>{debriefLine(pct)}</CardDescription>
+                <CardDescription>{debriefLine(pct, content.oa, hasTopics)}</CardDescription>
               </div>
               <div className="flex flex-1 items-center justify-center">
                 <ScoreFigures pct={pct} score={exam.score} total={total} time={exam.time} />
@@ -583,16 +568,24 @@ export default function Results({ exam, setExam, startExam }: ResultsProps) {
           </CornerFrame>
         </BlurFade>
 
-        {/* ── By topic ────────────────────────────────────────── */}
-        <BlurFade delay={0.08} className="h-full">
-          <TopicBreakdown rows={topicRows} tally={tally} />
-        </BlurFade>
+        {/* ── By topic, when every question has a topic; otherwise the Question map takes its column ── */}
+        {hasTopics ? (
+          <BlurFade delay={0.08} className="h-full">
+            <TopicBreakdown rows={topicRows} tally={tally} />
+          </BlurFade>
+        ) : (
+          <BlurFade delay={0.08} className="h-full">
+            <QuestionMap right={right} ans={exam.ans} onJump={jumpTo} className="h-full" />
+          </BlurFade>
+        )}
       </div>
 
       {/* ── Question map ──────────────────────────────────────── */}
-      <BlurFade delay={0.14} className="mt-4">
-        <QuestionMap right={right} ans={exam.ans} onJump={jumpTo} />
-      </BlurFade>
+      {hasTopics && (
+        <BlurFade delay={0.14} className="mt-4">
+          <QuestionMap right={right} ans={exam.ans} onJump={jumpTo} />
+        </BlurFade>
+      )}
 
       {/* ── Review ────────────────────────────────────────────── */}
       <Tabs value={exam.review} onValueChange={(v) => setReview(v === "all" ? "all" : "wrong")}>

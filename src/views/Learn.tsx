@@ -14,6 +14,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { QUESTIONS, TOPICS, TOPIC_BY_ID, type TopicId } from "@/data"
+import { C952_BANK } from "@/lib/exam"
 import { initialLearnTopic, patchEntry } from "@/lib/routes"
 import { topicProgress, type Store } from "@/lib/store"
 import { cn } from "@/lib/utils"
@@ -224,7 +225,7 @@ export default function Learn({
   const idx = TOPICS.findIndex((x) => x.id === topic)
   const prev = TOPICS[idx - 1]
   const next = TOPICS[idx + 1]
-  const quiz = () => startExam("topic", { topic })
+  const quiz = () => startExam(C952_BANK, "topic", { topic })
 
   // Show all / Hide all send a one-tick pulse (true or false, then back to null) that every card reacts to once,
   // so either button keeps working after cards were opened or reset one by one. Tagging the pulse with its topic

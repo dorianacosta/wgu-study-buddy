@@ -26,10 +26,11 @@ The courses, by subject:
 | Professional skills | D459 Introduction to Systems Thinking and Applications · D333 Ethics in Technology · D336 Business of IT - Applications · C458 Health, Fitness, and Wellness |
 
 Every course has a study guide: Learn (overview and the assessment, topics, a study plan, community notes, resources
-and sources), a Cheat Sheet (the exam, key facts and pitfalls), Practice (original questions graded where you read
-them, and flashcards made from the guide's key facts) and My Misses. C952 has its own toolkit instead: 60 original
-practice questions with plain-language explanations, Learn by topic, a cheat sheet, practice exams in five modes (Full
-exam, Quick 20, Topic drill, My misses, Remix exam), 52 flashcards made from its cheat sheet and My Misses.
+and sources), a Cheat Sheet (the exam, key facts and pitfalls), Practice (a timed practice exam, original questions
+graded where you read them, and flashcards made from the guide's key facts) and My Misses. C952 has its own toolkit
+instead: 60 original practice questions with plain-language explanations, Learn by topic, a cheat sheet, practice
+exams in five modes (Full exam, Quick 20, Topic drill, My misses, Remix exam), 52 flashcards made from its cheat
+sheet and My Misses.
 
 Pick a course in the bar's course switcher: Home and the four tools follow it. Along the way:
 
@@ -38,6 +39,11 @@ Pick a course in the bar's course switcher: Home and the four tools follow it. A
   course you're on is completed, Home suggests the next one.
 - **Set an exam date.** Learn and Home count the days to your exam and say whether the study plan's remaining days
   fit.
+- **Take a practice exam.** Practice opens on Exam in every course: the Full exam runs all of a guide's questions
+  that have answer choices, shuffled and timed, and My misses runs just the ones you got wrong. Results walk through
+  each question, and the logbook keeps your recent attempts and your best Full exam score. My Misses' "Quiz me on my
+  misses" starts one too. Questions you grade yourself stay in Practice's Questions mode. One exam runs at a time,
+  across all courses.
 - **Drill flashcards.** Practice's Flashcards mode shows one key fact at a time: mark each "Knew it" or "Study again",
   then study just the ones you missed. C952's Practice Exam has Flashcards too, on its start screen: its 10 formulas,
   30 signal words and 12 ARM reference rows, each card saying which kind it is. The Cheat Sheets link to them ("Drill
@@ -74,7 +80,7 @@ with `c952-` and `wgu-study-buddy-`. Nothing is sent to a server. Progress does 
 devices on its own, and clearing the site's data in your browser erases it.
 
 To keep it safe or move it, open Courses and use **Save backup** at the end of the page. It saves a small file,
-`wgu-study-buddy-progress-YYYY-MM-DD.json`, holding every course's marks, completed courses, exam dates and C952 exam
+`wgu-study-buddy-progress-YYYY-MM-DD.json`, holding every course's marks, completed courses, exam dates and practice exam
 history. **Restore from file** on any device replaces that browser's progress with the file's, after asking first.
 The file never leaves your device unless you move it.
 

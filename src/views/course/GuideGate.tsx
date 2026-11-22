@@ -14,7 +14,7 @@ import { useLayoutEffect, useRef, type CSSProperties, type ReactNode } from "rea
 import { RotateCw } from "lucide-react"
 import { COURSE_BY_SLUG } from "@/data/courses"
 import { focusH1 } from "@/lib/routes"
-import { HEADER, LABEL, PageTitle, useGuide, type Guide } from "@/views/course/shared"
+import { HEADER, HEADER_AFTER_NOTICE, LABEL, PageTitle, useGuide, type Guide } from "@/views/course/shared"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -32,11 +32,14 @@ const FAILURE = {
 export function GuideGate({
   course,
   title,
+  afterNotice = false,
   children,
 }: {
   course: string
   /** the tool's h1 ("Cheat Sheet"); Learn's is the course name, its default */
   title?: string
+  /** the exam-in-progress Alert sits above (the tool renders it, decision 60): the loading header then takes mt-8 */
+  afterNotice?: boolean
   children: (guide: Guide | null) => ReactNode
 }) {
   const { guide, failure, retrying, retry } = useGuide(course)
@@ -59,7 +62,7 @@ export function GuideGate({
   const said = !failure ? "" : retrying ? "Trying again…" : `${FAILURE[failure].title}. ${FAILURE[failure].text}`
   return (
     <>
-      <header className={HEADER}>
+      <header className={afterNotice ? HEADER_AFTER_NOTICE : HEADER}>
         <p className={LABEL}>{title && c ? `${code} · ${c.name}` : code}</p>
         <PageTitle text={title ?? c?.name ?? code} />
       </header>

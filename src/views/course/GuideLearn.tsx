@@ -2,8 +2,9 @@
 /**
  * `#learn/<slug>` for a guide course (decision 21; CourseTools, Learn): the header ("All courses", the code, the
  * course name, badges, the research line, then the course's status: the Completed toggle and the exam date, decisions
- * 56 and 58), then the study guide's tabs. And the page every tool of a course with no usable guide shows (decision
- * 26): the same kicker and h1, then "Study guide in progress".
+ * 56 and 58), then the study guide's tabs. While an exam runs (any course's, decision 60), its Alert sits above the
+ * header, which then takes mt-8. And the page every tool of a course with no usable guide shows (decision 26): the
+ * same kicker and h1, then "Study guide in progress".
  */
 import { ArrowLeft, BookDashed, FileText, Search } from "lucide-react"
 import { COURSES } from "@/data/courses"
@@ -11,10 +12,11 @@ import { codeOf, courseInfo } from "@/lib/course"
 import { hrefFor, onPlainClick, type Navigate } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import type { GuideLearnProps, GuidePendingProps } from "@/views/types"
-import { CourseBadges, HEADER, LABEL, PageTitle, type Guide } from "@/views/course/shared"
+import { CourseBadges, HEADER, HEADER_AFTER_NOTICE, LABEL, PageTitle, type Guide } from "@/views/course/shared"
 import { CourseStatus } from "@/views/course/CourseStatus"
 import { GuideGate } from "@/views/course/GuideGate"
 import { GuideTabs } from "@/views/course/GuideTabs"
+import { ExamInProgressNotice } from "@/components/notices"
 import { BlurFade } from "@/components/ui/blur-fade"
 import { Button } from "@/components/ui/button"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -37,12 +39,20 @@ function InProgress({ navigate }: { navigate: Navigate }) {
 }
 
 export function GuideLearn(props: GuideLearnProps) {
-  return <GuideGate course={props.course}>{(guide) => <GuideLearnPage {...props} guide={guide} />}</GuideGate>
+  const notice = !!props.runningExam
+  return (
+    <>
+      <ExamInProgressNotice exam={props.runningExam} navigate={props.navigate} className={HEADER} />
+      <GuideGate course={props.course} afterNotice={notice}>
+        {(guide) => <GuideLearnPage {...props} guide={guide} />}
+      </GuideGate>
+    </>
+  )
 }
 
-function GuideLearnPage({ course, navigate, store, update, entry, guide }: GuideLearnProps & { guide: Guide | null }) {
+function GuideLearnPage({ course, navigate, store, update, entry, runningExam, guide }: GuideLearnProps & { guide: Guide | null }) {
   const c = COURSES.find((x) => x.slug === course)
-  if (!c || !guide) return <GuidePending course={course} navigate={navigate} />
+  if (!c || !guide) return <GuidePending course={course} navigate={navigate} afterNotice={!!runningExam} />
   const meta = guide.updated ? `Researched ${guide.updated}` : ""
   const courses = hrefFor("courses")
 
@@ -50,7 +60,7 @@ function GuideLearnPage({ course, navigate, store, update, entry, guide }: Guide
     <>
       {/* the page header on the dimmed field: back link, kicker, the decrypting h1, badges, the research line, then
           the course's status, unframed (no gold: Learn has none) */}
-      <header className={HEADER}>
+      <header className={runningExam ? HEADER_AFTER_NOTICE : HEADER}>
         <Button variant="ghost" size="sm" className="-ml-3" asChild>
           <a href={courses} data-focus-key="learn:all-courses" onClick={onPlainClick(() => navigate(courses))}>
             <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
@@ -72,10 +82,10 @@ function GuideLearnPage({ course, navigate, store, update, entry, guide }: Guide
 }
 
 /** All four tools of a course with no usable guide (decision 26): the Learn header's kicker and h1, then the EmptyState. */
-export function GuidePending({ course, navigate }: GuidePendingProps) {
+export function GuidePending({ course, navigate, afterNotice = false }: GuidePendingProps) {
   return (
     <>
-      <header className={HEADER}>
+      <header className={afterNotice ? HEADER_AFTER_NOTICE : HEADER}>
         <p className={LABEL}>{codeOf(course)}</p>
         <PageTitle text={courseInfo(course)?.name ?? codeOf(course)} />
       </header>

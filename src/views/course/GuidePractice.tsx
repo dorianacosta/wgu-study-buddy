@@ -1,9 +1,12 @@
 /* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
 /**
- * `#exam/<slug>` for a guide course (decisions 23 and 57; CourseTools, Practice), in two modes. When the guide has
- * both, the header's "Practice with" RadioGroup (PracticeWith: two compact mode cards, as on C952's Practice Exam
- * start screen) picks one; otherwise the page shows the mode
- * it has data for, or "No practice questions yet" when it has neither.
+ * `#exam/<slug>` for a guide course (decisions 23, 57 and 60; CourseTools, Practice), in up to three modes. When the
+ * guide has data for two or more, the header's "Practice with" RadioGroup (PracticeWith: compact mode cards, as on
+ * C952's Practice Exam start screen) picks one; otherwise the page shows the mode it has data for, or "No practice
+ * questions yet" when it has none.
+ * - Exam: the practice exam's mode picker, as C952's (ExamPicker over the guide's bank, guide-exam.tsx): Full exam,
+ *   My misses, the logbook and the best score. The course's running exam takes the page (Runner) and its finished exam
+ *   shows Results (useExamEntry, App's one exam slot). An exam's grades write the same marks as Questions do.
  * - Questions: every practice question, graded where you read it. A card whose answer names one choice
  *   (correctChoice) is graded by a tap; any other is self-graded with "Reveal answer", then "I missed it" or "I got
  *   it". Marks go to `courses[slug].practice[i]` (markPractice).
@@ -11,12 +14,12 @@
  * The header's lead and Progress follow the mode, and a switch moves no focus. The mode and each mode's list ("Which
  * questions", "Which cards") ride on the history entry and live in this page's state, so a switch to the other mode
  * and back keeps the list. Each list is a snapshot taken when its mode opens or the list is chosen; its counts stay
- * live.
+ * live. While another course's exam runs, its Alert sits above the header (one exam at a time, decision 60).
  */
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { Check, CircleCheck, ClipboardX, Eye, EyeOff, ListChecks, X } from "lucide-react"
 import { codeOf, courseInfo, type CardFilter, type PracticeFilter, type PracticeMode } from "@/lib/course"
-import { hrefFor, initialCardFilter, initialPracticeFilter, initialPracticeMode, patchEntry } from "@/lib/routes"
+import { hrefFor, initialCardFilter, initialPracticeFilter, patchEntry } from "@/lib/routes"
 import { cardCounts, markPractice, practiceCounts, type PracticeCounts, type Store, type Update } from "@/lib/store"
 import { cn } from "@/lib/utils"
 import type { GuidePracticeProps } from "@/views/types"
@@ -24,6 +27,7 @@ import {
   GuideAnswer,
   GuideRich,
   HEADER,
+  HEADER_AFTER_NOTICE,
   LABEL,
   LEAD,
   PROSE,
@@ -41,7 +45,13 @@ import { GuideFlashcards } from "@/views/course/GuideFlashcards"
 import { GuideGate } from "@/views/course/GuideGate"
 import { GuidePending } from "@/views/course/GuideLearn"
 import { PracticeWith } from "@/views/course/PracticeWith"
+import { guideBank, guideExamContent } from "@/views/course/guide-exam"
+import { ExamPicker } from "@/views/exam/ExamPicker"
+import Results from "@/views/exam/Results"
+import Runner from "@/views/exam/Runner"
+import { useExamEntry } from "@/views/exam/use-exam-entry"
 import { SafeRich } from "@/components/kit"
+import { ExamInProgressNotice } from "@/components/notices"
 import {
   OptionButton,
   QuestionButton,
@@ -385,25 +395,49 @@ function QuestionsPanel({
 }
 
 export function GuidePractice(props: GuidePracticeProps) {
+  const notice = !!props.runningExam
   return (
-    <GuideGate course={props.course} title="Practice">
-      {(guide) => <GuidePracticePage {...props} guide={guide} />}
-    </GuideGate>
+    <>
+      <ExamInProgressNotice exam={props.runningExam} navigate={props.navigate} className={HEADER} />
+      <GuideGate course={props.course} title="Practice" afterNotice={notice}>
+        {(guide) => <GuidePracticePage {...props} guide={guide} />}
+      </GuideGate>
+    </>
   )
 }
 
-function GuidePracticePage({ course, navigate, store, update, entry, guide }: GuidePracticeProps & { guide: Guide | null }) {
+/** Practice's modes, in the order "Practice with" lists them and a mode without data falls back through */
+const MODE_ORDER: readonly PracticeMode[] = ["exam", "questions", "cards"]
+
+function GuidePracticePage({
+  course,
+  navigate,
+  store,
+  update,
+  entry,
+  runningExam,
+  exam,
+  setExam,
+  startExam,
+  submit,
+  guide,
+}: GuidePracticeProps & { guide: Guide | null }) {
   const info = courseInfo(course)
   const items = guide?.practice ?? []
   const facts = guide?.keyFacts ?? []
   const total = items.length
   const cardTotal = facts.length
+  // the exam's questions: the ones the app grades on its own (guide-exam.tsx)
+  const gradable = guide ? guideBank(course, guide).questions.length : 0
   const code = codeOf(course)
-  // a mode this guide has data for (the router fits the entry's the same way): Flashcards needs key facts, Questions
-  // needs questions
-  const fit = (m: PracticeMode): PracticeMode =>
-    m === "cards" && cardTotal === 0 ? "questions" : m === "questions" && total === 0 && cardTotal > 0 ? "cards" : m
-  const [mode, setMode] = useState<PracticeMode>(() => fit(initialPracticeMode(course, entry)))
+  // a mode this guide has data for. The router fits the entry's from the course's counts; only the loaded guide knows
+  // which questions an exam can grade. Exam needs a gradable question, Questions any question, Flashcards key facts.
+  const fit = (m: PracticeMode): PracticeMode => {
+    const has: Record<PracticeMode, boolean> = { exam: gradable > 0, questions: total > 0, cards: cardTotal > 0 }
+    return has[m] ? m : (MODE_ORDER.find((x) => has[x]) ?? m)
+  }
+  // App's one exam slot: this course's running exam takes the page, its finished one shows Results (useExamEntry)
+  const { shown, mode, setMode } = useExamEntry(course, exam, setExam, entry, fit)
   // Both lists live here, not in their panels: a panel unmounts with its mode, and `entry` is the entry as it was when
   // the page opened, so a list chosen since then would be lost on the way back to that mode
   const [filter, setFilter] = useState<PracticeFilter>(() => initialPracticeFilter(course, entry))
@@ -411,29 +445,47 @@ function GuidePracticePage({ course, navigate, store, update, entry, guide }: Gu
   // each mode's windows fade in with the page only: a mode switch is a change of state, and those are instant
   const [switched, setSwitched] = useState(false)
 
-  if (!guide || !info) return <GuidePending course={course} navigate={navigate} />
-  const both = total > 0 && cardTotal > 0
+  if (!guide || !info) return <GuidePending course={course} navigate={navigate} afterNotice={!!runningExam} />
+  const bank = guideBank(course, guide)
+  const content = guideExamContent(course, guide)
+  if (shown) {
+    if (!shown.done) return <Runner exam={shown} setExam={setExam} submit={submit} content={content} />
+    return <Results exam={shown} setExam={setExam} startExam={startExam} bank={bank} content={content} />
+  }
+
+  const options = (
+    [
+      { mode: "exam", count: gradable },
+      { mode: "questions", count: total },
+      { mode: "cards", count: cardTotal },
+    ] as const
+  ).filter((o) => o.count > 0)
+  const examMode = mode === "exam" && gradable > 0
   const cards = mode === "cards" && cardTotal > 0
   const questions = practiceCounts(info, store)
   const deck = cardCounts({ slug: course, cardTotal }, store)
   const { got, missed } = questions
   const pct = cards ? percent(deck.knew, cardTotal) : percent(got, total)
 
-  // the switch moves no focus: it stays on the radio, and the radios stay mounted
+  // the switch moves no focus: it stays on the radio, and the radios stay mounted. The entry follows the mode
+  // (useExamEntry), so reload, Back and Forward reopen it.
   const chooseMode = (value: PracticeMode) => {
     if (value === mode) return
     setMode(value)
     setSwitched(true)
-    patchEntry({ practiceMode: value })
   }
 
   const header = (
-    <header className={HEADER}>
+    <header className={runningExam ? HEADER_AFTER_NOTICE : HEADER}>
       <p className={LABEL}>
         {code} · {info.name}
       </p>
       <PageTitle text="Practice" />
-      {cards ? (
+      {examMode ? (
+        <p className={cn(LEAD, "mt-4")}>
+          Pick a mode. Answer choices are shuffled so you learn the ideas, not the letter positions.
+        </p>
+      ) : cards ? (
         <p className={cn(LEAD, "mt-4")}>
           <span className="font-mono text-sm text-foreground">{cardTotal}</span> {cardTotal === 1 ? "card" : "cards"} ·{" "}
           <span className="font-mono text-sm text-foreground">{deck.knew}</span> knew it ·{" "}
@@ -448,10 +500,10 @@ function GuidePracticePage({ course, navigate, store, update, entry, guide }: Gu
           </p>
         )
       )}
-      {both && <PracticeWith mode={mode} onChange={chooseMode} questions={total} cards={cardTotal} />}
-      {(cards || total > 0) && (
+      <PracticeWith mode={mode} onChange={chooseMode} options={options} />
+      {!examMode && (cards || total > 0) && (
         // keyed by mode: after a switch the bar shows another count, so it is drawn anew instead of sliding over
-        <div key={mode} className={cn("flex max-w-[520px] items-center gap-4", both ? "mt-6" : "mt-4")}>
+        <div key={mode} className={cn("flex max-w-[520px] items-center gap-4", options.length > 1 ? "mt-6" : "mt-4")}>
           <Progress
             className="flex-1"
             value={pct}
@@ -488,7 +540,10 @@ function GuidePracticePage({ course, navigate, store, update, entry, guide }: Gu
   return (
     <>
       {header}
-      {cards ? (
+      {examMode ? (
+        // Exam: the practice exam's mode picker; after a switch here its windows are there at once
+        <ExamPicker bank={bank} content={content} store={store} startExam={startExam} fade={!switched} />
+      ) : cards ? (
         <GuideFlashcards
           slug={course}
           facts={facts}

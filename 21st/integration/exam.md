@@ -52,6 +52,12 @@ INTEGRATION.md is gone from them (grep clean). The only kit import left is `Rich
 
 ### src/views/exam/Setup.tsx
 
+> Since November 2026 every course has a practice exam. The mode cards, the shortcuts row, Start and Recent attempts
+> moved to `src/views/exam/ExamPicker.tsx`, which C952's Setup and a guide's Practice (`src/views/course/GuidePractice.tsx`,
+> Exam mode) both render. Each course's wording and rendering comes from `src/views/exam/content.tsx` (C952) or
+> `src/views/course/guide-exam.tsx` (guides), and `src/views/exam/use-exam-entry.ts` decides whether a page shows the
+> runner, Results or its modes. The notes below describe the pieces as they were built.
+
 - Mode cards: `Card` + `GlowingEffect` (demo settings: blur 0, spread 40, proximity 64, inactiveZone 0.01, borderWidth 3, glow; disabled on the empty "My misses" card) + a `RadioGroupItem` labelled by the title; topic `Select` inside the Topic drill card; Start = `LiquidMetalButton` "Start exam" in a `Card` with the summary line. Before, clicking a mode card started the exam at once; now you pick a mode (radio, or a click anywhere on its card) and press Start — the step's RadioGroup + Start layout. Picking a topic also selects Topic drill.
 - Slider (question count) not used — `buildExam` (src/lib/exam.ts, KEEP) fixes each mode's count (Full 60, Quick 20, Remix 25, topic and misses = all of them), and the exam name ("Quick 20"), Retake and the Full-exam best score assume those counts. A count needs a lib change (see Needs).
 - Switch (options): the only exam option is the single-key shortcuts setting the runner already had (`localStorage["c952-shortcuts"]`); Setup shows the same setting in the Card demo's row pattern (`rounded-md border p-4`, icon, title, description, Switch). New text: "Keyboard shortcuts" and "Number keys pick an answer, ← → move between questions."

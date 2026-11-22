@@ -22,12 +22,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { QUESTIONS, type TopicId } from "@/data"
+import { QUESTIONS } from "@/data"
 import { NEW_C952_QUESTIONS, masteredCount, planCounts, practiceCounts, useStore } from "@/lib/store"
-import { buildExam, fmtTime, isRight, type Exam, type ExamMode } from "@/lib/exam"
+import { buildExam, examItemKnown, fmtTime, isRight, recordExam, type Exam, type ExamBank, type ExamMode } from "@/lib/exam"
 import { loadExam, runningExamOf, saveExam } from "@/lib/exam-session"
 import { APP_NAME, FOCUS_DELAY, focusAfterChange, hrefFor, isPlainClick, isToolView, navigate, titleFor, useRoute } from "@/lib/routes"
 import { COURSE_LIST, codeOf, courseInfo, courseMissCount, loadCourse, nowStudyingText, saveCourse } from "@/lib/course"
+import { examTitle } from "@/components/notices"
 import type { PageProps } from "@/views/types"
 import Home from "@/views/Home"
 import Courses from "@/views/Courses"
@@ -106,8 +107,10 @@ export default function App() {
   const [picked, setPicked] = useState(() => route.course ?? loadCourse()) // the URL, else saved, else c952
   const active = route.course ?? picked // the URL wins (decision 6)
   const [store, update] = useStore()
-  const [exam, setExam] = useState<Exam | null>(loadExam)
+  // one exam slot for the whole app (decision 60): any course's, kept in c952-exam-session-v1 across reloads
+  const [exam, setExam] = useState<Exam | null>(() => loadExam(undefined, examItemKnown))
   const runningExam = runningExamOf(exam)
+  const runningCourse = runningExam?.course ?? null
 
   useEffect(() => {
     if (route.course) setPicked(route.course)
@@ -139,14 +142,15 @@ export default function App() {
     }
   }, [change.seq]) // snap changes only with change.seq
 
-  // decision 34: one polite status region says the new course whenever the active course changes after load
+  // decision 34: one polite status region says the new course whenever the active course changes after load, and that
+  // another course's exam keeps running (decision 60)
   const [status, setStatus] = useState("")
   const announced = useRef(active)
   useEffect(() => {
     if (announced.current === active) return
     announced.current = active
-    setStatus(nowStudyingText(active, !!runningExam))
-  }, [active, runningExam])
+    setStatus(nowStudyingText(active, runningCourse))
+  }, [active, runningCourse])
 
   // decision 11: data-keyboard="open" on <html> while the on-screen keyboard is open (index.css hides the bar on touch)
   useEffect(() => {
@@ -200,22 +204,24 @@ export default function App() {
     saveExam(exam)
   }, [exam])
 
-  // a running exam is never an entry: starting one opens #exam/c952 (on it already, the router scrolls to the top), on
-  // Questions, since an exam is Questions' (decision 57), so Quit and "Other modes" land on the mode picker
+  // a running exam is never an entry: starting one opens #exam/<its course> (on it already, the router scrolls to the
+  // top), on Exam, since an exam is the Exam mode's (decision 60), so Quit and "Other modes" land on the mode picker.
+  // The exam is built here, never inside an updater: it shuffles, and StrictMode runs updaters twice
   const doStartExam = useCallback(
-    (mode: ExamMode, opt: { topic?: TopicId } = {}) => {
-      setExam(buildExam(mode, opt, store))
-      navigate(hrefFor("exam", "c952"), { practiceMode: "questions" })
+    (bank: ExamBank, mode: ExamMode, opt: { topic?: string } = {}) => {
+      setExam(buildExam(bank, mode, opt, store))
+      navigate(hrefFor("exam", bank.course), { practiceMode: "exam" })
     },
     [store],
   )
 
-  // Starting a new exam while one with answers is still running asks first instead of silently discarding it.
-  const [pendingStart, setPendingStart] = useState<{ mode: ExamMode; opt: { topic?: TopicId } } | null>(null)
+  // One exam at a time for the whole app (decision 60): starting any course's exam while any course's exam with
+  // answers is still running asks first instead of silently discarding it.
+  const [pendingStart, setPendingStart] = useState<{ bank: ExamBank; mode: ExamMode; opt: { topic?: string } } | null>(null)
   const startExam = useCallback(
-    (mode: ExamMode, opt: { topic?: TopicId } = {}) => {
-      if (exam && !exam.done && exam.ans.some((a) => a.length > 0)) setPendingStart({ mode, opt })
-      else doStartExam(mode, opt)
+    (bank: ExamBank, mode: ExamMode, opt: { topic?: string } = {}) => {
+      if (exam && !exam.done && exam.ans.some((a) => a.length > 0)) setPendingStart({ bank, mode, opt })
+      else doStartExam(bank, mode, opt)
     },
     [exam, doStartExam],
   )
@@ -223,28 +229,17 @@ export default function App() {
   // The confirm dialog opens from state, not from a trigger: remember what had focus and hand it back on close.
   const opener = useRef<HTMLElement | null>(null)
 
+  // grades the running exam and records it (recordExam: C952's misses, or a guide's practice marks; the attempt; the
+  // best Full exam), the time taken outside the updater (StrictMode runs updaters twice)
   const submitExam = () => {
     if (!exam) return
-    const done: Exam = { ...exam, done: true, time: fmtTime(Date.now() - exam.start) }
+    const at = Date.now()
+    const done: Exam = { ...exam, done: true, time: fmtTime(at - exam.start) }
     const right = done.items.map((_, i) => isRight(done, i))
-    const score = right.filter(Boolean).length
-    done.score = score
-    update((d) => {
-      done.items.forEach((item, i) => {
-        if (right[i]) {
-          if (!item.remix) delete d.miss[item.n]
-        } else {
-          d.miss[item.n] = (d.miss[item.n] || 0) + 1
-        }
-      })
-      d.history.push({ mode: done.name, score, total: done.items.length, date: Date.now(), time: done.time })
-      if (done.mode === "full") {
-        const pct = Math.round((100 * score) / done.items.length)
-        if (d.best === null || pct > d.best) d.best = pct
-      }
-    })
+    done.score = right.filter(Boolean).length
+    update((d) => recordExam(d, done, right, at))
     setExam(done)
-    // Results replace the runner on the same #exam/c952, so this scroll stays (CONTRACTS, convention 10)
+    // Results replace the runner on the same #exam/<slug>, so this scroll stays (CONTRACTS, convention 10)
     try {
       window.scrollTo(0, 0)
     } catch {
@@ -307,14 +302,17 @@ export default function App() {
 
   const page: PageProps = { course: active, navigate, store, update, entry }
   const kind = courseInfo(route.course)?.kind
+  // the exam-in-progress Alert shows everywhere but on #exam/<its course>, where the exam itself shows (decision 60)
+  const shownRunning = route.view === "exam" && runningExam?.course === route.course ? null : runningExam
+  const examProps = { exam, setExam, startExam, submit: submitExam }
   let view: ReactNode
   if (route.view === "home") {
-    view = <Home {...page} runningExam={runningExam} newQuestions={NEW_C952_QUESTIONS} />
+    view = <Home {...page} runningExam={shownRunning} newQuestions={NEW_C952_QUESTIONS} />
   } else if (route.view === "courses") {
     view = (
       <Courses
         {...page}
-        runningExam={runningExam}
+        runningExam={shownRunning}
         notFound={change.notFound}
         notFoundDelayed={change.notFound !== null && change.cause === "load"}
       />
@@ -322,16 +320,18 @@ export default function App() {
   } else if (kind === "pending") {
     view = <GuidePending course={route.course} navigate={navigate} />
   } else if (kind === "guide") {
-    const Tool = { learn: GuideLearn, cheat: GuideCheat, exam: GuidePractice, misses: GuideMisses }[route.view]
-    view = <Tool {...page} />
+    if (route.view === "learn") view = <GuideLearn {...page} runningExam={shownRunning} />
+    else if (route.view === "cheat") view = <GuideCheat {...page} runningExam={shownRunning} />
+    else if (route.view === "exam") view = <GuidePractice {...page} runningExam={shownRunning} {...examProps} />
+    else view = <GuideMisses {...page} runningExam={shownRunning} startExam={startExam} />
   } else if (route.view === "learn") {
-    view = <Learn {...page} runningExam={runningExam} newQuestions={NEW_C952_QUESTIONS} startExam={startExam} />
+    view = <Learn {...page} runningExam={shownRunning} newQuestions={NEW_C952_QUESTIONS} startExam={startExam} />
   } else if (route.view === "cheat") {
-    view = <Cheat {...page} runningExam={runningExam} />
+    view = <Cheat {...page} runningExam={shownRunning} />
   } else if (route.view === "exam") {
-    view = <ExamView {...page} exam={exam} setExam={setExam} startExam={startExam} submit={submitExam} />
+    view = <ExamView {...page} runningExam={shownRunning} {...examProps} />
   } else {
-    view = <Misses {...page} runningExam={runningExam} startExam={startExam} />
+    view = <Misses {...page} runningExam={shownRunning} startExam={startExam} />
   }
 
   return (
@@ -412,9 +412,10 @@ export default function App() {
             >
               <AlertDialogHeader>
                 <AlertDialogTitle>Replace your exam in progress?</AlertDialogTitle>
+                {/* the running exam's course and name, whichever course's exam it is (decision 60) */}
                 <AlertDialogDescription>
-                  <b className="text-foreground">{exam?.name}</b>: {runningAnswered} of {exam?.items.length ?? 0} answered.
-                  Starting a new exam discards it. Nothing is recorded.
+                  <b className="text-foreground">{runningExam ? examTitle(runningExam) : exam?.name}</b>: {runningAnswered} of{" "}
+                  {exam?.items.length ?? 0} answered. Starting a new exam discards it. Nothing is recorded.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -423,7 +424,7 @@ export default function App() {
                   onClick={() => {
                     const p = pendingStart
                     setPendingStart(null)
-                    if (p) doStartExam(p.mode, p.opt)
+                    if (p) doStartExam(p.bank, p.mode, p.opt)
                   }}
                 >
                   Start new exam

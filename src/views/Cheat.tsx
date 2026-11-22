@@ -564,8 +564,8 @@ export default function Cheat({ navigate, store, runningExam }: C952CheatProps) 
 
   return (
     <>
-      {/* While a C952 exam runs: the exam Alert at the top (decision 28), taking the header's top margin; the header
-          then mt-8 (CONTRACTS, open question 17) */}
+      {/* While an exam runs (any course's, decision 60): its Alert at the top (decision 28), taking the header's top
+          margin; the header then mt-8 (CONTRACTS, open question 17) */}
       <ExamInProgressNotice exam={runningExam} navigate={navigate} className="mt-12 sm:mt-16 short:mt-6" />
       {/* The page header: nothing frames it (it sits on the dimmed field) and it takes no BlurFade, since the h1
           decrypt is its one entrance */}
@@ -735,11 +735,12 @@ export default function Cheat({ navigate, store, runningExam }: C952CheatProps) 
         <DataTable label="ARM / LEGv8 quick reference" head={ARM_REF.head} rows={htmlRows(ARM_REF.rows)} sansCols={[1]} />
         {/* decision 57: the way on to C952's flashcards, at the end of the last of their three sections (formulas,
             signal words, this one), as a guide's Key facts ends (secondary: the Cheat Sheet has no gold fill). A
-            running exam takes #exam/c952, so while one runs the row says how to get there instead of linking to the
-            runner; the exam Alert at the top has "Back to exam" */}
+            running C952 exam takes #exam/c952, so while one runs the row says how to get there instead of linking to
+            the runner; the exam Alert at the top has "Back to exam". Another course's exam doesn't block it
+            (decision 60) */}
         <Separator className="mt-8" />
         <div className="mt-6 flex flex-wrap items-center gap-4">
-          {runningExam ? (
+          {runningExam?.course === C952 ? (
             <p className="font-sans text-sm text-muted-foreground">
               Done reading? Submit or quit your C952 exam to test yourself on the formulas, signal words and ARM
               reference as flashcards.
