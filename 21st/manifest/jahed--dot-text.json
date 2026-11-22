@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@jahed/components/dot-text",
+  "title": "Dot Text | Community Components | 21st",
+  "license": "MIT License",
+  "published": "8/23/2026",
+  "dependencies": "none listed",
+  "promptFile": "21st/prompts/jahed--dot-text.md",
+  "chars": 11075,
+  "sha256": "28f9c1c0838d56dca98bd15860eaa13fd64181aead01af1c44169390a8f4b5ca",
+  "sha256Of": "file bytes",
+  "capturedSha256": "33e5cbece1c1c40f4fca9858f96697c4bcef1d7e72f2dcae53b036cd3d9b358d",
+  "verified": true,
+  "notes": "Captured via Copy prompt > Change copy action > Optimized for: Claude Code (tab viewport 1440x900 so the desktop copy menu is shown). The Info tab has no Dependencies or Source section (only License and Published), and the copied prompt has no 'Install NPM dependencies' step; the code imports only react and cn from @/lib/utils. Component exports DotMatrixText (named and default). Raw byte sha256 of the saved file also equals the page copy (28f9c1c0838d56dca98bd15860eaa13fd64181aead01af1c44169390a8f4b5ca).",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 3 line ends (line 4 (2 spaces), line 10 (1 space), line 331 (6 spaces)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (11075) is the text's length in UTF-16 code units and equals the file's."
+}

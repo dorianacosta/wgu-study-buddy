@@ -1,0 +1,629 @@
+{
+  "code": "D426",
+  "summary": "D426 is the program's first database course. It covers relational concepts, SQL basics, entity-relationship (ER) modeling with crow's foot notation, normalization and physical design topics such as indexes, all taught through a WGU zyBook. You pass a proctored objective assessment that 2026 passers call light on SQL syntax and heavy on keys, cardinality, joins, entity relationships and normalization. Students new to databases find it dense; recent passers report five days to a week of focused study, so a working adult should budget about two weeks.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored)",
+    "format": "Proctored online exam · question count, time limit, passing score and item types not published · about 5–6 SQL syntax questions (students report)",
+    "details": [
+      "What it tests: a May 2026 passer says the topics that came up most were identifiers, keywords and literals; logical vs physical design steps; joins; indexes; primary and foreign keys; aggregate functions; crow's foot notation; normalization; and cardinality. Aug–Oct 2026 comments agree that only about 5–6 questions test SQL syntax. Most of the rest cover cardinality, keys, entity relationships and joins, with some normalization.",
+      "Length, time limit and passing score aren't published, and the posts in this research don't state them. WGU's public item-writing guide describes four-option multiple choice plus multiple-select, matching and ordering formats, but it doesn't say which ones D426 uses, so read every stem for how many answers it wants.",
+      "The pre-assessment (PA) is a guide, not a copy. 2026 passers say the PA and OA overlap only partly and that the OA asked things the PA didn't. Use the PA's coaching report to choose what to study; one commenter says zyBook chapters 3 and 5 helped with the suggested-study areas on their coaching report.",
+      "Course text: a WGU zyBook that prints its key terms in red. Its content appears to follow zyBooks' commercial <i>Database Systems with SQL</i>, which moves from SQL to conceptual design, logical design and physical structures, so that title's public table of contents makes a good checklist. WGU's edition may number its chapters differently.",
+      "Retakes (reported, not official policy): a student who missed passing by one question had to finish the zyBook, attend an instructor cohort and retake the PA before a second attempt was approved.",
+      "D426 has no prerequisite, and it's the prerequisite for D427 Data Management - Applications, which reuses its keys, joins and design vocabulary; WGU's November 2026 catalog confirms both and still lists D426 at 3 CUs in the B.S. Computer Science path. One commenter heard the course was refreshed in mid-2026. The current program guide (catalog 202611, published Jun 30, 2026) lists the description and competencies used here, so check the course announcements for a version note."
+    ],
+    "tips": [
+      "Keep a running glossary of the zyBook's red-text key terms, with one example each from your own tables. Students lean on a shared summary of those terms, but a 2026 commenter calls it essential and incomplete, and writing your own fixes the terms you keep mixing up.",
+      "Learn which design phase owns each step: requirements and ER diagrams are conceptual design; tables, keys and normal forms are logical design; indexes, table structures and partitions are physical design. Students report questions on logical vs physical design steps.",
+      "Practice crow's foot both ways. Turn a sentence such as 'each loan belongs to exactly one member' into the two marks, then read diagrams back into sentences. The mark touching the entity is the maximum and the one behind it is the minimum.",
+      "Work small SQL examples by hand. Predict what an INNER JOIN, a LEFT JOIN, or COUNT(*) vs COUNT(column) returns on three-row tables, then check in MySQL or an online fiddle. The OA asks you to read SQL more often than to write it.",
+      "Normalize at least three messy tables yourself and name the dependency that breaks each normal form: several values in one cell (1NF), a column that depends on part of a composite key (2NF), or a column that depends on another non-key column (3NF).",
+      "Take the PA under exam conditions, study by its coaching report, and ask your instructor for the extra practice tests they share on request (students mention 75- and 90-question sets). Book the OA when you can explain every miss, not just recall the right letter.",
+      "If reading is slow, use video for the first pass. Both 2026 posts used Caleb Curry's 8-hour Database Design series, watched sped up (one at 1.75x), and one reviewed with Tech Pudding's D426 playlist afterward."
+    ]
+  },
+  "competencies": [
+    "Course planning: begin by discussing your Course Planning Tool report with your instructor and creating your personalized course plan together (listed first in the program guide).",
+    "The learner defines primary and foreign keys in data normalization.",
+    "The learner determines how to run queries for creation and manipulation of data in relational databases.",
+    "The learner explains attributes of databases, database tables, and structured and associated query language (SQL) commands."
+  ],
+  "topics": [
+    {
+      "title": "Databases, DBMSs and who works with them",
+      "eli5": "A database is a well-organized filing cabinet, and the DBMS is the librarian who files, finds and guards everything so many people can use it at once.",
+      "detail": "A database is a collection of data organized for storage and retrieval, and a database management system (DBMS) such as MySQL, Oracle Database, SQL Server or PostgreSQL is the software that manages it. A query is a request to read or change data, written in a query language; SQL is the standard language for relational databases. Inside a typical DBMS, the query processor parses each query and its optimizer picks an efficient plan, the storage manager turns that plan into reads and writes on files (using indexes), and the transaction manager keeps concurrent work from colliding and uses a log of every change to recover after a failure. The catalog, also called the data dictionary, describes the database itself: its tables, columns, indexes and other objects. Transactions follow the ACID properties: atomicity (all or nothing), consistency (rules hold before and after), isolation (concurrent transactions don't see each other's unfinished work) and durability (committed changes survive a crash).",
+      "points": [
+        "Roles: the <b>database administrator</b> secures the database and manages access, the <b>database designer</b> decides its structure and data formats, the <b>database programmer</b> writes applications that use it, and the <b>database user</b> consumes the data",
+        "A transaction is a group of statements that must all succeed or all fail: <code>START TRANSACTION;</code> … <code>COMMIT;</code> or <code>ROLLBACK;</code>. MySQL commits each statement on its own by default (autocommit)",
+        "Relational databases store data in tables and use SQL. NoSQL databases (key-value, document, wide-column, graph) trade some structure and consistency for flexible schemas and scaling across many servers, often for big data",
+        "MySQL's default storage engine, InnoDB, supports transactions, row-level locking and foreign keys; MyISAM has none of those, and MEMORY keeps its tables in RAM",
+        "The catalog is data about data (metadata); in MySQL you can query it through the INFORMATION_SCHEMA database"
+      ]
+    },
+    {
+      "title": "The relational model and relational algebra",
+      "eli5": "Every table is a neat grid: each row is one thing, each column is one fact about it, and a key tells every row apart.",
+      "detail": "E. F. Codd's relational model (1970) organizes data as relations, which SQL calls tables. A row (tuple) describes one instance, a column (attribute) holds one property, and each column takes its values from a domain: its data type and allowed values. A table is a set of rows, so rows have no built-in order and duplicate rows aren't allowed. Each cell holds a single value, column names are unique within a table, and every table has a primary key. Those structural rules belong to the model and apply to every relational database. Business rules, such as 'a member may borrow at most five tools', come from the organization and differ from one database to the next. Relational algebra describes queries as operations that take tables and return a table, which is why one query's result can feed another; query optimizers rewrite these expressions into cheaper equivalent plans.",
+      "points": [
+        "Synonyms: table = relation = file · row = tuple = record · column = attribute = field",
+        "Operations: σ select (filter rows, like WHERE) · π project (choose columns, like the SELECT list) · × product (CROSS JOIN) · ⋈ join · ∪ union · ∩ intersect · − difference · ρ rename · γ aggregate (GROUP BY)",
+        "Relational <i>select</i> (σ) only filters rows; SQL's SELECT statement does far more, so don't mix the two up",
+        "Union, intersect and difference need compatible tables: the same number of columns with matching types",
+        "<code>NULL</code> means unknown or not applicable. It isn't zero or an empty string, and any comparison with it is unknown, so you test it with <code>IS NULL</code>"
+      ]
+    },
+    {
+      "title": "SQL statements: elements, sublanguages and syntax",
+      "eli5": "An SQL statement is a sentence: keywords are the grammar words, identifiers are the names of your things, literals are the exact values you type, and comments are notes the database skips.",
+      "detail": "Every SQL statement is built from a few kinds of pieces. Keywords such as SELECT, FROM, WHERE and CREATE have fixed meanings. Identifiers name database objects: databases, tables, columns, indexes, views and aliases. Literals are explicit values, such as the string 'Drill', the number 4.50 or the date '2026-11-21'. Comments are text the database ignores. In MySQL, keywords aren't case-sensitive, strings go in single quotes (double quotes also work unless the ANSI_QUOTES mode is on, but single quotes are standard SQL), an identifier that is a reserved word or contains a space must be quoted with backticks, and a semicolon ends each statement. SQL is grouped into sublanguages by purpose: the data definition language (DDL) defines structure, the data query language (DQL) retrieves data, the data manipulation language (DML) changes data, the data control language (DCL) controls access, and transaction statements, called TCL in many texts and DTL in some, group changes into units.",
+      "points": [
+        "DDL: <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code> · DQL: <code>SELECT</code> · DML: <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> · DCL: <code>GRANT</code>, <code>REVOKE</code> · TCL: <code>START TRANSACTION</code>, <code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code> (some texts count SELECT as DML)",
+        "In <code>SELECT ToolName FROM Tool WHERE DailyFee &gt; 4.50;</code> the keywords are SELECT, FROM and WHERE, the identifiers are ToolName, Tool and DailyFee, 4.50 is a literal, and &gt; is an operator",
+        "MySQL comments: <code>-- note</code> (two dashes and a space), <code>#</code> to the end of the line, and <code>/* block */</code>",
+        "Database-level statements: <code>CREATE DATABASE ToolLibrary;</code> · <code>USE ToolLibrary;</code> · <code>SHOW TABLES;</code> · <code>DROP DATABASE</code> deletes everything inside it",
+        "Backticks quote identifiers and single quotes make strings: <code>`Order`</code> is a table name, while 'Order' is text. Left unquoted, ORDER is a reserved word and the statement fails"
+      ]
+    },
+    {
+      "title": "Tables, data types and constraints",
+      "eli5": "A data type says what kind of thing a column may hold, and constraints are house rules the database checks on every insert and update.",
+      "detail": "CREATE TABLE names the table and lists each column with a data type and optional constraints. Common MySQL types are INT and its smaller and larger relatives for whole numbers, DECIMAL(M,D) for exact numbers such as money, FLOAT and DOUBLE for approximate numbers, CHAR(n) for fixed-length text, VARCHAR(n) for variable-length text, and DATE, TIME, DATETIME and TIMESTAMP for dates and times. Constraints enforce rules: NOT NULL requires a value, UNIQUE forbids duplicates, PRIMARY KEY combines both to identify each row, FOREIGN KEY ties a column to a key in another table, CHECK tests a condition, and DEFAULT supplies a value when an insert leaves the column out. A column constraint is written inside one column's definition; a table constraint is written separately and can cover several columns, which is how you declare a composite primary key. ALTER TABLE adds, changes or drops columns and constraints later, and DROP TABLE deletes the table along with its data.",
+      "points": [
+        "<code>CREATE TABLE Tool (ToolID INT AUTO_INCREMENT PRIMARY KEY, ToolName VARCHAR(40) NOT NULL, DailyFee DECIMAL(5,2) DEFAULT 3.00 CHECK (DailyFee &gt;= 0));</code>",
+        "<code>DECIMAL(5,2)</code> stores −999.99 to 999.99: five digits in all, two of them after the decimal point",
+        "DML: <code>INSERT INTO Tool (ToolName, DailyFee) VALUES ('Drill', 4.50);</code> · <code>UPDATE Tool SET DailyFee = 5.00 WHERE ToolID = 3;</code> · <code>DELETE FROM Tool WHERE ToolID = 3;</code>. Leave out WHERE and every row is changed or deleted",
+        "<code>DELETE FROM Tool;</code> removes the rows (DML) · <code>TRUNCATE TABLE Tool;</code> empties the table quickly (DDL) · <code>DROP TABLE Tool;</code> removes the table itself",
+        "MySQL has enforced CHECK constraints since version 8.0.16. A condition that comes out unknown because of a NULL still passes"
+      ]
+    },
+    {
+      "title": "Keys and referential integrity",
+      "eli5": "A primary key is each row's ID badge. A foreign key is a column that points at another row's badge, and the database refuses to point at a badge that doesn't exist.",
+      "detail": "A primary key is a column, or a set of columns, that uniquely identifies each row and can never be NULL. A simple key has one column and a composite key has several; a composite key must also be minimal, meaning you can't remove a column and keep it unique. Every minimal unique column set is a candidate key, and the one you choose becomes the primary key. Good primary keys are stable, simple and meaningless, so when no natural column qualifies, designers add an artificial (surrogate) key, usually an auto-increment integer. A foreign key is a column whose values must match a primary key value in the referenced table or be NULL; that is the referential integrity rule. When a change would break it, such as deleting a parent row that child rows still reference, the foreign key's referential action decides what happens.",
+      "points": [
+        "Actions: <b>RESTRICT</b> rejects the change (MySQL's default, same as NO ACTION) · <b>CASCADE</b> applies the delete or update to the child rows too · <b>SET NULL</b> sets the child foreign keys to NULL (the column must allow NULL) · <b>SET DEFAULT</b> sets them to the column's default (MySQL's InnoDB engine rejects this one)",
+        "In a Loan table keyed by LoanID, with a nullable MemberID: <code>FOREIGN KEY (MemberID) REFERENCES Member (MemberID) ON DELETE SET NULL ON UPDATE CASCADE</code>",
+        "Foreign key values can repeat and can be NULL, and a foreign key can reference its own table, as Member.ReferredBy → Member.MemberID does",
+        "In MySQL a foreign key and the column it references must have the same integer size and sign, so an <code>INT</code> column can't reference an <code>INT UNSIGNED</code> one",
+        "Superkey: any unique column set, extra columns allowed · candidate key: a minimal superkey · alternate key: a candidate key that wasn't chosen as the primary key"
+      ]
+    },
+    {
+      "title": "Queries: filtering, sorting, functions and aggregates",
+      "eli5": "A SELECT asks the database a question: which columns you want, from which table, which rows count, and how to sort or total them.",
+      "detail": "A SELECT names the columns to return, the table in FROM and an optional WHERE condition, followed by optional GROUP BY, HAVING, ORDER BY and LIMIT clauses in that order. WHERE supports comparison operators, AND, OR and NOT, IN for a list of values, BETWEEN for an inclusive range, LIKE for patterns (% matches zero or more characters and _ exactly one) and IS NULL. DISTINCT removes duplicate result rows, and ORDER BY sorts in ascending order unless you add DESC. Aggregate functions (COUNT, SUM, AVG, MIN and MAX) return one value per group. GROUP BY forms the groups and HAVING filters groups after aggregation, while WHERE filters rows before grouping. Every aggregate except COUNT(*) ignores NULLs, which changes counts and averages.",
+      "points": [
+        "<code>SELECT Category, COUNT(*) AS Tools, AVG(DailyFee) FROM Tool WHERE DailyFee &gt; 0 GROUP BY Category HAVING COUNT(*) &gt;= 3 ORDER BY Tools DESC;</code>",
+        "<code>COUNT(*)</code> counts rows · <code>COUNT(col)</code> counts non-NULL values · <code>COUNT(DISTINCT col)</code> counts different non-NULL values",
+        "<code>BETWEEN 5 AND 10</code> includes 5 and 10 · <code>IN ('saw', 'drill')</code> is shorthand for two ORs · <code>LIKE 'S%'</code> starts with S · <code>LIKE '_at'</code> is three characters ending in at",
+        "Simple functions work row by row: <code>UPPER()</code>, <code>CONCAT()</code>, <code>ROUND(x, 2)</code>, <code>ABS()</code>, <code>YEAR(date)</code>, <code>DATEDIFF(a, b)</code>",
+        "AND binds tighter than OR, so add parentheses: <code>WHERE (Category = 'saw' OR Category = 'drill') AND DailyFee &lt; 5</code>"
+      ]
+    },
+    {
+      "title": "Joins, subqueries and views",
+      "eli5": "A join lines up rows from two tables that share a key, like matching name tags to seats. Outer joins also keep the people who have no seat.",
+      "detail": "A join combines rows from two tables by comparing columns, usually a foreign key with the primary key it references. An INNER JOIN returns only the matching pairs. A LEFT JOIN also keeps every unmatched row from the left table and fills the right side with NULLs; a RIGHT JOIN does the reverse, and a FULL JOIN keeps unmatched rows from both sides. MySQL has no FULL JOIN, so you combine a LEFT and a RIGHT join with UNION. An equijoin compares columns with =, a non-equijoin uses another operator such as &lt; or BETWEEN, a self-join joins a table to itself through two aliases, and a CROSS JOIN pairs every row with every row (a Cartesian product). A subquery is a query nested inside another. A correlated subquery refers to the outer query's current row, so it's evaluated once per row, and EXISTS tests whether a subquery returns any rows. A view is a saved query you can select from like a table: it stores the definition, not the data. A materialized view stores its results and must be refreshed when the base tables change; MySQL doesn't offer them.",
+      "points": [
+        "<code>SELECT m.FullName, l.OutDate FROM Member m LEFT JOIN Loan l ON l.MemberID = m.MemberID;</code> lists members with no loans too, with a NULL date",
+        "Rows with no match: <code>LEFT JOIN … WHERE l.LoanID IS NULL</code>",
+        "A CROSS JOIN returns rows in A × rows in B: 4 members × 10 tools = 40 rows",
+        "<code>SELECT ToolName FROM Tool WHERE DailyFee &gt; (SELECT AVG(DailyFee) FROM Tool);</code> compares each tool with the overall average",
+        "<code>CREATE VIEW OpenLoan AS SELECT LoanID, MemberID, DueDate FROM Loan WHERE ReturnDate IS NULL;</code>, then <code>SELECT * FROM OpenLoan;</code>"
+      ]
+    },
+    {
+      "title": "Entity-relationship modeling and discovery",
+      "eli5": "Before building tables, you sketch the world: the things (entities), how they connect (relationships) and what you know about each one (attributes).",
+      "detail": "Conceptual design, also called analysis, captures requirements without tying them to any particular DBMS, and its main product is an entity-relationship (ER) diagram. An entity is a person, place, thing, event or concept the organization tracks, such as Member or Tool. A relationship is a statement that links entities (Member borrows Tool), and an attribute is a descriptive property (a tool's name, a member's email). Diagrams draw entities as rectangles, relationships as lines labeled with a verb phrase, and attributes inside the rectangles. Types are the general categories, such as the Tool entity type, and instances are the individual occurrences, such as one particular drill. Discovery starts from interviews and documents: nouns often become entities or attributes, verbs become relationships, and a glossary (also called a data dictionary or repository) records each name with its definition. The design then determines cardinality, separates strong and weak entities, and creates supertypes and subtypes before moving on to logical design.",
+      "points": [
+        "Phases: <b>conceptual</b> (requirements → ER diagram) → <b>logical</b> (tables, columns, keys and normal forms for a type of database) → <b>physical</b> (indexes, table structures and partitions, which change speed but never results)",
+        "The commercial zyBooks title the course appears to follow orders conceptual design as discovery, cardinality, strong and weak entities, then supertypes and subtypes, and logical design as implementing entities, relationships and attributes, then normal forms (WGU's edition may differ)",
+        "A reflexive relationship relates an entity to itself, such as a member who refers another member",
+        "A relationship can link three entities (ternary), but most designs break it into binary relationships",
+        "Data independence: you can add an index or reorganize storage without changing any query's result"
+      ]
+    },
+    {
+      "title": "Cardinality and crow's foot notation",
+      "eli5": "Cardinality asks two questions about each end of a relationship: at most how many, and at least how many?",
+      "detail": "Each end of a relationship has a maximum, one or many, and a minimum, zero or one. A minimum of zero means an instance at the other end may have no partner, so the relationship is optional for that other entity; a minimum of one makes it required. The maximums at the two ends classify the relationship as one-to-one, one-to-many or many-to-many. In crow's foot notation, each end of the line carries two marks. The outer mark, touching the entity, is the maximum: a bar for one or the three-pronged crow's foot for many. The inner mark is the minimum: a circle for zero or a bar for one. Read one direction at a time: start at an entity, follow the line, and read the marks at the far end, which say how many of the far entity one instance relates to. In <code>Member ||───o&lt; Loan</code>, the circle at Loan means a member may have no loans, and the inner bar at Member means every loan must have a member. Attributes have cardinality too. A singular attribute has at most one value per instance and a plural attribute can have many, a required attribute needs a value and an optional one doesn't, and a unique attribute's value identifies at most one instance.",
+      "points": [
+        "Marks as they appear just before an entity on the right: <code>||</code> exactly one · <code>o|</code> zero or one · <code>|&lt;</code> one or many · <code>o&lt;</code> zero or many",
+        "<code>Member ||───o&lt; Loan</code> reads 'each member has zero or many loans' and 'each loan belongs to exactly one member'",
+        "The maximums decide the type (1:1, 1:M or M:N); the minimums decide optional or required",
+        "A strong entity has its own identifying attribute. A weak entity doesn't, so it's identified through an identifying relationship with another entity, such as a Repair numbered 1, 2, 3 within each Tool",
+        "Subtypes are subsets of a supertype: PowerTool and HandTool are each a Tool (an IsA relationship). A partition is a set of mutually exclusive subtypes, and a partition attribute such as ToolType says which one applies"
+      ]
+    },
+    {
+      "title": "Logical design: turning the ER model into tables",
+      "eli5": "Logical design turns the sketch into a blueprint: each entity becomes a table, and each relationship becomes a foreign key or a small linking table.",
+      "detail": "Logical design implements the ER model in a specific type of database: for a relational system, tables, columns, primary keys and foreign keys, documented in a table diagram (the schema). A strong entity becomes a table with its identifier as the primary key. A weak entity becomes a table whose primary key combines the identifying entity's key with its own partial identifier, such as (ToolID, RepairNo). A subtype becomes a table whose primary key is also a foreign key to the supertype's table. A many-to-one relationship becomes a foreign key on the 'many' side. A one-to-one relationship becomes a UNIQUE foreign key, which can go in either table; put it in the table whose every row must have a partner (often the one with fewer rows), so the column has few or no NULLs. If every MemberCard belongs to a member but many members have no card, MemberID goes in MemberCard. A many-to-many relationship becomes a new associative table, also called a junction or linking table, that holds both foreign keys, which usually form its primary key. Singular attributes become columns, required ones get NOT NULL, unique ones get UNIQUE, and each plural attribute moves to its own table so every cell keeps a single value.",
+      "points": [
+        "<code>CREATE TABLE Loan (MemberID INT, ToolID INT, OutDate DATE, PRIMARY KEY (MemberID, ToolID, OutDate), FOREIGN KEY (MemberID) REFERENCES Member (MemberID), FOREIGN KEY (ToolID) REFERENCES Tool (ToolID));</code> (many designs add an artificial LoanID instead)",
+        "Many-to-one: the foreign key goes on the many side, as Tool.CategoryID → Category does",
+        "Plural attribute: a member's phone numbers move to MemberPhone(MemberID, Phone), with both columns as the key",
+        "Subtype: PowerTool(ToolID, Voltage), where ToolID is both the primary key and a foreign key to Tool",
+        "Never put the foreign key on the 'one' side of a one-to-many relationship: one cell can't hold many keys"
+      ]
+    },
+    {
+      "title": "Normalization: functional dependencies and normal forms",
+      "eli5": "Normalization stops you from writing the same fact in many places, so a change happens in one spot instead of ten.",
+      "detail": "Column B depends on column A (written A → B) when each value of A goes with at most one value of B, as MemberID → MemberEmail does. Redundancy, the same fact stored in many rows, causes anomalies: update anomalies (change one copy and the others disagree), insert anomalies (you can't record a fact without some unrelated one) and delete anomalies (deleting one fact erases another). First normal form (1NF) requires a primary key and exactly one value in every cell, with no repeating groups. Second normal form (2NF) adds that every non-key column depends on the whole primary key, which only matters when the key is composite. Third normal form (3NF) adds that non-key columns depend on nothing but the key, which rules out transitive dependencies through another non-key column. Boyce-Codd normal form (BCNF) is stricter: for every non-trivial dependency A → B, A must be a candidate key or contain one. You normalize by splitting a table into smaller tables linked by foreign keys. Later you may denormalize, merging tables on purpose to cut joins in read-heavy reporting databases and accepting some redundancy in exchange for speed.",
+      "points": [
+        "Memory hook: every non-key column depends on the key (1NF), the whole key (2NF) and nothing but the key (3NF)",
+        "2NF example: in LoanLine(LoanID, ToolID, ToolName, DaysOut), ToolName depends on ToolID alone, so it moves to Tool",
+        "3NF example: in Loan(LoanID, MemberID, MemberEmail), LoanID → MemberID → MemberEmail is transitive, so MemberEmail belongs in Member",
+        "BCNF also catches a dependency whose determinant isn't a candidate key when the dependent column is part of a key, the one case 3NF lets through",
+        "If a table's only candidate key is a single column, being in 1NF puts it in 2NF automatically"
+      ]
+    },
+    {
+      "title": "Physical design: storage, table structures and indexes",
+      "eli5": "Physical design decides which shelves the books sit on and which card catalogs to build, so the librarian finds them faster. The books themselves don't change.",
+      "detail": "Physical design decides how tables are stored and accessed, purely for speed; it never changes what a query returns. Storage is read and written in fixed-size blocks, so the goal is fewer block reads. A heap table keeps rows in no particular order, which makes inserts fast. A sorted table keeps rows in order of a sort column, which speeds range and ordered reads. A hash table assigns rows to buckets by applying a hash function to a key, which speeds exact-match lookups. A table cluster interleaves rows of related tables that share a cluster key, which speeds joins on that key. An index is a separate structure of sorted column values with pointers to rows. A dense index has an entry for every row and a sparse index one per block, which works only when the table is sorted on that column. A primary (clustering) index is on the sort column, and a secondary index is on any other column and must be dense. Multi-level indexes such as B+trees stack sparse levels above the entries. Hash indexes serve exact matches only, bitmap indexes suit columns with few distinct values, and a logical index stores primary key values instead of physical row addresses. The optimizer chooses between a table scan and an index scan using the hit ratio (also called filter factor or selectivity), the share of rows a query selects: a low ratio favors the index, and a high ratio favors reading the table directly.",
+      "points": [
+        "<code>CREATE INDEX idx_loan_due ON Loan (DueDate);</code> · <code>DROP INDEX idx_loan_due ON Loan;</code> · <code>SHOW INDEX FROM Loan;</code> · <code>EXPLAIN SELECT …</code> shows whether a query uses an index",
+        "Indexes speed reads but take space and slow every INSERT, UPDATE and DELETE that has to maintain them",
+        "In InnoDB the primary key is the clustered index that holds the rows, and each secondary index stores primary key values to find them, much like a logical index",
+        "A tablespace maps tables to storage files. A partition holds a subset of a table's rows (horizontal) or columns (vertical); MySQL partitions rows only, by RANGE, LIST, HASH or KEY (plus COLUMNS variants)",
+        "MySQL indexes primary keys and UNIQUE columns automatically, and InnoDB adds an index on a foreign key column if none exists"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Design phases", "value": "<b>Conceptual</b> (analysis): ER diagram, no particular DBMS · <b>Logical</b>: tables, keys, normal forms · <b>Physical</b>: indexes, table structures, partitions", "note": "Physical design changes speed, never results (data independence)" },
+    { "label": "SQL sublanguages", "value": "DDL <code>CREATE ALTER DROP TRUNCATE</code> · DQL <code>SELECT</code> · DML <code>INSERT UPDATE DELETE</code> · DCL <code>GRANT REVOKE</code> · TCL or DTL <code>COMMIT ROLLBACK SAVEPOINT</code>" },
+    { "label": "Statement elements", "value": "Keywords (<code>SELECT</code>, <code>FROM</code>) · identifiers (table, column, alias names) · literals (<code>'Drill'</code>, <code>4.50</code>, <code>'2026-11-21'</code>) · comments (<code>-- </code>, <code>#</code>, <code>/* */</code>)", "note": "Quote identifiers with backticks and strings with single quotes" },
+    { "label": "Relational terms", "value": "table = relation · row = tuple · column = attribute · domain = a column's allowed values" },
+    { "label": "Relational rules", "value": "Unique primary key · unique column names · no duplicate rows · one value per cell", "note": "Business rules come from the organization and vary by database" },
+    { "label": "Relational algebra", "value": "σ select rows · π project columns · × product · ⋈ join · ∪ union · ∩ intersect · − difference · ρ rename · γ aggregate" },
+    { "label": "Keys", "value": "Candidate key: a minimal unique column set · primary key: the chosen candidate, never NULL · composite: two or more columns · artificial (surrogate): a generated integer · foreign key: references a primary key, may repeat or be NULL" },
+    { "label": "Good primary key", "value": "Stable (never changes) · simple (short, one column if possible) · meaningless (no business data)" },
+    { "label": "Referential actions", "value": "<code>RESTRICT</code> reject · <code>CASCADE</code> follow the parent · <code>SET NULL</code> clear the child key · <code>SET DEFAULT</code> use the default", "note": "MySQL: NO ACTION = RESTRICT = the default; InnoDB rejects SET DEFAULT" },
+    { "label": "Constraints", "value": "<code>NOT NULL</code> · <code>UNIQUE</code> · <code>PRIMARY KEY</code> · <code>FOREIGN KEY</code> · <code>CHECK (condition)</code> · <code>DEFAULT value</code>", "note": "CHECK is enforced from MySQL 8.0.16" },
+    { "label": "Common data types", "value": "<code>INT</code> whole numbers · <code>DECIMAL(M,D)</code> exact · <code>FLOAT</code>/<code>DOUBLE</code> approximate · <code>CHAR(n)</code> fixed text · <code>VARCHAR(n)</code> variable text · <code>DATE</code> 'YYYY-MM-DD' · <code>DATETIME</code> · <code>TIMESTAMP</code>", "note": "<code>DECIMAL(5,2)</code> = −999.99 to 999.99" },
+    { "label": "SELECT clause order", "value": "<code>SELECT … FROM … WHERE … GROUP BY … HAVING … ORDER BY … LIMIT …;</code>" },
+    { "label": "WHERE operators", "value": "<code>IN (…)</code> list · <code>BETWEEN a AND b</code> inclusive · <code>LIKE</code> with <code>%</code> (zero or more characters) and <code>_</code> (exactly one character) · <code>IS NULL</code> / <code>IS NOT NULL</code>" },
+    { "label": "Aggregates", "value": "<code>COUNT</code> · <code>SUM</code> · <code>AVG</code> · <code>MIN</code> · <code>MAX</code>; all ignore NULL except <code>COUNT(*)</code>", "note": "AVG divides by the number of non-NULL values" },
+    { "label": "WHERE vs HAVING", "value": "WHERE filters rows before grouping · HAVING filters groups after aggregation and can use aggregates" },
+    { "label": "Join types", "value": "INNER: matches only · LEFT: all left rows + matches · RIGHT: all right rows + matches · FULL: all rows from both (MySQL: LEFT … UNION … RIGHT) · CROSS: every pairing", "note": "Equijoin uses =, non-equijoin another operator, self-join two aliases of one table" },
+    { "label": "Subqueries and views", "value": "Subquery: a SELECT nested in another · correlated: refers to the outer row · <code>EXISTS</code>: does it return any row? · view: a saved query that stores no rows", "note": "Materialized views store results; MySQL has none" },
+    { "label": "Crow's foot marks", "value": "Outer mark, touching the entity = maximum (bar one, crow's foot many) · inner mark = minimum (circle zero, bar one)", "note": "Entity on the right: <code>||</code> exactly one · <code>o|</code> zero or one · <code>|&lt;</code> one or many · <code>o&lt;</code> zero or many (mirrored when the entity is on the left)" },
+    { "label": "Cardinality vocabulary", "value": "Maximums give 1:1, 1:M or M:N · minimum 0 = optional, 1 = required · attributes are singular or plural, required or optional, unique or not" },
+    { "label": "Entities to tables", "value": "Strong → its own primary key · weak → owner's key + partial key · subtype → primary key that is also a foreign key to the supertype · plural attribute → its own table" },
+    { "label": "Relationships to tables", "value": "1:M → foreign key on the many side · 1:1 → UNIQUE foreign key in the table whose every row must have a partner (often the one with fewer rows), so it has few or no NULLs · M:N → associative table holding both foreign keys" },
+    { "label": "Normal forms", "value": "1NF: one value per cell, a primary key · 2NF: no partial dependency on a composite key · 3NF: no transitive dependency · BCNF: every determinant is a candidate key" },
+    { "label": "Anomalies", "value": "Update (copies disagree) · insert (can't add a fact alone) · delete (losing one fact erases another)", "note": "Denormalization accepts some redundancy to cut joins in reporting databases" },
+    { "label": "Table structures", "value": "Heap: no order, fast inserts · sorted: fast range and ordered reads · hash: fast exact matches on the hash key · cluster: interleaved rows, fast joins on the cluster key" },
+    { "label": "Index types", "value": "Dense (every row) vs sparse (every block) · primary/clustering vs secondary · multi-level (B+tree) · hash (exact match) · bitmap (few distinct values) · logical (primary key pointers) · function (an expression's result)" },
+    { "label": "Hit ratio", "value": "Share of rows a query selects (filter factor, selectivity): low → index scan, high → table scan" },
+    { "label": "ACID", "value": "Atomicity (all or nothing) · Consistency (rules hold) · Isolation (no peeking at unfinished work) · Durability (commits survive crashes)" },
+    { "label": "MySQL storage engines", "value": "InnoDB: the default, with transactions, row-level locking and foreign keys · MyISAM: table locks, no foreign keys · MEMORY: tables kept in RAM" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup and the big picture",
+      "tasks": [
+        "Discuss your Course Planning Tool report with your instructor and ask how to get the extra practice tests.",
+        "Skim the zyBook's table of contents and start a glossary file for red-text terms.",
+        "Watch the first 60–90 minutes of Caleb Curry's Database Design series at 1.5x with captions.",
+        "Set up a place to run SQL: MySQL Community Server with Workbench, or a browser playground such as DB Fiddle."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Databases, DBMSs and the relational model",
+      "tasks": [
+        "DBMS parts (query processor, storage manager, transaction manager, log, catalog), database roles and ACID.",
+        "Relational terms and their synonyms, relational vs business rules, and NULL.",
+        "Relational algebra symbols and what each one maps to in SQL."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "SQL anatomy, data types and constraints",
+      "tasks": [
+        "Sort statements into DDL, DQL, DML, DCL and TCL, and pick out the keywords, identifiers and literals in five statements you write.",
+        "Lab: create Member, Tool and Loan tables with NOT NULL, UNIQUE, DEFAULT and CHECK constraints, then insert, update and delete a few rows.",
+        "Learn the common data types and what <code>DECIMAL(M,D)</code> means."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Keys and referential integrity",
+      "tasks": [
+        "Candidate, primary, composite, artificial and foreign keys; what makes a good primary key.",
+        "Lab: add foreign keys with RESTRICT, CASCADE and SET NULL, then delete parent rows and watch what each action does.",
+        "Add 15 key terms to your glossary, each with an example from your tables."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Queries and aggregates",
+      "tasks": [
+        "WHERE with IN, BETWEEN, LIKE and IS NULL; DISTINCT; ORDER BY; simple functions.",
+        "COUNT(*) vs COUNT(column), SUM, AVG, MIN and MAX with NULLs; GROUP BY vs HAVING.",
+        "Lab: write ten queries against your tables and predict each result before you run it."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Joins, subqueries and views",
+      "tasks": [
+        "INNER, LEFT, RIGHT, FULL (emulated with UNION in MySQL), CROSS and self-joins; equijoins vs non-equijoins.",
+        "Subqueries, correlated subqueries and EXISTS; views vs materialized views.",
+        "Lab: list members with no loans in two ways (LEFT JOIN … IS NULL and NOT EXISTS), and count loans per member with a LEFT JOIN.",
+        "A 2026 commenter says zyBook chapter 3 helped with the suggested-study areas on their coaching report; in the commercial outline that chapter is complex queries, but check your edition's numbering."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "ER modeling and discovery",
+      "tasks": [
+        "Entities, relationships and attributes; types vs instances; the conceptual, logical and physical phases.",
+        "From a one-paragraph description of a small business, list the nouns and verbs, then draw an ER diagram in draw.io.",
+        "Finish Caleb Curry's sections on relationships and keys."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Cardinality, crow's foot, weak entities and subtypes",
+      "tasks": [
+        "Translate ten sentences into crow's foot ends and ten diagrams back into sentences.",
+        "Strong vs weak entities, identifying relationships, supertypes, subtypes, partitions and partition attributes.",
+        "Attribute cardinality: singular or plural, required or optional, unique."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Logical design",
+      "tasks": [
+        "Implement entities, relationships and attributes: where each foreign key goes, associative tables, weak and subtype tables.",
+        "Convert yesterday's ER diagram into CREATE TABLE statements and run them.",
+        "The same commenter also credits chapter 5, which is logical design and normal forms in the commercial outline."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Normalization",
+      "tasks": [
+        "Functional dependencies, anomalies, 1NF, 2NF, 3NF and BCNF, plus denormalization.",
+        "Normalize three messy tables step by step, naming the dependency each split removes.",
+        "Make flashcards for the dependency patterns: partial, transitive, and a determinant that isn't a key."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Physical design",
+      "tasks": [
+        "Heap, sorted, hash and clustered table structures; dense vs sparse, primary vs secondary, B+tree, hash, bitmap and logical indexes.",
+        "Hit ratio and table scans vs index scans; tablespaces and partitions; storage engines.",
+        "Lab: create an index, then compare <code>EXPLAIN</code> output before and after."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "Pre-assessment",
+      "tasks": [
+        "Take the PA under exam conditions: no notes, one sitting.",
+        "Study the coaching report, and for every miss write why the right answer is right and why your answer was wrong.",
+        "Work through the instructor practice tests if you have them; AI tools can explain a miss, but check against the zyBook."
+      ]
+    },
+    {
+      "day": "Day 14",
+      "focus": "Weak spots and the OA",
+      "tasks": [
+        "Reread your glossary and redo the crow's foot and normalization drills you missed.",
+        "Schedule the OA once you can explain every PA miss; the OA includes questions the PA didn't, so understanding beats recall.",
+        "During the exam, read each stem twice for words like NOT, minimum and maximum, then flag and return to the slow ones."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "In <code>SELECT ToolName FROM Tool WHERE DailyFee &gt; 4.50;</code>, which items are identifiers?",
+      "choices": [
+        "<code>SELECT</code>, <code>FROM</code> and <code>WHERE</code>",
+        "<code>ToolName</code>, <code>Tool</code> and <code>DailyFee</code>",
+        "<code>4.50</code> only",
+        "<code>ToolName</code>, <code>Tool</code>, <code>DailyFee</code> and <code>4.50</code>"
+      ],
+      "answer": "<code>ToolName</code>, <code>Tool</code> and <code>DailyFee</code>",
+      "why": "Identifiers name database objects: the column ToolName, the table Tool and the column DailyFee. SELECT, FROM and WHERE are keywords with fixed meanings, so they aren't identifiers, and 4.50 is a numeric literal, a value you typed rather than a name. The &gt; sign is an operator, and the semicolon ends the statement."
+    },
+    {
+      "q": "Which statement belongs to SQL's data definition language (DDL)?",
+      "choices": [
+        "<code>UPDATE Member SET Email = NULL WHERE MemberID = 8;</code>",
+        "<code>GRANT SELECT ON Loan TO 'auditor'@'localhost';</code>",
+        "<code>ALTER TABLE Member ADD Phone VARCHAR(20);</code>",
+        "<code>ROLLBACK;</code>"
+      ],
+      "answer": "<code>ALTER TABLE Member ADD Phone VARCHAR(20);</code>",
+      "why": "DDL defines or changes structure (CREATE, ALTER, DROP, TRUNCATE), and ALTER TABLE … ADD changes Member's definition. UPDATE changes data in existing rows, so it's DML. GRANT controls who may do what, so it's DCL. ROLLBACK undoes the current transaction, a transaction control statement (TCL, which some texts call DTL)."
+    },
+    {
+      "q": "A designer adds an index on <code>Loan.DueDate</code> and splits the Loan table into one partition per year. Which design phase is this?",
+      "choices": [
+        "Conceptual design (analysis)",
+        "Logical design",
+        "Requirements discovery",
+        "Physical design"
+      ],
+      "answer": "Physical design",
+      "why": "Indexes, table structures, tablespaces and partitions are physical design: they decide how data is stored and found, which changes speed but never a query's results. Logical design produces tables, columns, keys and normalized structures. Conceptual design (analysis) produces the ER model from requirements, and discovery is the requirements-gathering step within it."
+    },
+    {
+      "q": "In a crow's foot diagram, the line between Member and Loan ends in <code>||</code> (two bars) at Member and <code>o&lt;</code> (a circle and a crow's foot) at Loan. What does it say?",
+      "choices": [
+        "Each loan belongs to exactly one member, and a member can have zero or many loans",
+        "Each member has exactly one loan, and a loan can belong to zero or many members",
+        "Each loan belongs to zero or one member, and a member has one or many loans",
+        "Members and loans have a many-to-many relationship"
+      ],
+      "answer": "Each loan belongs to exactly one member, and a member can have zero or many loans",
+      "why": "The marks at an entity say how many of that entity relate to one instance at the other end. At Loan, the circle (minimum 0) and crow's foot (maximum many) mean one member has zero or many loans. At Member, the two bars (minimum 1, maximum 1) mean each loan has exactly one member. Reading the marks at the wrong end gives the reversed statement, and many-to-many would need a crow's foot at both ends."
+    },
+    {
+      "q": "Over time, each member borrows many tools and each tool is borrowed by many members. How does logical design implement this relationship?",
+      "choices": [
+        "Add a ToolID foreign key column to Member for the tool each member borrowed",
+        "Create a Loan table keyed by Member and Tool foreign keys plus the loan date",
+        "Add a MemberID foreign key column to Tool for the member who borrowed it",
+        "Store each member's ToolIDs as a comma-separated list in a single Member column"
+      ],
+      "answer": "Create a Loan table keyed by Member and Tool foreign keys plus the loan date",
+      "why": "A many-to-many relationship becomes a new associative (junction) table holding a foreign key to each side, where each row is one pairing, here one loan. The date belongs in the key because a member can borrow the same tool again; many designs use an artificial LoanID instead. A single foreign key column holds one value per row, so a ToolID in Member would limit each member to one tool, and a MemberID in Tool would limit each tool to one member: either models a one-to-many relationship, not many-to-many. A comma-separated list puts several values in one cell, which breaks first normal form and can't be checked as a foreign key."
+    },
+    {
+      "q": "Each tool's repairs are numbered 1, 2, 3 … starting over for every tool, so RepairNo alone repeats across tools. What is Repair, and what is its primary key?",
+      "choices": [
+        "A strong entity with primary key RepairNo",
+        "A subtype of Tool with primary key ToolID",
+        "A weak entity with primary key (ToolID, RepairNo)",
+        "An associative entity with primary key (RepairNo, MemberID)"
+      ],
+      "answer": "A weak entity with primary key (ToolID, RepairNo)",
+      "why": "Repair has no identifying attribute of its own because RepairNo repeats, so it's a weak entity identified through its relationship with Tool, the identifying entity. Its table's primary key combines the owner's key with the partial key, (ToolID, RepairNo), and ToolID is also a foreign key to Tool. RepairNo alone can't be a primary key since it repeats. A subtype would be a kind of tool rather than an event that happens to one, and repairs don't involve members."
+    },
+    {
+      "q": "Every tool is either a power tool, with Voltage and BatteryType, or a hand tool, and the Tool table holds the attributes they share. How is the PowerTool subtype table usually keyed?",
+      "choices": [
+        "Its primary key, ToolID, is also a foreign key that references Tool",
+        "It gets its own AUTO_INCREMENT key unrelated to Tool",
+        "Tool gets a PowerToolID foreign key that is NULL for hand tools",
+        "It repeats every Tool column so it can stand alone"
+      ],
+      "answer": "Its primary key, ToolID, is also a foreign key that references Tool",
+      "why": "A subtype is a subset of its supertype (an IsA relationship: a power tool is a tool), so each PowerTool row describes exactly one Tool row. Using the same ToolID as both primary key and foreign key enforces that link and lets you join back for the shared columns. An unrelated key loses the link, a nullable pointer in Tool leaves a NULL for every hand tool, and copying Tool's columns creates redundancy. A partition attribute such as ToolType in Tool can record which subtype each tool belongs to."
+    },
+    {
+      "q": "Member has columns MemberID (an auto-increment integer), Email, FullName and Phone. Which makes the best primary key?",
+      "choices": [
+        "Email, because every member has a different one",
+        "FullName, because members know their own names",
+        "(FullName, Phone), because together they're unlikely to repeat",
+        "MemberID, because it's stable, simple and meaningless"
+      ],
+      "answer": "MemberID, because it's stable, simple and meaningless",
+      "why": "Good primary keys are stable (they never change), simple (one short value that's cheap to index and to copy into foreign keys) and meaningless (no business data that could change). MemberID, an artificial or surrogate key, meets all three. Email is unique, but it changes when a member switches providers, and every foreign key copy would have to change with it. Names repeat, and the (FullName, Phone) pair is long and still not guaranteed to be unique. You can still declare Email UNIQUE."
+    },
+    {
+      "q": "A Member row stores <code>'555-0101, 555-0199'</code> in a column named Phones. Which normal form does this break, and what's the usual fix?",
+      "choices": [
+        "Second normal form; split the primary key into two columns",
+        "First normal form; move the numbers to a MemberPhone table",
+        "Third normal form; Phones depends on another non-key column",
+        "Boyce-Codd normal form; make Phones a candidate key"
+      ],
+      "answer": "First normal form; move the numbers to a MemberPhone table",
+      "why": "First normal form requires exactly one value in every cell. Phones is a plural attribute, so it moves to its own table, MemberPhone(MemberID, Phone), where MemberID is a foreign key and both columns form the primary key. The 2NF, 3NF and BCNF choices are about which column a value depends on, and they assume the table already meets 1NF."
+    },
+    {
+      "q": "LoanLine(LoanID, ToolID, ToolName, DaysOut) has the composite primary key (LoanID, ToolID). ToolName depends only on ToolID. Which normal form does the table violate?",
+      "choices": [
+        "First normal form",
+        "Third normal form, but not second",
+        "Second normal form",
+        "None; the table is fully normalized"
+      ],
+      "answer": "Second normal form",
+      "why": "A non-key column that depends on only part of a composite primary key is a partial dependency, which breaks second normal form: every LoanLine row for the same tool repeats its name, inviting update anomalies. Move ToolName to Tool, keyed by ToolID, and keep ToolID here as a foreign key. The table does meet 1NF (one value per cell and a primary key), and a table that fails 2NF can't be in 3NF, so 'third but not second' is impossible. DaysOut depends on the whole key, so it stays."
+    },
+    {
+      "q": "Loan(LoanID, MemberID, MemberEmail, OutDate) has primary key LoanID, and MemberEmail depends on MemberID. What's the right fix?",
+      "choices": [
+        "Make (LoanID, MemberEmail) the primary key so each email is tied to one loan",
+        "Drop MemberID from Loan and keep only MemberEmail there",
+        "Add an index on MemberEmail so its repeated copies stay in sync",
+        "Move MemberEmail to Member and keep MemberID in Loan as a foreign key"
+      ],
+      "answer": "Move MemberEmail to Member and keep MemberID in Loan as a foreign key",
+      "why": "LoanID → MemberID → MemberEmail is a transitive dependency: a non-key column depends on another non-key column instead of on the key, which breaks third normal form, and an email repeated on every loan can fall out of sync. Moving it to Member stores it once, while the foreign key still links each loan to its member. A different primary key doesn't remove the dependency, dropping MemberID loses the link, and an index is physical design, which never fixes redundancy."
+    },
+    {
+      "q": "Loan has primary key LoanID and a nullable MemberID column that references Member.MemberID with <code>ON DELETE SET NULL</code>. What happens when member 42, who has two loans, is deleted?",
+      "choices": [
+        "Member 42 is deleted, and both loans remain with MemberID set to NULL",
+        "The delete is rejected because loans still reference member 42",
+        "Member 42 and both loans are deleted",
+        "Both loans get MemberID 0"
+      ],
+      "answer": "Member 42 is deleted, and both loans remain with MemberID set to NULL",
+      "why": "SET NULL keeps the child rows and clears their foreign keys, which works only if Loan.MemberID allows NULL. Rejecting the delete is RESTRICT, which is also what MySQL does when you write no ON DELETE clause. Deleting the loans as well is CASCADE. Setting the column to a default value is SET DEFAULT, which is standard SQL but rejected by MySQL's InnoDB engine."
+    },
+    {
+      "q": "Member holds Ana, Ben and Cy. Loan holds two loans for Ana and two for Ben; Cy has none. What does this query return?<br><code>SELECT m.FullName, COUNT(l.LoanID) AS Loans</code><br><code>FROM Member m LEFT JOIN Loan l ON l.MemberID = m.MemberID</code><br><code>GROUP BY m.MemberID, m.FullName;</code>",
+      "choices": [
+        "Ana 2, Ben 2",
+        "Ana 2, Ben 2, Cy 1",
+        "Ana 2, Ben 2, Cy NULL",
+        "Ana 2, Ben 2, Cy 0"
+      ],
+      "answer": "Ana 2, Ben 2, Cy 0",
+      "why": "A LEFT JOIN keeps every member, so Cy appears once with all of Loan's columns NULL. COUNT(l.LoanID) counts only non-NULL values, which makes Cy's count 0. COUNT(*) would count that row and wrongly report 1, an INNER JOIN would drop Cy entirely, and COUNT never returns NULL."
+    },
+    {
+      "q": "Tool.DailyFee holds 4.00, 6.00, NULL and 10.00 in four rows. What does <code>SELECT COUNT(*), COUNT(DailyFee), AVG(DailyFee) FROM Tool;</code> return?",
+      "choices": [
+        "4, 4 and 5.00",
+        "4, 3 and about 6.67",
+        "3, 3 and about 6.67",
+        "4, 3 and 5.00"
+      ],
+      "answer": "4, 3 and about 6.67",
+      "why": "COUNT(*) counts all four rows. COUNT(DailyFee) skips the NULL, giving 3. AVG ignores the NULL too, so it divides 20.00 by 3 (about 6.67), not by 4. An answer of 5.00 treats the NULL as zero, but NULL means unknown, not 0."
+    },
+    {
+      "q": "A query on a large Loan table selects about 70% of its rows. Which access path is the optimizer most likely to choose?",
+      "choices": [
+        "A table scan, because most of the table's blocks must be read anyway",
+        "An index scan, because an index always makes a query faster",
+        "A hash index lookup, because hash indexes are built for range conditions",
+        "A bitmap index, because bitmap indexes suit columns with many distinct values"
+      ],
+      "answer": "A table scan, because most of the table's blocks must be read anyway",
+      "why": "The hit ratio (also called filter factor or selectivity) is the share of rows a query selects. When it's high, the index would send the database to nearly every table block anyway, on top of reading the index itself, so a table scan is cheaper; indexes win when few rows qualify. Hash indexes handle exact matches, not ranges, and bitmap indexes suit columns with few distinct values, such as a status flag."
+    }
+  ],
+  "pitfalls": [
+    "<b>Treating the PA as the OA.</b> 2026 passers say the two overlap only partly and that the OA asked things the PA didn't. Memorized PA answers don't transfer, but understanding the concept behind each miss does.",
+    "<b>Mixing up design phases.</b> ER diagrams and cardinality are conceptual design; tables, keys and normalization are logical design; indexes, table structures, tablespaces and partitions are physical design. Physical changes affect speed, never results.",
+    "<b>Reading crow's foot from the wrong end.</b> The marks at an entity describe how many of <i>that</i> entity relate to one instance on the other side. <code>Member ||───o&lt; Loan</code> means a member has zero or many loans, not that a loan has many members.",
+    "<b>Confusing minimum and maximum.</b> Optional (minimum 0) and many (maximum many) answer different questions. A relationship can be optional and one, or required and many.",
+    "<b>Normal-form shortcuts.</b> A 2NF problem needs a composite key, because it's a dependency on part of that key. A dependency between two non-key columns is a 3NF problem. BCNF also flags a determinant that isn't a candidate key, even when the dependent column is part of a key.",
+    "<b>NULL logic.</b> <code>= NULL</code> is never true, so use <code>IS NULL</code>. <code>COUNT(*)</code> counts rows while <code>COUNT(column)</code> skips NULLs, and <code>AVG</code> divides by the non-NULL count.",
+    "<b>Join results.</b> An INNER JOIN silently drops unmatched rows. A WHERE condition on the right table's columns turns a LEFT JOIN back into an inner join unless it tests for IS NULL. A join with no condition is a CROSS JOIN that returns every pairing.",
+    "<b>Referential actions.</b> CASCADE deletes or updates the children, SET NULL needs a nullable foreign key, RESTRICT (MySQL's default) blocks the change, and SET DEFAULT is standard SQL that InnoDB rejects.",
+    "<b>Index myths.</b> Indexes don't always help. At a high hit ratio a table scan wins, hash indexes can't do ranges, bitmap indexes suit columns with few distinct values, and every index slows inserts, updates and deletes.",
+    "<b>Skipping the key terms.</b> Exam wording comes from the zyBook's red-text vocabulary: tuple, domain, artificial key, partition attribute, hit ratio and more. Build your glossary as you read; a shared summary helps, but students say it isn't complete."
+  ],
+  "resources": [
+    {
+      "label": "WGU's zyBook for D426 (in the course)",
+      "kind": "official",
+      "note": "The core text, with key terms in red; build your glossary from them. One 2026 commenter says chapters 3 and 5 helped with the suggested-study areas on their coaching report."
+    },
+    {
+      "label": "Pre-assessment and coaching report (in the course)",
+      "kind": "practice",
+      "note": "Take it under exam conditions and study the coaching report. 2026 passers say it overlaps the OA only partly, so use it to find weak areas rather than to memorize answers."
+    },
+    {
+      "label": "Instructor practice tests and WGU Connect resources",
+      "kind": "practice",
+      "note": "Instructors share extra practice tests on request (students mention 75- and 90-question versions), and the course's WGU Connect group has more: course page → Course Community → Join WGU Connect → Resources."
+    },
+    {
+      "label": "Caleb Curry: Database Design All-in-One Tutorial Series (YouTube, 8 hours)",
+      "url": "https://www.youtube.com/watch?v=h0j0QN2b57M",
+      "kind": "video",
+      "note": "The video both 2026 posts credit for the basics: keys, relationships, cardinality and normalization. Passers watched it sped up (one at 1.75x), with captions or notes."
+    },
+    {
+      "label": "Tech Pudding: WGU Data Management - Foundations D426 V2 Flash Card Review (YouTube playlist)",
+      "url": "https://www.youtube.com/playlist?list=PL5pf-_j00XrU7x27Ql44a0Sv075X8YtrJ",
+      "kind": "video",
+      "note": "Six flash-card review videos (11–15 minutes each), posted Jul–Aug 2023 and labeled V2 by their creator. Their chapter markers step through key-term definitions topic by topic: SQL constraints, design phases, ER modeling, keys, normal forms and table structures. A May 2026 passer used them for repetition after Caleb Curry's series. They were made before the reported mid-2026 refresh, so if anything disagrees with the zyBook, go with the zyBook."
+    },
+    {
+      "label": "Your own key-term glossary",
+      "kind": "tool",
+      "note": "One line per red-text term, plus an example from your own tables. Students share a summary of these terms, but a 2026 commenter calls it essential and incomplete."
+    },
+    {
+      "label": "Instructor cohorts (in the course)",
+      "kind": "video",
+      "note": "Live and recorded instructor sessions. One student who failed by a single question had to attend one before a retake was approved, so they're worth joining before your first attempt."
+    },
+    {
+      "label": "zyBooks: Database Systems with SQL (public table of contents)",
+      "url": "https://www.zybooks.com/catalog/database-systems-with-sql/",
+      "kind": "official",
+      "note": "The commercial title whose content WGU's zyBook appears to follow. Its outline (SQL, conceptual design, logical design, physical structures) makes a handy checklist, though WGU's chapter numbers may differ."
+    },
+    {
+      "label": "MySQL 8.4 Reference Manual",
+      "url": "https://dev.mysql.com/doc/refman/8.4/en/",
+      "kind": "official",
+      "note": "The authority on MySQL syntax, data types, foreign key actions, joins and indexes. The course's SQL examples use MySQL."
+    },
+    {
+      "label": "W3Schools SQL tutorial",
+      "url": "https://www.w3schools.com/sql/default.asp",
+      "kind": "practice",
+      "note": "Short pages with a try-it editor for SELECT, WHERE, joins, GROUP BY and constraints. Enough for D426's handful of syntax questions, and a head start on D427."
+    },
+    {
+      "label": "draw.io (diagrams.net)",
+      "url": "https://www.drawio.com/",
+      "kind": "tool",
+      "note": "Free diagram editor whose entity-relation shapes include crow's foot line ends. Draw the ER exercises yourself instead of only reading them."
+    },
+    {
+      "label": "DB Fiddle",
+      "url": "https://www.db-fiddle.com/",
+      "kind": "tool",
+      "note": "Free browser playground with MySQL. Run this guide's join and aggregate examples without installing anything."
+    },
+    {
+      "label": "An AI assistant for explaining misses",
+      "kind": "tool",
+      "note": "A May 2026 passer reviewed every PA miss with AI tools, and others use AI or a web search to clarify terms. Check its answers against the zyBook, whose vocabulary the exam uses."
+    }
+  ],
+  "community": {
+    "summary": "One 2026 post calls D426 dense for anyone new to databases, yet both posters finished quickly: one in about five days with an Exemplary result (they suggest budgeting a week), and the other in a week at 3–4 hours a day. Both learned the basics from Caleb Curry's 8-hour Database Design series at high speed, then reviewed with some mix of the zyBook's red-text key terms (often through a shared student summary), Tech Pudding's review playlist, instructor practice tests and AI explanations of PA misses. Comments through Oct 2026 agree that the PA and OA overlap only partly, that only about 5–6 questions test SQL syntax, and that cardinality, keys, entity relationships and joins make up most of the exam, with some normalization. One commenter heard the course was refreshed in mid-2026.",
+    "coverage": "2 posts, May 2026, r/WGU (comments through Oct 2026)",
+    "posts": [
+      {
+        "title": "D426 Data Management Foundations in 1 week",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1u0odi1/d426_data_management_foundations_in_1_week/",
+        "date": "May 2026",
+        "takeaway": "One week at 3–4 hours a day, finishing near Exemplary, with Caleb Curry's 8-hour course at 1.75x plus notes and Tech Pudding's D426 playlist for repetition. The poster failed the PA after the videos, reviewed every miss with AI tools, then passed. The OA was light on SQL syntax; identifiers, keywords and literals, logical vs physical design steps, joins, indexes, keys, aggregate functions, crow's foot, normalization and cardinality came up a lot. Aug–Oct 2026 comments: the PA and OA overlap only partly, the shared key-term summary is essential but incomplete, and only 5–6 questions test syntax."
+      },
+      {
+        "title": "How I Passed D426 In About 5 Days",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1tv6p6p/how_i_passed_d426_in_about_5_days/",
+        "date": "May 2026",
+        "takeaway": "Passed with Exemplary in about five days and suggests budgeting a week. Caleb Curry's Database Design course sped up with captions, a student summary of the zyBook's red-text terms, AI or web searches for anything unclear, and instructor practice tests (75- and 90-question versions on request, more in WGU Connect). Comments: the OA had questions the PA didn't; one commenter heard of a mid-2026 refresh; a student who missed by one question had to finish the zyBook, attend a cohort and retake the PA before a retake; chapters 3 and 5 helped with the suggested-study areas."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611, published Jun 30, 2026 (PDF): D426 description, competencies and CUs", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026 (PDF): B.S. Computer Science standard path (ITEC 2116 D426, 3 CUs) and the D426 and D427 course descriptions", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU style guide: objective assessment item writing (item types)", "url": "https://wgu.edu/wgu-style-guide/objective-assessment-development.html" },
+    { "label": "zyBooks: Database Systems with SQL (table of contents)", "url": "https://www.zybooks.com/catalog/database-systems-with-sql/" },
+    { "label": "MySQL 8.4 Reference Manual: Language Structure (literals, identifiers, keywords, comments)", "url": "https://dev.mysql.com/doc/refman/8.4/en/language-structure.html" },
+    { "label": "MySQL 8.4 Reference Manual: FOREIGN KEY constraints (referential actions, matching types)", "url": "https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html" },
+    { "label": "MySQL 8.0 Reference Manual: CHECK constraints (enforced from 8.0.16)", "url": "https://dev.mysql.com/doc/refman/8.0/en/create-table-check-constraints.html" },
+    { "label": "MySQL 8.4 Reference Manual: JOIN clause", "url": "https://dev.mysql.com/doc/refman/8.4/en/join.html" },
+    { "label": "MySQL 8.4 Reference Manual: Aggregate function descriptions (NULL handling)", "url": "https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html" },
+    { "label": "MySQL 8.4 Reference Manual: Alternative storage engines", "url": "https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html" },
+    { "label": "MySQL 8.4 Reference Manual: Clustered and secondary indexes (InnoDB)", "url": "https://dev.mysql.com/doc/refman/8.4/en/innodb-index-types.html" },
+    { "label": "MySQL 8.4 Reference Manual: Partitioning types", "url": "https://dev.mysql.com/doc/refman/8.4/en/partitioning-types.html" },
+    { "label": "E. F. Codd: A Relational Model of Data for Large Shared Data Banks (Communications of the ACM, 1970)", "url": "https://dl.acm.org/doi/10.1145/362384.362685" },
+    { "label": "William Kent: A Simple Guide to Five Normal Forms in Relational Database Theory (Communications of the ACM, 1983)", "url": "https://www.bkent.net/Doc/simple5.htm" },
+    { "label": "Wikipedia: Entity–relationship model (crow's foot notation)", "url": "https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model" }
+  ],
+  "caveats": [
+    "Version: one commenter heard D426 was refreshed in mid-2026, but WGU publishes no changelog, and the Tech Pudding playlist's V2 label dates from its Jul–Aug 2023 upload, so it says nothing about a 2026 change. This guide follows the program guide (catalog 202611, published Jun 30, 2026) and the zyBooks outline, so check the course announcements and your zyBook's table of contents when you start.",
+    "Question count, time limit and passing score aren't published, and the posts in this research don't report them. The topic emphasis (about 5–6 syntax questions, with cardinality, keys, entity relationships and joins making up most of the rest, plus some normalization) comes from students.",
+    "Reddit couldn't be opened directly for this research, so the community section relies on condensed notes from two May 2026 posts and their comments through Oct 2026. Post dates are approximate.",
+    "WGU's zyBook isn't public. Its structure here is inferred from zyBooks' commercial Database Systems with SQL outline, which the course content appears to follow; WGU's edition may number chapters differently or use other names for a few terms (for example, DTL rather than TCL for transaction statements).",
+    "The retake steps (finish the zyBook, attend a cohort, retake the PA) come from one student's comment and may vary by instructor or term.",
+    "The practice questions are original and use this guide's own tool-library tables. Real items may use other formats, such as multiple-select or matching."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/tooltip",
+  "title": "Tooltip | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-tooltip",
+  "promptFile": "21st/prompts/shadcn--tooltip.md",
+  "chars": 4189,
+  "sha256": "1cc4ffd9cafce4bc6c39b069b9260dbe8dfad9820f56c3da3e60bfc22604dc3c",
+  "sha256Of": "file bytes",
+  "capturedSha256": "8fb13fa8f0129f36133aecd9c95985ad99d35fab47eb44665aee971daa6f7410",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Collector tab viewport was emulated at 1440x900 so the desktop 'Change copy action' menu was visible. Verified on first attempt. Prompt also bundles the shadcn/button dependency file; its npm line lists @radix-ui/react-tooltip, @radix-ui/react-slot, class-variance-authority.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (4189) is the text's length in UTF-16 code units and equals the file's."
+}

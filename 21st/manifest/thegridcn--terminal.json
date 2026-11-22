@@ -1,0 +1,11 @@
+{
+  "url": "https://21st.dev/@thegridcn/components/terminal",
+  "title": "Terminal | Community Components | 21st",
+  "author": "thegridcn (The Gridcn library)",
+  "license": "MIT License",
+  "published": "9/23/2026",
+  "dependencies": [],
+  "sha256": "a2cecfd6d09558705582301b405618c3325bd433a83338c895d967ec8465f30f",
+  "verified": true,
+  "note": "Prompt captured with Change copy action > Claude Code (tab viewport 1280x800, clipboard writeText hooked in the page, nothing reached the system clipboard). 7,555 characters / 7,559 UTF-8 bytes. The page's SHA-256 of the captured string equals the SHA-256 of the saved file byte for byte, no normalization. Text moved out of the page as a JSON-escaped string, so blank lines are exact. One non-ASCII character kept as UTF-8: the caret block U+258C. Info tab: no Dependencies section (imports react and cn only); Tags Console, Hud, Terminal, CLI, Typewriter; Source thegridcn.com/r/terminal.json; License MIT License; Published 9/23/2026. Data-driven lines (input '> ', output, system ':: ', error '! ') colored by theme tokens (primary, foreground, card, border) plus hard-coded text-red-500 / text-amber-500 for error / system. The prompt's CSS block also sets a :root palette (cyan Tron colors) and @import lines: only the @keyframes terminalScan part belongs in the app, the theme supplies every color. No prefers-reduced-motion handling (setTimeout typewriter, infinite scan sweep, animate-pulse caret) and no aria-live: the integration must add a reduced-motion path (typewriter={false}, no sweep)."
+}

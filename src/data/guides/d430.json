@@ -1,0 +1,623 @@
+{
+  "code": "D430",
+  "summary": "D430 is a broad survey of information security: the CIA triad and Parkerian hexad, risk and incident response, authentication and access control, auditing, cryptography, laws and compliance, and the security of people, facilities, networks, operating systems and applications. You pass one proctored, multiple-choice objective assessment that students say is about 90% scenarios, so you need to apply each term, not just define it. Study time depends on your background: a Jun 2025 passer studied for about a month, while a student who took it right after D315 found heavy overlap, used the PA results to target weak areas and passed in two days.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple choice)",
+    "format": "Multiple choice · about 90% scenario questions (students report) · proctored online · question count, time limit and passing score not published",
+    "details": [
+      "WGU's guidebook for B.S. AI Engineering (catalog 202607), which lists D430, gives three competencies after course planning: cybersecurity guidelines in privacy and compliance; security principles, policies, practices and methods for asset protection and cyber defense; and security requirements based on confidentiality, integrity and availability. All three ask you to <i>identify</i>, so expect recognition and judgment, not hands-on configuration.",
+      "Question style: students report about 90% scenario items (an organization wants something, or an incident just happened; which principle, control, model, attack type or tool fits?) and about 10% straight definitions.",
+      "WGU doesn't publish the question count, time limit or passing score, and none of the community posts in this research state them. The pre-assessment (PA) shows its length when you open it, and a commenter calls the PA an easier version of the OA.",
+      "Course text (students report): Jason Andress, <i>Foundations of Information Security: A Straightforward Introduction</i> (No Starch Press, 2019), 14 chapters running from what information security is to assessing security. No Starch published a second edition retitled <i>Foundations of Cybersecurity</i> in May 2026 (18 chapters, adding the threat landscape, security architecture, AI security, SOC operations and security awareness); this research found no WGU notice that the course has switched.",
+      "Reported emphasis (Jun 2025 passer): access control models (DAC, MAC, RBAC, ABAC) and attack types (phishing, spoofing, brute force, pretexting) in the first half of the exam, then the CIA triad, the Parkerian hexad and security tools (Nmap, Nessus, Wireshark, IDS, IPS). A commenter says ISO 27001 came up several times.",
+      "D430 overlaps heavily with D315 Network and Security - Foundations, which comes earlier on the path: on the BSCS 202412 plan in WGU's July 2026 catalog, D315 is in term 2 and D430 in term 6. Both cover the CIA triad, attacks, access control, firewalls and IDS, encryption basics and compliance. A student who took D430 right after D315 used the PA coaching report to target weak areas and passed in two days."
+    ],
+    "tips": [
+      "Read each scenario for the asset and the property at stake before you read the options (secrecy, accuracy, uptime, custody, true origin or usefulness), then pick the principle, control, model or attack type that matches.",
+      "Drill the pairs that scenarios hinge on: identification vs authentication vs authorization, DAC vs MAC vs RBAC vs ABAC, IDS vs IPS, symmetric vs asymmetric, interception vs interruption vs modification vs fabrication, and vulnerability assessment vs penetration test.",
+      "Take the PA once you've covered every chapter, sort your misses by competency in the coaching report, and ask your instructor for the extra material students say arrives after the PA, including slide decks of key terms.",
+      "Quiz yourself with original scenario questions. The Jun 2025 passer used ChatGPT to quiz on scenarios; check every answer against the textbook or the NIST glossary, because chatbots get details wrong.",
+      "Learn the course's terms even where NIST differs: the book lists five authentication factor types (know, have, are, do, where), while NIST SP 800-63B-4 counts three.",
+      "Watch qualifiers such as <i>best</i>, <i>first</i>, <i>primarily</i> and <i>most likely</i>. Several options are often partly true, and the stem asks for the closest fit.",
+      "Coming straight from D315? Take the PA early as a baseline and study only the gaps; students report heavy overlap between the two courses."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your Course Planning Tool report with your instructor and build a personalized course plan together (listed first in the program guide).",
+    "The learner identifies cybersecurity guidelines in privacy and compliance.",
+    "The learner identifies security principles, policies, practices, and methods for asset protection and cyber defense.",
+    "The learner identifies security requirements based on principles of confidentiality, integrity, and availability."
+  ],
+  "topics": [
+    {
+      "title": "The CIA triad and the Parkerian hexad",
+      "eli5": "Security protects three things about information: only the right people see it, nobody changes it on the sly, and it's there when you need it. The hexad adds three more: who holds it, whether it's genuine, and whether it's still usable.",
+      "detail": "Federal law (44 U.S.C. § 3552) and NIST's FIPS 199 define the triad: <b>confidentiality</b> preserves authorized restrictions on access and disclosure, including personal privacy and proprietary information; <b>integrity</b> guards against improper modification or destruction and includes non-repudiation and authenticity; and <b>availability</b> means timely, reliable access to and use of information. The textbook adds Donn Parker's <b>Parkerian hexad</b>, which keeps those three and adds <b>possession or control</b> (physical custody of the media, even when the data on it stays secret), <b>authenticity</b> (whether the data's claimed origin or author is correct) and <b>utility</b> (whether the data is still useful, for example an encrypted backup whose key is gone). Scenario questions often hinge on choosing the single best principle: a lost but encrypted laptop is a possession problem, not a confidentiality breach; a forged email that claims to come from the CEO is an authenticity problem; a database that is online but corrupted is an integrity problem, not an availability one.",
+      "points": [
+        "Confidentiality is close to privacy and need-to-know; typical controls are encryption, access control and MFA",
+        "Integrity: prevent unauthorized or unwanted changes, including mistakes by authorized users, and be able to reverse them; typical controls are hashing, permissions, change control and backups",
+        "Availability: systems and data are there when needed; threats include DoS attacks, power loss and hardware failure; controls include redundancy, backups and patching",
+        "Hexad additions: possession or control (custody), authenticity (true origin; digital signatures help), utility (usefulness, such as format or a working key)",
+        "Use the triad as your default lens, and switch to a hexad term when an option such as possession or utility fits the scenario more exactly"
+      ]
+    },
+    {
+      "title": "Attack types, threats, vulnerabilities and risk",
+      "eli5": "A threat is the wolf, a vulnerability is the gap in the fence, and risk is how likely the wolf gets through and how bad that would be. Attacks either peek, block, change or fake.",
+      "detail": "The book sorts attacks into four types and ties each to the triad. <b>Interception</b> (unauthorized access to data, such as eavesdropping or reading someone's files) is mainly an attack on confidentiality. <b>Interruption</b> (making assets unusable, such as a DoS attack) mainly affects availability and can affect integrity. <b>Modification</b> (tampering) mainly affects integrity and can affect availability. <b>Fabrication</b> (generating false data, transactions or traffic) mainly affects integrity and can affect availability. NIST's glossary describes a <b>threat</b> as any circumstance or event that could harm operations, assets or people through unauthorized access, destruction, disclosure, modification or denial of service, a <b>vulnerability</b> as a weakness a threat source could exploit, and <b>risk</b> (from SP 800-30 Rev. 1) as typically a function of the harm an event would cause and the likelihood that it happens. Risk needs both a threat and a matching vulnerability: a flood is little risk to a data center on a hill, and a weakness no threat can reach matters less. <b>Impact</b> is how much harm results if it does happen.",
+      "points": [
+        "Interception → confidentiality · interruption → availability (and integrity) · modification → integrity (and availability) · fabrication → integrity (and availability)",
+        "The book's risk management process: identify assets → identify threats → assess vulnerabilities → assess risks → mitigate risks",
+        "Risk responses in NIST's terms: accept, avoid, mitigate, or share and transfer (for example, insurance or a contract)",
+        "Threat sources include insiders, cybercriminals, hacktivists, nation-states, accidents and natural events",
+        "Named attacks you'll see in stems: phishing, spoofing, brute force and dictionary attacks, pretexting, DoS and DDoS, man-in-the-middle (on-path), malware"
+      ]
+    },
+    {
+      "title": "Controls, defense in depth and incident response",
+      "eli5": "Controls are the locks, rules and alarms you add. Defense in depth means stacking several of them so one failure isn't the end, and incident response is the fire drill for when something gets through anyway.",
+      "detail": "The book groups controls as <b>physical</b> (fences, locks, guards, cameras), <b>logical or technical</b> (passwords, encryption, firewalls, ACLs, IDS) and <b>administrative</b> (policies, procedures, training, hiring and termination rules). Controls also have functions: the book uses <b>deterrent</b> (discourages, like a warning sign), <b>detective</b> (spots, like a camera or alarm) and <b>preventive</b> (stops, like a lock), and other frameworks add corrective and compensating controls. NIST's glossary defines <b>defense in depth</b> as a strategy that combines people, technology and operations to set up varied barriers across multiple layers of an organization; the book's layers run external network → network perimeter → internal network → host → application → data. The book's incident response process has six phases: preparation, detection and analysis, containment, eradication, recovery, and post-incident activity. These match NIST SP 800-61 Rev. 2, except that its four-phase lifecycle groups containment, eradication and recovery into one phase; in April 2025 NIST replaced Rev. 2 with Rev. 3, a CSF 2.0 community profile that folds incident response into all six CSF functions (Govern, Identify, Protect, Detect, Respond, Recover).",
+      "points": [
+        "Categories: physical, logical (technical), administrative · functions: deterrent, detective, preventive (plus corrective and compensating elsewhere)",
+        "Defense in depth layers: external network, network perimeter, internal network, host, application, data",
+        "Incident response: preparation → detection and analysis → containment → eradication → recovery → post-incident activity (lessons learned)",
+        "Containment limits the spread (isolate the host); eradication removes the cause (delete the malware, close the hole); recovery returns systems to normal (restore, rebuild, monitor)",
+        "A written policy is an administrative control even when it describes a technical setting"
+      ]
+    },
+    {
+      "title": "Identification and authentication",
+      "eli5": "Identification is saying I'm Sam. Authentication is proving it by showing something you know, something you have or something you are.",
+      "detail": "<b>Identification</b> is the claim of an identity (a username, badge or name), and it's only as trustworthy as the check behind it, which is why falsified identification is a threat. <b>Authentication</b>, in NIST's words (FIPS 200), verifies the identity of a user, process or device, often before access is granted. The book lists five factor types: something you <b>know</b> (password, PIN), something you <b>have</b> (phone app, hardware token, smart card), something you <b>are</b> (fingerprint, face), something you <b>do</b> (signature, gait, typing rhythm) and <b>where</b> you are (location). NIST SP 800-63B-4 (July 2025) counts only the first three as factors and treats location as a risk signal. <b>Multifactor authentication</b> combines two or more <i>different</i> factor types, so two passwords are still one factor. <b>Mutual authentication</b> has both sides prove their identity, so the client also checks the server, which defeats man-in-the-middle impersonation. The book judges biometrics on universality, uniqueness, permanence, collectability, performance, acceptability and circumvention. Biometric systems err two ways: the <b>false acceptance rate (FAR)</b> lets impostors in and the <b>false rejection rate (FRR)</b> turns real users away, and the <b>equal error rate (EER)</b>, also called the crossover error rate, is the point where the two are equal; a lower EER means a more accurate system.",
+      "points": [
+        "Book: know · have · are · do · where · NIST SP 800-63B-4: know · have · are",
+        "MFA needs different factor types: password plus an authenticator-app code is two factors; password plus a security question is one",
+        "Mutual authentication counters man-in-the-middle attacks and fake servers; checking a server's TLS certificate is one half of it, and client certificates add the other half",
+        "Raising biometric sensitivity lowers FAR and raises FRR; compare devices by their EER",
+        "NIST SP 800-63B-4 password guidance: favor length (at least 15 characters when a password is the only factor), screen new passwords against breached and common lists, no composition rules and no forced periodic changes",
+        "Hardware tokens and authenticator apps produce one-time codes; security keys and passkeys resist phishing"
+      ]
+    },
+    {
+      "title": "Authorization, access control and least privilege",
+      "eli5": "Once you've proved who you are, authorization decides which doors you may open. Least privilege means you only get keys to the rooms your job needs.",
+      "detail": "<b>Authorization</b> decides what an authenticated party may do, and <b>access control</b> enforces it by allowing, denying, limiting or revoking access. NIST's glossary describes <b>least privilege</b> as limiting users, and the processes acting for them, to the minimum access their tasks require. The book contrasts <b>access control lists (ACLs)</b>, lists kept with a resource that say who may do what (file permissions, or a router's network ACL that filters by IP address, port or MAC address), with <b>capabilities</b>, tokens or keys the subject carries so that holding one grants access. ACL-based systems are open to the <b>confused deputy problem</b>, where a program with legitimate authority is tricked into using it for an attacker; on the web, <b>cross-site request forgery (CSRF)</b> and <b>clickjacking</b> are the standard examples. Physical access control applies the same ideas to buildings: badges, locks, guards and access control vestibules (mantraps), with <b>tailgating</b> or piggybacking as the usual way around them.",
+      "points": [
+        "Authorization isn't authentication: an employee who logs in fine but can't open the payroll folder has hit an authorization limit",
+        "ACL: permissions stored with the object (read, write, execute; allow or deny by IP address, port or MAC address) · capability: permission carried by the subject as a token",
+        "Confused deputy: CSRF makes your logged-in browser send a request you didn't intend; clickjacking hides a real button under a decoy",
+        "Separation of duties and need-to-know support least privilege; revoke access promptly when someone changes roles or leaves",
+        "Physical access: badges, locks, guards, vestibules; tailgating means following an authorized person through a secured door"
+      ]
+    },
+    {
+      "title": "Access control models",
+      "eli5": "DAC lets the owner decide, MAC lets the system's labels decide, RBAC decides by your job, and ABAC weighs a whole list of facts such as who you are, what device you're on, where you are and what time it is.",
+      "detail": "In <b>discretionary access control (DAC)</b>, the resource's owner decides who gets access and at what level, as in ordinary file sharing. In <b>mandatory access control (MAC)</b>, a central authority sets access through labels such as classification levels and clearances, and owners can't override it. <b>Rule-based access control</b> applies the same rules to everyone regardless of identity, such as firewall rules or allowed login hours. <b>Role-based access control (RBAC)</b> grants permissions to job roles, and users receive them through role membership. <b>Attribute-based access control (ABAC)</b>, as NIST SP 800-162 defines it, grants or denies a request based on attributes of the subject and the object, environmental conditions and a set of policies; the book's examples include rules about time or location and the CAPTCHA, which grants access based on the attribute of being human. Multilevel models also appear: <b>Bell-LaPadula</b> protects confidentiality (the simple security property forbids reading up, and the star property forbids writing down), <b>Biba</b> protects integrity (no reading down and no writing up), and <b>Brewer and Nash</b>, the Chinese Wall model, changes access as you work to prevent conflicts of interest, for example blocking a consultant who has seen one bank's files from a competing bank's.",
+      "points": [
+        "DAC: the owner decides · MAC: labels and clearances set centrally · RBAC: job role · ABAC: subject, object and environment attributes · rule-based: the same rules for everyone",
+        "Only from managed laptops, during business hours, from the office → ABAC (device and environment attributes)",
+        "Everyone in Accounting gets the ledger app → RBAC · the folder's creator shares it with two coworkers → DAC",
+        "Bell-LaPadula (confidentiality): no read up, no write down · Biba (integrity): no read down, no write up",
+        "Brewer and Nash: what you may access depends on what you've already accessed (conflicts of interest)"
+      ]
+    },
+    {
+      "title": "Auditing and accountability",
+      "eli5": "Accountability means every action can be traced back to someone. Logs are the diary, and monitoring is someone actually reading it.",
+      "detail": "Accountability rests on identification and authentication, and auditing is how you achieve it. The book lists what accountability gives you: <b>nonrepudiation</b> (someone can't credibly deny an action they took; NIST describes it as protection against an individual falsely denying an action or transaction), <b>deterrence</b> (people misbehave less when they know they're watched), <b>intrusion detection and prevention</b> (logs and alerts reveal attacks) and <b>admissibility of records</b> (logs collected and handled properly can stand up in legal proceedings). Auditing covers <b>logging</b> (recording events), <b>monitoring</b> (reviewing logs and alerts, often in a SIEM) and <b>assessments</b> (audits, vulnerability assessments and penetration tests). An <b>intrusion detection system (IDS)</b> watches traffic or host activity and raises alerts, while an <b>intrusion prevention system (IPS)</b> sits inline and can block, so an IPS false positive can cut off legitimate traffic. NIST SP 800-94 groups these products as network-based, wireless, network behavior analysis and host-based IDPS; they detect by <b>signatures</b> (known attack patterns), <b>anomalies</b> (departures from a normal baseline) or stateful protocol analysis.",
+      "points": [
+        "Accountability gives nonrepudiation, deterrence, intrusion detection and prevention, and admissible records",
+        "IDS: detects and alerts (passive, often on a copy of the traffic) · IPS: detects and blocks (inline)",
+        "Signature-based detection catches known attacks and misses new ones · anomaly-based detection catches unusual behavior but raises more false positives",
+        "NIDS watches network traffic; HIDS watches one host's logs, files and processes",
+        "Logs help only if someone reviews them; protect them from tampering (integrity) and keep them long enough to investigate"
+      ]
+    },
+    {
+      "title": "Cryptography",
+      "eli5": "Encryption scrambles a message so only someone with the right key can unscramble it. Symmetric means everyone shares one key; asymmetric gives you a public padlock anyone can snap shut and a private key only you hold.",
+      "detail": "<b>Symmetric</b> cryptography uses one shared key to encrypt and decrypt; it's fast and suits bulk data, but the key has to reach the other side securely. <b>Block ciphers</b> encrypt fixed-size blocks: AES, the NIST standard in FIPS 197, uses 128-bit blocks with 128, 192 or 256-bit keys, while DES and 3DES are retired. <b>Stream ciphers</b> encrypt a bit or byte at a time. <b>Asymmetric</b> (public-key) cryptography uses a key pair: RSA and elliptic-curve cryptography (ECC) are the main examples, and Diffie-Hellman lets two parties agree on a shared secret. Encrypt with the <b>recipient's public key</b> for confidentiality; sign with the <b>sender's private key</b> for integrity, authenticity and nonrepudiation. A <b>hash function</b> turns any input into a fixed-length digest one way and is used to check integrity; SHA-2 and SHA-3 are current, while MD5 and SHA-1 are broken for collision resistance. In the book's model, a <b>digital signature</b> is a hash encrypted with the signer's private key. Strictly, that describes RSA; algorithms such as ECDSA and ML-DSA compute a signature with the private key without encrypting anything, but the key roles are the same. A <b>certificate</b> binds a public key to an identity and is signed by a certificate authority (CA) within a public key infrastructure (PKI). Protect data in all three states: at rest (disk and database encryption), in motion (TLS, VPNs) and in use. Kerckhoffs's principle says a system should stay secure even if everything about it except the key is public.",
+      "points": [
+        "Symmetric: one key, fast, bulk data (AES) · asymmetric: key pair, slower, used for key exchange and signatures (RSA, ECC)",
+        "Confidentiality: encrypt with the recipient's public key · signature: sign with the sender's private key and verify with the sender's public key",
+        "Hashes are one-way digests for integrity, not encryption; salting stored password hashes defeats precomputed rainbow-table attacks",
+        "Real systems are hybrid: TLS uses asymmetric cryptography to agree on a symmetric session key",
+        "NIST no longer allows 3DES for new encryption, and it published its first post-quantum standards (FIPS 203, 204 and 205) in Aug 2024",
+        "History the book uses: the Caesar cipher (a fixed shift), Enigma (a cipher machine) and the one-time pad (unbreakable only if the key is truly random and never reused)"
+      ]
+    },
+    {
+      "title": "Compliance, laws, regulations and frameworks",
+      "eli5": "Some rules come from the government (laws), some come from your industry (like the card companies), and frameworks are recipe books that help you follow them.",
+      "detail": "The book separates <b>regulatory compliance</b> (laws and government rules) from <b>industry compliance</b> (standards an industry imposes through contracts). PCI DSS is the classic industry example: the PCI Security Standards Council publishes it for anyone who stores, processes or transmits cardholder data, and card brands and acquiring banks enforce it. You achieve compliance with controls, such as key controls that meet a requirement directly and compensating controls that substitute when a key control isn't feasible, and you maintain it through monitoring, review, documentation and reporting. US laws to know: <b>FISMA</b> (federal agencies' security programs, built on NIST standards), <b>FedRAMP</b> (security authorization for cloud services federal agencies use), <b>HIPAA</b> (protected health information at covered entities and their business associates; its Security Rule requires administrative, physical and technical safeguards), <b>SOX</b> (internal controls over public companies' financial reporting), <b>GLBA</b> (how financial institutions protect customers' nonpublic personal information and explain their privacy practices) and <b>FERPA</b> (student education records). Outside the US, the EU's <b>GDPR</b> covers organizations based in the EU and, wherever they're based, organizations that offer goods or services to people in the EU or monitor their behavior there. Frameworks help you comply: <b>ISO/IEC 27001</b> sets requirements for a certifiable information security management system (ISMS), ISO/IEC 27002 gives guidance on its controls, and NIST offers the Cybersecurity Framework (CSF 2.0, Feb 2024) and the SP 800-53 control catalog.",
+      "points": [
+        "Health → HIPAA · public-company financial reporting → SOX · banks and lenders → GLBA · student records → FERPA · federal agencies → FISMA · cloud for federal agencies → FedRAMP · personal data of people in the EU → GDPR · card data → PCI DSS (industry, not law)",
+        "ISO/IEC 27001:2022 is certifiable and lists 93 Annex A controls in four themes: organizational, people, physical and technological",
+        "CSF 2.0 functions: Govern, Identify, Protect, Detect, Respond, Recover (Govern was added in 2.0)",
+        "Noncompliance brings fines, lawsuits, lost certifications and lost customers; compliance alone doesn't guarantee security",
+        "A commenter on the Jun 2025 thread says ISO 27001 came up several times"
+      ]
+    },
+    {
+      "title": "Operations security, social engineering and security awareness",
+      "eli5": "OPSEC means noticing which harmless-looking scraps of information could help an attacker, then hiding them. Social engineering is tricking a person instead of hacking a computer.",
+      "detail": "NIST's glossary, citing CNSSI 4009, defines <b>operations security (OPSEC)</b> as a systematic process that denies adversaries information about your capabilities and intentions by identifying, controlling and protecting generally unclassified evidence of sensitive activities, in five steps: identify critical information, analyze threats, analyze vulnerabilities, assess risks and apply appropriate countermeasures. The book traces OPSEC from Sun Tzu and George Washington to the Vietnam-era Purple Dragon study and quotes Kurt Haas's laws of OPSEC, whose point is that you can't protect information if you don't know the threat or what needs protecting. <b>Social engineering</b> manipulates people into revealing information or granting access, often after the attacker gathers open-source intelligence (OSINT) from social media and company websites. The main types: <b>pretexting</b> (an invented scenario, such as a caller posing as IT support), <b>phishing</b> (fraudulent messages that lure clicks or credentials), <b>spear phishing</b> (aimed at a specific person or group), <b>whaling</b> (aimed at executives) and <b>tailgating</b> (following an authorized person through a secured door). Security awareness training is the main countermeasure: password habits, spotting phishing, safe use of networks and personal devices, clean desks and knowing the organization's policies. Among D430's three competencies, this material fits best under security principles, policies and practices.",
+      "points": [
+        "OPSEC: identify critical information → analyze threats → analyze vulnerabilities → assess risks → apply countermeasures",
+        "Pretexting = an invented story · phishing = a broad lure · spear phishing = targeted · whaling = executives · tailgating = following someone in",
+        "Related lures: vishing (voice calls), smishing (text messages), baiting (an infected USB drive left out), business email compromise",
+        "Countermeasures: awareness training, call-back verification through known numbers, easy reporting, least privilege and MFA",
+        "Culture and policy matter: people follow security rules that are clear, practical and backed by management"
+      ]
+    },
+    {
+      "title": "Physical, network and operating system security",
+      "eli5": "Lock the building, guard the doors between networks, and strip each computer down to only what it needs.",
+      "detail": "Physical security protects <b>people</b> first (safety and evacuation), then <b>data</b> (media and residual data on old drives) and <b>equipment</b> (site selection, access control and environmental conditions such as power, temperature, humidity and fire suppression). A <b>business continuity plan (BCP)</b> keeps critical business functions running during an emergency, and a <b>disaster recovery plan (DRP)</b> covers restoring operations after a disaster. In network security, design matters: segment the network, funnel traffic through choke points, add redundancy, and put public-facing servers in a <b>DMZ</b>, which NIST describes as a perimeter segment between the internal and external networks that gives outsiders restricted access while shielding the inside. Firewall types range from <b>packet filtering</b> (addresses, ports and protocols) to <b>stateful inspection</b> (tracks connections), <b>deep packet inspection</b> (examines the content of packets) and <b>proxy servers</b> (make requests on clients' behalf). Protect traffic with VPNs and wireless encryption (WPA2 or WPA3; WEP is broken). For operating systems, <b>hardening</b> means removing unnecessary software, removing nonessential services, changing default accounts, applying least privilege, installing updates and turning on logging and auditing, backed by anti-malware tools, host firewalls, host-based IDS and <b>executable space protection</b>, which marks data areas of memory as non-executable. Mobile, embedded and IoT devices need the same care: patching, device management and keeping them on separate network segments.",
+      "points": [
+        "Physical control functions: deterrent (signs, lighting), detective (cameras, alarms), preventive (locks, fences, guards)",
+        "BCP keeps the business running during an emergency; DRP restores IT and operations afterward",
+        "Firewalls: packet filtering → stateful inspection → deep packet inspection → proxy; the DMZ holds servers outsiders must reach",
+        "OS hardening: remove unneeded software and services, change default accounts, least privilege, updates, logging and auditing",
+        "Tools: Nmap (hosts and open ports), Wireshark and tcpdump (packet capture), Kismet (wireless), honeypots (decoys that attract and study attackers)",
+        "IoT risk in one example: the Mirai botnet took over cameras and routers that still used default passwords"
+      ]
+    },
+    {
+      "title": "Application security and assessing security",
+      "eli5": "Apps break when they trust whatever users type, so check every input. Then test yourself: scan for known holes, and hire friendly hackers to try breaking in.",
+      "detail": "Common software flaws include <b>buffer overflows</b> (writing past the memory set aside for input, which can crash a program or run an attacker's code), <b>race conditions</b> (the outcome depends on the timing of two events, such as checking a file and then using it), <b>input validation attacks</b> (such as format string and command injection) and weak authentication, authorization or cryptography. On the web, client-side attacks include <b>cross-site scripting (XSS)</b> (injected script runs in other users' browsers), CSRF and clickjacking, and server-side problems include missing input validation (which enables <b>SQL injection</b>), improper permissions and extraneous files left on the server. OWASP's Top 10:2025 now starts with broken access control and security misconfiguration. Testing tools include sniffers, web application proxies (ZAP, formerly OWASP ZAP, and Burp Suite) and <b>fuzzers</b>, which feed programs malformed or random input. To assess security, a <b>vulnerability assessment</b> maps and scans systems for known weaknesses (Nessus, OpenVAS), while a <b>penetration test</b> actively exploits weaknesses, with permission, to show their real impact; NIST SP 800-115 covers planning and conducting both. Pen tests move through scoping, reconnaissance, discovery, exploitation and reporting and can be <b>black box</b> (testers start with no inside knowledge), <b>white box</b> (full knowledge) or <b>gray box</b> (partial). Bug bounty programs pay outsiders who report flaws responsibly.",
+      "points": [
+        "Buffer overflow → bounds checking and safe functions · race condition → locking and atomic operations · injection → input validation and parameterized queries",
+        "XSS attacks other users through the site · CSRF abuses the victim's logged-in session · SQL injection attacks the database through unvalidated input",
+        "Vulnerability assessment: find and report known weaknesses (Nessus) · penetration test: exploit them with written permission (Metasploit)",
+        "Black box = an outsider's view · white box = full knowledge · gray box = partial knowledge",
+        "Pen test steps: scoping → reconnaissance → discovery → exploitation → reporting"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "CIA triad (FIPS 199)", "value": "Confidentiality: authorized restrictions on access and disclosure · Integrity: no improper modification or destruction · Availability: timely, reliable access and use", "note": "Definitions come from 44 U.S.C. § 3552" },
+    { "label": "Parkerian hexad", "value": "Confidentiality, integrity, availability + possession (control), authenticity, utility", "note": "Lost encrypted tapes → possession · forged sender → authenticity · data with a lost key → utility" },
+    { "label": "Attack types", "value": "Interception → confidentiality · interruption → availability (also integrity) · modification → integrity (also availability) · fabrication → integrity (also availability)" },
+    { "label": "Threat, vulnerability, risk", "value": "Risk needs a threat that can exploit a vulnerability; NIST: risk is a function of impact and likelihood", "note": "NIST SP 800-30 Rev. 1" },
+    { "label": "Risk management (book)", "value": "Identify assets → identify threats → assess vulnerabilities → assess risks → mitigate risks", "note": "Responses: accept, avoid, mitigate, share or transfer" },
+    { "label": "Control categories", "value": "Physical · logical (technical) · administrative", "note": "Functions: deterrent, detective, preventive; other frameworks add corrective and compensating" },
+    { "label": "Defense in depth layers", "value": "External network → network perimeter → internal network → host → application → data" },
+    { "label": "Incident response (book)", "value": "Preparation → detection and analysis → containment → eradication → recovery → post-incident activity", "note": "NIST SP 800-61 Rev. 3 (Apr 2025) now frames incident response around CSF 2.0" },
+    { "label": "Identification → authentication → authorization → accountability", "value": "Claim an identity → prove it → get permissions → actions are traced to you" },
+    { "label": "Authentication factors", "value": "Book: know, have, are, do, where · NIST SP 800-63B-4: know, have, are", "note": "NIST treats location as a risk signal, not a factor" },
+    { "label": "MFA vs mutual authentication", "value": "MFA: two or more different factor types (password + PIN is still one) · mutual: both sides authenticate each other, which counters man-in-the-middle" },
+    { "label": "Biometric errors", "value": "FAR = impostors accepted · FRR = legitimate users rejected · EER (crossover) = where FAR equals FRR; lower is better", "note": "Raising sensitivity lowers FAR and raises FRR" },
+    { "label": "Biometric characteristics", "value": "Universality · uniqueness · permanence · collectability · performance · acceptability · circumvention" },
+    { "label": "Access control models", "value": "DAC: owner decides · MAC: labels and clearances · RBAC: job role · ABAC: subject, object and environment attributes · rule-based: same rules for all", "note": "ABAC is defined in NIST SP 800-162" },
+    { "label": "Multilevel models", "value": "Bell-LaPadula: no read up, no write down (confidentiality) · Biba: no read down, no write up (integrity) · Brewer and Nash: Chinese Wall against conflicts of interest" },
+    { "label": "ACLs vs capabilities", "value": "ACL: list kept with the resource · capability: token held by the subject", "note": "Confused deputy examples: CSRF and clickjacking" },
+    { "label": "What accountability gives", "value": "Nonrepudiation · deterrence · intrusion detection and prevention · admissibility of records" },
+    { "label": "IDS vs IPS", "value": "IDS detects and alerts · IPS sits inline, detects and blocks · signature vs anomaly detection · NIDS vs HIDS", "note": "NIST SP 800-94" },
+    { "label": "Symmetric vs asymmetric", "value": "Symmetric: one shared key, fast (AES; retired DES and 3DES) · asymmetric: public and private key pair (RSA, ECC; Diffie-Hellman for key agreement)" },
+    { "label": "Which key?", "value": "Confidentiality: encrypt with the recipient's public key · signing: sender's private key, verified with the sender's public key" },
+    { "label": "Hashes and signatures", "value": "Hash: one-way, fixed-length digest for integrity (SHA-2, SHA-3; MD5 and SHA-1 broken) · signature: hash signed with the signer's private key (the book says encrypted with it)", "note": "Certificates bind a public key to an identity, signed by a CA" },
+    { "label": "Data states", "value": "At rest (disk and database encryption) · in motion (TLS, VPN) · in use (memory, protected by access controls and isolation)" },
+    { "label": "US laws by data", "value": "HIPAA health · SOX public-company financial reporting · GLBA financial institutions · FERPA student records · FISMA federal agencies · FedRAMP federal cloud services", "note": "GDPR covers EU-based organizations and any organization that offers goods or services to, or monitors, people in the EU" },
+    { "label": "PCI DSS", "value": "Industry standard from the PCI Security Standards Council for anyone who stores, processes or transmits card data; enforced through contracts, not law" },
+    { "label": "Frameworks", "value": "ISO/IEC 27001: certifiable ISMS requirements (2022 edition, 93 Annex A controls) · ISO/IEC 27002: control guidance · NIST CSF 2.0: Govern, Identify, Protect, Detect, Respond, Recover" },
+    { "label": "OPSEC process", "value": "Identify critical information → analyze threats → analyze vulnerabilities → assess risks → apply countermeasures", "note": "NIST glossary, from CNSSI 4009" },
+    { "label": "Social engineering", "value": "Pretexting · phishing · spear phishing · whaling · tailgating", "note": "Also vishing (voice), smishing (SMS) and baiting" },
+    { "label": "OS hardening", "value": "Remove unneeded software · remove nonessential services · change default accounts · least privilege · updates · logging and auditing" },
+    { "label": "Security tools", "value": "Nmap: hosts and open ports · Nessus, OpenVAS: vulnerability scans · Wireshark, tcpdump: packet capture · Metasploit: exploitation · Burp Suite, ZAP (formerly OWASP ZAP): web testing · Kismet: wireless · fuzzers: malformed input" },
+    { "label": "Assessment vs pen test", "value": "Vulnerability assessment finds and reports known weaknesses · penetration test exploits them with permission · black box, white box, gray box", "note": "NIST SP 800-115" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Set up and get a baseline",
+      "tasks": [
+        "Review your Course Planning Tool report with your instructor and check which textbook edition the course links to.",
+        "Skim the course page and the book's table of contents, and start an error log with columns for topic, competency and the fix.",
+        "Finished D315 or hold Security+? Take the PA now, study only what the coaching report flags, and compress Days 2-12 to match."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "What security is: CIA, the hexad and attack types (Chapter 1)",
+      "tasks": [
+        "Learn the FIPS 199 definitions of confidentiality, integrity and availability, then possession, authenticity and utility, with one example each.",
+        "Map interception, interruption, modification and fabrication to the principle each mainly affects.",
+        "Write five two-sentence scenarios of your own and label the principle at stake in each."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Risk, controls, defense in depth and incident response (Chapter 1)",
+      "tasks": [
+        "Threat vs vulnerability vs risk vs impact, the five risk management steps, and the accept, avoid, mitigate and transfer responses.",
+        "Physical, logical and administrative controls; deterrent, detective and preventive functions; the six defense-in-depth layers.",
+        "Put the six incident response phases in order, then place five sample actions (isolate a host, restore from backup, write the lessons-learned report…) in the right phase."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Identification and authentication (Chapter 2)",
+      "tasks": [
+        "Identification vs authentication, the five factor types (and NIST's three), MFA and mutual authentication.",
+        "Biometric characteristics and errors: FAR, FRR and EER, and what raising sensitivity does to each.",
+        "Skim the password section of NIST SP 800-63B-4 so a question about current practice doesn't surprise you."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Authorization and access control (Chapter 3)",
+      "tasks": [
+        "Least privilege, ACLs vs capabilities, the confused deputy problem, CSRF and clickjacking.",
+        "DAC, MAC, rule-based, RBAC and ABAC: write a one-line scenario for each that only that model fits.",
+        "Bell-LaPadula, Biba and Brewer and Nash, plus physical access controls and tailgating."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Auditing, accountability, IDS and IPS (Chapter 4)",
+      "tasks": [
+        "What accountability buys: nonrepudiation, deterrence, intrusion detection and prevention, and admissible records.",
+        "Logging vs monitoring vs assessments; IDS vs IPS; signature vs anomaly detection; NIDS vs HIDS."
+      ]
+    },
+    {
+      "day": "Days 7-8",
+      "focus": "Cryptography (Chapter 5)",
+      "tasks": [
+        "Symmetric vs asymmetric, block vs stream ciphers, and the named algorithms: DES, 3DES, AES, RSA, ECC and Diffie-Hellman.",
+        "Hashes, digital signatures, certificates and PKI: draw who uses which key for confidentiality and who uses which key for signing.",
+        "Data at rest, in motion and in use with one protection each, plus the Caesar cipher, Enigma and Kerckhoffs's principle."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Compliance, laws and frameworks (Chapter 6)",
+      "tasks": [
+        "Regulatory vs industry compliance, key and compensating controls, and how compliance is maintained.",
+        "Build a table of law or standard, the data it covers and who must follow it: HIPAA, SOX, GLBA, FERPA, FISMA, FedRAMP, GDPR and PCI DSS.",
+        "ISO/IEC 27001 vs 27002, the six NIST CSF 2.0 functions and what SP 800-53 is."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "OPSEC, the human element and physical security (Chapters 7-9)",
+      "tasks": [
+        "The five OPSEC steps and Haas's laws, the social engineering types and the topics awareness training should cover.",
+        "Physical threats and controls; protecting people, data and equipment; BCP vs DRP."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Network, operating system, mobile and IoT security (Chapters 10-12)",
+      "tasks": [
+        "Segmentation, choke points, DMZs, firewall types, VPNs and wireless encryption.",
+        "The OS hardening steps, anti-malware, host firewalls, HIDS and executable space protection; mobile, embedded and IoT risks.",
+        "Match each tool to its job: Nmap, Nessus, Wireshark, tcpdump, Kismet, honeypots and Metasploit."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Application security and assessing security (Chapters 13-14)",
+      "tasks": [
+        "Buffer overflows, race conditions, input validation, XSS, CSRF, clickjacking and SQL injection; ZAP (formerly OWASP ZAP), Burp Suite and fuzzers.",
+        "Vulnerability assessment vs penetration test, black, white and gray box testing, the pen test steps and bug bounty programs."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "Pre-assessment and targeted review",
+      "tasks": [
+        "Take the PA under exam conditions and sort every miss in your error log by competency.",
+        "Email your instructor for the extra material students say arrives after the PA, including key-term slide decks.",
+        "Reread the chapters behind your weakest competency and redo your own scenarios for it."
+      ]
+    },
+    {
+      "day": "Day 14",
+      "focus": "Scenario drills, then the OA",
+      "tasks": [
+        "Work 30-40 original scenario questions (your own or AI-generated), checking each answer against the book or the NIST glossary.",
+        "Schedule the OA once you can explain why each wrong option is wrong, not just pick the right one.",
+        "On the exam, find the asset and the property at stake before reading the options, and flag long items to revisit."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A courier loses a box of backup tapes from a clinic. Every tape was encrypted with AES-256, and the keys are kept in a separate vault, so nobody who finds the box can read the data. Which Parkerian hexad principle was clearly violated?",
+      "choices": [
+        "Confidentiality",
+        "Possession or control",
+        "Integrity",
+        "Utility"
+      ],
+      "answer": "Possession or control",
+      "why": "The clinic no longer has custody of the media, which is exactly what the hexad's possession (or control) principle covers. Confidentiality hasn't been breached, because the data is encrypted and the keys weren't lost with it. Nothing on the tapes was altered, so integrity isn't the issue. Utility isn't either: the clinic still has the keys and its original records, so its data is as useful as before; the tapes are of little use to whoever finds them, but that's the encryption doing its job, not a violation. If the tapes had been unencrypted, confidentiality would be at risk too."
+    },
+    {
+      "q": "An attacker on a café's open Wi-Fi network captures unencrypted traffic and reads a guest's email. Nothing is changed or blocked. Which attack type is this, and which principle does it primarily affect?",
+      "choices": [
+        "Interruption, which primarily affects availability",
+        "Modification, which primarily affects integrity",
+        "Fabrication, which primarily affects authenticity",
+        "Interception, which primarily affects confidentiality"
+      ],
+      "answer": "Interception, which primarily affects confidentiality",
+      "why": "Reading data you aren't authorized to see is interception, the book's attack type against confidentiality. Interruption makes assets unavailable (a DoS attack), modification tampers with data (integrity), and fabrication creates false data or traffic, which the book says mainly affects integrity. Encrypting the traffic, with HTTPS or a VPN, is the matching control."
+    },
+    {
+      "q": "A defense agency labels every document Confidential, Secret or Top Secret and gives each employee a clearance. The system, not the document's author, decides who may open each file, and authors can't share a file with anyone who lacks the clearance. Which access control model is this?",
+      "choices": [
+        "Mandatory access control (MAC)",
+        "Discretionary access control (DAC)",
+        "Role-based access control (RBAC)",
+        "Rule-based access control"
+      ],
+      "answer": "Mandatory access control (MAC)",
+      "why": "MAC relies on labels and clearances set by a central authority, and owners can't override them. Under DAC the author, as owner, would decide who gets access. RBAC grants permissions by job role rather than classification labels, and rule-based access control applies the same rules (such as firewall rules or allowed hours) to everyone. Multilevel models such as Bell-LaPadula (no read up, no write down) are usually enforced with MAC."
+    },
+    {
+      "q": "A bank lets employees open its wire-transfer application only if they work in Treasury, are on a company-managed laptop, are connected to the corporate network and are signing in between 8 a.m. and 6 p.m. Which access control model best fits?",
+      "choices": [
+        "Discretionary access control (DAC)",
+        "Mandatory access control (MAC)",
+        "Role-based access control (RBAC)",
+        "Attribute-based access control (ABAC)"
+      ],
+      "answer": "Attribute-based access control (ABAC)",
+      "why": "The decision combines attributes of the subject (Treasury staff), the device (a managed laptop) and the environment (network and time of day), which is how NIST SP 800-162 describes ABAC. Being in Treasury alone would be RBAC, but a role can't express the device, network and time conditions by itself. DAC would leave the decision to a resource owner, and MAC would rely on classification labels."
+    },
+    {
+      "q": "A payroll site asks for a password and then for a six-digit code from an authenticator app on the employee's phone. How many authentication factors does this use?",
+      "choices": [
+        "One, because both items are typed into the same login form",
+        "Two: something you know and something you are",
+        "Two: something you know and something you have",
+        "Three: something you know, something you have and somewhere you are"
+      ],
+      "answer": "Two: something you know and something you have",
+      "why": "The password is something you know, and the app on a phone the user holds is something you have, so this is two-factor authentication. Where you type them doesn't matter; what counts is that the factor types differ. Nothing biometric (something you are) is involved, and the login doesn't check location. By contrast, a password plus a security question is still one factor, because both are things you know."
+    },
+    {
+      "q": "Employees reach an internal portal over Wi-Fi in a shared office building. The security team worries that an attacker could set up a look-alike portal and quietly sit between users and the real server. Which measure most directly addresses that risk?",
+      "choices": [
+        "Requiring longer passwords, so captured passwords take longer to crack",
+        "Adding a CAPTCHA to the login page, so bots can't sign in",
+        "Mutual authentication, so the client also verifies the server's identity",
+        "Logging every login attempt, so analysts can review them later"
+      ],
+      "answer": "Mutual authentication, so the client also verifies the server's identity",
+      "why": "In a man-in-the-middle attack, users authenticate to the attacker without realizing it. Mutual authentication makes both sides prove who they are (for example, the client checks the server's certificate and the server checks a client certificate), so a fake portal fails the check. Longer passwords don't help if users type them into an impostor, a CAPTCHA only checks that a human is present, and logging records the attack without stopping it."
+    },
+    {
+      "q": "A data center's fingerprint scanner has occasionally let unauthorized people in. The administrator raises the scanner's sensitivity. Which effect is most likely?",
+      "choices": [
+        "The false acceptance rate rises, so more impostors get in",
+        "The false rejection rate rises, so more legitimate staff are turned away",
+        "The equal error rate drops to zero",
+        "Both error rates fall at the same time"
+      ],
+      "answer": "The false rejection rate rises, so more legitimate staff are turned away",
+      "why": "A stricter threshold lowers the false acceptance rate (impostors accepted) but raises the false rejection rate (real users rejected); the two trade off against each other. The equal error rate, or crossover error rate, is the point where they're equal and describes the device's overall accuracy; moving the threshold doesn't make it zero, and one threshold change can't lower both rates at once. When comparing devices, a lower EER is better."
+    },
+    {
+      "q": "A hospital wants a tool that watches network traffic for signs of attack and alerts analysts, but management insists it must never block or delay traffic to clinical systems. What should the hospital deploy?",
+      "choices": [
+        "A network-based intrusion detection system (IDS)",
+        "An intrusion prevention system (IPS) placed inline",
+        "A stateful firewall at the perimeter",
+        "A honeypot in the DMZ"
+      ],
+      "answer": "A network-based intrusion detection system (IDS)",
+      "why": "An IDS monitors traffic, often from a mirrored copy, and raises alerts without sitting in the path, so it can't block or slow anything. An IPS sits inline and can drop traffic, which management ruled out, and a false positive could cut off a clinical system. A firewall enforces allow and deny rules rather than watching for attacks, and a honeypot is a decoy that attracts attackers; it doesn't monitor production traffic."
+    },
+    {
+      "q": "Alicia emails a contract to Ben. Ben must be able to verify that it came from Alicia and wasn't changed on the way, and the contract doesn't need to be secret. What should Alicia do?",
+      "choices": [
+        "Encrypt the contract with Ben's public key",
+        "Hash the contract and encrypt the hash with Ben's public key",
+        "Encrypt the contract with a symmetric key and send the key in the same email",
+        "Hash the contract and encrypt the hash with her own private key"
+      ],
+      "answer": "Hash the contract and encrypt the hash with her own private key",
+      "why": "That is a digital signature. Ben decrypts the signature with Alicia's public key and compares the result with his own hash of the contract: a match shows the contract is unchanged (integrity) and that only Alicia's private key could have produced it (authenticity and nonrepudiation). Encrypting with Ben's public key gives confidentiality, not proof of origin, because anyone can use Ben's public key, and the same goes for encrypting the hash with it. Sending a symmetric key in the same email protects nothing."
+    },
+    {
+      "q": "An online retailer stores customers' card numbers for repeat purchases. Its new compliance officer asks which security requirements apply to that data and who enforces them. Which answer is most accurate?",
+      "choices": [
+        "PCI DSS, an industry standard the card brands enforce through merchant agreements",
+        "HIPAA, enforced by the Department of Health and Human Services",
+        "SOX, enforced by the Securities and Exchange Commission",
+        "GLBA, because every business that takes card payments counts as a financial institution"
+      ],
+      "answer": "PCI DSS, an industry standard the card brands enforce through merchant agreements",
+      "why": "PCI DSS comes from the PCI Security Standards Council and applies to anyone who stores, processes or transmits cardholder data. It's industry compliance, not a law: card brands and acquiring banks require it by contract and can fine merchants or stop them from taking cards. HIPAA covers health information, SOX covers public companies' financial reporting, and GLBA covers financial institutions such as banks and lenders, not every merchant that accepts cards."
+    },
+    {
+      "q": "An employee gets a call from someone who says he's from the IT help desk, knows her manager's name and explains that her mailbox migration will fail tonight unless he can verify her password. Which social engineering technique is this?",
+      "choices": [
+        "Tailgating",
+        "Whaling",
+        "Pretexting",
+        "Baiting"
+      ],
+      "answer": "Pretexting",
+      "why": "Pretexting builds a believable invented scenario (here, a help-desk migration with insider details, probably gathered through OSINT) to get someone to hand over information. Tailgating is following someone through a secured door, whaling is phishing aimed at senior executives, and baiting leaves a lure such as an infected USB drive. Because it's a phone call it's also vishing, but pretexting is the book's term for the invented story. The fixes are a known rule that IT never asks for passwords and a call back to a number you already trust."
+    },
+    {
+      "q": "Before putting a new Linux web server online, an administrator uninstalls the compilers and desktop packages, disables FTP and Telnet, blocks direct root logins over SSH, removes unused default accounts, installs every patch and turns on audit logging. What is this process called?",
+      "choices": [
+        "A penetration test",
+        "Executable space protection",
+        "Network segmentation",
+        "Operating system hardening"
+      ],
+      "answer": "Operating system hardening",
+      "why": "Removing unneeded software and services, changing or disabling default accounts (here, restricting root and deleting unused accounts), applying updates and enabling logging and auditing are the book's operating system hardening steps, along with applying least privilege. A penetration test tries to break in, executable space protection stops code from running in memory set aside for data, and network segmentation divides a network into zones; none of them describes configuring the host itself."
+    },
+    {
+      "q": "An analyst finds ransomware on one accounting workstation. Before removing the malware, she unplugs the machine from the network so it can't spread to the file shares. Which incident response phase is she in?",
+      "choices": [
+        "Detection and analysis",
+        "Containment",
+        "Eradication",
+        "Recovery"
+      ],
+      "answer": "Containment",
+      "why": "Containment limits the damage, here by isolating the infected host. Detection and analysis came just before, when she identified the ransomware. Eradication comes next (removing the malware and closing the hole it came through), then recovery (restoring files from backup and returning the machine to service), and post-incident activity, the lessons-learned review, comes last."
+    },
+    {
+      "q": "While logged in to her bank in one browser tab, a customer opens a forum post in another. A hidden image tag in the post makes her browser send a funds-transfer request to the bank, which accepts it because her session cookie goes along with it. What attack is this?",
+      "choices": [
+        "SQL injection",
+        "Cross-site scripting (XSS)",
+        "Cross-site request forgery (CSRF)",
+        "A buffer overflow"
+      ],
+      "answer": "Cross-site request forgery (CSRF)",
+      "why": "CSRF tricks the victim's browser into sending a request to a site where she's already logged in, so the site trusts it. The book treats it as a confused deputy attack: the browser holds legitimate authority and is tricked into misusing it. XSS would run injected script inside the bank's own pages, SQL injection attacks a database through unvalidated input, and a buffer overflow writes past the end of a memory buffer. Defenses include anti-CSRF tokens and SameSite cookies."
+    },
+    {
+      "q": "A security team must find which servers are missing patches or have known vulnerabilities, ranked by severity, without trying to exploit anything. Which tool fits best?",
+      "choices": [
+        "Nessus",
+        "Nmap",
+        "Wireshark",
+        "Metasploit"
+      ],
+      "answer": "Nessus",
+      "why": "Nessus is a vulnerability scanner: it checks hosts against a database of known flaws and missing patches and reports them by severity, which is a vulnerability assessment. Nmap discovers hosts, open ports and services (a useful first step, but on its own it doesn't produce a ranked vulnerability report), Wireshark captures and analyzes packets, and Metasploit is an exploitation framework used in penetration tests to actually exploit flaws."
+    }
+  ],
+  "pitfalls": [
+    "<b>Memorizing definitions only.</b> Students report about 90% of questions are scenarios. For each term, write one realistic example and name the look-alike term it gets confused with.",
+    "<b>Hexad mix-ups.</b> Lost but encrypted media is a possession problem, not confidentiality; a forged sender is authenticity; data you hold but can't use (wrong format, lost key) is utility; corrupted but online data is integrity.",
+    "<b>Identification vs authentication vs authorization.</b> Typing a username is identification, proving it with a password or token is authentication, and what you may open afterward is authorization.",
+    "<b>Counting factors wrong.</b> Two passwords, or a password and a PIN, are one factor. Factors must be different types, and the course's five types include something you do and where you are, even though NIST counts only three.",
+    "<b>Access model look-alikes.</b> The owner shares it → DAC; labels and clearances → MAC; job title → RBAC; several conditions such as device, time and location → ABAC; one rule for everyone, such as firewall rules or login hours → rule-based.",
+    "<b>IDS vs IPS.</b> An IDS detects and alerts; an IPS sits inline and blocks. When a scenario says traffic must never be blocked, or asks for automatic blocking, that detail decides the answer.",
+    "<b>Key direction in cryptography.</b> Confidentiality uses the recipient's public key; signatures use the sender's private key. Hashing isn't encryption, and symmetric encryption is the fast choice for bulk data.",
+    "<b>Treating PCI DSS as a law.</b> It's an industry standard enforced by contract. Match each law to its data: health → HIPAA, banks and lenders → GLBA, public-company financial reporting → SOX, student records → FERPA, federal agencies → FISMA, people in the EU → GDPR.",
+    "<b>Older or mismatched material.</b> Decks and notes labeled C836 (an earlier WGU course with the same name) or written for Security+ cover the topics with different emphasis; check terms against your textbook and the current competencies, and skip anything sold as real exam questions."
+  ],
+  "resources": [
+    {
+      "label": "Course textbook: Andress, Foundations of Information Security (No Starch Press, 2019)",
+      "url": "https://penguinrandomhouse.com/books/608654/foundations-of-information-security-by-jason-andress",
+      "kind": "official",
+      "note": "Students report this is the course text: 14 short chapters that line up with the topics here. The Jun 2025 passer skipped it, but it's the best tiebreaker for the course's wording. A second edition, Foundations of Cybersecurity (May 2026), adds threat landscape, architecture, AI and SOC chapters; use whichever edition your course links to."
+    },
+    {
+      "label": "Pre-assessment and coaching report (in the course)",
+      "kind": "practice",
+      "note": "Take it after you've covered every chapter, or early if you're coming from D315. A commenter calls it an easier version of the OA, and students use the coaching report to target weak competencies. Don't memorize its answers; make sure you can explain each one."
+    },
+    {
+      "label": "Instructor extra material (by email after the PA)",
+      "kind": "official",
+      "note": "Students report the instructor sends extra material after you take the PA, including slide decks of key terms. Instructors also share more practice on request."
+    },
+    {
+      "label": "WGU Connect course community",
+      "kind": "community",
+      "note": "From the course page: Course Community → Join WGU Connect → Resources, for announcements, instructor tips and any recorded sessions."
+    },
+    {
+      "label": "NIST CSRC Glossary",
+      "url": "https://csrc.nist.gov/glossary",
+      "kind": "official",
+      "note": "Look up any term (confidentiality, nonrepudiation, least privilege, defense in depth, OPSEC) to see NIST's definitions and their sources. Good for settling wording questions."
+    },
+    {
+      "label": "NIST SP 800-63B-4: Authentication and Authenticator Management (July 2025)",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "kind": "official",
+      "note": "Current federal guidance on authentication factors, MFA, biometrics and passwords. Read the factor and password sections; the rest is deeper than D430 needs."
+    },
+    {
+      "label": "NIST Cybersecurity Framework 2.0",
+      "url": "https://www.nist.gov/cyberframework",
+      "kind": "official",
+      "note": "The six functions (Govern, Identify, Protect, Detect, Respond, Recover) give you a frame for governance, risk and incident response questions."
+    },
+    {
+      "label": "OWASP Top 10 (2025 edition)",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "kind": "official",
+      "note": "The standard ranking of web application risks; good context for the application security chapter's injection, access control and misconfiguration examples."
+    },
+    {
+      "label": "Professor Messer's free Security+ SY0-701 course",
+      "url": "https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/",
+      "kind": "video",
+      "note": "Free videos that cover most D430 topics in more depth than the course needs. Watch only the videos for your weak areas, such as Section 1 (general security concepts), Section 2 (threats) and Section 5 (governance)."
+    },
+    {
+      "label": "Nmap reference guide",
+      "url": "https://nmap.org/book/man.html",
+      "kind": "tool",
+      "note": "Shows what a port scan reveals, which makes tool-selection questions easy. Scan only machines you own or have permission to test."
+    },
+    {
+      "label": "Wireshark documentation",
+      "url": "https://www.wireshark.org/docs/",
+      "kind": "tool",
+      "note": "Capture your own traffic to see why unencrypted protocols are an interception risk and what an IDS sees."
+    },
+    {
+      "label": "An AI chatbot for scenario drills",
+      "kind": "tool",
+      "note": "The Jun 2025 passer used ChatGPT to quiz on scenario questions. Ask for original scenarios one topic at a time, make it explain each wrong option, and check its answers against the textbook or the NIST glossary."
+    },
+    {
+      "label": "r/WGU: I Passed D430 (Jun 2025)",
+      "url": "https://www.reddit.com/r/WGU/comments/1l0wxmc/",
+      "kind": "community",
+      "note": "The most detailed public pass report found: study approach, the scenario-heavy question style and the topics that stood out."
+    }
+  ],
+  "community": {
+    "summary": "The linked Jun 2025 thread describes passing after about a month without the textbook, using a student-made study guide and ChatGPT-generated scenario questions. Its main points: about 90% of the OA is scenarios; access control models, attack types, the CIA triad, the Parkerian hexad and security tools (Nmap, Nessus, Wireshark, IDS and IPS) carry heavy weight; and comments on the thread call the PA an easier version of the OA and say ISO 27001 came up several times. Another 2025 thread, whose URL wasn't available for this research, adds that the instructor emails extra material after the PA, including slide decks of key terms, and that a student who took D430 right after D315 found heavy overlap, used the PA results to target weak areas and passed in two days.",
+    "coverage": "1 linked post, Jun 2025, r/WGU (plus one 2025 thread without a URL, not listed)",
+    "posts": [
+      {
+        "title": "I Passed D430 – Fundamentals of Information Security! Here's What Helped Me Pass the OA",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1l0wxmc/",
+        "date": "Jun 2025",
+        "takeaway": "About a month of study without the textbook, using a student-made study guide and ChatGPT for scenario quizzing. Roughly 90% of the OA was scenarios: access control models and attack types in the first half, then the CIA triad, the Parkerian hexad and security tools. The poster says to know symmetric vs asymmetric encryption, the attack type that hits confidentiality, all five authentication factors, mutual authentication, IDS vs IPS and OS hardening. Comments call the PA an easier version of the OA and say ISO 27001 came up several times."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU: B.S. AI Engineering Program Guidebook, catalog 202607 (PDF; D430 description and its three competencies)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSAIE.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026 (PDF; BSCS 202611 and B.S. AI Engineering course lists)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, July 2026 (PDF; the BSCS 202412 plan lists D315 in term 2 and D430 in term 6)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-july-2026.pdf" },
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (PDF; course list)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "No Starch Press: Foundations of Cybersecurity, 2nd Edition (May 2026, contents)", "url": "https://nostarch.com/foundations-cybersecurity-2e" },
+    { "label": "NIST FIPS 199: Standards for Security Categorization (confidentiality, integrity, availability)", "url": "https://csrc.nist.gov/pubs/fips/199/final" },
+    { "label": "NIST CSRC Glossary: risk (SP 800-30 Rev. 1 definition)", "url": "https://csrc.nist.gov/glossary/term/risk" },
+    { "label": "NIST CSRC Glossary: defense in depth", "url": "https://csrc.nist.gov/glossary/term/defense_in_depth" },
+    { "label": "NIST CSRC Glossary: operations security (five-step OPSEC process)", "url": "https://csrc.nist.gov/glossary/term/operations_security" },
+    { "label": "NIST SP 800-63B-4: Authentication and Authenticator Management (July 2025)", "url": "https://csrc.nist.gov/pubs/sp/800/63/b/4/final" },
+    { "label": "NIST SP 800-162: Guide to Attribute Based Access Control (ABAC)", "url": "https://csrc.nist.gov/pubs/sp/800/162/upd2/final" },
+    { "label": "NIST SP 800-94: Guide to Intrusion Detection and Prevention Systems", "url": "https://csrc.nist.gov/pubs/sp/800/94/final" },
+    { "label": "NIST SP 800-61 Rev. 3: Incident Response Recommendations (April 2025)", "url": "https://csrc.nist.gov/pubs/sp/800/61/r3/final" },
+    { "label": "NIST SP 800-115: Technical Guide to Information Security Testing and Assessment", "url": "https://csrc.nist.gov/pubs/sp/800/115/final" },
+    { "label": "PCI Security Standards Council: PCI DSS", "url": "https://www.pcisecuritystandards.org/standards/pci-dss/" }
+  ],
+  "caveats": [
+    "The competencies listed here come from WGU's B.S. AI Engineering guidebook (catalog 202607), which lists D430. Students who start on WGU's newest BSCS version (202611, from the Nov 2026 catalog) see D827, a separate course with the same title, in this slot instead; this guide covers D430.",
+    "The textbook is a student report, not a WGU listing. No Starch's May 2026 second edition (Foundations of Cybersecurity, 18 chapters) may eventually replace the 2019 edition in the course; chapter numbers in this guide follow the 2019 edition's 14 chapters, so check which edition your course page links to.",
+    "WGU doesn't publish D430's question count, time limit or passing score, and the community posts in this research don't give them.",
+    "Community coverage is thin: one linked thread (Jun 2025) plus one 2025 thread whose URL wasn't available, so it isn't listed. Post dates are approximate, based on Reddit's relative ages.",
+    "Some standards differ from the 2019 textbook. NIST SP 800-61 Rev. 3 (Apr 2025) replaced the incident response lifecycle with a CSF 2.0 profile. NIST has counted three authentication factor types since SP 800-63-3 (2017), while the book lists five. SP 800-63B-4 (Jul 2025) turned NIST's 2017 advice against password composition rules and forced periodic changes into outright bans, and it requires at least 15 characters when a password is the only factor. This guide teaches the book's terms first and notes NIST's where they differ.",
+    "The practice questions are original, written from the course competencies and the textbook's topics; none comes from the PA or the OA."
+  ]
+}

@@ -1,0 +1,885 @@
+{
+  "code": "C949",
+  "summary": "C949 teaches the core data structures and algorithms (Big-O analysis, searching and sorting, lists, stacks and queues, hash tables, trees, heaps and graphs) through a zyBook written in pseudocode with Python sections. The OA is a proctored multiple-choice exam: you write no code, but you read pseudocode and Python, trace algorithms by hand and need every algorithm's and structure's complexities. Students report a new version launched in January 2026 whose pre-assessment closely tracks the OA, and recent passers say working the zyBook carefully, not skimming it, is what gets people through.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple choice)",
+    "format": "About 70–77 multiple-choice questions (reported) · proctored online · read pseudocode and Python, no coding · time limit not confirmed for the 2026 version",
+    "details": [
+      "You write no code. Questions have you read pseudocode and Python snippets, trace algorithms by hand, give complexities and pick the best structure or algorithm for a scenario.",
+      "Length: students report about 70 questions (Aug 2026), and a Mar 2026 taker counted 77. WGU doesn't publish the count.",
+      "Time: no 2026 report states the limit for the current version. A Dec 2024 (V4) report said 90 minutes, and 2026 passers report finishing in about 15–30 minutes, so time is rarely the problem.",
+      "Passing score: not published. The score report rates you on each competency (students mention 'exemplary' ratings).",
+      "Version: students report a new version (V5) went live in January 2026, and one post dates the PA/OA update to Jan 5, 2026. Its pre-assessment is reported to match the OA's difficulty and style closely; earlier versions drew reports of students passing the PA and still failing the OA.",
+      "Reported emphasis in 2026: Big-O (plus Ω and Θ) for every sort, search and data-structure operation; naming an algorithm from its code; tracing heaps, BSTs, hash probes and sorts; stacks and queues; Python syntax and built-ins; and a few questions on maintainability, scalability and robustness.",
+      "Space complexity is unresolved: a Sep 2026 V5 passer saw no space-complexity questions, while the Nov 2026 thread and 2025–2026 comments say to memorize space complexities too. Know both.",
+      "C949 is a prerequisite for C950 (Data Structures and Algorithms II), so finish C949 first.",
+      "Retakes (reported, not official policy): after a second failure, students describe completing instructor worksheets and meetings before another attempt."
+    ],
+    "tips": [
+      "Use the current-version pre-assessment as your gate: take it under exam conditions, study every miss, and book the OA once you can explain why each option is right or wrong.",
+      "Have a small whiteboard ready. One 2026 passer's proctor didn't allow scratch paper, and others jot traversal orders and sorting reminders on the whiteboard at the start. Check WGU's current online-proctoring rules before exam day.",
+      "Read each stem twice and watch for best, worst, average, stable, in place, NOT and 'always'. 2026 takers say the wording is the main trap.",
+      "Learn each bound with its reason (insertion sort is O(n) on sorted input because each new item is compared once and never shifted) so reworded questions don't throw you.",
+      "Expect a few questions on things you didn't review. Eliminate the clearly wrong choices and move on instead of stalling.",
+      "Start C949 early in your term: it unlocks C950, and Big-O and recursion from C960 will still be fresh (students say Discrete Math II made this material easier)."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your Course Planning Tool report with your instructor and build a personalized course plan together.",
+    "The learner applies algorithms that address a desired outcome based on space and time complexity in big-O notation.",
+    "The learner determines how data structure types impact operations within application, service, or data stores.",
+    "The learner explains the use, logic, and structure of algorithms."
+  ],
+  "topics": [
+    {
+      "title": "ADTs, data structures and algorithm basics",
+      "eli5": "An ADT is the menu (which operations you can order), and a data structure is the kitchen that makes them. The 'list' menu item can be cooked with an array or a linked list, and each kitchen is faster at different dishes.",
+      "detail": "An abstract data type (ADT) defines values and operations from the user's point of view without saying how they're stored; a data structure (an array of slots, nodes linked by pointers, a tree) is a concrete way to implement one. The same ADT can have several implementations with different operation costs, so the exam asks you to pick one for a scenario and justify it by cost. The course description names bags (unordered collections that allow duplicates), lists, stacks, queues, trees and hash tables, and it treats ADTs and object-oriented design as design paradigms. An algorithm is a finite sequence of well-defined steps that turns input into output, and the course stresses efficient, maintainable software.",
+      "points": [
+        "List → array-based list or linked list. Stack and queue → linked list or array. Deque → doubly linked list or circular array.",
+        "Map (dictionary) and set → hash table or BST. Priority queue → binary heap. Graph → adjacency list or adjacency matrix.",
+        "Scenario matching: undo → stack; print spooler or BFS → queue; lookup by key → hash map; sorted iteration or range queries → balanced BST; repeated min or max → heap; prefix search → trie.",
+        "Quality factors (about 4 questions in one Aug 2026 report): <b>robustness</b> copes with errors and unexpected input, <b>maintainability</b> makes code easy to fix or change, <b>scalability</b> handles growing workloads.",
+        "Textbook properties of an algorithm: finiteness, definiteness, input, output and effectiveness."
+      ]
+    },
+    {
+      "title": "Algorithm analysis: Big-O, Ω, Θ, time and space",
+      "eli5": "Big-O describes how an algorithm's work grows as the input grows, ignoring small fixed costs. Double the input and O(n) work doubles, but O(n²) work quadruples.",
+      "detail": "f(n) = O(g(n)) means that past some input size, f(n) ≤ c·g(n) for a constant c (an upper bound); Ω is the matching lower bound, and Θ means both hold (a tight bound). Best, average and worst case are a separate idea: they say which input you analyze, and each case can have its own O, Ω and Θ. To find a runtime, drop constants and lower-order terms, add sequential blocks (the larger term wins), multiply nested loops, and count a loop whose variable doubles or halves as O(log n). Space complexity counts the extra memory an algorithm uses, and recursion keeps one stack frame per active call, so recursion depth is a space cost. The official competency names both time and space complexity.",
+      "points": [
+        "Growth ladder: O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ) &lt; O(n!).",
+        "3n² + 10n + 5 is O(n²) (and Θ(n²)); 5n + 2n log n is O(n log n).",
+        "Constant-time operations: arithmetic, assignment, comparison and reading an array element by index.",
+        "Recurrences: T(n) = T(n/2) + O(1) → O(log n); T(n) = 2T(n/2) + O(n) → O(n log n); T(n) = T(n − 1) + O(1) → O(n); T(n) = T(n − 1) + O(n) → O(n²).",
+        "A Sep 2026 V5 passer says to learn the O and Ω bounds for every sort and search and to know what Θ means."
+      ]
+    },
+    {
+      "title": "Searching: linear and binary search",
+      "eli5": "Linear search checks items one by one, like flipping through an unsorted stack of papers. Binary search is how you find a word in a dictionary: open to the middle, then ignore the half that can't contain it.",
+      "detail": "Linear search compares the target with each item in turn: O(1) in the best case (first item) and O(n) in the average and worst cases, and it works on unsorted data and linked lists. Binary search requires sorted data with fast access by index. It compares the target with the middle element and keeps only the half that could hold it, so it runs in O(log n) and needs at most ⌊log₂ n⌋ + 1 comparisons. The usual loop sets <code>mid = (low + high) // 2</code>, moves <code>low</code> to <code>mid + 1</code> when the target is larger or <code>high</code> to <code>mid - 1</code> when it's smaller, and stops when the target is found or <code>low</code> passes <code>high</code>.",
+      "points": [
+        "Precondition: the data must be sorted. On unsorted data, binary search can miss a target that's there.",
+        "Worst-case comparisons: ⌊log₂ n⌋ + 1, so 1,000 items take at most 10 and 1,000,000 items at most 20.",
+        "Binary search loses its advantage on a linked list, because reaching the middle takes O(n).",
+        "Iterative binary search uses O(1) extra space; the recursive version uses O(log n) stack space.",
+        "Trace with a small table: low, high, mid, the value at mid, and which half you keep."
+      ]
+    },
+    {
+      "title": "Sorting algorithms",
+      "eli5": "Each sort is a different way to order a hand of cards: pull out the smallest card each time (selection), slide each new card into place (insertion), or split the hand, sort each half and merge them (merge sort).",
+      "detail": "The zyBook covers selection, insertion, shell, quick, merge and radix sort, heap sort in the heaps chapter, and bubble sort, quickselect and bucket sort as additional material. Selection sort is Θ(n²) in every case; insertion sort is O(n) on already-sorted input and O(n²) on average; quicksort averages O(n log n) but degrades to O(n²) when its pivots are consistently the smallest or largest values; merge sort and heap sort are O(n log n) in every case. A stable sort keeps equal keys in their original order: insertion, bubble, merge and LSD radix sort are stable, while selection, shell, quick and heap sort are not. No comparison sort can beat O(n log n) in the worst or average case, which is why radix sort, which never compares elements, can reach O(n·d) for d-digit keys.",
+      "points": [
+        "Selection: n² always, at most n − 1 swaps, not stable. Insertion: n best, n² average and worst, stable, great for small or nearly sorted data.",
+        "Quicksort: n log n average, n² worst (for example, a first- or last-element pivot on sorted input), O(log n) average stack space, not stable.",
+        "Merge sort: n log n always, O(n) extra space, stable. Heap sort: n log n always, O(1) extra space, not stable.",
+        "Shell sort: insertion sort on items a gap apart, shrinking the gap to 1. Its running time depends on the gap sequence, and it isn't stable.",
+        "Bubble sort: n² (n best only with an early-exit check), stable. Bucket sort: n + k on average with evenly spread keys, n² worst."
+      ]
+    },
+    {
+      "title": "Lists, stacks, queues and deques",
+      "eli5": "An array is a row of numbered lockers: you can open locker 50 instantly, but adding a locker in the middle means shifting everyone down. A linked list is a scavenger hunt where each clue points to the next, and stacks (last in, first out) and queues (first in, first out) are rules you can build on either one.",
+      "detail": "An array-based list gives O(1) access by index, but inserting or removing at index i shifts every later element, and appending is amortized O(1) because the capacity grows geometrically when it fills. In a singly linked list each node holds data and a next pointer: prepend is O(1), append is O(1) with a tail pointer, search is O(n), and removing a node requires its predecessor. A doubly linked list adds prev pointers so a node you already hold can be removed in O(1), and dummy (sentinel) nodes remove the special cases for empty lists and head or tail changes. A stack (LIFO) supports push, pop and peek in O(1); a queue (FIFO) supports enqueue at the back and dequeue at the front in O(1) with a head-and-tail linked list or a circular array; and a deque allows O(1) inserts and removals at both ends.",
+      "points": [
+        "Linked-list 'O(1) insert or delete' assumes you already hold the node. Finding it first costs O(n).",
+        "Insert after node cur in a singly linked list: <code>newNode.next = cur.next</code>, then <code>cur.next = newNode</code>, in that order.",
+        "Stacks power the call stack, undo, DFS and bracket matching. Queues power BFS, scheduling and buffers.",
+        "Python: a list makes a good stack (<code>append</code>, <code>pop()</code>), but use <code>collections.deque</code> for a queue (<code>append</code>, <code>popleft()</code>), because <code>list.pop(0)</code> is O(n).",
+        "For mixed push, pop, enqueue and dequeue questions, write the contents after every step and mark the top or front."
+      ]
+    },
+    {
+      "title": "Hash tables, maps and sets",
+      "eli5": "A hash table turns each key into a locker number so you can walk straight to it. When two keys want the same locker (a collision), you either hang a list off that locker (chaining) or walk to the next free one (probing).",
+      "detail": "A hash function maps a key to a bucket index, for example <code>key % N</code>, and the load factor α = n/N is the number of items divided by the number of buckets. Chaining keeps a list in each bucket, so α can exceed 1. Open addressing stores every item in the array itself (α ≤ 1) and probes on a collision: linear probing tries (h + i) % N, quadratic probing tries (h + c₁·i + c₂·i²) % N, and double hashing tries (h₁(key) + i·h₂(key)) % N, for i = 0, 1, 2 and so on. Removing an item under open addressing leaves an 'empty-after-removal' marker so later searches keep probing past the gap. When α passes a threshold, the table resizes: it allocates a larger array and reinserts every item, an O(n) step whose cost averages out over many inserts. Search, insert and delete average O(1) but are O(n) in the worst case, when every key collides.",
+      "points": [
+        "Linear probing builds runs of filled buckets (primary clustering). Quadratic probing and double hashing spread probes out.",
+        "Quadratic probing with h + i², a prime table size and a table at most half full always finds an empty bucket.",
+        "Hash functions in the zyBook: modulo, mid-square and multiplicative string hashing. Direct hashing uses the key itself as the index.",
+        "Cryptographic hashes (such as SHA-2) are one-way and collision-resistant, used for passwords and integrity checks. Table hash functions only need to be fast and spread keys evenly.",
+        "Python's <code>dict</code> and <code>set</code> are hash tables: average O(1) lookups, and keys must be hashable (immutable)."
+      ]
+    },
+    {
+      "title": "Binary trees, BSTs and tries",
+      "eli5": "A BST works like a guessing game: at each node, go left if your number is smaller and right if it's bigger, so every step skips a whole branch.",
+      "detail": "In a binary search tree, every key in a node's left subtree is smaller and every key in its right subtree is larger, so search and insert follow one root-to-leaf path in O(h), where h is the height. Removal has three cases: a leaf is simply removed, a node with one child is replaced by that child, and a node with two children takes the key of its in-order successor (the leftmost node of its right subtree), after which the successor's old node is removed; some texts use the predecessor instead. A balanced tree has height about log₂ n, but inserting keys in sorted order builds a chain of height n − 1, so operations become O(n). The traversals are pre-order (node, left, right), in-order (left, node, right, which lists a BST's keys in sorted order), post-order (left, right, node) and level-order (breadth-first with a queue). A trie stores strings one character per edge, so insert and search take O(m) for a key of length m, which makes tries ideal for prefix search and autocomplete.",
+      "points": [
+        "Full: every node has 0 or 2 children. Complete: every level is full except possibly the last, which fills left to right. Perfect: every internal node has 2 children and all leaves share one depth.",
+        "In-order traversal of a BST comes out sorted, a quick way to check your tree.",
+        "Pre-order copies a tree; post-order deletes or evaluates one (children before parent).",
+        "BST search, insert and remove: O(log n) on average, O(n) in the worst case (unbalanced).",
+        "The set ADT (no duplicates) can be built on a BST or a hash table."
+      ]
+    },
+    {
+      "title": "Balanced trees: AVL and red-black",
+      "eli5": "A balanced tree fixes itself after every insert or delete, like a hanging mobile that shifts so no side droops too far. That keeps every path short, so operations stay fast.",
+      "detail": "An AVL tree keeps every node's balance factor (the height of its left subtree minus the height of its right subtree) at −1, 0 or +1 and repairs violations with rotations. A left-left imbalance needs a right rotation, right-right a left rotation, left-right a left rotation at the child followed by a right rotation at the node, and right-left the mirror image. Because AVL height stays around 1.44 log₂ n, search, insert and delete are O(log n) in the worst case. A red-black tree colors each node red or black: the root is black, null leaves count as black, a red node never has a red child, and every path from a node down to its null leaves has the same number of black nodes, which keeps the height at most 2·log₂(n + 1). Red-black trees rebalance less strictly, so updates need fewer rotations, while AVL lookups are slightly faster; the commercial zyBook also has B-trees and 2-3-4 trees, which may or may not be in your edition.",
+      "points": [
+        "Balance factor = height(left) − height(right). AVL allows −1, 0 or +1 (check your zyBook's sign convention).",
+        "LL → right rotation. RR → left rotation. LR → left at the child, then right at the node. RL → right at the child, then left at the node.",
+        "Red-black: the root is black, no red node has a red child, every path to a null leaf has the same number of black nodes, and null leaves are black.",
+        "AVL and red-black trees both guarantee O(log n) search, insert and delete.",
+        "Height conventions differ (edges or nodes), so read how the question counts height."
+      ]
+    },
+    {
+      "title": "Heaps, priority queues and heap sort",
+      "eli5": "A max-heap is like an org chart where every boss outranks their direct reports, so the person at the top is always the biggest. It's stored in a plain array, filled level by level.",
+      "detail": "A binary heap is a complete binary tree with the heap property: in a max-heap every parent is ≥ its children (a min-heap reverses this), so the root holds the maximum. With 0-based array indexing, node i's children are at 2i + 1 and 2i + 2 and its parent is at (i − 1) // 2. Insert puts the item in the next open slot and percolates it up, swapping with its parent while it's larger; removing the root moves the last item to the root and percolates it down, swapping with its larger child until it's in order. Both take O(log n), peeking at the root is O(1), and building a heap bottom-up from an array takes O(n). Heap sort builds a max-heap, then repeatedly swaps the root to the end of the array and percolates down: O(n log n) in every case with O(1) extra space, but not stable.",
+      "points": [
+        "0-based: children 2i + 1 and 2i + 2, parent (i − 1) // 2. 1-based: children 2i and 2i + 1, parent i // 2.",
+        "Insert and remove-root: O(log n). Peek: O(1). Build-heap: O(n), not O(n log n).",
+        "The priority queue ADT is usually implemented with a binary heap.",
+        "Python's <code>heapq</code> is a min-heap: <code>heap[0]</code> is the smallest item, and <code>heapq.heapify()</code> runs in linear time.",
+        "Treap (if your zyBook includes it): a BST by key and a heap by random priority, with expected O(log n) operations."
+      ]
+    },
+    {
+      "title": "Graphs: representations, traversals and shortest paths",
+      "eli5": "A graph is a map of places (vertices) joined by roads (edges). BFS explores outward in rings like ripples in a pond, while DFS follows one road as far as it can before backtracking.",
+      "detail": "An adjacency list uses O(V + E) space and suits sparse graphs; an adjacency matrix uses O(V²) space but checks whether an edge exists in O(1), which suits dense graphs. BFS uses a queue, visits vertices in order of their distance in edges, finds fewest-edge paths in unweighted graphs and runs in O(V + E); DFS uses a stack or recursion, goes deep before backtracking, and also runs in O(V + E). Dijkstra's algorithm finds single-source shortest paths when every weight is non-negative by repeatedly finalizing the closest unvisited vertex and relaxing its outgoing edges, in O((V + E) log V) with a binary heap, while Bellman-Ford handles negative weights and detects negative cycles in O(V·E). A topological sort orders a DAG's vertices so every edge u→v puts u before v (Kahn's in-degree method or DFS finish order), and a minimum spanning tree connects every vertex of a weighted undirected graph at the lowest total weight (Kruskal adds the cheapest edge that doesn't form a cycle; Prim grows the tree from one vertex). Floyd-Warshall finds all-pairs shortest paths in O(V³).",
+      "points": [
+        "BFS = queue, level by level. DFS = stack or recursion, deep first. Both are O(V + E) with adjacency lists.",
+        "Dijkstra fails with negative edge weights; use Bellman-Ford there.",
+        "A topological order exists only for a DAG, and a DAG can have several valid orders.",
+        "Kruskal: O(E log E) with union-find. Prim: O(E log V) with a heap.",
+        "When tracing, follow the neighbor order the question gives (often alphabetical)."
+      ]
+    },
+    {
+      "title": "Algorithm strategies: recursion, greedy, dynamic programming, Huffman",
+      "eli5": "A greedy algorithm grabs whatever looks best right now, dynamic programming writes down the answer to each small subproblem so it never solves the same one twice, and divide and conquer splits a problem into independent halves.",
+      "detail": "A recursive algorithm needs a base case and a recursive case that moves toward it; without a reachable base case the recursion never stops and overflows the stack. Divide and conquer splits a problem into independent subproblems and combines their results, as merge sort, quicksort and binary search do. A greedy algorithm takes the locally best choice at each step, which is optimal for some problems (Huffman coding, Dijkstra, minimum spanning trees) but not others: making 6 from coins {1, 3, 4} greedily gives 4 + 1 + 1 (three coins) instead of 3 + 3 (two). Dynamic programming fits problems with overlapping subproblems and optimal substructure; storing results top-down (memoization) or bottom-up (tabulation) cuts naive recursive Fibonacci from exponential time to O(n). Huffman coding builds a prefix-free code by repeatedly merging the two lowest-frequency nodes with a priority queue, so frequent symbols get short codes, while a heuristic trades guaranteed optimality for speed.",
+      "points": [
+        "2026 passers single out Chapter 11 (Huffman, heuristics, greedy, dynamic programming) and Chapter 1 as the most important (reported).",
+        "Huffman: total bits = Σ(frequency × code length), which also equals the sum of the merged node weights. Building the tree takes O(n log n).",
+        "Naive recursive Fibonacci takes exponential time (O(2ⁿ) is an upper bound); memoized or bottom-up Fibonacci is O(n).",
+        "Divide and conquer uses independent subproblems; dynamic programming reuses overlapping ones.",
+        "Recursion costs O(depth) stack space."
+      ]
+    },
+    {
+      "title": "Python for C949",
+      "eli5": "The exam shows short Python snippets and asks what they do or cost, so you need to read Python like a recipe and know what each built-in step costs.",
+      "detail": "2026 V5 takers report more Python syntax and trivia than they expected, so know the core built-ins cold. A Python list is a dynamic array: indexing and <code>len()</code> are O(1), <code>append()</code> is amortized O(1) and <code>pop()</code> from the end is O(1), but <code>insert(k, x)</code>, <code>pop(k)</code> and <code>del l[k]</code> cost O(n − k), <code>x in l</code> is O(n), and <code>sort()</code> is O(n log n) and stable. CPython's <code>dict</code> is a resizable hash table: getting, setting, deleting and <code>key in d</code> average O(1) but can degrade to O(n) when keys collide; keys must be immutable (strings, numbers and tuples of those, never lists), and dicts keep insertion order. A <code>set</code> is a hash table too, with average O(1) membership plus <code>|</code> (union), <code>&amp;</code> (intersection), <code>-</code> (difference) and <code>^</code> (symmetric difference). Use <code>collections.deque</code> for O(1) work at both ends and <code>heapq</code> for a min-heap.",
+      "points": [
+        "List methods to know: <code>append</code>, <code>extend</code>, <code>insert</code>, <code>remove</code>, <code>pop</code>, <code>clear</code>, <code>index</code>, <code>count</code>, <code>sort</code>, <code>reverse</code>, <code>copy</code>.",
+        "<code>sorted(x)</code> returns a new list; <code>x.sort()</code> sorts in place and returns <code>None</code>. Both are stable.",
+        "Slicing <code>l[i:j]</code> copies j − i items, so it costs O(j − i). <code>//</code> is floor division and <code>%</code> is the remainder (hash functions use it).",
+        "Tuples are immutable and can be dict keys; lists are mutable and can't.",
+        "Classes: <code>__init__</code> sets up a new object and every method takes <code>self</code> first; linked lists and trees are built from small node classes.",
+        "Each recursive call adds a stack frame, and very deep recursion raises <code>RecursionError</code>."
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Growth ladder",
+      "value": "O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ) &lt; O(n!)",
+      "note": "At n = 1,000: log₂ n ≈ 10, n log₂ n ≈ 10,000, n² = 1,000,000."
+    },
+    {
+      "label": "O, Ω and Θ",
+      "value": "O = upper bound; Ω = lower bound; Θ = tight bound (both O and Ω)",
+      "note": "Best, average and worst case say which input you analyze; that's a separate question."
+    },
+    {
+      "label": "Big-O shortcuts",
+      "value": "Drop constants and lower-order terms; sequential blocks add (the largest wins); nested loops multiply; a loop whose variable doubles or halves runs O(log n) times"
+    },
+    {
+      "label": "Common recurrences",
+      "value": "T(n/2) + O(1) → O(log n); 2T(n/2) + O(n) → O(n log n); T(n − 1) + O(1) → O(n); T(n − 1) + O(n) → O(n²)",
+      "note": "Binary search, merge sort, simple linear recursion, quicksort's worst case."
+    },
+    {
+      "label": "Linear search",
+      "value": "Best O(1); average and worst O(n); works on unsorted data and linked lists"
+    },
+    {
+      "label": "Binary search",
+      "value": "O(log n); needs sorted data with index access; at most ⌊log₂ n⌋ + 1 comparisons",
+      "note": "<code>mid = (low + high) // 2</code>, then <code>low = mid + 1</code> or <code>high = mid - 1</code>."
+    },
+    {
+      "label": "Selection sort",
+      "value": "Θ(n²) in every case; at most n − 1 swaps; in place; not stable"
+    },
+    {
+      "label": "Insertion sort",
+      "value": "Best O(n) on sorted input; average and worst O(n²); in place; stable"
+    },
+    {
+      "label": "Bubble sort",
+      "value": "O(n²); best O(n) only with an early-exit check; in place; stable"
+    },
+    {
+      "label": "Shell sort",
+      "value": "Depends on the gap sequence (O(n²) worst with n/2, n/4, …, 1 gaps); in place; not stable"
+    },
+    {
+      "label": "Quicksort",
+      "value": "Average O(n log n); worst O(n²); O(log n) average stack space; not stable",
+      "note": "The worst case comes from pivots that are always the smallest or largest, such as a first-element pivot on sorted input."
+    },
+    {
+      "label": "Merge sort",
+      "value": "O(n log n) in every case; O(n) extra space; stable"
+    },
+    {
+      "label": "Heap sort",
+      "value": "O(n log n) in every case; O(1) extra space; not stable"
+    },
+    {
+      "label": "Radix and bucket sort",
+      "value": "LSD radix: O(n·d) for d-digit keys, stable, no comparisons. Bucket: O(n + k) on average with evenly spread keys, O(n²) worst",
+      "note": "No comparison sort can beat O(n log n) in the worst or average case."
+    },
+    {
+      "label": "Stable or not",
+      "value": "Stable: insertion, bubble, merge, LSD radix, Python's sort. Not stable: selection, shell, quick, heap"
+    },
+    {
+      "label": "Array vs linked list",
+      "value": "Array: index O(1); insert or delete at i O(n). Linked list: index and search O(n); insert or remove at a node you hold O(1)",
+      "note": "Singly linked removal needs the predecessor; a doubly linked list can remove a node it holds directly."
+    },
+    {
+      "label": "Stack, queue, deque",
+      "value": "Stack: push, pop, peek O(1), LIFO. Queue: enqueue, dequeue O(1), FIFO. Deque: O(1) at both ends"
+    },
+    {
+      "label": "Load factor",
+      "value": "α = n / N (items ÷ buckets)",
+      "note": "Chaining allows α &gt; 1; open addressing needs α ≤ 1 and resizes past a threshold."
+    },
+    {
+      "label": "Probe sequences",
+      "value": "Linear: (h + i) % N. Quadratic: (h + c₁·i + c₂·i²) % N. Double hashing: (h₁(k) + i·h₂(k)) % N"
+    },
+    {
+      "label": "Hash table costs",
+      "value": "Search, insert, delete: O(1) average, O(n) worst (every key collides); a resize reinserts everything in O(n)"
+    },
+    {
+      "label": "BST costs",
+      "value": "Search, insert, remove: O(h), so O(log n) when balanced and O(n) worst (sorted inserts build a chain); AVL and red-black: O(log n) worst"
+    },
+    {
+      "label": "Tree traversals",
+      "value": "Pre-order: node, left, right. In-order: left, node, right (sorted for a BST). Post-order: left, right, node. Level-order: breadth-first with a queue"
+    },
+    {
+      "label": "AVL rotations",
+      "value": "Balance factor must stay −1, 0 or +1. LL → right; RR → left; LR → left at the child, then right; RL → right at the child, then left"
+    },
+    {
+      "label": "Red-black rules",
+      "value": "Root is black; a red node has no red child; every path from a node to its null leaves has the same number of black nodes; height ≤ 2·log₂(n + 1)"
+    },
+    {
+      "label": "Binary heap",
+      "value": "0-based: children 2i + 1 and 2i + 2, parent (i − 1) // 2. Insert and remove-root O(log n); peek O(1); build-heap O(n)",
+      "note": "1-based: children 2i and 2i + 1, parent i // 2."
+    },
+    {
+      "label": "Graph representations",
+      "value": "Adjacency list: O(V + E) space, best for sparse graphs. Adjacency matrix: O(V²) space and an O(1) edge check, best for dense graphs"
+    },
+    {
+      "label": "Graph algorithm costs",
+      "value": "BFS, DFS, topological sort: O(V + E). Dijkstra: O((V + E) log V) with a heap. Bellman-Ford: O(V·E). Kruskal: O(E log E). Prim: O(E log V). Floyd-Warshall: O(V³)",
+      "note": "Dijkstra needs non-negative weights; Bellman-Ford also detects negative cycles."
+    },
+    {
+      "label": "Python list",
+      "value": "<code>l[k]</code>, <code>len</code>, <code>append</code> (amortized), <code>pop()</code>: O(1). <code>insert(k, x)</code>, <code>pop(k)</code>, <code>del l[k]</code>: O(n − k). <code>x in l</code>: O(n). <code>sort()</code>: O(n log n), stable",
+      "note": "Already sorted or reverse-sorted input takes only O(n) comparisons."
+    },
+    {
+      "label": "Python dict and set",
+      "value": "Resizable hash tables: get, set, delete and <code>in</code> average O(1), worst O(n); keys must be hashable; dicts keep insertion order"
+    },
+    {
+      "label": "Python deque and heapq",
+      "value": "<code>deque</code>: O(1) append and pop at both ends (<code>list.pop(0)</code> is O(n)). <code>heapq</code>: min-heap, <code>heap[0]</code> is the smallest, <code>heapify()</code> runs in linear time"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Set up: version, course plan and Chapter 1",
+      "tasks": [
+        "Confirm you're on the current version through the course banner or your instructor (the zyBook's Chapter 1 title only rules out the old V3), and make sure your pacing guide isn't the V4 one.",
+        "Complete the Course Planning Tool and review its report with your instructor; ask which zyBook chapters they flag for the OA.",
+        "Read zyBook Chapter 1 (data structures, algorithms, ADTs, efficiency) and start a one-page cheat sheet for the sort and data-structure tables.",
+        "Budget about 2 hours on weekdays and 4–5 on weekend days; recent passers needed roughly 2–4 weeks. New to Python? Add 3–5 days for the zyBook's Python chapters (reported as 12–18) before Day 2."
+      ]
+    },
+    {
+      "day": "Days 2-3",
+      "focus": "Searching and algorithm analysis (Chapter 2)",
+      "tasks": [
+        "Learn constant-time operations, growth rates, O, Ω and Θ, and best, average and worst case.",
+        "Work 10 loop snippets by hand: single, nested, doubling or halving, and back-to-back loops.",
+        "Trace binary search twice, writing low, mid and high at each step, and count the comparisons.",
+        "Write the recurrence and the stack-space cost for a few recursive functions; your C960 Big-O and recursion work carries over here."
+      ]
+    },
+    {
+      "day": "Days 4-6",
+      "focus": "Sorting (Chapter 3, plus heap, bubble and bucket sort)",
+      "tasks": [
+        "Trace selection, insertion, shell, quick, merge and radix sort one pass at a time on a 6-item list.",
+        "Fill in best, average and worst time, extra space and stability for every sort from memory until it's automatic.",
+        "Practice naming a sort from its pseudocode, its Python or the list after one pass.",
+        "Read the additional-material sorts (bubble, bucket, quickselect) and why quicksort can hit O(n²)."
+      ]
+    },
+    {
+      "day": "Days 7-8",
+      "focus": "Lists, stacks, queues and deques (Chapters 4-5)",
+      "tasks": [
+        "Trace pointer updates for inserting and removing at the head, middle and tail of singly and doubly linked lists, with and without dummy nodes.",
+        "Compare array-based and linked lists operation by operation.",
+        "Trace five mixed stack and queue sequences, and map Python's list and deque methods to the ADT operations."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Hash tables (Chapter 6)",
+      "tasks": [
+        "Insert key sequences with chaining, linear probing, quadratic probing and double hashing, and compute the load factor each time.",
+        "Learn removal markers, resizing and the zyBook's hash functions (modulo, mid-square, multiplicative string hashing, direct hashing).",
+        "Contrast cryptographic and table hashing, and read how Python's dict and set use hashing."
+      ]
+    },
+    {
+      "day": "Days 11-12",
+      "focus": "Trees, BSTs and tries (Chapter 7)",
+      "tasks": [
+        "Build BSTs from key sequences and write all four traversals for each.",
+        "Remove a leaf, a one-child node and a two-child node, once with the successor and once with the predecessor.",
+        "See how insertion order changes height, then review the set ADT and tries."
+      ]
+    },
+    {
+      "day": "Days 13-14",
+      "focus": "Balanced trees and heaps (Chapters 8-9)",
+      "tasks": [
+        "AVL: compute balance factors, name the rotation for LL, RR, LR and RL, and do three insert traces.",
+        "Memorize the red-black rules and why both trees guarantee O(log n).",
+        "Heaps: trace inserts and remove-max in array form, convert between tree and array views, and learn heap sort and the O(n) build-heap.",
+        "Skim treaps, plus B-trees and 2-3-4 trees if your zyBook includes them."
+      ]
+    },
+    {
+      "day": "Days 15-16",
+      "focus": "Graphs (Chapter 10)",
+      "tasks": [
+        "Build adjacency lists and matrices for small graphs and compare their space.",
+        "Produce BFS and DFS orders from a start vertex, and run Dijkstra by hand with a distance table.",
+        "Check whether given orders are valid topological orders, and learn Bellman-Ford, Kruskal, Prim and all-pairs shortest paths at the concept level."
+      ]
+    },
+    {
+      "day": "Day 17",
+      "focus": "Algorithm strategies (Chapter 11) and a Chapter 1 review",
+      "tasks": [
+        "Build two Huffman trees and compute the encoded size; compare greedy, dynamic programming, divide and conquer and heuristics.",
+        "Reread Chapter 1 (passers call Chapters 1 and 11 the most important) and learn the quality-factor definitions: maintainability, scalability, robustness."
+      ]
+    },
+    {
+      "day": "Day 18",
+      "focus": "Python details",
+      "tasks": [
+        "Work the later Python chapters your instructor flags (students cite 19–21).",
+        "Drill list, dict and set methods and costs, slicing, <code>//</code> and <code>%</code>, classes and <code>self</code>, recursion, and how dict is implemented.",
+        "Do this guide's practice set cold and log every miss."
+      ]
+    },
+    {
+      "day": "Day 19",
+      "focus": "Pre-assessment under exam conditions",
+      "tasks": [
+        "Take the PA in one sitting with only a whiteboard and a timer.",
+        "Read the coaching report by competency and log each miss as vocabulary, code reading or complexity."
+      ]
+    },
+    {
+      "day": "Days 20-21",
+      "focus": "Fix your misses",
+      "tasks": [
+        "Re-study the weakest competency in the zyBook and the matching instructor recording.",
+        "Redo every trace you got wrong and rewrite the complexity tables from memory.",
+        "Book the OA once you can explain why each PA option is right or wrong; if you can't yet, add 2–4 days and retake the PA."
+      ]
+    },
+    {
+      "day": "Day 22",
+      "focus": "Objective assessment",
+      "tasks": [
+        "Light review only: the tables and terminology.",
+        "Have a small whiteboard ready, and jot down the traversal orders, heap index formulas and sort table at the start.",
+        "Read every stem twice, and flag hard questions to revisit instead of stalling."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "What is the time complexity of this function in terms of n?<br><code>def count_steps(n):</code><br><code>    total = 0</code><br><code>    for i in range(n):</code><br><code>        j = 1</code><br><code>        while j &lt; n:</code><br><code>            total += 1</code><br><code>            j *= 2</code><br><code>    return total</code>",
+      "choices": [
+        "O(log n)",
+        "O(n)",
+        "O(n log n)",
+        "O(n²)"
+      ],
+      "answer": "O(n log n)",
+      "why": "The outer loop runs n times. Inside it, j takes the values 1, 2, 4, 8, … and the while loop stops once j ≥ n, so it runs ⌈log₂ n⌉ times (for n = 16: j = 1, 2, 4, 8, which is 4 = log₂ 16 iterations). Nested loops multiply: n × log₂ n, so the function is O(n log n). It isn't O(n²) because the inner loop doubles j instead of adding 1 to it."
+    },
+    {
+      "q": "What are the time and extra-space complexities of this function?<br><code>def total(n):</code><br><code>    if n == 0:</code><br><code>        return 0</code><br><code>    return n + total(n - 1)</code>",
+      "choices": [
+        "O(n) time, O(1) space",
+        "O(n) time, O(n) space",
+        "O(n²) time, O(n) space",
+        "O(log n) time, O(log n) space"
+      ],
+      "answer": "O(n) time, O(n) space",
+      "why": "Each call does O(1) work and makes one call on n − 1, so T(n) = T(n − 1) + O(1), which is O(n) time. No call finishes until the base case is reached: total(n) waits on total(n − 1), all the way down to total(0), so n + 1 stack frames are alive at once. Recursion depth is a space cost, giving O(n) extra space. A loop that adds 1 through n would use O(1) space."
+    },
+    {
+      "q": "Binary search the sorted list [3, 8, 15, 21, 27, 33, 40, 46, 52, 59, 64] for 40, starting with low = 0 and high = 10 and using <code>mid = (low + high) // 2</code>. Which elements are compared with 40, in order? What is the worst-case number of comparisons for a list of 11 items?",
+      "answer": "33, then 52, then 40 (found at index 6), so 3 comparisons. The worst case for 11 items is 4 comparisons.",
+      "why": "Step 1: low = 0, high = 10, mid = 5, value 33. Since 40 &gt; 33, set low = 6.<br>Step 2: low = 6, high = 10, mid = 8, value 52. Since 40 &lt; 52, set high = 7.<br>Step 3: low = 6, high = 7, mid = 13 // 2 = 6, value 40. Found.<br>Worst case: ⌊log₂ 11⌋ + 1 = 3 + 1 = 4 comparisons, because each comparison roughly halves the range that's left (11 items, then 5, then 2, then 1)."
+    },
+    {
+      "q": "Bubble sort makes one full left-to-right pass over [6, 2, 9, 4, 1, 7], swapping each adjacent pair that's out of ascending order. What does the list look like after that one pass?",
+      "choices": [
+        "[1, 2, 9, 4, 6, 7]",
+        "[2, 6, 9, 4, 1, 7]",
+        "[2, 6, 4, 1, 7, 9]",
+        "[1, 2, 4, 6, 7, 9]"
+      ],
+      "answer": "[2, 6, 4, 1, 7, 9]",
+      "why": "Compare neighbors left to right: 6 &gt; 2, swap: [2, 6, 9, 4, 1, 7]. 6 &lt; 9, keep. 9 &gt; 4, swap: [2, 6, 4, 9, 1, 7]. 9 &gt; 1, swap: [2, 6, 4, 1, 9, 7]. 9 &gt; 7, swap: [2, 6, 4, 1, 7, 9]. The largest value bubbles to the end on each pass. The other choices are one pass of different sorts: [1, 2, 9, 4, 6, 7] is selection sort (the minimum, 1, swapped into index 0), [2, 6, 9, 4, 1, 7] is insertion sort's first pass, and the last choice is the fully sorted list."
+    },
+    {
+      "q": "Which sorting algorithm guarantees O(n log n) time even in the worst case and sorts in place with O(1) extra space, but is <b>not</b> stable?",
+      "choices": [
+        "Merge sort",
+        "Quicksort",
+        "Insertion sort",
+        "Heap sort"
+      ],
+      "answer": "Heap sort",
+      "why": "Heap sort builds a heap in O(n), then does n − 1 remove-max steps at O(log n) each, so it's O(n log n) in every case, and it works inside the array. Its long-distance swaps can reorder equal keys, so it isn't stable. Merge sort is O(n log n) and stable but needs O(n) extra space; quicksort's worst case is O(n²); insertion sort is O(n²) in the average and worst cases."
+    },
+    {
+      "q": "Start with an empty queue Q and an empty stack S, then run these operations in order:<br><code>Q.enqueue(1); Q.enqueue(2); Q.enqueue(3)</code><br><code>S.push(Q.dequeue()); S.push(Q.dequeue())</code><br><code>Q.enqueue(S.pop()); Q.enqueue(S.pop())</code><br>What does Q hold, from front to back?",
+      "choices": [
+        "1, 2, 3",
+        "3, 2, 1",
+        "3, 1, 2",
+        "2, 1, 3"
+      ],
+      "answer": "3, 2, 1",
+      "why": "After the enqueues, Q = [1, 2, 3] with 1 at the front. The two dequeues return 1 and then 2, which are pushed, so S = [1, 2] with 2 on top and Q = [3]. The first pop returns 2 (last in, first out), and it's enqueued behind 3: Q = [3, 2]. The second pop returns 1: Q = [3, 2, 1]."
+    },
+    {
+      "q": "A hash table has 10 buckets (indexes 0–9), uses h(key) = key % 10 and resolves collisions with linear probing. Insert 15, 25, 36, 45, 9 and 19, in that order. Where does each key land, how many buckets are examined to insert 45, and what is the load factor afterward?",
+      "answer": "15 at index 5, 25 at 6, 36 at 7, 45 at 8, 9 at 9 and 19 at 0. Inserting 45 examines 4 buckets (5, 6, 7, 8). The load factor is 6/10 = 0.6.",
+      "why": "15 % 10 = 5, which is empty. 25 % 10 = 5 is taken, so try 6, which is empty. 36 % 10 = 6 is taken (by 25), so try 7. 45 % 10 = 5: buckets 5, 6 and 7 are taken, so it lands in 8 after examining 4 buckets. 9 % 10 = 9, which is empty. 19 % 10 = 9 is taken, and the next index wraps around: (9 + 1) % 10 = 0, which is empty. Notice the run of filled buckets at 5–8: that's primary clustering, which quadratic probing and double hashing reduce. Load factor α = 6 items ÷ 10 buckets = 0.6."
+    },
+    {
+      "q": "How is a Python <code>dict</code> implemented in CPython, and what is the average cost of looking up <code>d[key]</code>?",
+      "choices": [
+        "A resizable hash table; O(1) on average",
+        "A balanced binary search tree; O(log n)",
+        "A sorted list searched with binary search; O(log n)",
+        "A linked list of key-value pairs; O(n)"
+      ],
+      "answer": "A resizable hash table; O(1) on average",
+      "why": "The Python FAQ says CPython's dictionaries are resizable hash tables: the key's <code>hash()</code> picks a slot in an internal array, so lookups, inserts and deletes average O(1), degrading to O(n) only when keys collide heavily. That's also why keys must be immutable: a list can't be a key, but a tuple of numbers or strings can. A <code>set</code> works the same way, so <code>x in my_set</code> averages O(1) while <code>x in my_list</code> is O(n)."
+    },
+    {
+      "q": "Insert 40, 20, 60, 10, 30, 50, 70, 25, 35 (in that order) into an empty binary search tree. What is its post-order traversal?",
+      "choices": [
+        "40, 20, 10, 30, 25, 35, 60, 50, 70",
+        "10, 20, 25, 30, 35, 40, 50, 60, 70",
+        "40, 20, 60, 10, 30, 50, 70, 25, 35",
+        "10, 25, 35, 30, 20, 50, 70, 60, 40"
+      ],
+      "answer": "10, 25, 35, 30, 20, 50, 70, 60, 40",
+      "why": "The tree: 40 is the root with children 20 and 60; 20 has children 10 and 30; 30 has children 25 and 35; 60 has children 50 and 70. Post-order visits the left subtree, then the right subtree, then the node, so every parent comes after its children and the root (40) comes last: 10, 25, 35, 30, 20, then 50, 70, 60, then 40. The other choices are the same tree's pre-order (node, left, right), in-order (sorted, for a BST) and level-order (breadth-first) traversals."
+    },
+    {
+      "q": "A BST has root 40 with children 20 and 60; 20 has children 10 and 30; 30 has children 25 and 35; 60 has children 50 and 70. You remove 20 by replacing it with its in-order successor. Which key takes 20's place, and what is the new pre-order traversal?",
+      "choices": [
+        "30; pre-order 40, 30, 10, 25, 35, 60, 50, 70",
+        "25; pre-order 40, 25, 10, 30, 35, 60, 50, 70",
+        "10; pre-order 40, 10, 30, 25, 35, 60, 50, 70",
+        "35; pre-order 40, 35, 10, 30, 25, 60, 50, 70"
+      ],
+      "answer": "25; pre-order 40, 25, 10, 30, 35, 60, 50, 70",
+      "why": "20 has two children, so find its in-order successor: step into its right subtree (30), then go left as far as possible, which reaches 25. Copy 25 into 20's node and remove the old 25, which is a leaf. Now 40 has children 25 and 60; 25 has children 10 and 30; 30 has only a right child, 35. Pre-order (node, left, right) gives 40, 25, 10, 30, 35, 60, 50, 70. Using the in-order predecessor (the rightmost node of the left subtree) would promote 10 instead, which is the third choice."
+    },
+    {
+      "q": "Insert 30, 10 and 20, in that order, into an empty AVL tree. Which rotation or rotations restore balance?",
+      "choices": [
+        "A single right rotation at 30",
+        "A single left rotation at 10",
+        "A left rotation at 10, then a right rotation at 30",
+        "A right rotation at 10, then a left rotation at 30"
+      ],
+      "answer": "A left rotation at 10, then a right rotation at 30",
+      "why": "After the inserts, 10 is 30's left child and 20 is 10's right child. Node 30's balance factor is height(left) − height(right) = 2 − 0 = +2, and the new key went into the left child's right subtree: the left-right (LR) case. A left rotation at 10 turns the shape into a straight left chain (30, 20, 10), and a right rotation at 30 then makes 20 the root with children 10 and 30. A single right rotation at 30 would only make 10 the root with 30 as its right child and 20 under 30, which is the mirror-image imbalance."
+    },
+    {
+      "q": "The max-heap array is [90, 70, 80, 30, 60, 50], with the root at index 0. Insert 85. What is the array afterward?",
+      "choices": [
+        "[90, 70, 80, 30, 60, 50, 85]",
+        "[85, 70, 90, 30, 60, 50, 80]",
+        "[90, 85, 80, 70, 60, 50, 30]",
+        "[90, 70, 85, 30, 60, 50, 80]"
+      ],
+      "answer": "[90, 70, 85, 30, 60, 50, 80]",
+      "why": "85 goes into the next open slot, index 6. Its parent is at (6 − 1) // 2 = 2, which holds 80. Since 85 &gt; 80, they swap: [90, 70, 85, 30, 60, 50, 80]. Now at index 2, the parent is (2 − 1) // 2 = 0, which holds 90. Since 85 &lt; 90, it stops. Removing the max next would move the last item (80) to the root and sift it down by swapping with its larger child (85), giving [85, 70, 80, 30, 60, 50]."
+    },
+    {
+      "q": "An undirected graph has these adjacency lists, each in alphabetical order: A: B, C, D; B: A, E; C: A, F; D: A, F; E: B, G; F: C, D, G; G: E, F. In what order does a recursive depth-first search starting at A visit the vertices?",
+      "choices": [
+        "A, B, E, G, F, C, D",
+        "A, B, C, D, E, F, G",
+        "A, B, E, G, F, D, C",
+        "A, D, F, G, E, B, C"
+      ],
+      "answer": "A, B, E, G, F, C, D",
+      "why": "DFS follows the first unvisited neighbor as deep as it can: A, then B, then E (A is already visited), then G, then F. At F the first unvisited neighbor is C; C's neighbors (A and F) are visited, so it backs up to F and visits D. Backing up through G, E, B and A finds nothing new. The second choice is the breadth-first order (level by level with a queue), the third visits D before C at F, which breaks the alphabetical order, and the fourth takes neighbors in reverse order."
+    },
+    {
+      "q": "A directed graph has these weighted edges: A→B 2, A→C 6, B→C 3, B→D 8, C→D 2, C→E 7, D→E 1. Using Dijkstra's algorithm from A, what is the shortest distance to E?",
+      "choices": [
+        "11",
+        "8",
+        "12",
+        "9"
+      ],
+      "answer": "8",
+      "why": "Start with A = 0 and every other vertex at ∞. Finalize A: B = 2, C = 6. Finalize B (2): C = min(6, 2 + 3) = 5 and D = 2 + 8 = 10. Finalize C (5): D = min(10, 5 + 2) = 7 and E = 5 + 7 = 12. Finalize D (7): E = min(12, 7 + 1) = 8. Finalize E (8). The shortest path is A→B→C→D→E, 2 + 3 + 2 + 1 = 8. The other choices are real but longer paths: A→C→D→E = 9, A→B→D→E = 11 and A→B→C→E = 12."
+    },
+    {
+      "q": "A 12-character message uses four symbols with these frequencies: A = 1, B = 2, C = 3, D = 6. Huffman coding repeatedly merges the two lowest-frequency nodes. How many bits does the Huffman-encoded message take?",
+      "choices": [
+        "24",
+        "18",
+        "21",
+        "12"
+      ],
+      "answer": "21",
+      "why": "Merge A (1) and B (2) into a node of weight 3. The two smallest are now C (3) and that AB node (3), so merge them into 6. Merge that with D (6) to make the root, 12. Each symbol's code length is its depth: D = 1 bit, C = 2, A = 3, B = 3. Total = 6×1 + 3×2 + 1×3 + 2×3 = 6 + 6 + 3 + 6 = 21 bits, which also equals the sum of the merged weights (3 + 6 + 12). A fixed 2-bit code for four symbols would need 12 × 2 = 24 bits."
+    }
+  ],
+  "pitfalls": [
+    "Studying the wrong version. Many popular study guides and flashcard sets predate V5, and a 'C949 v4' pacing guide was still in one student's course resources in Aug 2026. Confirm your version with the course banner or your instructor before trusting community material.",
+    "Memorizing the pre-assessment. Retaking the PA until you recognize its items feels like readiness, but one student who memorized the V3/V4 PA answers then failed the OA by a wider margin than before. Make sure you can explain why each option is right or wrong.",
+    "Skimming the zyBook. The text is dense, and several 2026 failures trace back to skimming or skipping it. Work the activities and hand-trace the examples.",
+    "Underestimating Python. V5 takers report more Python syntax and built-in questions than they expected. If Python is new to you, do the zyBook's Python chapters first.",
+    "Treating Big-O as 'the worst case.' O, Ω and Θ are bounds; best, average and worst are input cases. Expect questions on each, such as a sort's best-case bound.",
+    "Mixing up stability and space. Selection, shell, quick and heap sort aren't stable; merge sort is stable but needs O(n) extra space; heap sort sorts in place.",
+    "Classic complexity traps: quicksort's worst case is O(n²); hash tables and unbalanced BSTs are O(n) in the worst case; build-heap is O(n); binary search needs sorted data; Dijkstra fails with negative weights; <code>list.pop(0)</code> is O(n); and a linked list's 'O(1) insert' assumes you already hold the node (finding it is O(n)).",
+    "Convention slips: 0- vs 1-based heap indexes, height counted in edges vs nodes, successor vs predecessor in BST removal, and the quicksort pivot rule. Use the convention the question states, and otherwise your zyBook's.",
+    "Rushing the wording. 2026 takers say tricky phrasing and near-miss choices cause more misses than hard content, so reread each stem for best, worst, average, stable, in place, NOT and 'always'.",
+    "Buying 'actual exam question' listings. Their accuracy is unknown, and using them risks an academic-integrity violation; the pre-assessment and your own traces are better practice."
+  ],
+  "resources": [
+    {
+      "label": "WGU zyBook for C949 (in the course)",
+      "kind": "official",
+      "note": "The core resource. Students report the DSA content is in Chapters 1–11, Python fundamentals follow, and instructors flag later Python chapters (students cite 19–21). Do the activities and labs instead of skimming."
+    },
+    {
+      "label": "Pre-assessment and coaching report (in the course)",
+      "kind": "practice",
+      "note": "On the current version it's reported to match the OA's difficulty and style. Use it as your readiness check and study every miss; don't memorize its answers."
+    },
+    {
+      "label": "Course Planning Tool and the Quizzets on WGU Connect",
+      "kind": "practice",
+      "note": "The newest thread (Nov 2026) favors the Course Planning Tool questions for targeted study, and one Aug 2026 passer treated 85% or more on the Quizzets, without looking anything up, as a sign of readiness."
+    },
+    {
+      "label": "Instructor cohort and webinar recordings (in the course)",
+      "kind": "video",
+      "note": "2026 passers recommend Dr. Christian Youngblood's recorded sessions (trees, heaps and hash tables; sorting; time complexities; balanced trees; data structures; graphs) and Jack Lusby's video series covering Chapters 1–11, and instructors also meet one-on-one."
+    },
+    {
+      "label": "Flashcard sets in the course's Additional Resources",
+      "kind": "official",
+      "note": "A 2024 post mentions two flashcard sets linked there. They're useful for terminology; check that they're still there and match your version."
+    },
+    {
+      "label": "Python docs: Time complexity of operations on built-in types",
+      "url": "https://docs.python.org/3/builtins/time-complexity.html",
+      "kind": "official",
+      "note": "Official costs for list, set and dict operations, including the O(n) worst case for dict and set."
+    },
+    {
+      "label": "Python FAQ: How are dictionaries implemented in CPython?",
+      "url": "https://docs.python.org/3/faq/design.html#how-are-dictionaries-implemented-in-cpython",
+      "kind": "official",
+      "note": "A short official answer to a reported OA detail: dicts are resizable hash tables."
+    },
+    {
+      "label": "Python tutorial: Data Structures",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html",
+      "kind": "official",
+      "note": "List methods, lists as stacks, deque for queues, tuples, sets and dictionaries in one chapter."
+    },
+    {
+      "label": "Big-O Cheat Sheet",
+      "url": "https://www.bigocheatsheet.com/",
+      "kind": "tool",
+      "note": "2026 passers memorized its tables. Where it differs from your zyBook (shell sort, for example), go with the zyBook."
+    },
+    {
+      "label": "A Common-Sense Guide to Data Structures and Algorithms (Jay Wengrow)",
+      "kind": "community",
+      "note": "A book 2026 passers recommend for intuition; one Sep 2026 passer read all of it before starting the zyBook."
+    },
+    {
+      "label": "YouTube: BroCode and Rob Edwards",
+      "kind": "video",
+      "note": "Named by a Feb 2026 passer for visual explanations of sorts and data structures."
+    },
+    {
+      "label": "Algorithm visualizers (VisuAlgo, USFCA Data Structure Visualizations)",
+      "kind": "tool",
+      "note": "Animate sorts, heaps, BSTs, AVL trees and hashing so you can check your hand traces. This is a study suggestion, not something 2026 posters mention."
+    }
+  ],
+  "community": {
+    "summary": "Posts from 2026 agree that C949 is one of the hardest, most memorization-heavy courses in the CS and software engineering programs, and that the version launched in January 2026 (V5) is better organized, with a pre-assessment that closely tracks the OA. Recent passers took about 2–4 weeks: they worked the zyBook's core chapters with hand traces, watched the recorded instructor webinars, memorized a Big-O table for every sort, search and structure, and drilled extra practice questions, some AI-generated. The newest thread (Nov 2026) favors targeted practice such as the Course Planning Tool questions over reading every zyBook page, while 2025–2026 comments warn that students who skipped the zyBook failed or nearly failed, so work the core chapters rather than skimming or skipping them. Reported failures come from skimming, memorizing PA answers, weak Python and tricky wording.",
+    "coverage": "20 posts, Nov 2024 - Nov 2026, r/wgu_devs, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "Looking for advice from those who passed the v5 OA of C949 Data Structures and Algorithms I",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1xsf14j/looking_for_advice_from_those_who_passed_the_v5/",
+        "date": "Nov 2026",
+        "takeaway": "Commenters who passed V5 in about 18 days stress Big-O time and space complexity and reading pseudocode, and favor the Course Planning Tool questions over reading every zyBook page (summarized through Gemini)."
+      },
+      {
+        "title": "Passed C949 on attempt 1!",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1wjbplx/passed_c949_on_attempt_1/",
+        "date": "Sep 2026",
+        "takeaway": "A V5 pass after about 4 weeks at roughly 15 hours a week (the poster thinks 2–3 weeks would do): the PA mirrored the OA, there was more Python trivia than expected and no space-complexity questions, so learn O and Ω for every sort and search."
+      },
+      {
+        "title": "Data Structures and Algorithms I (C949) this class...",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1w1a6n0/data_structures_and_algorithms_i_c949this_class/p6q77jx/",
+        "date": "Aug 2026",
+        "takeaway": "A commenter suggests asking to move to V5, saying its PA resembled the OA and its zyBook is better organized."
+      },
+      {
+        "title": "Almost there",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1vp9v77/almost_there/",
+        "date": "Aug 2026",
+        "takeaway": "Commenters describe about 10 days of deep study at 4–8 hours a day; one failed the first attempt after skimming the material."
+      },
+      {
+        "title": "Any tips for DSA I C949?",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1vohb2z/any_tips_for_dsa_i_c949/",
+        "date": "Aug 2026",
+        "takeaway": "An instructor reportedly said zyBook Chapters 1–11 plus 19–21 cover about 90% of the OA. One passer used the Quizzets as a readiness gauge (85% or more without lookups) and finished the 70-question exam in about half an hour."
+      },
+      {
+        "title": "Failed C949 four times!",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1vcfdm3/failed_c949_four_times/",
+        "date": "Aug 2026",
+        "takeaway": "The replies say to start with Chapters 1 and 11, memorize a Big-O cheat sheet, learn the sorts deeply and ask for instructor worksheets and meetings, and one taker counted about 4 questions on maintainability, scalability and robustness."
+      },
+      {
+        "title": "Passed C949 First Attempt",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1ulyhtc/passed_c949_first_attempt/",
+        "date": "Jul 2026",
+        "takeaway": "About 2 weeks while working full time, using zyBook Chapters 8–11, the instructor webinar recordings and AI-made practice questions; know BST traversals, the sorts and hash collisions (chaining, linear probing). The proctor refused scratch paper, and the poster says a small whiteboard would have helped."
+      },
+      {
+        "title": "C949 passed — second attempt done!",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ul7g9b/c949_passed_second_attempt_done/",
+        "date": "Jul 2026",
+        "takeaway": "Even basic concepts are worded trickily on the OA, so real understanding beats familiarity (summarized through Gemini)."
+      },
+      {
+        "title": "How normal is it to be pu tin C949 Data structures and algorithms, before Python?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tw08vv/how_normal_is_it_to_be_pu_tin_c949_data/",
+        "date": "Jun 2026",
+        "takeaway": "C949 has no formal prerequisite and the zyBook supplies the Python; one commenter needed about 2 weeks of light prep and recommends taking both discrete math courses first."
+      },
+      {
+        "title": "Data Structures And Algorithms C949..passed FINALLY",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1stzydr/data_structures_and_algorithms_c949passed_finally/",
+        "date": "Apr 2026",
+        "takeaway": "Passed in 30 days including a retake: instructor videos, then zyBook Chapters 1–11 and 19–21, then cohort recordings and a memorized Big-O cheat sheet. Topics included linked lists, trees, heaps, tries, hash tables, greedy algorithms, dynamic programming and Huffman coding."
+      },
+      {
+        "title": "C949 DSA1",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s2gcuh/c949_dsa1/",
+        "date": "Mar 2026",
+        "takeaway": "The DSA content sits in zyBook Chapters 1–11 and Python fundamentals in 12–18; commenters say to do the Python chapters first if you're new to Python."
+      },
+      {
+        "title": "Passed C949 just barely.",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s09ubc/passed_c949_just_barely/",
+        "date": "Mar 2026",
+        "takeaway": "Counted 77 questions with no filler and many Python syntax items, and warns that the zyBook is dense, so read it carefully."
+      },
+      {
+        "title": "Passed C949 - Data Structures and Algorithms I - v5 On The First Attempt In 16 Days",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1rkwfry/passed_c949_data_structures_and_algorithms_i_v5/",
+        "date": "Mar 2026",
+        "takeaway": "The post body was removed, but the title records a first-attempt V5 pass in 16 days."
+      },
+      {
+        "title": "Passed C949 Data Structures and Algorithms. First attempt",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1rgpqr9/passed_c949_data_structures_and_algorithms_first/",
+        "date": "Feb 2026",
+        "takeaway": "A V4 pass with the zyBook: Big-O was everywhere, and Discrete Math II made the time-complexity material easier."
+      },
+      {
+        "title": "Wgu C949",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1rfkb25/wgu_c949/",
+        "date": "Feb 2026",
+        "takeaway": "After moving to V5, the poster found its PA harder than V4's and said applying definitions to tricky word problems was their biggest weakness."
+      },
+      {
+        "title": "C949 V4 vs V5",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rev7k5/c949_v4_vs_v5/",
+        "date": "Feb 2026",
+        "takeaway": "A new-term welcome email announced V5 and suggested discussing a switch with the mentor; an Apr 2026 comment says WGU IT confirmed failed attempts don't reset with the switch."
+      },
+      {
+        "title": "C949 DSA 1 v4 to v5",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1r39j14/c949_dsa_1_v4_to_v5/",
+        "date": "Feb 2026",
+        "takeaway": "After failing V3 once and V4 twice, the poster had memorized the PA answers and still failed the OA by a wider margin: learn the concepts, not the items."
+      },
+      {
+        "title": "C949 v4 —> v5",
+        "subreddit": "r/wgu_devs",
+        "url": "https://www.reddit.com/r/wgu_devs/comments/1qyvm29/c949_v4_v5/",
+        "date": "Feb 2026",
+        "takeaway": "Switched from V4 to V5 and passed: the V5 text builds from lists to singly and doubly linked lists step by step, and the V5 PA was about as hard as the OA."
+      },
+      {
+        "title": "Updated PA/OA for C949 1/5/26",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1q8lltv/updated_paoa_for_c949_1526/",
+        "date": "Jan 2026",
+        "takeaway": "Reports that WGU overhauled the PA and OA on Jan 5, 2026, bringing the PA much closer to the real exam, so older warnings that the two don't line up are outdated (summarized through Gemini)."
+      },
+      {
+        "title": "C949 Data Structures and Algorithms PASSED - Suggestions",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ggr9i9/",
+        "date": "Nov 2024",
+        "takeaway": "An older post whose 2025–2026 comments matter: the newer version leans on the zyBook (students who skipped it failed or nearly failed), so read Chapters 1–11 and 19–20 and memorize best, average, worst and space complexities, binary-search steps, which structures implement which ADTs, and Python details such as how a dict is implemented."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU B.S. Computer Science Program Guidebook (catalog 202611, PDF)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU B.S. Computer Science degree page",
+      "url": "https://www.wgu.edu/online-it-degrees/computer-science.html"
+    },
+    {
+      "label": "zyBooks: Data Structures in Pseudocode with Python Examples (table of contents)",
+      "url": "https://www.zybooks.com/?p=11796"
+    },
+    {
+      "label": "Python docs: Time complexity of operations on built-in types",
+      "url": "https://docs.python.org/3/builtins/time-complexity.html"
+    },
+    {
+      "label": "Python FAQ: How are dictionaries implemented in CPython?",
+      "url": "https://docs.python.org/3/faq/design.html#how-are-dictionaries-implemented-in-cpython"
+    },
+    {
+      "label": "Python tutorial: Data Structures",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html"
+    },
+    {
+      "label": "Python docs: collections.deque",
+      "url": "https://docs.python.org/3/library/collections.html#collections.deque"
+    },
+    {
+      "label": "Python docs: heapq (heap queue algorithm)",
+      "url": "https://docs.python.org/3/library/heapq.html"
+    },
+    {
+      "label": "Python Sorting HOWTO (sort stability)",
+      "url": "https://docs.python.org/3/howto/sorting.html"
+    },
+    {
+      "label": "Big-O Cheat Sheet",
+      "url": "https://www.bigocheatsheet.com/"
+    },
+    {
+      "label": "Wikipedia: Sorting algorithm (complexity and stability table)",
+      "url": "https://en.wikipedia.org/wiki/Sorting_algorithm"
+    },
+    {
+      "label": "Wikipedia: Binary heap",
+      "url": "https://en.wikipedia.org/wiki/Binary_heap"
+    },
+    {
+      "label": "Wikipedia: Hash table",
+      "url": "https://en.wikipedia.org/wiki/Hash_table"
+    },
+    {
+      "label": "Rick's Dev Blog: passing C949 (Dec 2024, V4-era OA report)",
+      "url": "https://blog.rickp.dev/%E2%9C%85-passed-data-structures-algorithms-c949/"
+    }
+  ],
+  "caveats": [
+    "Some community posts here were summarized through Google Gemini and not opened directly (the Nov 2026 V5 advice thread, the Jul 2026 'second attempt' post and the Jan 2026 'Updated PA/OA' post), so treat their details as reported, not verified.",
+    "WGU publishes no changelog for C949. The January 2026 launch of V5 comes from student posts, and the Jan 5 date from a single post. A Jul 2026 comment also mentions a pop-up announcing a new PA/OA that the instructor tied to the V4-to-V5 transition, so check the course announcements when you start.",
+    "Question count, time limit and passing score aren't published. The numbers here are student reports: about 70–77 questions in 2026, and 90 minutes reported for V4 in 2024.",
+    "Space complexity on the V5 OA is unresolved: a Sep 2026 passer saw none, while Nov 2026 and 2025–2026 reports say to know it. Study both time and space.",
+    "Attempts after a version switch: reports conflict. A Feb 2026 student said switching reset their attempts, and an Apr 2026 commenter said WGU IT confirmed failed attempts don't reset. One Apr 2026 post, summarized through Gemini and not confirmed elsewhere, says the system's counter resets but instructors still count earlier failures toward approval limits. Ask your instructor if this matters to you.",
+    "Chapter numbers (1–11 for DSA, 12–18 for Python fundamentals, 19–21 flagged by instructors) are student reports about WGU's custom zyBook, whose table of contents isn't public; this guide's topic list follows the commercial edition's table of contents. Whether B-trees, treaps, Bellman-Ford and Floyd-Warshall are assessed is unknown.",
+    "Conventions such as the quicksort pivot rule, successor vs predecessor in BST removal, the AVL balance-factor sign and heap indexing vary between sources. When they differ, follow your zyBook.",
+    "The online-proctoring advice (a small whiteboard, no scratch paper) comes from student reports; WGU's own proctoring pages couldn't be opened for this guide, so confirm the current rules before exam day.",
+    "Community coverage is thinner for Oct–Nov 2026, and many 2026 posts were removed by Reddit (titles only)."
+  ]
+}

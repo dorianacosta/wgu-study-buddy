@@ -1,0 +1,827 @@
+{
+  "code": "D682",
+  "summary": "D682 is a performance assessment built around one Python machine-learning project: you build a baseline model on a dataset WGU provides, optimize it, then write about its data assumptions and how to adapt and deploy it. Students in 2026 report four tasks that must pass in order, an already-clean dataset, a write-up after every task, and more writing than coding. Grading follows a loose rubric and evaluators vary, so mirror the rubric, show a clean before/after comparison, and cite sources in APA style.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (four-task Python ML project with write-ups)",
+    "format": "4 tasks, graded in order (reported) · Python code in WGU's GitLab + a written analysis per task · no exam",
+    "details": [
+      "One Python machine-learning project on a dataset WGU provides, split into four tasks. Each task includes a written analysis of the model at that step, and students report more writing than coding (Jun 2026).",
+      "<b>Task 1</b> (per a secondhand 2026 task outline): set up the GitLab repository and task branch, compare about three supervised-learning methods with sources, choose one, and build a minimal, untuned baseline with chosen metrics, results and an interpretation.",
+      "<b>Task 2</b> (reported): the main coding task. Optimize the Task 1 model, for example by tuning hyperparameters and engineering features, and compare before and after with regression metrics such as RMSE and R<sup>2</sup>.",
+      "<b>Tasks 3 and 4</b> (reported, mostly writing): Task 3 covers data assumptions, model interpretation and predicting future data. Task 4 covers adapting the solution to another application, with deployment, monitoring, efficiency and cost-versus-performance trade-offs.",
+      "The four official competencies probably map one-to-one to Tasks 1-4 (implement and test, optimize, data assumptions, adapt). That mapping is inferred from the reported task titles, not confirmed.",
+      "Data: provided and already clean (Jun 2026). A secondhand 2026 task outline describes the scenario as a regression model that predicts a health-risk score.",
+      "Tools: Python, with code submitted through WGU's GitLab repository. In Jan 2025 a course instructor confirmed pandas, NumPy and scikit-learn were fine for the frameworks Task 1 asks for.",
+      "Skills students say you need first: intro statistics (linear regression, R<sup>2</sup>, MSE), pandas DataFrames, and scikit-learn preprocessing, models, <code>train_test_split</code> and cross-validation (2025 list).",
+      "Evaluators grade each task against its rubric and send it back with feedback when something is missing (official guidebook). The course text is Russell and Norvig's AI textbook, also used in D429 and D683 (Aug 2026 report)."
+    ],
+    "tips": [
+      "Plan D429 first: it's D682's listed prerequisite and sits in the same term.",
+      "Submit one task at a time and wait for it to pass. Students who sent several at once were rejected (2025 and 2026). Build Task 2's code while Task 1 is being graded.",
+      "On day 1, save every rubric as a PDF and turn each row into a plain heading and a checklist item.",
+      "Cite 2-3 credible sources per write-up (the course textbook plus scikit-learn docs or a journal article) with APA in-text citations and a reference list.",
+      "Keep the scope modest: a baseline, one or two tuning methods, cross-validation, and a before/after table with 2-3 justified metrics.",
+      "Commit early and often on the branch the instructions name; clear commit messages document your process.",
+      "If feedback asks for something outside the rubric, either fix it quickly or appeal. Appeals reportedly succeed but take about 3-4 days and need follow-up.",
+      "Take D682, D683 and D687 together if you can: the work overlaps, and their evaluation and peer-review waits interleave."
+    ]
+  },
+  "competencies": [
+    "The learner implements and tests AI solutions.",
+    "The learner optimizes artificial intelligence (AI) solutions.",
+    "The learner creates assumptions and interpretations of data to help predict future data.",
+    "The learner adapts an AI-optimized solution for additional applications."
+  ],
+  "topics": [
+    {
+      "title": "Problem framing and the baseline model",
+      "eli5": "Before you can make a model better, you need a 'before' photo. The baseline is a simple, untuned model whose scores every later improvement gets measured against.",
+      "detail": "D682's reported scenario is supervised regression: predict a numeric target (a health-risk score) from the other columns. Framing means naming the target, the features, the problem type and the metric that defines 'better'. The reported Task 1 asks you to compare about three candidate algorithms with sources, pick one, and build a minimal workflow: load the data, separate features from the target, split into train and test sets, fit, and evaluate, with no tuning or feature engineering yet. A predict-the-mean <code>DummyRegressor</code> is a handy sanity check, because a real model should beat it.",
+      "points": [
+        "Regression predicts a number (MAE, RMSE, R<sup>2</sup>); classification predicts a category (accuracy, precision, recall, F1).",
+        "Compare candidates on assumptions, interpretability, handling of nonlinearity, data size and training cost, and back each claim with a citation.",
+        "A typical tabular shortlist: linear regression or Ridge/Lasso, a random forest, and gradient boosting (k-nearest neighbors or support vector regression also work).",
+        "Fix the split with an integer <code>random_state</code> so Task 2 can reuse exactly the same test set.",
+        "Save tuning and feature work for Task 2; a plain baseline gives you a clear before/after story."
+      ]
+    },
+    {
+      "title": "Train/test discipline and data leakage",
+      "eli5": "The test set is the final exam locked in a drawer. If you peek at it while studying, your score no longer shows what you really learned.",
+      "detail": "Hold out a test set first and score it once, at the end. Tune with cross-validation (or a validation split) inside the training data only; tuning against the test set leaks knowledge of it into the model, and the metric stops measuring generalization. Leakage also happens when preprocessing such as scaling, imputing or feature selection is fit on the whole dataset before the split. Fit transformers on training data only and apply them to test data; a scikit-learn <code>Pipeline</code> does this automatically, including inside every CV fold.",
+      "points": [
+        "<code>train_test_split</code> shuffles by default and holds out 25% when you don't set a size.",
+        "scikit-learn's rules: never call <code>fit</code> on test data, split before preprocessing, use Pipelines.",
+        "Leakage makes scores look too good: scikit-learn's demo got 0.76 accuracy on pure noise by selecting features before the split; done correctly it scored about 0.5.",
+        "Drop columns that wouldn't exist at prediction time or that are derived from the target.",
+        "For time-ordered data, don't shuffle; hold out the most recent period."
+      ]
+    },
+    {
+      "title": "k-fold cross-validation",
+      "eli5": "Instead of one practice quiz, you take k of them, each time studying most of the material and testing on a different slice. The average is more trustworthy than one lucky split.",
+      "detail": "k-fold CV cuts the training set into k folds, trains on k−1 of them, scores the held-out fold, repeats k times and averages, so every row is validated exactly once. <code>cross_val_score</code> returns one score per fold, while <code>cross_validate</code> also reports fit and score times and can compute several metrics at once. With an integer <code>cv</code>, scikit-learn uses <code>KFold</code> for regressors and <code>StratifiedKFold</code> for classifiers, without shuffling. Time-ordered data needs <code>TimeSeriesSplit</code>, which always trains on earlier rows and tests on the next block.",
+      "points": [
+        "In <code>GridSearchCV</code>, <code>cv=None</code> means 5-fold.",
+        "Report the mean and the standard deviation across folds; a large spread means an unstable estimate.",
+        "Nested CV (a tuning search inside an outer CV loop) is scikit-learn's best practice for an honest estimate of a tuned model.",
+        "CV multiplies training cost by k, so size your search budget accordingly.",
+        "<code>KFold</code> and <code>ShuffleSplit</code> assume independent, identically distributed rows, which time series violate."
+      ]
+    },
+    {
+      "title": "Evaluation metrics",
+      "eli5": "Metrics are the scoreboard. MAE says how far off you are on average, RMSE says the same but punishes big misses harder, and R<sup>2</sup> says how much better you are than always guessing the average.",
+      "detail": "MAE is the mean of |y − ŷ|, MSE is the mean of (y − ŷ)<sup>2</sup>, and RMSE = √MSE, back in the target's units. Squaring makes RMSE weigh large errors more, so RMSE ≥ MAE, with equality only when every error has the same size. R<sup>2</sup> = 1 − SS<sub>res</sub>/SS<sub>tot</sub>: 1.0 is perfect, 0.0 matches always predicting the mean, and a negative value means worse than that. scikit-learn scorers follow 'higher is better', so error metrics appear negated, as <code>neg_mean_absolute_error</code> and <code>neg_root_mean_squared_error</code>, and their CV scores come out negative.",
+      "points": [
+        "Choose 2-3 metrics and justify each in a sentence, for example RMSE because large errors in a risk score are costly, MAE for an easy-to-explain typical error, and R<sup>2</sup> to compare against the mean.",
+        "The default score for regressors, and so for <code>GridSearchCV</code> tuning one, is R<sup>2</sup>; set <code>scoring</code> to optimize something else.",
+        "<code>r2_score</code> isn't symmetric, so pass <code>(y_true, y_pred)</code> in that order.",
+        "If a future version uses a category target: precision = TP/(TP+FP), recall = TP/(TP+FN), F1 is their harmonic mean, and ROC-AUC measures ranking across thresholds.",
+        "Report baseline and tuned scores on the same test set with the same metrics."
+      ]
+    },
+    {
+      "title": "Bias, variance, overfitting and underfitting",
+      "eli5": "An underfit model is too simple, like always answering 'C'. An overfit model memorized last year's answer key and falls apart on new questions.",
+      "detail": "Bias is error from a model too simple to capture the real pattern; variance is error from a model so flexible it fits noise in its training data. High bias shows up as high training error with similar validation error (underfitting). High variance shows up as low training error but much higher validation error (overfitting). More complexity usually lowers bias and raises variance, so tuning looks for the lowest validation error, not the lowest training error.",
+      "points": [
+        "Diagnose by comparing training and CV scores (<code>return_train_score=True</code> in <code>cross_validate</code> or <code>GridSearchCV</code>).",
+        "Fix overfitting with stronger regularization (larger <code>alpha</code>), shallower trees (<code>max_depth</code>, <code>min_samples_leaf</code>), fewer features, more data or bagging.",
+        "Fix underfitting with a more flexible model, less regularization, better features or more boosting rounds.",
+        "Random forests mainly cut variance; boosting mainly cuts bias.",
+        "Tuning too hard against one validation set can overfit it too, which is why the test set stays untouched."
+      ]
+    },
+    {
+      "title": "Hyperparameter tuning: grid, random and smarter searches",
+      "eli5": "Hyperparameters are knobs you set before training, like oven temperature and baking time. Tuning tries knob settings in an organized way and keeps the best one by cross-validated score.",
+      "detail": "Parameters such as coefficients and split thresholds are learned by <code>fit</code>; hyperparameters such as <code>alpha</code>, <code>max_depth</code>, <code>n_estimators</code> and <code>learning_rate</code> are passed to the constructor and searched. <code>GridSearchCV</code> tries every combination in <code>param_grid</code>, so its cost multiplies with each hyperparameter you add (the curse of dimensionality). <code>RandomizedSearchCV</code> samples <code>n_iter</code> settings from lists or distributions, so its budget doesn't depend on the size of the space, and it often wins when only a few hyperparameters matter. Successive halving (<code>HalvingGridSearchCV</code>, still experimental) races many candidates on small budgets and promotes the best, and Bayesian optimization models score versus settings to pick the next try.",
+      "points": [
+        "Cost: grid = (product of the value counts) × k fits; random = <code>n_iter</code> × k fits; both add one refit on the full training set when <code>refit=True</code>, the default.",
+        "Tune a Pipeline with step-prefixed names, such as <code>model__alpha</code>.",
+        "Read <code>best_params_</code>, <code>best_score_</code> (the best mean CV score) and <code>cv_results_</code>, which loads into a DataFrame for a results table.",
+        "<code>n_jobs=-1</code> runs fits on all CPU cores.",
+        "Search strengths and learning rates on a log scale, such as 0.001, 0.01, 0.1, 1, 10.",
+        "<code>RidgeCV</code> and <code>LassoCV</code> tune <code>alpha</code> with built-in cross-validation, more cheaply than a general search."
+      ]
+    },
+    {
+      "title": "Regularization: L1, L2 and ElasticNet",
+      "eli5": "Regularization is a 'keep it simple' tax on big coefficients. L2 shrinks all of them a little; L1 can shrink some all the way to zero, quietly dropping features.",
+      "detail": "Ridge adds an L2 penalty, α‖w‖<sub>2</sub><sup>2</sup>, to least squares; a larger α shrinks coefficients more and makes them more robust to correlated features. Lasso adds an L1 penalty, α‖w‖<sub>1</sub>, which can set coefficients exactly to zero, so α controls sparsity and acts as built-in feature selection. ElasticNet mixes both, with <code>l1_ratio</code> setting the blend (1 is pure L1, 0 is pure L2); it helps with correlated features, where Lasso tends to keep one at random and ElasticNet keeps both. Because the penalty treats every coefficient alike, standardize features first, inside the Pipeline.",
+      "points": [
+        "Larger α means more bias and less variance; α = 0 is plain least squares.",
+        "Lasso zeros out more coefficients as α grows, which also yields a smaller, faster model.",
+        "ElasticNet has two knobs to tune: <code>alpha</code> (overall strength) and <code>l1_ratio</code> (the mix).",
+        "Tree ensembles regularize through <code>max_depth</code>, <code>min_samples_leaf</code>, <code>learning_rate</code> and the number of trees instead.",
+        "Unscaled features get penalized unevenly, so scale before any penalized linear model."
+      ]
+    },
+    {
+      "title": "Ensembles: bagging, random forests and boosting",
+      "eli5": "Ask many decent forecasters and average them, and their random mistakes cancel out (bagging). Or train them one after another, each fixing what the last ones got wrong (boosting).",
+      "detail": "Bagging trains copies of a model on bootstrap samples (drawn with replacement) and averages their predictions, which mainly reduces variance; it works best with strong, complex base models such as deep trees. A random forest is bagged decision trees that also consider a random subset of features at each split (<code>max_features</code>); for regression, scikit-learn's default <code>max_features=1.0</code> considers all features, which is equivalent to bagged trees. Gradient boosting adds shallow trees one at a time, each fit to the negative gradient of the loss (the residuals, for squared error), and <code>learning_rate</code> shrinks each tree's contribution. Smaller learning rates need more trees but often give better test error.",
+      "points": [
+        "<code>RandomForestRegressor</code> defaults: <code>n_estimators=100</code>, <code>max_depth=None</code> (fully grown trees), <code>min_samples_leaf=1</code>.",
+        "Boosting knobs: <code>n_estimators</code>, <code>learning_rate</code> (0.1 or less is common), a shallow <code>max_depth</code>, and early stopping.",
+        "Bagging builds trees independently and cuts variance; boosting builds them in sequence and cuts bias.",
+        "Random forests offer a cheap out-of-bag check with <code>oob_score=True</code>.",
+        "Ensembles trade interpretability and speed for accuracy; say so when you justify your choice."
+      ]
+    },
+    {
+      "title": "Feature engineering and selection",
+      "eli5": "Features are the clues you hand the model. Better clues, like a scaled number or a cleaned-up category, can beat a fancier model, and dropping useless clues makes it faster and less confused.",
+      "detail": "Feature engineering transforms or creates inputs: scaling numeric columns (<code>StandardScaler</code>), one-hot encoding categories (<code>OneHotEncoder</code>), log-transforming skewed values, or adding interactions and domain ratios. <code>ColumnTransformer</code> applies different transformers to different columns inside a leak-safe Pipeline. Feature selection removes weak or redundant inputs using Lasso coefficients, importance scores or a search over feature subsets (a genetic algorithm can do this if you justify its cost). Judge every change by cross-validated score on the training data, never by the test set.",
+      "points": [
+        "Fit encoders, scalers and selectors inside the Pipeline so each CV fold learns them from its own training part.",
+        "Correlations and permutation importance are good evidence for which features to keep or drop.",
+        "Fewer features means faster predictions and a smaller model, which helps with the Task 4 trade-offs.",
+        "Keep a small table of each change and its CV score before and after.",
+        "Never build features from the target or from information that arrives after prediction time."
+      ]
+    },
+    {
+      "title": "Optimization algorithms: gradient descent and search heuristics",
+      "eli5": "Gradient descent is walking downhill in fog by feeling the slope under your feet. Hill climbing, simulated annealing and genetic algorithms are other ways to search for good settings when you can't see the whole landscape.",
+      "detail": "Gradient descent updates parameters with θ ← θ − η∇J(θ): a learning rate η that's too small crawls, and one that's too large overshoots and can diverge. Batch gradient descent uses every row per step, stochastic gradient descent (SGD) one row, and mini-batch a small group; SGD-style training is the basis of most neural networks. Hill climbing accepts only improving neighbors and gets stuck at local optima, plateaus and ridges (random restarts help). Simulated annealing sometimes accepts a worse move with probability e<sup>−Δ/T</sup> while the temperature T cools, and a genetic algorithm evolves a population through selection, crossover and mutation. The textbook covers these as background; no source says the rubric requires them, but any of them can be a justified search strategy.",
+      "points": [
+        "For convex losses such as least squares, every local minimum is global, so gradient descent with a suitable η finds it.",
+        "η too large: oscillation or divergence. η too small: slow convergence.",
+        "Simulated annealing explores at high T and becomes greedy descent as T approaches 0.",
+        "Genetic algorithm cost ≈ population × generations evaluations, each a full CV run; elitism keeps the best-so-far from getting worse.",
+        "A Sep 2026 commenter suggests reviewing gradient descent and backpropagation in the textbook before starting."
+      ]
+    },
+    {
+      "title": "Interpreting the model and stating data assumptions",
+      "eli5": "A prediction is only as trustworthy as the assumptions behind it. Task 3 asks what you assumed about the data, whether that holds, and what the model actually learned.",
+      "detail": "Common assumptions: rows are independent and come from the same distribution as future data, the sample represents the people or places you'll predict for, the feature-target relationship stays stable over time, and measurements are accurate. Back each one with evidence such as distributions, a plot over time, correlations or a residual plot, where residuals should scatter randomly around zero. Explain what the model learned with coefficients (for a scaled linear model) or permutation importance, which measures how much a held-out score drops when one feature's values are shuffled. Tree-based <code>feature_importances_</code> come from training statistics and favor features with many unique values, so permutation importance on held-out data is safer evidence.",
+      "points": [
+        "Predicting future data assumes the future resembles the past; name where that could fail (drift, new populations, inputs outside the training range).",
+        "Correlated features share importance, so permutation importance can understate both.",
+        "Linear coefficients are comparable across features only when the features share a scale.",
+        "Residuals that fan out or curve point to a missing nonlinearity or a needed transform.",
+        "Importance shows what the model uses, not what causes the outcome."
+      ]
+    },
+    {
+      "title": "Adapting, deploying and reproducing the solution",
+      "eli5": "Task 4 asks: what if we used this somewhere else, for real? You explain what would have to change, how you'd run it, how you'd notice it going stale, and what speed or cost you'd trade for accuracy.",
+      "detail": "A secondhand outline of Task 4 lists adapting the solution to a new application, deployment design, monitoring, faster inference, model compression and cost-versus-performance trade-offs. Adapting means rechecking the data, features, metrics and assumptions for the new setting and retraining, not reusing the old model blindly. For deployment, choose batch or real-time prediction; latency grows with the number of features and model complexity, and predicting in bulk is much faster per row than one at a time. In scikit-learn, compression mostly means sparser linear models (L1 or ElasticNet penalties) or dropping features, and a saved model should be loaded with the same scikit-learn and dependency versions it was trained with.",
+      "points": [
+        "Monitoring: watch input distributions for drift and live error against a threshold, and define what triggers retraining.",
+        "State constraints explicitly, for example latency under 50 ms and a model under 20 MB, then pick the best model that meets them.",
+        "Reproducibility: integer <code>random_state</code> everywhere, a <code>requirements.txt</code>, relative file paths and a README with run steps.",
+        "Save models with joblib, pickle or skops, and never load a pickle from an untrusted source.",
+        "Weigh gains against cost: a 1% RMSE improvement may not justify a model that's ten times slower."
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "MAE",
+      "value": "<code>MAE = (1/n) Σ |y − ŷ|</code>",
+      "note": "Average size of a miss, in target units."
+    },
+    {
+      "label": "MSE",
+      "value": "<code>MSE = (1/n) Σ (y − ŷ)²</code>",
+      "note": "Squaring makes large misses dominate."
+    },
+    {
+      "label": "RMSE",
+      "value": "<code>RMSE = √MSE</code>",
+      "note": "Back in target units; always ≥ MAE."
+    },
+    {
+      "label": "R<sup>2</sup> (coefficient of determination)",
+      "value": "<code>R² = 1 − SS_res / SS_tot</code>, with <code>SS_res = Σ(y − ŷ)²</code> and <code>SS_tot = Σ(y − ȳ)²</code>",
+      "note": "1.0 is perfect, 0.0 equals predicting the mean, negative is worse than the mean. Not symmetric in its arguments."
+    },
+    {
+      "label": "Regression scorer names",
+      "value": "<code>'r2'</code>, <code>'neg_mean_absolute_error'</code>, <code>'neg_mean_squared_error'</code>, <code>'neg_root_mean_squared_error'</code>",
+      "note": "Scorers treat higher as better, so errors come back negated; flip the sign when you report them."
+    },
+    {
+      "label": "Default scoring",
+      "value": "R<sup>2</sup> for regressors, accuracy for classifiers",
+      "note": "Applies to <code>.score()</code> and to <code>GridSearchCV</code> unless you pass <code>scoring</code>."
+    },
+    {
+      "label": "train_test_split defaults",
+      "value": "<code>test_size</code> becomes 0.25 if no size is given; <code>shuffle=True</code>; <code>random_state=None</code>",
+      "note": "Pass an integer <code>random_state</code> for a reproducible split; use <code>shuffle=False</code> for time-ordered data."
+    },
+    {
+      "label": "k-fold cross-validation",
+      "value": "Train on k−1 folds, score the held-out fold, repeat k times, average",
+      "note": "Every row is validated once; <code>cv=None</code> in <code>GridSearchCV</code> means 5-fold."
+    },
+    {
+      "label": "TimeSeriesSplit",
+      "value": "Train on earlier folds, test on the next fold; each training set contains the previous ones",
+      "note": "Use it instead of shuffled <code>KFold</code> when rows are ordered in time."
+    },
+    {
+      "label": "Grid search cost",
+      "value": "<code>(Π values per hyperparameter) × k</code> fits, + 1 refit",
+      "note": "Example: 4 × 3 × 2 = 24 candidates × 5 folds = 120 fits, + 1 refit = 121."
+    },
+    {
+      "label": "Random search cost",
+      "value": "<code>n_iter × k</code> fits, + 1 refit",
+      "note": "The budget is set by <code>n_iter</code>, not by the size of the search space."
+    },
+    {
+      "label": "GridSearchCV results",
+      "value": "<code>best_params_</code>, <code>best_score_</code>, <code>best_estimator_</code>, <code>cv_results_</code>",
+      "note": "<code>best_score_</code> is the mean CV score of the best candidate; <code>refit=True</code> (the default) refits it on all training data."
+    },
+    {
+      "label": "Pipeline parameter names",
+      "value": "<code>step__param</code>, for example <code>model__alpha</code>",
+      "note": "One search can tune preprocessing and the model together without leakage."
+    },
+    {
+      "label": "Ridge (L2)",
+      "value": "<code>min ‖Xw − y‖₂² + α‖w‖₂²</code>",
+      "note": "Larger α shrinks coefficients more; robust to correlated features."
+    },
+    {
+      "label": "Lasso (L1)",
+      "value": "<code>min (1/(2n))‖Xw − y‖₂² + α‖w‖₁</code>",
+      "note": "Can set coefficients exactly to zero; α controls sparsity."
+    },
+    {
+      "label": "ElasticNet",
+      "value": "<code>min (1/(2n))‖Xw − y‖₂² + αρ‖w‖₁ + (α(1 − ρ)/2)‖w‖₂²</code>, with ρ = <code>l1_ratio</code>",
+      "note": "<code>l1_ratio=1</code> is pure L1, 0 is pure L2."
+    },
+    {
+      "label": "Bias vs variance",
+      "value": "High bias: training and validation error both high. High variance: low training error, much higher validation error.",
+      "note": "Underfitting vs overfitting."
+    },
+    {
+      "label": "Random forest",
+      "value": "Bootstrap samples + random feature subsets at each split, predictions averaged",
+      "note": "Mainly reduces variance. <code>RandomForestRegressor</code> defaults: <code>n_estimators=100</code>, <code>max_depth=None</code>, <code>max_features=1.0</code> (the classifier uses <code>'sqrt'</code>)."
+    },
+    {
+      "label": "Gradient boosting",
+      "value": "<code>F<sub>m</sub>(x) = F<sub>m−1</sub>(x) + ν·h<sub>m</sub>(x)</code>, each new tree fit to the negative gradient",
+      "note": "ν is <code>learning_rate</code>; smaller values need more trees."
+    },
+    {
+      "label": "Gradient descent",
+      "value": "<code>θ ← θ − η∇J(θ)</code>",
+      "note": "η too large overshoots or diverges; too small converges slowly."
+    },
+    {
+      "label": "Simulated annealing acceptance",
+      "value": "Accept a worse move with <code>P = e<sup>−Δ/T</sup></code>; always accept a better one",
+      "note": "Example: Δ = 1 at T = 1 gives e<sup>−1</sup> ≈ 0.37. As T approaches 0 it becomes greedy descent."
+    },
+    {
+      "label": "Genetic algorithm loop",
+      "value": "Population → fitness → selection → crossover → mutation → next generation",
+      "note": "Elitism keeps the best-so-far; cost ≈ population × generations evaluations."
+    },
+    {
+      "label": "Data leakage",
+      "value": "Using information at training time that wouldn't be available at prediction time",
+      "note": "Split first, fit preprocessing on training data only, use Pipelines."
+    },
+    {
+      "label": "Permutation importance",
+      "value": "<code>permutation_importance</code> (in <code>sklearn.inspection</code>): the score drop when one feature's values are shuffled",
+      "note": "Compute it on held-out data; set <code>n_repeats</code> and <code>random_state</code>."
+    },
+    {
+      "label": "Baseline dummy",
+      "value": "<code>DummyRegressor(strategy='mean')</code> always predicts the training mean",
+      "note": "Scores R<sup>2</sup> near 0 on new data; any real model should beat it."
+    },
+    {
+      "label": "Reproducible environment",
+      "value": "<code>python -m venv .venv</code>, <code>python -m pip freeze > requirements.txt</code>, <code>python -m pip install -r requirements.txt</code>",
+      "note": "Commit <code>requirements.txt</code> so an evaluator can rebuild your environment."
+    },
+    {
+      "label": "Classification metrics",
+      "value": "precision = TP/(TP+FP), recall = TP/(TP+FN), F1 = 2PR/(P+R)",
+      "note": "Only if your target is a category; the reported D682 scenario is regression."
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Orientation and setup",
+      "tasks": [
+        "Have the course-planning conversation with your instructor (the official first step) and confirm the current task prompts and submission steps.",
+        "Read all four tasks and rubrics. Save each rubric as a PDF and turn every row into a plain heading and a checklist item.",
+        "Set up a Python virtual environment with pandas, NumPy, scikit-learn and a plotting library; clone the GitLab repository and create the branch the instructions name.",
+        "If you're taking D683 and D687 this term too, open them now and send the D683 Task 1 proposal early so its approval runs in parallel."
+      ]
+    },
+    {
+      "day": "Days 2-3",
+      "focus": "Skills check and data profiling",
+      "tasks": [
+        "If you've never trained a model, run the basic loop on a small public dataset first: load with pandas, split, fit, predict, score. A 2025 grad warns the course is very hard without this.",
+        "Profile the provided data: target type and range, feature types, missing values, any date column, and columns that could leak the target.",
+        "Skim the textbook on gradient descent and local search (hill climbing, simulated annealing, genetic algorithms) as background."
+      ]
+    },
+    {
+      "day": "Days 4-5",
+      "focus": "Task 1 research: choose the algorithm",
+      "tasks": [
+        "Shortlist about three supervised regression methods with different strengths, for example Ridge, a random forest and gradient boosting.",
+        "Collect 2-3 credible sources (the textbook, scikit-learn docs, a journal article) and build a comparison table: assumptions, interpretability, nonlinearity, data size, training cost.",
+        "Write a short, cited justification for the method you pick."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Task 1 baseline and write-up, then submit",
+      "tasks": [
+        "Split first with a fixed <code>random_state</code> (time-aware if the data are dated), then fit one untuned model; score a predict-the-mean dummy for context.",
+        "Choose 2-3 metrics such as RMSE, MAE and R<sup>2</sup>, justify each, record the results and interpret them.",
+        "Write Task 1 under rubric-mirroring headings with APA citations, commit and push, and submit Task 1 only."
+      ]
+    },
+    {
+      "day": "Days 8-10",
+      "focus": "Task 2 experiments while Task 1 is graded",
+      "tasks": [
+        "Write down the objective (for example, minimize 5-fold CV RMSE on the training set), the search space and why.",
+        "Put preprocessing and the model in one Pipeline; tune with <code>GridSearchCV</code> or <code>RandomizedSearchCV</code> and log candidates, fits and wall time.",
+        "Test one or two justified feature changes with cross-validation, never the test set.",
+        "Score the tuned model once on the same untouched test set and build a before/after table."
+      ]
+    },
+    {
+      "day": "Days 11-12",
+      "focus": "Task 2 write-up and submission",
+      "tasks": [
+        "If Task 1 came back, fix and resubmit it first; Task 2 goes in only after Task 1 passes.",
+        "Explain each optimization choice, the before/after metrics, and the cost (number of fits, time) against the gain.",
+        "Commit with clear messages, then submit Task 2."
+      ]
+    },
+    {
+      "day": "Days 13-14",
+      "focus": "Task 3: assumptions and interpretation",
+      "tasks": [
+        "List the data assumptions (independent rows or time order, representative sample, stable relationships, accurate measurements) with evidence for each.",
+        "Interpret the model with coefficients or permutation importance on held-out data, plus a residual plot.",
+        "Explain what this means for predicting future data and where predictions shouldn't be trusted."
+      ]
+    },
+    {
+      "day": "Day 15",
+      "focus": "Task 3 polish and submission",
+      "tasks": [
+        "Proofread against the rubric checklist and check every citation.",
+        "Submit Task 3 once Task 2 has passed; fill the wait with D683 or D687."
+      ]
+    },
+    {
+      "day": "Days 16-17",
+      "focus": "Task 4: adapt and deploy",
+      "tasks": [
+        "Pick a concrete new application and list what changes: data, features, metrics, retraining.",
+        "Describe deployment (batch or real-time, latency and memory limits, saving the model with pinned versions), drift monitoring and retraining triggers.",
+        "Weigh cost against performance, such as a smaller, faster model versus a slightly more accurate one."
+      ]
+    },
+    {
+      "day": "Day 18",
+      "focus": "Task 4 final check and submission",
+      "tasks": [
+        "Run a final rubric pass and confirm the repository runs in a fresh environment built from <code>requirements.txt</code>.",
+        "Submit Task 4 after Task 3 passes."
+      ]
+    },
+    {
+      "day": "Days 19-24",
+      "focus": "Buffer for returns",
+      "tasks": [
+        "Read feedback against the rubric. Fix and resubmit, or appeal with rubric references if the request is off-rubric (reportedly about 3-4 days).",
+        "Keep D683 and D687 moving during every wait."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which of these is a hyperparameter that you set before training, rather than something <code>fit</code> learns from the data?",
+      "choices": [
+        "The coefficients of a fitted linear regression",
+        "The split thresholds inside each tree of a random forest",
+        "<code>max_depth</code> of a random forest",
+        "The mean and standard deviation stored by a fitted <code>StandardScaler</code>"
+      ],
+      "answer": "<code>max_depth</code> of a random forest",
+      "why": "Hyperparameters are passed to the estimator's constructor and aren't learned directly; scikit-learn's own examples include <code>alpha</code> for Lasso. Coefficients, split thresholds and the scaler's mean and standard deviation are all computed from the training data during <code>fit</code>, which is also why the scaler must be fit on training data only."
+    },
+    {
+      "q": "You tune an ElasticNet over <code>alpha</code> ∈ {0.01, 0.1, 1, 10, 100} and <code>l1_ratio</code> ∈ {0.2, 0.5, 0.8} with <code>GridSearchCV(cv=5)</code> and the default <code>refit=True</code>. How many model fits run in total, counting the final refit?",
+      "choices": [
+        "15",
+        "16",
+        "75",
+        "76"
+      ],
+      "answer": "76",
+      "why": "Candidates: 5 × 3 = 15. Each candidate is fit once per fold: 15 × 5 = 75. With <code>refit=True</code> the best setting is fit once more on the whole training set: 75 + 1 = 76. For comparison, <code>RandomizedSearchCV(n_iter=10, cv=5)</code> costs 10 × 5 + 1 = 51 fits no matter how big the space is."
+    },
+    {
+      "q": "A baseline's test predictions are ŷ = [3, 4, 5, 10, 9] for true values y = [2, 4, 6, 8, 10]. Compute MAE, MSE, RMSE and R<sup>2</sup>. Then explain what an R<sup>2</sup> of −0.2 would have meant.",
+      "answer": "MAE = 1.0, MSE = 1.4, RMSE ≈ 1.18 and R<sup>2</sup> = 0.825. An R<sup>2</sup> of −0.2 would mean the model predicts worse than always guessing the mean of the true values.",
+      "why": "Errors (ŷ − y): +1, 0, −1, +2, −1. MAE = (1 + 0 + 1 + 2 + 1) / 5 = 5/5 = 1.0. Squared errors: 1, 0, 1, 4, 1, so MSE = 7/5 = 1.4 and RMSE = √1.4 ≈ 1.18. The mean of y is 30/5 = 6, so SS<sub>tot</sub> = 16 + 4 + 0 + 4 + 16 = 40 and SS<sub>res</sub> = 7, giving R<sup>2</sup> = 1 − 7/40 = 0.825. RMSE is above MAE because squaring makes the one error of 2 count more. R<sup>2</sup> has no lower bound: below 0 means SS<sub>res</sub> is bigger than SS<sub>tot</sub>, which is worse than the predict-the-mean baseline."
+    },
+    {
+      "q": "A teammate standardizes the entire dataset with <code>StandardScaler</code>, then splits it into train and test sets, tunes on the training set and reports test RMSE. What's wrong?",
+      "choices": [
+        "Test-set statistics leaked into preprocessing",
+        "The test RMSE will be too pessimistic because the scaler saw too little data",
+        "<code>StandardScaler</code> can't be used in regression problems",
+        "Nothing; scaling before the split is the recommended order"
+      ],
+      "answer": "Test-set statistics leaked into preprocessing",
+      "why": "The scaler's mean and standard deviation were computed with the test rows included, so information from the test set reached the model, and the test score can look better than it really is. scikit-learn calls this data leakage and warns that it gives overly optimistic estimates. Split first, fit the scaler on training data only, and put it in a <code>Pipeline</code> so every CV fold refits it on its own training part."
+    },
+    {
+      "q": "The provided data are daily readings from 2019 through 2024, and the model must predict next month's values. Which validation setup fits best?",
+      "choices": [
+        "Shuffled <code>KFold</code> with 10 folds",
+        "<code>TimeSeriesSplit</code> with 5 splits",
+        "<code>train_test_split</code> with its default <code>shuffle=True</code>",
+        "Tuning on the test set, then reporting that same test score"
+      ],
+      "answer": "<code>TimeSeriesSplit</code> with 5 splits",
+      "why": "scikit-learn warns that <code>KFold</code> and <code>ShuffleSplit</code> assume independent, identically distributed rows and produce unreasonable correlation between training and test data on time series, which inflates scores. <code>TimeSeriesSplit</code> (5 splits by default) always validates on rows that come after the training rows: it trains on earlier folds and tests on the next one, like real forecasting. A shuffled <code>train_test_split</code> lets future rows into training, and tuning on the test set leaks it into model selection."
+    },
+    {
+      "q": "A decision tree scores training RMSE 0.4 and 5-fold CV RMSE 6.2. A linear model scores training RMSE 5.9 and CV RMSE 6.0. Which statement is correct?",
+      "choices": [
+        "The tree is underfitting (high bias), so it needs to grow deeper",
+        "The linear model is overfitting because its CV RMSE is close to its training RMSE",
+        "The tree is overfitting (high variance), so limiting <code>max_depth</code> should help",
+        "Both models have high variance"
+      ],
+      "answer": "The tree is overfitting (high variance), so limiting <code>max_depth</code> should help",
+      "why": "A tiny training error next to a much larger CV error is the signature of high variance: the tree memorized noise. The linear model's training and CV errors are close, which rules out overfitting; if both are too high for the task, that points to bias instead. Limiting <code>max_depth</code>, raising <code>min_samples_leaf</code> or averaging many trees (a random forest) all reduce variance."
+    },
+    {
+      "q": "You raise Lasso's <code>alpha</code> from 0.01 to 1.0 on standardized features. What should you expect?",
+      "choices": [
+        "Coefficients grow so the model fits the training data more closely",
+        "Nothing changes unless <code>l1_ratio</code> is also set",
+        "The penalty switches from L1 to L2",
+        "More coefficients become exactly zero"
+      ],
+      "answer": "More coefficients become exactly zero",
+      "why": "Lasso adds α‖w‖<sub>1</sub> to the squared-error loss, and scikit-learn notes that <code>alpha</code> controls the degree of sparsity: a larger α pushes more coefficients to exactly zero, so the model uses fewer features (more bias, less variance, a smaller model). <code>l1_ratio</code> is an ElasticNet parameter, and Lasso's penalty is always L1."
+    },
+    {
+      "q": "Which statement about random forests and gradient boosting is correct?",
+      "choices": [
+        "Both methods train trees one after another, each correcting the tree before it",
+        "A random forest averages independent trees to cut variance; gradient boosting adds trees in sequence to cut bias",
+        "Gradient boosting averages many independent deep trees, while a random forest adds shallow trees in sequence",
+        "Random forests only handle classification, so regression needs boosting"
+      ],
+      "answer": "A random forest averages independent trees to cut variance; gradient boosting adds trees in sequence to cut bias",
+      "why": "scikit-learn describes random forests as trees built on bootstrap samples with random feature subsets, whose averaging decreases variance. Each tree is trained independently of the others. Gradient boosting builds the ensemble greedily, one tree at a time: F<sub>m</sub> = F<sub>m−1</sub> + h<sub>m</sub>. Each new tree is fit to the negative gradients (the residuals, for squared error) to fix the current errors, which steadily reduces bias; <code>learning_rate</code> scales each tree's contribution. <code>RandomForestRegressor</code> handles regression."
+    },
+    {
+      "q": "Which comparison best shows that your Task 2 optimization improved on your Task 1 baseline?",
+      "choices": [
+        "Both models scored with the same metrics on the same untouched test set",
+        "The baseline's test RMSE next to the tuned model's best cross-validation RMSE",
+        "The tuned model's training RMSE next to the baseline's test RMSE",
+        "Each model scored on its own fresh random train/test split"
+      ],
+      "answer": "Both models scored with the same metrics on the same untouched test set",
+      "why": "A fair before/after comparison changes only the model: same test rows, same metrics. A CV score and a test score measure different data, training error is optimistic, and different random splits add noise that can hide or fake an improvement. That's why fixing <code>random_state</code> in Task 1 and reusing the split in Task 2 matters."
+    },
+    {
+      "q": "For Task 3 you want evidence of which features your tuned model relies on when predicting unseen data. Which method fits best?",
+      "choices": [
+        "Impurity-based <code>feature_importances_</code> from the training fit",
+        "The model's R<sup>2</sup> on the training data",
+        "The <code>alpha</code> value the search selected",
+        "Permutation importance computed on the held-out test set"
+      ],
+      "answer": "Permutation importance computed on the held-out test set",
+      "why": "Permutation importance shuffles one feature at a time and measures how much the score drops; on held-out data it shows which features drive generalization. scikit-learn warns that impurity-based importances come from training-set statistics and favor high-cardinality features. Training R<sup>2</sup> and <code>alpha</code> say nothing about individual features. One caution: correlated features can split importance, so both may look less important than they are."
+    },
+    {
+      "q": "Minimize f(w) = (w − 3)<sup>2</sup> with gradient descent from w<sub>0</sub> = 0. Compute w<sub>1</sub> and w<sub>2</sub> with learning rate η = 0.25, then with η = 1.2. Which run converges?",
+      "answer": "With η = 0.25: w<sub>1</sub> = 1.5 and w<sub>2</sub> = 2.25, converging toward the minimum at 3. With η = 1.2: w<sub>1</sub> = 7.2 and w<sub>2</sub> = −2.88, overshooting farther each step, so it diverges.",
+      "why": "The gradient is f′(w) = 2(w − 3), and each step is w ← w − η·f′(w). With η = 0.25: f′(0) = −6, so w<sub>1</sub> = 0 + 1.5 = 1.5; f′(1.5) = −3, so w<sub>2</sub> = 1.5 + 0.75 = 2.25. The distance to 3 halves each step (3, 1.5, 0.75). With η = 1.2: w<sub>1</sub> = 0 − 1.2 × (−6) = 7.2; f′(7.2) = 8.4, so w<sub>2</sub> = 7.2 − 10.08 = −2.88. The distance grows from 3 to 4.2 to 5.88 and flips sides each step, because each step multiplies the error by (1 − 2η), whose size exceeds 1 when η is above 1. Since f is convex, w = 3 is the global minimum."
+    },
+    {
+      "q": "You run simulated annealing over hyperparameters, minimizing CV RMSE. A neighboring setting is worse by Δ = 0.4. What's the probability of accepting it at temperature T = 2, and at T = 0.1? Why start hot and cool down?",
+      "answer": "About 0.82 at T = 2 and about 0.018 at T = 0.1. Starting hot lets the search escape local optima early; cooling lets it settle into a good region, acting like greedy descent at the end.",
+      "why": "A worse move is accepted with probability P = e<sup>−Δ/T</sup>, and better moves are always accepted. At T = 2: e<sup>−0.4/2</sup> = e<sup>−0.2</sup> ≈ 0.819. At T = 0.1: e<sup>−0.4/0.1</sup> = e<sup>−4</sup> ≈ 0.0183. As T approaches 0, worse moves are almost never accepted, so the method reduces to greedy descent: high T explores, low T exploits."
+    }
+  ],
+  "pitfalls": [
+    "Submitting several tasks at once. Tasks are graded in order: Task 3 sent along with Task 2 was rejected in 2025, and an all-four submission was rejected in 2026.",
+    "Writing with no references. Task 1 came back for missing sources in 2025; cite the course textbook plus at least one outside source, with APA in-text citations and a reference list.",
+    "Leaking information into evaluation: scaling, imputing or selecting features on the full dataset before the split, choosing hyperparameters by test score, or shuffling time-ordered rows so future data lands in training.",
+    "An unfair before/after: comparing a CV score with a test score, or scoring the two models on different splits. Use the same untouched test set and the same metrics.",
+    "Tuning in Task 1. The reported Task 1 asks for a minimal, unoptimized baseline; keep tuning and feature work for Task 2.",
+    "Losing a rubric item in a long write-up. Mirror the rubric with plain headings (a D687 paper came back for rubric-coded sub-labels like '3A.1') and check every row before you submit.",
+    "Overbuilding with huge grids, deep learning or extras the rubric doesn't ask for; 2026 passers say a simple, well-explained project is enough.",
+    "Code an evaluator can't rerun: absolute file paths, no package list, unseeded randomness. Use relative paths, a <code>requirements.txt</code> and integer <code>random_state</code> values.",
+    "Quietly working around data problems. If a column or file doesn't match the prompt, as students reported in 2025, explain the workaround in a code comment and in the write-up, and ask your instructor.",
+    "Borrowing from posted solutions. Completed D682 tasks circulate on resale sites and public repositories; copying them is an academic-integrity violation, and similarity checking is reported in the sibling course D687. Write your own analysis in your own words."
+  ],
+  "resources": [
+    {
+      "label": "Course textbook: Russell and Norvig, Artificial Intelligence: A Modern Approach (the edition linked in the course)",
+      "kind": "official",
+      "note": "Shared with D429 and D683. A Sep 2026 commenter suggests reviewing gradient descent and backpropagation; the local-search chapter covers hill climbing, simulated annealing and genetic algorithms."
+    },
+    {
+      "label": "WGU Program Guidebook, B.S. Computer Science",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf",
+      "kind": "official",
+      "note": "Official D682 description and competencies, and how evaluators grade performance assessments."
+    },
+    {
+      "label": "scikit-learn: Tuning the hyper-parameters of an estimator",
+      "url": "https://scikit-learn.org/stable/modules/grid_search.html",
+      "kind": "tool",
+      "note": "GridSearchCV, RandomizedSearchCV, successive halving, scoring and refit: the core of Task 2."
+    },
+    {
+      "label": "scikit-learn: Cross-validation",
+      "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+      "kind": "tool",
+      "note": "k-fold, cross_validate, TimeSeriesSplit, and why the test set stays untouched."
+    },
+    {
+      "label": "scikit-learn: Common pitfalls and recommended practices",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+      "kind": "tool",
+      "note": "Data leakage, inconsistent preprocessing, and random_state for reproducible results."
+    },
+    {
+      "label": "scikit-learn: Pipelines and composite estimators",
+      "url": "https://scikit-learn.org/stable/modules/compose.html",
+      "kind": "tool",
+      "note": "Pipeline and ColumnTransformer for leak-free preprocessing, and step__param names for tuning."
+    },
+    {
+      "label": "scikit-learn: Metrics and scoring",
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "kind": "tool",
+      "note": "Scorer names such as neg_root_mean_squared_error and the definitions of regression and classification metrics."
+    },
+    {
+      "label": "scikit-learn: Linear models (Ridge, Lasso, ElasticNet)",
+      "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+      "kind": "tool",
+      "note": "Penalty formulas, alpha and l1_ratio, and RidgeCV and LassoCV."
+    },
+    {
+      "label": "scikit-learn: Ensembles (random forests, gradient boosting)",
+      "url": "https://scikit-learn.org/stable/modules/ensemble.html",
+      "kind": "tool",
+      "note": "Bagging versus boosting, the key hyperparameters, and the caveats of impurity-based importances."
+    },
+    {
+      "label": "scikit-learn: Permutation feature importance",
+      "url": "https://scikit-learn.org/stable/modules/permutation_importance.html",
+      "kind": "tool",
+      "note": "Importance measured on held-out data, for the Task 3 interpretation."
+    },
+    {
+      "label": "Python tutorial: Virtual Environments and Packages",
+      "url": "https://docs.python.org/3/tutorial/venv.html",
+      "kind": "tool",
+      "note": "python -m venv and pip freeze into requirements.txt, so an evaluator can rebuild your environment."
+    },
+    {
+      "label": "GeeksforGeeks and W3Schools ML tutorials",
+      "kind": "community",
+      "note": "Recommended by 2026 passers, together with scikit-learn.org, for quick explanations of the ML concepts."
+    }
+  ],
+  "community": {
+    "summary": "Posts from mid-2026 agree that D682 is one Python ML project on a clean, provided dataset, split into four tasks that must pass in order, with a write-up after each and more writing than coding. Evaluators vary and sometimes ask for things outside the rubric (APA formatting came up), so mirror the rubric closely and appeal when feedback contradicts it; appeals reportedly succeed but take 3-4 days. Effort ranges from 18 logged hours to graduates who called it tedious and slow, and students found the course materials interesting but of little help for the tasks, leaning on scikit-learn's docs, GeeksforGeeks and W3Schools instead. Recent posters recommend running D682, D683 and D687 together, and the Jun 2026 tips post suggests coding D682 Task 2 while Task 1 is graded. Sentiment is split: several call it one of the most interesting courses, while an experienced developer called it among the most frustrating.",
+    "coverage": "18 posts, Jan 2025 - Sep 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "Help 9 weeks 6 classes…",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1wsqs5c/help_9_weeks_6_classes_i_have_trying_to_finish_in/",
+        "date": "Sep 2026",
+        "takeaway": "Comments say D687 continues the D682 model (other posts reuse the D683 project, so confirm with your instructor) and advise concise rubric answers with a low similarity score."
+      },
+      {
+        "title": "What the difficulty level of these courses…",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1w3wb27/what_the_difficulty_level_of_these_courses_i_need/",
+        "date": "Sep 2026",
+        "takeaway": "The Russell and Norvig textbook carries through D682 and D683; review backpropagation and gradient descent, and you don't need to be a mathematician."
+      },
+      {
+        "title": "D682",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vmvjx8/d682/",
+        "date": "Aug 2026",
+        "takeaway": "Commenters say evaluators vary: one got approving feedback on most submissions, including Task 2, while the poster's ambiguously worded reply suggests most of theirs took 4 or 5 attempts."
+      },
+      {
+        "title": "Officially a WGU CS Grad",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vcw2rh/officially_a_wgu_cs_grad/",
+        "date": "Aug 2026",
+        "takeaway": "Logged 18 hours for D682 (difficulty 2/5) and found the course materials interesting but of little help for the tasks. Suggested order: D682, then D683 Task 1, then D687."
+      },
+      {
+        "title": "D682, D683, D687, what is the preferred order?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1v6fd9k/d682_d683_d687_what_is_the_preferred_order/",
+        "date": "Jul 2026",
+        "takeaway": "The poster asked whether D682 also uses Python (it does) and planned D683 first; a commenter in D682 said their instructor advised taking D683 next."
+      },
+      {
+        "title": "BSCS finished in one term!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1utlzoa/bscs_finished_in_one_term/",
+        "date": "Jul 2026",
+        "takeaway": "Lists Intro to AI and AI Optimization among the poster's favorite courses and praises the textbook."
+      },
+      {
+        "title": "Finished bachelor in 2 terms, graduation post",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1uowkw4/finished_bachelor_in_2_terms_graduation_post/",
+        "date": "Jul 2026",
+        "takeaway": "An experienced developer named AI Optimization among the most frustrating classes."
+      },
+      {
+        "title": "Confetti Time!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u9jlmg/confetti_time/",
+        "date": "Jun 2026",
+        "takeaway": "A 14-month grad with no prior experience ranked D682 and D683 among the most interesting courses; a commenter won an appeal against a D682 revision request that conflicted with the rubric."
+      },
+      {
+        "title": "D429",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u8kr4i/d429/",
+        "date": "Jun 2026",
+        "takeaway": "An Aug 2026 comment says the Russell and Norvig textbook is used in D429, D682 and D683, and that the course links a newer edition."
+      },
+      {
+        "title": "One last term left",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u6t73u/one_last_term_left/",
+        "date": "Jun 2026",
+        "takeaway": "A comment describes D682 feeding D683, which feeds the capstone-like D687, and says the chain is easy to stay focused through."
+      },
+      {
+        "title": "D682, D683, D687 Tips for each course",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u2cyb7/d682_d683_d687_tips_for_each_course/",
+        "date": "Jun 2026",
+        "takeaway": "The most detailed account: four tasks graded in order on a clean provided dataset, a write-up per task, more writing than coding, an APA request from an evaluator, and appeals that take 3-4 days. Recommends taking D682, D683 and D687 together."
+      },
+      {
+        "title": "Assessment types per course (BSCS)",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1sbvcob/assessment_types_per_course_bscs/",
+        "date": "Apr 2026",
+        "takeaway": "The degree plan marks each course P or O, but task details stay hidden until you enroll; the poster's AI-generated, unconfirmed list puts D682 among the performance assessments."
+      },
+      {
+        "title": "Fin",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s7gblh/fin/",
+        "date": "Mar 2026",
+        "takeaway": "Two graduates called D682 possibly their hardest course: one because it was tedious, the other because it simply took so long."
+      },
+      {
+        "title": "Instructor says very few ppl fail d429 OA. Failed 3rd attempt tonight",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rkbrue/instructor_says_very_few_ppl_fail_d429_oa_failed/",
+        "date": "Mar 2026",
+        "takeaway": "A commenter finished D682 and D683 between D429 attempts, crediting hands-on learning and GeeksforGeeks."
+      },
+      {
+        "title": "Did they remove capstone from BSCS?",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ql85i7/did_they_remove_capstone_from_bscs/",
+        "date": "Jan 2026",
+        "takeaway": "A commenter argued D683 isn't capstone-level and that after D682 the D683 project feels small."
+      },
+      {
+        "title": "D682 D683 and D429 PA/OA Tips",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1jlc4o6/d682_d683_and_d429_paoa_tips/",
+        "date": "Mar 2025",
+        "takeaway": "An early account from when the courses were new: instructions were unclear and resources scarce."
+      },
+      {
+        "title": "D682 AI optimization - any tips?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1il881u/",
+        "date": "Feb 2025",
+        "takeaway": "Task 1 came back for missing references, and Task 3 sent with Task 2 was rejected until Task 2 passed. The dataset referenced columns that didn't exist, and an instructor said ignoring them or using reasonable stand-in data was fine."
+      },
+      {
+        "title": "New (2025) CS Program Completion (more in comments...)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1i674zv/",
+        "date": "Jan 2025",
+        "takeaway": "The first account of the new courses: follow the rubric, submit through the GitLab repository and expect outside research; an instructor approved pandas, NumPy and scikit-learn."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU Institutional Catalog, November 2026 (D682 description, prerequisite, program placement)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf"
+    },
+    {
+      "label": "WGU Program Guidebook, BSCS to MSCS (MSCSUG), catalog version 202611 (D682 competencies)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/MSCSUG.pdf"
+    },
+    {
+      "label": "WGU Program Guidebook, B.S. Computer Science (competencies; how performance assessments are evaluated)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "stunlock.gg, My Thoughts on WGU and Online Schools (graduate blog, Jun 2025)",
+      "url": "https://stunlock.gg/posts/undergrad/"
+    },
+    {
+      "label": "scikit-learn: Tuning the hyper-parameters of an estimator",
+      "url": "https://scikit-learn.org/stable/modules/grid_search.html"
+    },
+    {
+      "label": "scikit-learn: GridSearchCV API reference",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"
+    },
+    {
+      "label": "scikit-learn: Cross-validation",
+      "url": "https://scikit-learn.org/stable/modules/cross_validation.html"
+    },
+    {
+      "label": "scikit-learn: Common pitfalls and recommended practices",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html"
+    },
+    {
+      "label": "scikit-learn: r2_score",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html"
+    },
+    {
+      "label": "scikit-learn: train_test_split",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"
+    },
+    {
+      "label": "scikit-learn: Linear models",
+      "url": "https://scikit-learn.org/stable/modules/linear_model.html"
+    },
+    {
+      "label": "scikit-learn: Ensembles",
+      "url": "https://scikit-learn.org/stable/modules/ensemble.html"
+    },
+    {
+      "label": "scikit-learn: Permutation feature importance",
+      "url": "https://scikit-learn.org/stable/modules/permutation_importance.html"
+    },
+    {
+      "label": "scikit-learn: Computational performance (prediction latency, model compression)",
+      "url": "https://scikit-learn.org/stable/computing/computational_performance.html"
+    },
+    {
+      "label": "scikit-learn: Model persistence",
+      "url": "https://scikit-learn.org/stable/model_persistence.html"
+    }
+  ],
+  "caveats": [
+    "No official D682 rubric or task prompt is public. The task-by-task outline here combines 2025-2026 student posts with secondhand descriptions of a 2026 task outline (low reliability), so treat headings and deliverables as a starting point and follow your live rubric.",
+    "Researched in Nov 2026; the dataset, the scenario (reportedly a health-risk-score regression) or the tasks could change by then.",
+    "In 2025, students reported the provided dataset referenced columns that didn't exist, and an instructor said documented stand-ins or skipping them was fine. No 2026 post repeats this, but if your files don't match the prompt, document the workaround and ask your instructor.",
+    "APA isn't clearly required: a Jun 2026 student thought it wasn't, yet an evaluator asked for it, and Task 1 came back for missing references in 2025. This guide defaults to APA to avoid a return.",
+    "A secondhand 2026 outline mentions GitLab CI/CD and merge requests for Task 2; no student post confirms a pipeline is required. Check your Task 2 rubric.",
+    "D682 evaluation turnaround isn't reported. The plan assumes a few days per task, based on related courses (a D687 task took about 4 days in 2026).",
+    "D429 is the listed prerequisite, but a Mar 2026 student finished D682 and D683 between D429 attempts, so enrollment may not be blocked. Ask your mentor before planning around it.",
+    "Which project D687 builds on is unsettled: a Sep 2026 comment says D687 continues the D682 model, while the Jun 2026 tips post reuses the D683 proposal. Ask the D687 instructor before reusing work.",
+    "Hill climbing, simulated annealing and genetic algorithms appear here as textbook background and optional search strategies; no source says the rubric requires them."
+  ]
+}

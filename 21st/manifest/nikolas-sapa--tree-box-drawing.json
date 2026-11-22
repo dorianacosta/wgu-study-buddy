@@ -1,0 +1,11 @@
+{
+  "url": "https://21st.dev/@nikolas-sapa/components/tree-box-drawing",
+  "title": "Tree Box Drawing | Community Components | 21st",
+  "author": "nikolas-sapa (Nikolas Sapalidis), @ns-ui library",
+  "license": "MIT License (Copyright (c) 2026 Nikolas Sapalidis)",
+  "published": "9/27/2026",
+  "dependencies": [],
+  "sha256": "d922718725fc265ffcdac8e65349d83414b4b22c669572b9918fba3bf753808f",
+  "verified": true,
+  "note": "Prompt captured with Change copy action > Claude Code (tab viewport 1280x800, clipboard writeText hooked in the page, nothing reached the system clipboard). 15,965 characters / 16,030 UTF-8 bytes. The page's SHA-256 of the captured string equals the SHA-256 of the saved file byte for byte, no normalization. Text moved out of the page as a JSON-escaped string, so blank lines are exact. Non-ASCII characters kept as UTF-8: box drawing U+2500, U+2502, U+2514, U+251C; triangles U+25B8, U+25BE; middle dot U+00B7; em dash U+2014. Info tab: no Dependencies section (imports react only); Tags Sidebar, File Tree, Navigation, Tree, Ascii; Source design.helpmarq.com/r/tree-box-drawing.json; License MIT License, Copyright (c) 2026 Nikolas Sapalidis; Published 9/27/2026. Exports BoughIndex (named and default) and type BoughNode. WAI-ARIA tree (role tree/treeitem, roving tabindex, arrow/Home/End keys), connectors are aria-hidden text, labels are real buttons, prefers-reduced-motion renders the settled state. Props have no onSelect/href, so navigation needs a small added callback. Its CSS block defines --ns-muted, --ns-accent (#006bff) and --surface: map them to theme tokens instead of adding the blue."
+}

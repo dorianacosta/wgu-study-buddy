@@ -1,0 +1,748 @@
+{
+  "code": "D286",
+  "summary": "D286 teaches object-oriented programming in Java through a zyBook: writing and calling methods, designing classes with constructors, getters and setters, and working with strings, loops, arrays and ArrayLists. It's a 3-CU course in term 5 of the BSCS standard path, and you pass it with a proctored objective assessment that students report is a coding exam rather than multiple choice: you write Java in an online code editor, check it against test cases, and your output has to match exactly. The one recent passer in this research (Jun 2026) had no Java background, needed about a week of focused study, and finished with an exemplary rating.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment: proctored Java coding exam",
+    "format": "About 14 coding questions (reported) · write Java in an online editor with test cases · remotely proctored · time limit and passing score not published",
+    "details": [
+      "<b>Students report a coding exam.</b> Instead of picking answers, you write Java (small programs or methods) in an online code editor. A Jun 2026 passer describes a <b>Run Test Cases</b> button in both the pre-assessment and the OA that scores your code against several test cases before you submit.",
+      "<b>Output is compared exactly.</b> Spacing, capitalization, punctuation and <code>print</code> vs <code>println</code> all count, so code with the right logic can still fail a test case over one missing space (Jun 2026 report).",
+      "<b>Length and scoring:</b> the Jun 2026 passer counted 14 coding questions, skipped one on purpose and still passed with an exemplary rating. WGU doesn't publish the question count, the time limit or the passing score.",
+      "<b>Pre-assessment and practice test:</b> commenters say the pre-assessment (PA) and OA are very similar in format, and the passer says the practice test at the end of the zyBook matches the PA's format. The passer adds that the OA changes the details, so learn the patterns instead of memorizing answers.",
+      "<b>Reported must-knows:</b> arrays and ArrayLists, getters and setters, for and while loops, Scanner input, constructors and overloaded constructors, string manipulation, and writing and calling methods. A commenter forgot how to use the <code>Random</code> class and ArrayList syntax during the exam.",
+      "<b>Course facts:</b> 3 CUs (CCN ITSW 3172 in WGU's institutional catalog) in term 5 of the BSCS standard path, catalog 202611, alongside D287 Java Frameworks. WGU expects you to know variables, types, program flow and debugging already, which D278 Scripting and Programming - Foundations and C867 Scripting and Programming - Applications cover earlier in the path. WGU says its objective assessments are proctored remotely with a webcam and an online proctoring service."
+    ],
+    "tips": [
+      "Practice writing complete programs from an empty file: the class header, <code>public static void main(String[] args)</code>, the imports (<code>java.util.Scanner</code>, <code>java.util.ArrayList</code>, <code>java.util.Random</code>) and every brace. The exam gives you an editor, not a menu of answers.",
+      "Copy prompt strings exactly and compare your output with the expected output line by line: spaces around colons, the final line break and capitalization, before you run the test cases.",
+      "Run the test cases early and after every fix, and read which case failed. A failing edge case (no input, one item, a negative number) usually points to a loop bound or a condition.",
+      "Don't stall on one question. The Jun 2026 passer skipped one on purpose and still passed; flag it, finish the rest, then come back.",
+      "Treat the zyBook's end-of-book practice test and the PA as dress rehearsals, then redo each miss from a blank file the next day to check that you understand it rather than remember it.",
+      "Code along with a video course in an IDE (the passer did the first four hours of Bro Code's Java course in IntelliJ IDEA). If you use an AI chatbot, tell it to explain and quiz you but never hand you a solution, which is how the passer used ChatGPT.",
+      "In the last few days, write these from memory once a day: an ArrayList declaration with its import, a seeded <code>Random</code> with a bounded <code>nextInt</code>, an overloaded constructor that chains with <code>this(...)</code>, and a getter and setter pair."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and create your personalized course plan together (listed first in the program guide).",
+    "The learner creates methods in Java.",
+    "The learner creates object-oriented programs."
+  ],
+  "topics": [
+    {
+      "title": "Program structure and exact output",
+      "eli5": "A Java program is a recipe filed under a class name, <code>main</code> is the first step the computer reads, and whatever you print must match the expected output letter for letter, like a spelling test.",
+      "detail": "Every statement lives inside a method, and every method lives inside a class; a program starts at <code>public static void main(String[] args)</code>. <code>System.out.println(x)</code> prints x and then a line break, <code>System.out.print(x)</code> prints without one, and <code>System.out.printf(format, args)</code> (or <code>String.format</code>) builds text from specifiers such as <code>%d</code> for an integer, <code>%.2f</code> for a double with two decimals (rounded half up), <code>%s</code> for a string and <code>%n</code> for a line break. Escape sequences put special characters into string literals: <code>\\n</code> newline, <code>\\t</code> tab, <code>\\\"</code> a double quote and <code>\\\\</code> a backslash. Java is case-sensitive, statements end with a semicolon, and <code>//</code> and <code>/* */</code> start comments. Auto-graded questions compare your output with the expected text exactly, so a missing space, an extra blank line or a capital letter in the wrong place fails a test case even when the logic is right.",
+      "points": [
+        "<code>System.out.print(\"Total: \");</code> followed by <code>System.out.println(42);</code> prints <code>Total: 42</code> on one line",
+        "<code>System.out.printf(\"%.2f%n\", 2.0 / 3);</code> prints <code>0.67</code>; passing a double to <code>%d</code> throws IllegalFormatConversionException",
+        "<code>%5d</code> right-aligns a number in 5 columns and <code>%-10s</code> left-aligns text in 10",
+        "<code>+</code> works left to right: <code>1 + 2 + \"x\"</code> is <code>3x</code> but <code>\"x\" + 1 + 2</code> is <code>x12</code>",
+        "A public class named Main normally lives in a file named Main.java"
+      ]
+    },
+    {
+      "title": "Variables, types and arithmetic",
+      "eli5": "A variable is a labeled box and its type says what fits inside: whole numbers in an <code>int</code>, decimals in a <code>double</code>, one character in a <code>char</code>, and true or false in a <code>boolean</code>.",
+      "detail": "Declare a variable with a type and a name (<code>int count = 0;</code>). A local variable must be assigned before it's read, while fields get default values (0, 0.0, false, null). <code>int</code> is a 32-bit integer (up to 2,147,483,647), <code>long</code> is 64-bit, <code>double</code> is a 64-bit floating-point number, <code>char</code> holds one 16-bit Unicode character, and <code>boolean</code> is true or false; <code>String</code> is a class, not a primitive. When both operands are integers, <code>/</code> discards the fraction (rounding toward zero) and <code>%</code> gives the remainder, whose sign follows the left operand; integer <code>/</code> or <code>%</code> by zero throws ArithmeticException, while dividing a nonzero double by zero gives Infinity or -Infinity, and <code>0.0 / 0</code> gives NaN. Mixing an int with a double promotes the int, a cast such as <code>(int) 3.99</code> truncates to 3, and <code>final</code> makes a constant. The <code>Math</code> class supplies <code>Math.pow</code> and <code>Math.sqrt</code> (both return a double), <code>Math.abs</code>, <code>Math.max</code>, <code>Math.min</code> and <code>Math.round</code> (which returns a long for a double argument).",
+      "points": [
+        "<code>7 / 2</code> is 3, <code>7 / 2.0</code> is 3.5, <code>-7 / 2</code> is -3, <code>7 % 3</code> is 1 and <code>-7 % 3</code> is -1",
+        "<code>double avg = sum / count;</code> with int sum and count still does integer division; write <code>(double) sum / count</code>",
+        "<code>x++</code> uses the old value and then adds 1, while <code>++x</code> adds first: with x = 5, <code>y = x++;</code> leaves y at 5 and x at 6",
+        "<code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code> and <code>%=</code> combine an operation with assignment",
+        "<code>n % 2 == 0</code> tests for an even number, and <code>n % 10</code> gives the last digit"
+      ]
+    },
+    {
+      "title": "Reading input with Scanner",
+      "eli5": "Scanner reads what the user types one word or one line at a time, and its number readers stop right before the Enter key, which is why a line read right after a number often comes back empty.",
+      "detail": "Create one with <code>Scanner scnr = new Scanner(System.in);</code> after <code>import java.util.Scanner;</code>, and reuse that one object for all input. Token methods (<code>next()</code>, <code>nextInt()</code>, <code>nextDouble()</code>, <code>nextBoolean()</code>) skip leading whitespace (spaces, tabs and line breaks) and read one whitespace-separated token, while <code>nextLine()</code> returns the rest of the current line without its line break. Because <code>nextInt()</code> leaves the line break after the number unread, a <code>nextLine()</code> right after it returns an empty string, so call one extra <code>nextLine()</code> to discard it before reading a full line. <code>hasNextInt()</code> and <code>hasNext()</code> test the next token without consuming it, which makes them the safe way to loop until input runs out. If the next token isn't a valid int, <code>nextInt()</code> throws InputMismatchException, and reading past the end of the input throws NoSuchElementException.",
+      "points": [
+        "Input <code>25 Ana Lopez</code>: <code>nextInt()</code> gives 25, <code>next()</code> gives \"Ana\", then <code>nextLine()</code> gives \" Lopez\" (with the leading space)",
+        "Sentinel loop: read a value before the loop, then <code>while (value != -1) { ...; value = scnr.nextInt(); }</code>",
+        "<code>while (scnr.hasNextInt()) { sum += scnr.nextInt(); }</code> adds integers until the input runs out or the next token isn't an int (on <code>3 apples 4</code> it stops at apples, with a sum of 3)",
+        "Read a line and split it: <code>String[] parts = scnr.nextLine().split(\" \");</code> then <code>Integer.parseInt(parts[0])</code>"
+      ]
+    },
+    {
+      "title": "Strings and characters",
+      "eli5": "A String is a row of letter tiles numbered from 0: you can read tiles and copy pieces, but you can't change the row itself, so every change builds a new row.",
+      "detail": "Strings are immutable: <code>toUpperCase()</code>, <code>replace()</code>, <code>trim()</code> and <code>substring()</code> return new strings and leave the original alone, so assign the result. Positions run from 0 to <code>length() - 1</code>; <code>charAt(i)</code> returns one char, <code>substring(begin, end)</code> includes begin and excludes end, and <code>indexOf</code> returns the first position of a char or substring, or -1 when it isn't there. Compare contents with <code>equals</code> or <code>equalsIgnoreCase</code>, because <code>==</code> compares references and can be false for two strings with the same text, especially text read from input. <code>compareTo</code> orders strings by character codes and returns a negative number, 0 or a positive number. A <code>char</code> is a number underneath, so <code>'a' + 1</code> is the int 98 and <code>(char) ('a' + 1)</code> is 'b', and the <code>Character</code> class offers <code>isDigit</code>, <code>isLetter</code>, <code>isUpperCase</code> and <code>toUpperCase</code>. To build a string piece by piece in a loop, a <code>StringBuilder</code> with <code>append</code> avoids creating a new string on every pass.",
+      "points": [
+        "<code>\"hamburger\".substring(4, 8)</code> is \"urge\", and <code>s.substring(3)</code> runs to the end",
+        "The last character is <code>s.charAt(s.length() - 1)</code>; <code>s.charAt(s.length())</code> throws StringIndexOutOfBoundsException",
+        "<code>s.toUpperCase();</code> on its own changes nothing you can see; write <code>s = s.toUpperCase();</code>",
+        "Also know <code>contains</code>, <code>startsWith</code>, <code>endsWith</code>, <code>isEmpty</code>, <code>split(\",\")</code>, <code>String.valueOf(5)</code> and <code>Integer.parseInt(\"42\")</code>",
+        "Loop over characters with <code>for (int i = 0; i &lt; s.length(); i++)</code> and <code>s.charAt(i)</code>; reverse by counting down from <code>s.length() - 1</code>"
+      ]
+    },
+    {
+      "title": "Branches and boolean logic",
+      "eli5": "An if statement is a fork in the road where the program asks a yes-or-no question and takes exactly one path, and an else-if chain asks its questions top to bottom and stops at the first yes.",
+      "detail": "Relational operators (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code>) produce booleans, and <code>&amp;&amp;</code>, <code>||</code> and <code>!</code> combine them. <code>&amp;&amp;</code> and <code>||</code> short-circuit: the right side runs only when it can change the result, so <code>s != null &amp;&amp; s.isEmpty()</code> never calls a method on null. In an if, else-if, else chain only the first true branch runs, so put the most specific or highest range first. A <code>switch</code> compares one value (an int, char, String or enum) against <code>case</code> labels; in the classic colon form, execution falls through into the next case unless <code>break</code> stops it, and <code>default</code> catches everything else. The conditional operator <code>cond ? a : b</code> picks one of two values. Avoid <code>==</code> on doubles that come from arithmetic (0.1 + 0.2 isn't exactly 0.3); compare the difference with a small tolerance instead.",
+      "points": [
+        "<code>if (score &gt;= 90) ... else if (score &gt;= 80) ...</code> works top-down; testing <code>&gt;= 80</code> first would label 95 a B",
+        "Range check: <code>x &gt;= 1 &amp;&amp; x &lt;= 10</code>; writing <code>1 &lt;= x &lt;= 10</code> doesn't compile",
+        "A stray semicolon in <code>if (x &gt; 0);</code> ends the if, so the block after it always runs",
+        "Since Java 14, arrow labels such as <code>case 6, 7 -&gt; System.out.println(\"weekend\");</code> never fall through",
+        "A switch on a String matches by content; everywhere else, compare Strings with <code>equals</code>"
+      ]
+    },
+    {
+      "title": "Loops",
+      "eli5": "A loop is a chore that repeats: while keeps going as long as a condition holds, for counts a set number of times, and do-while always does the chore at least once.",
+      "detail": "A <code>while</code> loop tests its condition before each pass, a <code>do-while</code> loop tests after, so its body runs at least once, and a <code>for</code> loop bundles initialization, condition and update: <code>for (int i = 0; i &lt; n; i++)</code> runs n times with i from 0 to n - 1. <code>break</code> leaves the innermost loop at once, and <code>continue</code> skips to the next pass. Common patterns are counters, accumulators (sum, product), a running max or min, sentinel-controlled input and nested loops, where the inner loop runs completely for every pass of the outer loop. The enhanced for loop (<code>for (int v : values)</code>) reads every element of an array or list in order, but it can't replace array elements or remove list items. Most loop bugs are off-by-one errors (<code>&lt;=</code> where <code>&lt;</code> was needed) or an update that never makes the condition false.",
+      "points": [
+        "<code>for (int i = 1; i &lt;= 5; i++)</code> runs 5 times; <code>for (int i = 0; i &lt; 5; i += 2)</code> runs 3 times (0, 2, 4)",
+        "Nested loops multiply: an outer loop of 3 passes around an inner loop of 4 runs the inner body 12 times",
+        "For a comma-separated list with no trailing comma, print the separator before every item except the first",
+        "A variable declared in the loop header (<code>int i</code>) doesn't exist after the loop",
+        "Start a running max at the first element (or <code>Integer.MIN_VALUE</code>), not 0, so all-negative input still works"
+      ]
+    },
+    {
+      "title": "Methods",
+      "eli5": "A method is a small machine with a name: you feed it inputs (arguments), it does one job, and it can hand back one result with return.",
+      "detail": "A method header lists modifiers, a return type, a name and parameters, as in <code>public static double average(int a, int b)</code>. A non-void method must return a value of its type on every path, and <code>return</code> ends the method immediately; a void method returns nothing. Java always passes arguments by value: the parameter gets a copy, so reassigning a parameter never changes the caller's variable, but when the copy is a reference to an array or object, the method can change the contents the caller sees. Variables declared inside a method are local to it. Overloading means several methods share a name but differ in their parameter lists (number, types or order of parameters); the return type alone can't tell two methods apart, and the compiler picks the overload that best matches the arguments. Static methods belong to the class and are called as <code>ClassName.method()</code> (or just <code>method()</code> from the same class), while instance methods are called on an object.",
+      "points": [
+        "<code>print(int)</code> and <code>print(double)</code> can coexist; <code>int total()</code> and <code>double total()</code> can't",
+        "<code>return</code> inside a loop exits the whole method, not just the loop",
+        "A method that sets <code>arr[0] = 9</code> changes the caller's array; a method that sets <code>arr = new int[5]</code> doesn't",
+        "When the task says a method returns a value, return it instead of printing it; extra printed text breaks exact-output checks",
+        "Test each method from <code>main</code> with inputs whose answers you already know"
+      ]
+    },
+    {
+      "title": "Arrays",
+      "eli5": "An array is a row of numbered lockers of one type, built at a fixed size, and because numbering starts at 0, a row of 5 lockers ends at locker 4.",
+      "detail": "Create an array with a size (<code>int[] scores = new int[5];</code>, every element starting at 0, 0.0, false or null) or with values (<code>int[] scores = {90, 85, 77};</code>). Its size is fixed and read with the <code>length</code> field (no parentheses), so valid indexes run from 0 to <code>length - 1</code> and any other index throws ArrayIndexOutOfBoundsException. Arrays are objects: assigning one array variable to another copies the reference, so both names see the same elements, and passing an array to a method lets the method change its contents. Learn the standard algorithms: sum and average, max and min and their index, counting matches, searching, reversing, shifting and swapping two elements through a temporary variable. <code>java.util.Arrays</code> adds <code>Arrays.sort(a)</code>, <code>Arrays.copyOf</code> and <code>Arrays.toString(a)</code>, which you need for printing: printing an array directly shows a type code and a hash instead of its elements (the one exception is a <code>char[]</code> passed straight to <code>print</code> or <code>println</code>, which prints its characters). A two-dimensional array such as <code>int[][] grid = new int[3][4];</code> is an array of rows, with <code>grid.length</code> rows and <code>grid[0].length</code> columns.",
+      "points": [
+        "<code>arr.length</code> is an array field, <code>s.length()</code> a String method and <code>list.size()</code> an ArrayList method",
+        "<code>for (int i = 0; i &lt;= arr.length; i++)</code> throws on its last pass; use <code>&lt;</code>",
+        "Swap: <code>int tmp = a[i]; a[i] = a[j]; a[j] = tmp;</code>",
+        "<code>int[] b = a;</code> makes a second name for the same array; <code>int[] b = Arrays.copyOf(a, a.length);</code> makes a copy",
+        "Parallel arrays (names[i] goes with prices[i]) work, but an array or list of objects is usually cleaner"
+      ]
+    },
+    {
+      "title": "ArrayList and wrapper classes",
+      "eli5": "An ArrayList is an array that grows and shrinks for you: you ask it to add, get, set or remove items, and it keeps track of its own size.",
+      "detail": "<code>ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();</code> (after <code>import java.util.ArrayList;</code>) creates an empty, resizable list. The type in angle brackets must be a class, so primitives use wrapper classes, as in <code>ArrayList&lt;Integer&gt;</code>, <code>ArrayList&lt;Double&gt;</code> and <code>ArrayList&lt;Character&gt;</code>, and autoboxing converts between int and Integer for you. <code>add(x)</code> appends, <code>add(i, x)</code> inserts and shifts later items right, <code>get(i)</code> reads, <code>set(i, x)</code> replaces and returns the old value, <code>remove(i)</code> removes by index and returns the item, and <code>remove(obj)</code> removes the first matching item and returns true or false; <code>size()</code>, <code>contains(x)</code>, <code>indexOf(x)</code>, <code>isEmpty()</code> and <code>clear()</code> do what their names say. A bad index throws IndexOutOfBoundsException. On an <code>ArrayList&lt;Integer&gt;</code>, <code>remove(1)</code> removes index 1, not the value 1, so write <code>remove(Integer.valueOf(1))</code> to remove by value. Removing items inside an enhanced for loop usually throws ConcurrentModificationException; loop backward by index or call <code>removeIf</code> instead.",
+      "points": [
+        "Printing a list works directly: <code>System.out.println(names)</code> shows <code>[Ana, Ben]</code>",
+        "Compare two Integer objects with <code>equals</code> (or unbox them to int); <code>==</code> compares references and only happens to work for small cached values (-128 to 127)",
+        "Array vs ArrayList: fixed <code>length</code> vs growing <code>size()</code>, and <code>arr[i]</code> vs <code>list.get(i)</code> and <code>list.set(i, x)</code>",
+        "Removing while looping forward by index skips the item that slides into the removed slot; loop from the end",
+        "<code>Collections.sort(list)</code> sorts a list in place"
+      ]
+    },
+    {
+      "title": "Classes, objects, constructors, getters and setters",
+      "eli5": "A class is a blueprint and an object is a house built from it; the constructor is the crew that sets up each new house, and getters and setters are the front door other code uses instead of climbing through a window.",
+      "detail": "A class groups fields (data) with methods (behavior). Make fields <code>private</code> and expose them through public accessors (getters) and mutators (setters) such as <code>getName()</code> and <code>setName(String name)</code>; this encapsulation lets the class check changes before accepting them. A constructor has the class's exact name and no return type, not even void, and runs when <code>new</code> creates an object. If a class declares no constructor, Java supplies a default no-argument one, but declaring any constructor removes it, so <code>new Pet()</code> stops compiling until you write a no-argument version yourself. Constructors can be overloaded, and one can call another with <code>this(...)</code>. Before Java 25 that call had to be the constructor's first statement; Java 25 also allows statements that don't use the new object (such as an argument check) before it, but putting <code>this(...)</code> first works in every version. When a parameter has the same name as a field, <code>this.name</code> means the field, and writing <code>name = name;</code> just assigns the parameter to itself. Each object has its own copy of the instance fields, while a <code>static</code> field is shared by every object of the class. Overriding <code>toString()</code> controls how an object prints, and a class-type variable that is null throws NullPointerException when you call a method on it.",
+      "points": [
+        "Chaining: <code>public Pet() { this(\"Unknown\", 0); }</code> reuses <code>public Pet(String name, int age)</code>",
+        "Naming: <code>getX()</code> and <code>setX(value)</code>, with <code>isX()</code> for a boolean getter",
+        "<code>public void Pet()</code> is an ordinary method that happens to share the class's name, not a constructor",
+        "A <code>private static int count</code> that the constructor increments counts every object created",
+        "Objects in a list: <code>pets.get(i).getName()</code> calls the getter on the i-th object"
+      ]
+    },
+    {
+      "title": "Random numbers and seeds",
+      "eli5": "Random is a dice machine, and if you give it the same starting number (a seed) it rolls the same sequence every time, which is how a test can know what 'random' output to expect.",
+      "detail": "After <code>import java.util.Random;</code>, <code>Random rand = new Random();</code> gives unpredictable values and <code>new Random(seed)</code> gives a repeatable sequence: two Random objects built with the same seed and given the same calls produce identical numbers. <code>rand.nextInt(n)</code> returns an int from 0 up to but not including n (n must be positive), so a die roll is <code>rand.nextInt(6) + 1</code> and a value from min to max inclusive is <code>rand.nextInt(max - min + 1) + min</code>. <code>nextDouble()</code> returns a double from 0.0 up to but not including 1.0, and <code>Math.random()</code> does the same without a Random object. Create the Random object once, before any loop, because a new seeded Random inside a loop restarts the same sequence on every pass. Auto-graded programs that use Random normally give you a seed so the expected output is predictable; when they do, create exactly one Random with that seed and make your calls in the order the instructions describe.",
+      "points": [
+        "<code>rand.nextInt(6)</code> gives 0 to 5, and <code>rand.nextInt(6) + 1</code> gives 1 to 6",
+        "50 to 100 inclusive: <code>rand.nextInt(51) + 50</code>, since 100 - 50 + 1 = 51",
+        "<code>rand.nextInt(0)</code> throws IllegalArgumentException",
+        "Java 17 and later also accept <code>rand.nextInt(min, max + 1)</code> (the second number is excluded), but with a seed it doesn't always match <code>nextInt(max - min + 1) + min</code>: the two give different numbers whenever the range size is a power of two (2, 4, 8 ...), such as a seeded coin flip. On seeded tasks, use the form the instructions show, or <code>nextInt(n) + min</code> if they don't say",
+        "A commenter in the Jun 2026 thread blanked on Random during the OA, so write it from memory a few times"
+      ]
+    },
+    {
+      "title": "Compile, run, test, debug",
+      "eli5": "Coding for an auto-grader is like baking for a judge with the recipe card in hand: you taste-test (run the test cases), compare with the card (the expected output) and fix one thing at a time.",
+      "detail": "Compile errors stop the program before it runs: a missing semicolon or brace, a misspelled name (Java is case-sensitive), a double stored in an int without a cast, or a variable used outside its scope. Fix the first error message and its line first, since one mistake can trigger a cascade. Runtime exceptions happen while the program runs: InputMismatchException (the wrong kind of input), ArrayIndexOutOfBoundsException and IndexOutOfBoundsException (a bad index), StringIndexOutOfBoundsException, NullPointerException (a method called on null), NumberFormatException (parsing text that isn't a number) and ArithmeticException (integer division by zero). Logic errors give wrong output without crashing, so trace them by printing intermediate values or stepping through a debugger in an IDE. In an auto-graded editor, read each failing test case's input, compare the expected and actual output character by character, fix one thing and run again, and remove debug prints before you submit, since extra output fails an exact match.",
+      "points": [
+        "A stack trace's first line names the exception, and its <code>at ... (Main.java:12)</code> lines show where it happened",
+        "<code>cannot find symbol</code> usually means a typo, a missing import or a variable used outside its scope",
+        "<code>incompatible types: possible lossy conversion from double to int</code> means you need a cast or a double variable",
+        "<code>missing return statement</code> means some path through a non-void method doesn't return",
+        "Test the edges yourself: no items, one item, negative numbers, the largest value last, and mixed-case text"
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Exam format (reported)",
+      "value": "About 14 coding questions, written in an online editor with a Run Test Cases button",
+      "note": "Jun 2026 report; WGU doesn't publish the count, time limit or passing score"
+    },
+    {
+      "label": "Course facts",
+      "value": "3 CUs · term 5 of the BSCS standard path (catalog 202611) · CCN ITSW 3172 in the institutional catalog",
+      "note": "D287 Java Frameworks sits in the same term"
+    },
+    {
+      "label": "Program skeleton",
+      "value": "<code>public class Main { public static void main(String[] args) { ... } }</code>"
+    },
+    {
+      "label": "Printing",
+      "value": "<code>print</code> (no line break) · <code>println</code> (adds a line break) · <code>printf</code> (format string)"
+    },
+    {
+      "label": "Format specifiers",
+      "value": "<code>%d</code> integer · <code>%.2f</code> two decimals (rounded half up) · <code>%s</code> string · <code>%n</code> line break · <code>%5d</code> and <code>%-10s</code> set a width",
+      "note": "<code>%d</code> with a double throws IllegalFormatConversionException"
+    },
+    {
+      "label": "Escape sequences",
+      "value": "<code>\\n</code> newline · <code>\\t</code> tab · <code>\\\"</code> double quote · <code>\\\\</code> backslash"
+    },
+    {
+      "label": "Primitive types",
+      "value": "<code>int</code> 32-bit (max 2,147,483,647) · <code>long</code> 64-bit · <code>double</code> 64-bit floating point · <code>char</code> 16-bit character · <code>boolean</code> true or false"
+    },
+    {
+      "label": "Integer arithmetic",
+      "value": "<code>7 / 2</code> = 3 · <code>7 % 2</code> = 1 · <code>-7 / 2</code> = -3 · <code>-7 % 3</code> = -1",
+      "note": "Integer <code>/</code> or <code>%</code> by zero throws ArithmeticException; a nonzero double divided by zero gives Infinity or -Infinity, and <code>0.0 / 0</code> gives NaN"
+    },
+    {
+      "label": "Casts",
+      "value": "<code>(int) 3.99</code> = 3 · <code>(double) 7 / 2</code> = 3.5 · <code>(char) ('a' + 1)</code> = 'b'"
+    },
+    {
+      "label": "Math methods",
+      "value": "<code>Math.pow(2, 3)</code> = 8.0 (double) · <code>Math.sqrt</code> returns a double · <code>Math.round(2.5)</code> = 3 (a long) · <code>Math.abs</code>, <code>Math.max</code>, <code>Math.min</code>"
+    },
+    {
+      "label": "Default values",
+      "value": "Fields: 0 · 0.0 · false · '\\u0000' · null",
+      "note": "Local variables get no default and must be assigned before use"
+    },
+    {
+      "label": "Scanner methods",
+      "value": "<code>nextInt()</code>, <code>nextDouble()</code> and <code>next()</code> read one token · <code>nextLine()</code> reads the rest of the line · <code>hasNextInt()</code> and <code>hasNext()</code> peek without reading"
+    },
+    {
+      "label": "The nextLine trap",
+      "value": "After <code>nextInt()</code>, call <code>nextLine()</code> once to throw away the leftover line break"
+    },
+    {
+      "label": "String methods",
+      "value": "<code>length()</code> · <code>charAt(i)</code> · <code>substring(b, e)</code> (e excluded) · <code>indexOf(x)</code> (-1 if absent) · <code>equals</code> · <code>equalsIgnoreCase</code> · <code>toUpperCase</code> · <code>trim</code> · <code>split</code> · <code>contains</code> · <code>replace</code>",
+      "note": "Strings are immutable; assign the result"
+    },
+    {
+      "label": "Comparing values",
+      "value": "<code>==</code> for primitives · <code>equals</code> for Strings and other objects",
+      "note": "<code>compareTo</code> returns 0 when two strings are equal"
+    },
+    {
+      "label": "Character helpers",
+      "value": "<code>Character.isDigit</code> · <code>isLetter</code> · <code>isUpperCase</code> · <code>toUpperCase</code>",
+      "note": "<code>'a' + 1</code> is the int 98"
+    },
+    {
+      "label": "Loop shapes",
+      "value": "<code>for (int i = 0; i &lt; n; i++)</code> runs n times · while tests first · do-while runs at least once · <code>break</code> leaves, <code>continue</code> skips ahead"
+    },
+    {
+      "label": "Arrays",
+      "value": "<code>int[] a = new int[5];</code> · <code>int[] b = {1, 2, 3};</code> · <code>a.length</code> · indexes 0 to length - 1 · <code>Arrays.toString(a)</code>"
+    },
+    {
+      "label": "Sizes",
+      "value": "array <code>.length</code> · String <code>.length()</code> · ArrayList <code>.size()</code>"
+    },
+    {
+      "label": "ArrayList methods",
+      "value": "<code>add(x)</code> · <code>add(i, x)</code> · <code>get(i)</code> · <code>set(i, x)</code> · <code>remove(i)</code> · <code>remove(obj)</code> · <code>size()</code> · <code>contains(x)</code> · <code>indexOf(x)</code> · <code>isEmpty()</code> · <code>clear()</code>",
+      "note": "<code>new ArrayList&lt;&gt;()</code> needs <code>import java.util.ArrayList;</code>"
+    },
+    {
+      "label": "Wrapper classes",
+      "value": "int → Integer · double → Double · char → Character · boolean → Boolean",
+      "note": "<code>Integer.parseInt(\"42\")</code> and <code>Double.parseDouble(\"2.5\")</code> turn text into numbers"
+    },
+    {
+      "label": "Random",
+      "value": "<code>new Random(seed)</code> repeats its sequence · <code>nextInt(n)</code> gives 0 to n - 1 · min to max: <code>nextInt(max - min + 1) + min</code>",
+      "note": "Create one Random, outside any loop"
+    },
+    {
+      "label": "Constructor rules",
+      "value": "Same name as the class, no return type · a free no-arg constructor only if you declare none · put <code>this(...)</code> first (required before Java 25)"
+    },
+    {
+      "label": "Encapsulation",
+      "value": "Private fields, public getters and setters · <code>this.field = field;</code> when names clash"
+    },
+    {
+      "label": "Overloading",
+      "value": "Same name, different parameter list (number, types or order)",
+      "note": "Return type and parameter names don't count"
+    },
+    {
+      "label": "Pass by value",
+      "value": "A primitive argument copies the value · an object or array argument copies the reference",
+      "note": "The method can change the shared contents but can't repoint the caller's variable"
+    },
+    {
+      "label": "static vs instance",
+      "value": "<code>static</code> members belong to the class and are shared · instance fields belong to each object"
+    },
+    {
+      "label": "Common exceptions",
+      "value": "InputMismatchException · ArrayIndexOutOfBoundsException · IndexOutOfBoundsException · StringIndexOutOfBoundsException · NullPointerException · NumberFormatException · ArithmeticException"
+    },
+    {
+      "label": "Imports",
+      "value": "<code>java.util.Scanner</code> · <code>java.util.ArrayList</code> · <code>java.util.Random</code> · <code>java.util.Arrays</code>",
+      "note": "String, Math, Integer and Character are in java.lang and need no import"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup and a first look at the format",
+      "tasks": [
+        "Review your course planning tool report with your instructor (the course's first competency) and ask how the PA and OA work in your version of the course.",
+        "Install a JDK and IntelliJ IDEA, then write, compile and run Hello World from an empty file.",
+        "Skim the zyBook's table of contents and its end-of-book practice test so you know the style; don't try to solve it yet.",
+        "Budget about 1.5–2 hours a day. The Jun 2026 passer, new to Java, needed about a week of focused study, so compress the plan if it goes faster."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Output, variables and arithmetic",
+      "tasks": [
+        "<code>print</code>, <code>println</code> and <code>printf</code>, escape sequences and format specifiers (<code>%d</code>, <code>%.2f</code>, <code>%s</code>, <code>%n</code>).",
+        "<code>int</code>, <code>double</code>, <code>char</code> and <code>boolean</code>, integer division, <code>%</code>, casts, <code>final</code> and the Math methods.",
+        "Write ten tiny programs that print exact strings with computed values, and check every space and line break."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Scanner input and strings",
+      "tasks": [
+        "Token methods vs <code>nextLine()</code>, the leftover line break, and <code>hasNextInt()</code> loops.",
+        "<code>charAt</code>, <code>substring</code>, <code>indexOf</code>, <code>equals</code>, <code>toUpperCase</code>, <code>split</code>, <code>Integer.parseInt</code> and char arithmetic.",
+        "Write programs that read a name and a number in different orders, then reverse, count and reformat strings."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Branches and boolean logic",
+      "tasks": [
+        "if, else-if and else chains, <code>&amp;&amp;</code>, <code>||</code>, <code>!</code> and short-circuit evaluation, switch with and without <code>break</code>, and the conditional operator.",
+        "Write a grade-letter program, a leap-year check and a menu driven by a switch."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Loops",
+      "tasks": [
+        "for, while and do-while, <code>break</code> and <code>continue</code>, sentinel loops, nested loops and the enhanced for loop.",
+        "Trace three loops by hand on paper (the value of each variable on every pass), then confirm by running them.",
+        "Write a sum and average of input values ending at -1, a times table and a running max."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Methods",
+      "tasks": [
+        "Headers, parameters and return values, void methods, local scope, pass by value and overloading.",
+        "Rewrite two earlier programs so <code>main</code> only reads input and prints, and the work happens in methods you call."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Arrays",
+      "tasks": [
+        "Declaring and filling arrays, <code>length</code>, traversal, max and min with their index, counting, reversing and swapping.",
+        "Pass arrays to methods and predict what the caller sees afterward; print with <code>Arrays.toString</code>."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "ArrayList, wrapper classes and Random",
+      "tasks": [
+        "<code>add</code>, <code>get</code>, <code>set</code>, <code>remove(int)</code> vs <code>remove(Object)</code>, <code>size</code>, <code>contains</code> and <code>indexOf</code>; Integer vs int.",
+        "<code>Random</code> with and without a seed, <code>nextInt(n)</code> and the min-to-max formula.",
+        "Write a program that fills an ArrayList from input, removes values that match a condition and prints the result."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Classes, objects, constructors, getters and setters",
+      "tasks": [
+        "Private fields, getters and setters, constructors (default, overloaded and chained with <code>this(...)</code>), <code>this.field</code>, <code>toString</code> and static vs instance fields.",
+        "Build two small classes by hand (no IDE generation), each with two constructors, then use them from <code>main</code> in an ArrayList.",
+        "Redo every class exercise from the zyBook's later chapters from a blank file."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "End-of-book practice test",
+      "tasks": [
+        "Take the zyBook's practice test under exam conditions: timed, no notes, output compared exactly.",
+        "Log every miss with its cause (syntax, logic or output format) and redo it the next morning from scratch."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Pre-assessment",
+      "tasks": [
+        "Take the PA in one sitting and use the Run Test Cases button the way you will on the OA.",
+        "Study the coaching report, rewrite each weak problem without looking at your earlier answer, and ask your instructor about anything still unclear."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "From-memory drills and scheduling",
+      "tasks": [
+        "Write from memory: the imports, a Scanner loop, an ArrayList of objects, a seeded Random, a class with an overloaded constructor, getters and setters.",
+        "Schedule the OA, check your webcam and room against WGU's proctoring requirements, and clear your desk."
+      ]
+    },
+    {
+      "day": "Day 14",
+      "focus": "Exam day",
+      "tasks": [
+        "Read each prompt twice and copy its output strings exactly.",
+        "Solve the questions you're sure of first, run the test cases often, and come back to any you skipped."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "What does this print?<br><code>int total = 17;</code><br><code>int count = 4;</code><br><code>double avg = total / count;</code><br><code>System.out.println(avg);</code>",
+      "choices": [
+        "<code>4.25</code>",
+        "<code>4.0</code>",
+        "<code>4</code>",
+        "<code>4.3</code>"
+      ],
+      "answer": "<code>4.0</code>",
+      "why": "<code>total / count</code> divides two ints, so Java throws away the fraction and gets the int 4 before the assignment widens it to the double 4.0, which println shows as <code>4.0</code>. Getting 4.25 needs a cast before the division: <code>(double) total / count</code>. Plain <code>4</code> would print only from an int variable, and <code>4.3</code> would need rounding, for example with <code>printf(\"%.1f\", ...)</code> on 4.25."
+    },
+    {
+      "q": "The user types <code>3</code>, presses Enter, types <code>blue sky</code> and presses Enter again. What does <code>label</code> hold after this code?<br><code>int n = scnr.nextInt();</code><br><code>String label = scnr.nextLine();</code>",
+      "choices": [
+        "<code>\"blue sky\"</code>",
+        "<code>\"blue\"</code>",
+        "An empty string (<code>\"\"</code>)",
+        "<code>\"3 blue sky\"</code>"
+      ],
+      "answer": "An empty string (<code>\"\"</code>)",
+      "why": "<code>nextInt()</code> reads 3 but leaves the line break after it unread. <code>nextLine()</code> returns the rest of the current line, which is empty. Add one <code>scnr.nextLine();</code> after <code>nextInt()</code> to discard the leftover line break, and the next <code>nextLine()</code> returns \"blue sky\". <code>next()</code> would return only \"blue\", because token methods stop at whitespace, and nothing ever combines the 3 with the next line."
+    },
+    {
+      "q": "<code>String answer = scnr.next();</code> reads <code>yes</code> from the user. Which condition reliably checks that the user typed yes?",
+      "choices": [
+        "<code>answer == \"yes\"</code>",
+        "<code>answer = \"yes\"</code>",
+        "<code>answer.compareTo(\"yes\") == 1</code>",
+        "<code>answer.equals(\"yes\")</code>"
+      ],
+      "answer": "<code>answer.equals(\"yes\")</code>",
+      "why": "<code>equals</code> compares the characters. <code>==</code> compares references, and a String created at run time, such as one read by Scanner, is a different object from the literal \"yes\", so <code>==</code> is usually false even when the text matches. <code>answer = \"yes\"</code> is an assignment, and a String can't be an if condition, so it doesn't compile. <code>compareTo</code> returns 0 for equal strings, not 1. Use <code>equalsIgnoreCase</code> if YES should count too."
+    },
+    {
+      "q": "What does this print?<br><code>String email = \"sam.lee@mail.com\";</code><br><code>int at = email.indexOf('@');</code><br><code>System.out.println(email.substring(0, at) + \" \" + at);</code>",
+      "choices": [
+        "<code>sam.lee 7</code>",
+        "<code>sam.lee@ 7</code>",
+        "<code>sam.lee 8</code>",
+        "<code>sam.le 6</code>"
+      ],
+      "answer": "<code>sam.lee 7</code>",
+      "why": "Indexes start at 0, so s is index 0 and @ sits at index 7, which <code>indexOf</code> returns. <code>substring(0, 7)</code> includes index 0 and excludes index 7, giving sam.lee without the @. Keeping the @ would need <code>substring(0, at + 1)</code>, 8 is the number of characters through the @ rather than its index, and <code>sam.le 6</code> is an off-by-one in the other direction."
+    },
+    {
+      "q": "What does this print?<br><code>int sum = 0;</code><br><code>for (int i = 1; i &lt;= 10; i += 3) {</code><br><code>    sum += i;</code><br><code>}</code><br><code>System.out.println(sum);</code>",
+      "choices": [
+        "<code>12</code>",
+        "<code>22</code>",
+        "<code>55</code>",
+        "<code>10</code>"
+      ],
+      "answer": "<code>22</code>",
+      "why": "i takes the values 1, 4, 7 and 10; the next update makes it 13, which fails <code>i &lt;= 10</code>. The sum is 1 + 4 + 7 + 10 = 22. With <code>i &lt; 10</code> the loop would stop after 7 (a sum of 12), 55 is the sum of every number from 1 to 10 (what <code>i++</code> would give), and 10 is the last value added, not the sum."
+    },
+    {
+      "q": "A class already has <code>public static int area(int side)</code>. Which additional method causes a compile error?",
+      "choices": [
+        "<code>public static int area(int width, int height)</code>",
+        "<code>public static double area(double radius)</code>",
+        "<code>public static double area(int length)</code>",
+        "<code>public static int area(int side, boolean doubled)</code>"
+      ],
+      "answer": "<code>public static double area(int length)</code>",
+      "why": "A method's signature is its name plus its parameter types; the return type and the parameter names don't count. <code>area(int length)</code> has the same signature as <code>area(int side)</code>, so the compiler can't tell the two apart even though the return types differ. The other three are valid overloads because their parameter lists differ: two ints, one double, or an int and a boolean."
+    },
+    {
+      "q": "What does this print?<br><code>public static void change(int[] nums, int x) {</code><br><code>    nums[0] = 99;</code><br><code>    x = 99;</code><br><code>    nums = new int[]{7, 7};</code><br><code>}</code><br><code></code><br><code>// in main:</code><br><code>int[] data = {1, 2};</code><br><code>int y = 5;</code><br><code>change(data, y);</code><br><code>System.out.println(data[0] + \" \" + y);</code>",
+      "choices": [
+        "<code>1 5</code>",
+        "<code>99 5</code>",
+        "<code>99 99</code>",
+        "<code>7 5</code>"
+      ],
+      "answer": "<code>99 5</code>",
+      "why": "Java passes copies. <code>nums</code> is a copy of the reference to data's array, so <code>nums[0] = 99</code> changes the one array both names share. <code>x</code> is a copy of y, so <code>x = 99</code> leaves y at 5. Pointing <code>nums</code> at a new array changes only the method's copy of the reference, so data still refers to the original array, which now starts with 99. That rules out <code>1 5</code> (no change), <code>99 99</code> (y changed) and <code>7 5</code> (data repointed)."
+    },
+    {
+      "q": "What does this print?<br><code>ArrayList&lt;Integer&gt; vals = new ArrayList&lt;&gt;();</code><br><code>vals.add(5);</code><br><code>vals.add(8);</code><br><code>vals.add(1);</code><br><code>vals.remove(1);</code><br><code>System.out.println(vals);</code>",
+      "choices": [
+        "<code>[5, 1]</code>",
+        "<code>[5, 8]</code>",
+        "<code>[8, 1]</code>",
+        "<code>[5, 8, 1]</code>"
+      ],
+      "answer": "<code>[5, 1]</code>",
+      "why": "An int argument selects <code>remove(int index)</code>, so <code>remove(1)</code> deletes the element at index 1, which is 8, and later items shift left. Removing the value 1 takes <code>vals.remove(Integer.valueOf(1))</code>, which calls <code>remove(Object)</code> and would give <code>[5, 8]</code>. <code>[8, 1]</code> would come from removing index 0, and the list does change, so <code>[5, 8, 1]</code> is out too."
+    },
+    {
+      "q": "<code>Book</code> declares exactly one constructor, <code>public Book(String title, int pages)</code>. What happens when <code>main</code> contains <code>Book b = new Book();</code>?",
+      "choices": [
+        "It compiles, and b gets a null title and 0 pages",
+        "It compiles but throws NullPointerException when it runs",
+        "It compiles, and Java passes default values to the two-parameter constructor",
+        "It doesn't compile, because declaring any constructor removes the default no-argument one"
+      ],
+      "answer": "It doesn't compile, because declaring any constructor removes the default no-argument one",
+      "why": "Java supplies a no-argument constructor only for a class that declares no constructors at all. Once Book declares <code>Book(String, int)</code>, <code>new Book()</code> has no matching constructor, which is a compile-time error, so nothing runs and no defaults are passed. Add <code>public Book() { this(\"Untitled\", 0); }</code> if you need one, with <code>this(...)</code> as its first statement, which every Java version accepts."
+    },
+    {
+      "q": "What does this print?<br><code>public class Dog {</code><br><code>    private String name;</code><br><code></code><br><code>    public Dog(String name) {</code><br><code>        name = name;</code><br><code>    }</code><br><code></code><br><code>    public String getName() {</code><br><code>        return name;</code><br><code>    }</code><br><code>}</code><br><code></code><br><code>// in main:</code><br><code>System.out.println(new Dog(\"Rex\").getName());</code>",
+      "choices": [
+        "<code>Rex</code>",
+        "It doesn't compile",
+        "<code>null</code>",
+        "An empty line"
+      ],
+      "answer": "<code>null</code>",
+      "why": "Inside the constructor, the parameter <code>name</code> shadows the field, so <code>name = name;</code> assigns the parameter to itself and the field keeps its default value, null. <code>getName()</code> returns null and println prints <code>null</code>. Writing <code>this.name = name;</code> would store Rex in the field. The code compiles, because self-assignment is legal, and println prints the word null rather than an empty line."
+    },
+    {
+      "q": "With <code>Random rand = new Random();</code>, which expression gives a random int from 10 to 20, inclusive?",
+      "choices": [
+        "<code>rand.nextInt(20) + 10</code>",
+        "<code>rand.nextInt(10) + 10</code>",
+        "<code>rand.nextInt(21) - 10</code>",
+        "<code>rand.nextInt(11) + 10</code>"
+      ],
+      "answer": "<code>rand.nextInt(11) + 10</code>",
+      "why": "<code>nextInt(n)</code> returns 0 through n - 1. There are 20 - 10 + 1 = 11 possible values, so <code>nextInt(11)</code> gives 0 to 10 and adding 10 shifts that to 10 to 20. <code>nextInt(20) + 10</code> can reach 29, <code>nextInt(10) + 10</code> never reaches 20, and <code>nextInt(21) - 10</code> gives -10 to 10."
+    },
+    {
+      "q": "What does this print when <code>code</code> is 2?<br><code>switch (code) {</code><br><code>    case 1: System.out.print(\"A\");</code><br><code>    case 2: System.out.print(\"B\");</code><br><code>    case 3: System.out.print(\"C\"); break;</code><br><code>    default: System.out.print(\"D\");</code><br><code>}</code>",
+      "choices": [
+        "<code>B</code>",
+        "<code>BCD</code>",
+        "<code>ABC</code>",
+        "<code>BC</code>"
+      ],
+      "answer": "<code>BC</code>",
+      "why": "Execution jumps to <code>case 2</code> and prints B. There's no break after it, so it falls through into case 3 and prints C, and that case's break ends the switch before default runs. <code>B</code> alone would need a break after case 2, <code>BCD</code> ignores case 3's break, and <code>ABC</code> would need code to be 1."
+    },
+    {
+      "q": "What does <code>System.out.printf(\"Total: $%.2f%n\", 19.999);</code> print?",
+      "choices": [
+        "<code>Total: $20.00</code>",
+        "<code>Total: $19.99</code>",
+        "<code>Total: $20.0</code>",
+        "<code>Total: $19.999</code>"
+      ],
+      "answer": "<code>Total: $20.00</code>",
+      "why": "<code>%.2f</code> always shows exactly two decimals and rounds (half up) instead of cutting digits off, so 19.999 becomes 20.00, and <code>%n</code> ends the line. The $ before the specifier is plain text. Cutting to 19.99 would need math such as <code>Math.floor(x * 100) / 100</code>, <code>%.1f</code> would print 20.0, and three decimals would need <code>%.3f</code>."
+    },
+    {
+      "q": "What does this print?<br><code>public class Ticket {</code><br><code>    private static int issued = 0;</code><br><code>    private int number;</code><br><code></code><br><code>    public Ticket() {</code><br><code>        issued++;</code><br><code>        number = issued;</code><br><code>    }</code><br><code></code><br><code>    public int getNumber() {</code><br><code>        return number;</code><br><code>    }</code><br><code>}</code><br><code></code><br><code>// in main:</code><br><code>Ticket a = new Ticket();</code><br><code>Ticket b = new Ticket();</code><br><code>Ticket c = new Ticket();</code><br><code>System.out.println(a.getNumber() + \" \" + c.getNumber());</code>",
+      "choices": [
+        "<code>3 3</code>",
+        "<code>1 1</code>",
+        "<code>1 3</code>",
+        "<code>0 2</code>"
+      ],
+      "answer": "<code>1 3</code>",
+      "why": "<code>issued</code> is static, so all Ticket objects share one counter, while each object has its own <code>number</code>. a copies issued when it's 1, b when it's 2 and c when it's 3, so <code>a.getNumber()</code> is 1 and <code>c.getNumber()</code> is 3. <code>3 3</code> would happen if number were static too, <code>1 1</code> if issued were an instance field, and <code>0 2</code> if the copy happened before the increment."
+    },
+    {
+      "q": "What does this print?<br><code>String word = \"cab\";</code><br><code>char first = word.charAt(0);</code><br><code>System.out.println(first + 1);</code><br><code>System.out.println((char) (first + 1));</code>",
+      "choices": [
+        "<code>100</code>, then <code>d</code>",
+        "<code>d</code>, then <code>d</code>",
+        "<code>c1</code>, then <code>d</code>",
+        "<code>100</code>, then <code>100</code>"
+      ],
+      "answer": "<code>100</code>, then <code>d</code>",
+      "why": "A char is a 16-bit number, and 'c' is 99. In <code>first + 1</code> the char is promoted to int, so the result is the int 100 and println prints 100. Casting back with <code>(char)</code> turns 100 into 'd'. <code>c1</code> would need string concatenation, as in <code>\"\" + first + 1</code>, and the second line can't print 100 because the cast makes it a char."
+    }
+  ],
+  "pitfalls": [
+    "<b>Output that's almost right.</b> Exact-match grading fails a missing space after a colon, an extra blank line, <code>println</code> where <code>print</code> was needed, or different capitalization. Copy strings from the prompt and compare line by line.",
+    "<b>The nextLine trap.</b> A <code>nextLine()</code> right after <code>nextInt()</code> or <code>nextDouble()</code> returns an empty string; read and discard the leftover line break first.",
+    "<b>Integer division.</b> <code>int / int</code> truncates even when the result goes into a double. Cast before dividing: <code>(double) sum / count</code>.",
+    "<b>Comparing Strings with ==.</b> Use <code>equals</code> or <code>equalsIgnoreCase</code>; <code>==</code> compares references and usually fails for text that came from input.",
+    "<b>Off-by-one indexes.</b> Arrays and Strings end at length - 1, a loop that runs while <code>i &lt;= arr.length</code> throws on its last pass, and <code>substring</code>'s end index is excluded.",
+    "<b>remove(int) vs remove(Object).</b> On an <code>ArrayList&lt;Integer&gt;</code>, <code>remove(2)</code> removes index 2. Use <code>remove(Integer.valueOf(2))</code> to remove the value 2.",
+    "<b>Constructor slips.</b> A return type (<code>public void Pet()</code>) turns a constructor into a method, <code>name = name;</code> without <code>this</code> leaves the field unset, and declaring any constructor removes the free no-argument one.",
+    "<b>A new Random inside a loop.</b> A seeded Random created on every pass restarts the same sequence, and one extra <code>nextInt</code> call shifts every later value. Create one Random and call it in the order the task describes.",
+    "<b>Leaning on the IDE.</b> If you only practice in IntelliJ with autocomplete and generated getters, typing everything into the exam's editor feels slow. Write imports, headers, constructors, getters and setters by hand; the Jun 2026 thread's commenter blanked on Random and ArrayList syntax.",
+    "<b>Memorizing the practice tests.</b> Students report that the OA shares the PA's format but changes the details, so memorized answers don't transfer. Rewrite each practice problem from a blank file until you can do it without notes."
+  ],
+  "resources": [
+    {
+      "label": "WGU's Java Fundamentals zyBook (in the course)",
+      "kind": "official",
+      "note": "The course text, with reading, participation activities and labs. The Jun 2026 passer says its end-of-book practice test matches the pre-assessment's format."
+    },
+    {
+      "label": "Pre-assessment and coaching report (in the course)",
+      "kind": "practice",
+      "note": "Students report (Jun 2026) that it matches the OA's format, including the Run Test Cases button. Take it under exam conditions and study the coaching report, but expect the OA to change the details."
+    },
+    {
+      "label": "Your course instructors",
+      "kind": "official",
+      "note": "Reach them from the course page. Instructors can walk through an error with you and share extra practice material on request."
+    },
+    {
+      "label": "Bro Code: Java Full Course for free (YouTube)",
+      "url": "https://youtu.be/xTtL8E4LzTQ",
+      "kind": "video",
+      "note": "The Jun 2026 passer, new to Java, coded along with roughly the first four hours in IntelliJ. Those hours cover variables, input, Random, printf, strings, branches and loops; methods start at 4:04:27, arrays at 5:03:26, constructors at 6:51:38, getters and setters at 8:19:35 and ArrayLists at 8:55:51, so keep going or learn those from the zyBook."
+    },
+    {
+      "label": "IntelliJ IDEA through the JetBrains student pack",
+      "url": "https://www.jetbrains.com/academy/student-pack/",
+      "kind": "tool",
+      "note": "The IDE the passer used, free for students through JetBrains' educational licenses. Use it to learn, then practice typing without autocomplete too."
+    },
+    {
+      "label": "Oracle: The Java Tutorials, Learning the Java Language",
+      "url": "https://docs.oracle.com/javase/tutorial/java/index.html",
+      "kind": "official",
+      "note": "Free lessons on language basics, classes and objects, constructors, this, and numbers and strings. Written for JDK 8; the basics still hold, except that Java 25 relaxed the rule that <code>this(...)</code> must come first."
+    },
+    {
+      "label": "dev.java: Learn Java",
+      "url": "https://dev.java/learn/",
+      "kind": "official",
+      "note": "Oracle's current tutorials, including JShell, where you can try a line such as <code>7 / 2</code> or <code>'c' + 1</code> and see the result at once."
+    },
+    {
+      "label": "Java SE 25 API documentation",
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/index.html",
+      "kind": "official",
+      "note": "Exact method names, parameters and return types for Scanner, String, ArrayList, Random and Math (all under the java.base module)."
+    },
+    {
+      "label": "CodingBat Java",
+      "url": "https://codingbat.com/java",
+      "kind": "practice",
+      "note": "Short string, array and logic problems you solve in the browser and check against a table of test cases, much like the exam's run-and-compare loop."
+    },
+    {
+      "label": "Exercism Java track",
+      "url": "https://exercism.org/tracks/java",
+      "kind": "practice",
+      "note": "Free exercises (159 across 27 concepts) with automated tests, good for practice with classes, constructors and lists beyond the zyBook."
+    },
+    {
+      "label": "An AI chatbot set up as a tutor",
+      "kind": "tool",
+      "note": "The Jun 2026 passer used ChatGPT with instructions not to give answers. Ask it to explain compiler errors and quiz you, and never paste assessment items into it."
+    }
+  ],
+  "community": {
+    "summary": "Only one recent thread made it into this research, so treat this as one passer's view plus its comments. A Jun 2026 student with no Java background passed with an exemplary rating after about a week of focused study: they coded along with the first hours of Bro Code's Java course in IntelliJ, drilled the zyBook's end-of-book practice test (which matches the PA's format) for understanding rather than memorization, and used ChatGPT as a tutor that wasn't allowed to give answers. Their must-knows are arrays and ArrayLists, getters and setters, loops, Scanner input, constructors and overloaded constructors, string manipulation and methods, and they stress that output must match exactly. Commenters agree the PA and OA share a format, and one forgot the Random class and ArrayList syntax mid-exam.",
+    "coverage": "1 post, Jun 2026, r/WGU_CompSci",
+    "posts": [
+      {
+        "title": "D286 passed exemplary (updated coding environment? and tips)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1uoodot/d286_passed_exemplary_updated_coding_environment/",
+        "date": "Jun 2026",
+        "takeaway": "No prior Java and about a week of study. The exam had 14 coding questions with a Run Test Cases button, and the poster skipped one on purpose and still passed. Output must match exactly, the zyBook's practice test matches the PA's format, and a commenter blanked on Random and ArrayList syntax."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (D286 description, competencies, CUs, term)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU: Institutional Catalog, November 2026 (CCN ITSW 3172, standard path)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf"
+    },
+    {
+      "label": "Credly: WGU Java Fundamentals badge (final exam; reading, participation activities and labs)",
+      "url": "https://www.credly.com/org/wgu/badge/java-fundamentals"
+    },
+    {
+      "label": "WGU: How assessments work (objective assessments proctored online)",
+      "url": "https://www.wgu.edu/student-experience/learning/assessments.html"
+    },
+    {
+      "label": "Oracle: Scanner, Java SE 25 API",
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Scanner.html"
+    },
+    {
+      "label": "Oracle: String, Java SE 25 API",
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html"
+    },
+    {
+      "label": "Oracle: ArrayList, Java SE 25 API",
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html"
+    },
+    {
+      "label": "Oracle: Random, Java SE 25 API",
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Random.html"
+    },
+    {
+      "label": "Oracle: Formatter (printf format specifiers and rounding), Java SE 25 API",
+      "url": "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Formatter.html"
+    },
+    {
+      "label": "Java Language Specification, Java SE 25, chapter 15 (division, remainder, string concatenation)",
+      "url": "https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html"
+    },
+    {
+      "label": "The Java Tutorials: Primitive Data Types (sizes and default values)",
+      "url": "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html"
+    },
+    {
+      "label": "The Java Tutorials: Defining Methods (signatures and overloading)",
+      "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html"
+    },
+    {
+      "label": "The Java Tutorials: Providing Constructors for Your Classes",
+      "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html"
+    },
+    {
+      "label": "The Java Tutorials: Using the this Keyword",
+      "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html"
+    },
+    {
+      "label": "The Java Tutorials: Passing Information to a Method or a Constructor (pass by value)",
+      "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html"
+    }
+  ],
+  "caveats": [
+    "The exam details (about 14 coding questions, the Run Test Cases button, exact-match output, a PA very similar in format to the OA) come from one Jun 2026 post and its comments. WGU doesn't publish the question count, time limit or passing score, so check the course page and your PA before you schedule.",
+    "That post's title asks whether the coding environment was updated, so the exam interface may have changed during 2026; it's the newest report in this research. Community coverage is thin, with one thread listed.",
+    "WGU's zyBook for D286 isn't public, so the topics here follow the official course description and competencies plus the passer's must-knows. Your zyBook may also cover material this guide only touches on, such as inheritance or exceptions.",
+    "The exam environment's Java version isn't published. This guide cites the Java SE 25 documentation but teaches the classic forms, which work from Java 8 on. Newer features are marked where they appear: arrow <code>case</code> labels (Java 14) and <code>nextInt(origin, bound)</code> (Java 17). Java 25 also added two shortcuts: statements that don't use the new object (such as an argument check) may come before <code>this(...)</code> or <code>super(...)</code>, and a program may start from a plain <code>void main()</code>. Don't rely on either in the exam editor; the classic forms work in every version.",
+    "The practice questions are original concept and code-reading items written for this guide. They don't reproduce PA or OA tasks, and the real exam asks you to write code rather than choose answers."
+  ]
+}

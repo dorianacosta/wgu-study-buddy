@@ -1,0 +1,11 @@
+{
+  "url": "https://21st.dev/@loading-ui/components/conveyor-loop",
+  "title": "Conveyor Loop | Community Components | 21st",
+  "author": "loading-ui (loading-ui.com)",
+  "license": "MIT License",
+  "published": "7/16/2026",
+  "dependencies": [],
+  "sha256": "0fd4dd38b9766711018f41f23b2956515ccee63812c6feeecc7b8268073b887e",
+  "verified": true,
+  "note": "Prompt captured with Change copy action > Claude Code (tab viewport 1280x800, clipboard writeText hooked in the page, nothing reached the system clipboard). 3,260 characters / 3,268 UTF-8 bytes. The page's SHA-256 of the captured string equals the SHA-256 of the saved file byte for byte, no normalization. Text moved out of the page as a JSON-escaped string, so blank lines are exact. Non-ASCII characters kept as UTF-8: block glyphs U+2588, U+2593, U+2592 and the track glyph U+2591. Info tab: no Dependencies section (the code imports only cn from @/lib/utils); Tags Loading, Loader, Spinner, Ascii, Unicode; Source loading-ui.com/docs/components/conveyor-loop; License MIT License; Published 7/16/2026. role=status with an sr-only 'Loading'; glyphs are aria-hidden text in currentColor; masks with var(--mask-color, var(--background)). Has no prefers-reduced-motion handling (CSS keyframes run forever): the integration must add one. The prompt has no 'Install NPM dependencies' step."
+}

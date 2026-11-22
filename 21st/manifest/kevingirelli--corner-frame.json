@@ -1,0 +1,11 @@
+{
+  "url": "https://21st.dev/@kevingirelli/components/corner-frame",
+  "title": "Corner Frame | Community Components | 21st",
+  "author": "kevingirelli (Kevin Girelli), corsair-ui",
+  "license": "MIT License (Copyright (c) 2026 Kevin Girelli)",
+  "published": "10/3/2026",
+  "dependencies": ["@radix-ui/react-slot"],
+  "sha256": "3262649f1301055afb262ce3d4076bb55c397cfc9dcf24a1e358bfd0cd9c0bf9",
+  "verified": true,
+  "note": "Prompt captured with Change copy action > Claude Code (tab viewport 1280x800, clipboard writeText hooked in the page, nothing reached the system clipboard). 5,448 characters / 5,449 UTF-8 bytes. The page's SHA-256 of the captured string equals the SHA-256 of the saved file byte for byte, no normalization. Text moved out of the page as a JSON-escaped string, so blank lines are exact. One non-ASCII character kept as UTF-8: degree sign U+00B0 in the demo. Info tab: Dependencies @radix-ui/react-slot (already in the app); Tags Border, Decorative; Source github.com/KevinGirelli/corsair-ui/blob/main/registry/default/ui/corner-frame.tsx; License MIT License, Copyright (c) 2026 Kevin Girelli; Published 10/3/2026. Static: no motion, no JavaScript beyond render; the four bracket spans are aria-hidden and pointer-events-none; bracket color defaults to var(--corner-frame-color, var(--primary)), so it is gold with the theme; supports asChild."
+}

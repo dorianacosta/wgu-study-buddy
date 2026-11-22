@@ -1,0 +1,397 @@
+/* WGU Study Buddy · © 2026 Dorian Acosta · SPDX-License-Identifier: MIT */
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+
+/* only src/ is app source: no automatic detection of the project root (the _build/ notes, the saved 21st.dev
+   prompts and demos, a built WGU_Study_Buddy.html) */
+@source "./";
+
+@custom-variant dark (&:is(.dark *));
+
+/* short screens: landscape and under 560px tall (Responsive, Breakpoints; Home's matchMedia uses the same query) */
+@custom-variant short (@media (max-height: 560px) and (orientation: landscape));
+
+/* Fonts: Geist and Geist Mono, latin subsets, embedded in the single-file build. Geist Mono's symbols subset is its
+   own family, second in the mono stack, so box drawing and block shades (├ └ │ ─ █ ▓ ▒ ░ ▌) sit at exactly 1ch */
+@font-face {
+  font-family: "Geist Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Geist Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Geist Mono Symbols";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist-mono/files/geist-mono-symbols2-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
+
+/* The user's theme, 21st/theme/wgu-study-buddy-theme.css: its :root and .dark word for word (.dark has no --radius).
+   One dark theme; <html class="dark">. */
+:root {
+  --card: #101013;
+  --ring: #e3af35;
+  --input: rgba(255, 255, 255, 0.14);
+  --muted: #17171b;
+  --accent: #1c1c21;
+  --border: rgba(255, 255, 255, 0.08);
+  --radius: 0.875rem;
+  --chart-1: #e3af35;
+  --chart-2: #c2820a;
+  --chart-3: #7a4e05;
+  --chart-4: #3a2100;
+  --chart-5: #1c1206;
+  --popover: #17171b;
+  --primary: #e3af35;
+  --sidebar: #101013;
+  --secondary: #17171b;
+  --background: #09090b;
+  --foreground: #fafafa;
+  --destructive: oklch(0.704 0.191 22.216);
+  --sidebar-ring: #e3af35;
+  --sidebar-accent: #1c1c21;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --card-foreground: #fafafa;
+  --sidebar-primary: #e3af35;
+  --muted-foreground: #a1a1aa;
+  --accent-foreground: #fafafa;
+  --popover-foreground: #fafafa;
+  --primary-foreground: #09090b;
+  --sidebar-foreground: #fafafa;
+  --secondary-foreground: #fafafa;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-primary-foreground: #09090b;
+}
+
+.dark {
+  --card: #101013;
+  --ring: #e3af35;
+  --input: rgba(255, 255, 255, 0.14);
+  --muted: #17171b;
+  --accent: #1c1c21;
+  --border: rgba(255, 255, 255, 0.08);
+  --chart-1: #e3af35;
+  --chart-2: #c2820a;
+  --chart-3: #7a4e05;
+  --chart-4: #3a2100;
+  --chart-5: #1c1206;
+  --popover: #17171b;
+  --primary: #e3af35;
+  --sidebar: #101013;
+  --secondary: #17171b;
+  --background: #09090b;
+  --foreground: #fafafa;
+  --destructive: oklch(0.704 0.191 22.216);
+  --sidebar-ring: #e3af35;
+  --sidebar-accent: #1c1c21;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --card-foreground: #fafafa;
+  --sidebar-primary: #e3af35;
+  --muted-foreground: #a1a1aa;
+  --accent-foreground: #fafafa;
+  --popover-foreground: #fafafa;
+  --primary-foreground: #09090b;
+  --sidebar-foreground: #fafafa;
+  --secondary-foreground: #fafafa;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-primary-foreground: #09090b;
+}
+
+/* Added tokens (design system tokens.json; design-decisions 2.3, 5.2, 11). Aliases add no new color. */
+:root {
+  /* the theme has none; Button destructive and base-badge read it: near-black on the light red, 6.88:1 */
+  --destructive-foreground: var(--primary-foreground);
+  /* the field's ink, read by TrippinSpiral from CSS */
+  --field-glyph: var(--foreground);
+  /* background at 84%: the curtain over the field behind all reading, and the AlertDialog overlay */
+  --scrim: rgba(9, 9, 11, 0.84);
+
+  /* hooks read by base-badge (ReUI), so its green, yellow, violet and blue fallbacks never show */
+  --color-primary-accent: var(--primary);
+  --color-primary-soft: var(--chart-5);
+  --color-success-accent: var(--foreground);
+  --color-success-soft: var(--accent);
+  --color-success-foreground: var(--background);
+  --color-info-accent: var(--muted-foreground);
+  --color-info-soft: var(--muted);
+  --color-info-foreground: var(--background);
+  --color-warning-accent: var(--chart-2);
+  --color-warning-soft: var(--chart-5);
+  --color-warning-foreground: var(--background);
+  --color-destructive-accent: var(--destructive);
+  --color-destructive-soft: var(--muted);
+
+  /* CornerFrame brackets at rest; targets switch it with [--corner-frame-color:var(--primary)] variants */
+  --corner-frame-color: var(--muted-foreground);
+
+  /* DecryptText's Motiq tokens, mapped once here (the component no longer injects its own) */
+  --motiq-fg: var(--foreground);
+  --motiq-muted: var(--muted-foreground);
+  --motiq-fg-secondary: var(--muted-foreground);
+  --motiq-secondary-accent: var(--muted-foreground);
+  --motiq-accent: var(--primary);
+  --motiq-accent-text: var(--primary);
+  --motiq-success: var(--primary);
+  --motiq-surface: var(--card);
+  --motiq-surface-2: var(--muted);
+  --motiq-bg: var(--background);
+  --motiq-border: var(--border);
+  --motiq-border-strong: var(--input);
+  --motiq-shadow-md: none;
+
+  /* shadows: none; the focus ring as a box-shadow where an outline would be clipped (= ring-2 ring-offset-2) */
+  --shadow-none: none;
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+
+  /* spacing: the 8px cell, 4px the only half step (= Tailwind's steps 1, 2, 4, 6, 8, 12, 16, 20, 24) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* layers (utilities z-field, z-scrim, ... below; the spec's plain steps -z-20, -z-10, z-30 ... are the same) */
+  --z-field: -20;
+  --z-scrim: -10;
+  --z-sticky: 30;
+  --z-sticky-title: 40;
+  --z-nav: 50;
+  --z-overlay: 50;
+  --z-skip: 60;
+
+  /* fixed sizes in cells */
+  --cell: 8px;
+  --control-sm: 32px;
+  --control-md: 40px;
+  --control-lg: 48px;
+  --content-max: 1120px;
+  --hero-max: 640px;
+  --prose-max: 720px;
+  --bracket-size: 16px;
+  --bracket-inset: 8px;
+  --bracket-thickness: 2px;
+}
+
+@theme inline {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono Symbols", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* xs: a fixed half cell for character-scale marks; sm, md, lg, xl derive from the theme's --radius (10, 12, 14, 18).
+     none and full are Tailwind's own rounded-none and rounded-full */
+  --radius-xs: 4px;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* the theme's mappings, in its order, without its --color-radius (a color named radius) */
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-popover: var(--popover);
+  --color-primary: var(--primary);
+  --color-sidebar: var(--sidebar);
+  --color-secondary: var(--secondary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-destructive: var(--destructive);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-card-foreground: var(--card-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  /* the added colors */
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-field-glyph: var(--field-glyph);
+  --color-scrim: var(--scrim);
+
+  /* z-field, z-scrim, z-sticky, z-sticky-title, z-nav, z-overlay, z-skip */
+  --z-index-field: var(--z-field);
+  --z-index-scrim: var(--z-scrim);
+  --z-index-sticky: var(--z-sticky);
+  --z-index-sticky-title: var(--z-sticky-title);
+  --z-index-nav: var(--z-nav);
+  --z-index-overlay: var(--z-overlay);
+  --z-index-skip: var(--z-skip);
+
+  /* the cell and the control heights as spacing: h-control-sm/md/lg (= h-8, h-10, h-12), size-cell, p-cell */
+  --spacing-cell: var(--cell);
+  --spacing-control-sm: var(--control-sm);
+  --spacing-control-md: var(--control-md);
+  --spacing-control-lg: var(--control-lg);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /* Scroll padding with no bar stuck (WCAG 2.4.11; Responsive, The shell). Below 640 the docked bar plus 16 at the
+     bottom; from 640 the top band's bottom plus 12. A page whose sticky bar is stuck writes the inline value itself.
+     40rem is Tailwind's sm, where the bar moves to the top */
+  html {
+    color-scheme: dark;
+    scroll-padding-top: calc(16px + env(safe-area-inset-top));
+    scroll-padding-bottom: calc(69px + max(4px, env(safe-area-inset-bottom)));
+  }
+  @media (width >= 40rem) {
+    html {
+      scroll-padding-top: calc(max(24px, env(safe-area-inset-top)) + 62px);
+      scroll-padding-bottom: 0;
+    }
+  }
+  @media (width >= 40rem) and (pointer: coarse) {
+    html {
+      scroll-padding-top: calc(max(24px, env(safe-area-inset-top)) + 66px);
+    }
+  }
+  @media (width >= 40rem) and (max-height: 560px) and (orientation: landscape) {
+    html {
+      scroll-padding-top: calc(max(8px, env(safe-area-inset-top)) + 62px);
+    }
+  }
+  @media (width >= 40rem) and (max-height: 560px) and (orientation: landscape) and (pointer: coarse) {
+    html {
+      scroll-padding-top: calc(max(8px, env(safe-area-inset-top)) + 66px);
+    }
+  }
+  /* touch defaults: no double-tap zoom on quick taps (pinch zoom stays), no grey flash; the press paint answers */
+  a,
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* mono leads: every control, label and number is Geist Mono; sentences you read opt into font-sans */
+  body {
+    @apply bg-background font-mono text-foreground antialiased;
+  }
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  /* Tailwind 4's preflight dropped the pointer cursor on buttons; the prompts were written for Tailwind 3, which had it */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Researched study text rendered by Rich / SafeRich: sans for reading (code blocks are Terminal windows, not .rich) */
+@layer components {
+  .rich {
+    font-family: var(--font-sans);
+  }
+  .rich a {
+    color: var(--foreground);
+    text-decoration-line: underline;
+    text-underline-offset: 3px;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* gated like Tailwind's hover:, so a tapped link never stays gold */
+  @media (hover: hover) {
+    .rich a:hover {
+      color: var(--primary);
+    }
+  }
+  /* inline code: mono at 0.9em on a muted chip */
+  .rich code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: var(--muted);
+    padding: 0 4px;
+    border-radius: var(--radius-xs);
+  }
+  .rich ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+  }
+  .rich ol {
+    list-style-type: decimal;
+    padding-left: 1.25rem;
+  }
+}
+
+/* The on-screen keyboard hides the docked bar and the short band; App sets data-keyboard (decision 11) */
+@media (pointer: coarse) and (width < 40rem), (pointer: coarse) and (max-height: 560px) and (orientation: landscape) {
+  html[data-keyboard="open"] nav[aria-label="Main"] {
+    display: none;
+  }
+}
+
+/* Forced colors paint no lamp cell, tab underbar or jump-item fill: underline the current item (decision 34) */
+@media (forced-colors: active) {
+  nav [aria-current]:not([aria-current="false"]),
+  [role="tab"][aria-selected="true"] {
+    text-decoration-line: underline;
+  }
+}
+
+/* Increase Contrast: window and bar edges show (Responsive, More contrast); .dark too, the theme sets it on both */
+@media (prefers-contrast: more) {
+  :root,
+  .dark {
+    --border: var(--muted-foreground);
+  }
+}
+
+/* Print: no field, no curtain and no bar (unlayered, so no utility can show them); tables print whole, without
+   sideways scroll or minimum widths (!important beats C952's inline minWidth; decision 43) */
+@media print {
+  [data-field],
+  [data-field-scrim],
+  [data-slot="trippin-spiral"],
+  [data-slot="field-scrim"],
+  nav[aria-label="Main"] {
+    display: none;
+  }
+  table {
+    min-width: 0 !important;
+  }
+  div:has(> table) {
+    overflow: visible !important;
+  }
+}

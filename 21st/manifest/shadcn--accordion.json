@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/accordion",
+  "title": "Accordion | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "lucide-react, @radix-ui/react-accordion",
+  "promptFile": "21st/prompts/shadcn--accordion.md",
+  "chars": 4248,
+  "sha256": "078c6380db6e2fd713f51fcc03fec5a158704392837c0924aa77a8e2624aa831",
+  "sha256Of": "file bytes",
+  "capturedSha256": "f463405a0d04074f292dd035c9f1716224dd92f4de832d345460842f9fa94832",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Verified on first attempt. The prompt also asks to extend tailwind.config.js with accordion-down/accordion-up keyframes and animations.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (4248) is the text's length in UTF-16 code units and equals the file's."
+}

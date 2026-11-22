@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/alert-dialog",
+  "title": "Alert Dialog | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-alert-dialog",
+  "promptFile": "21st/prompts/shadcn--alert-dialog.md",
+  "chars": 8050,
+  "sha256": "9f41a80560edd2186db96388452d9a3b5860de0814ab88138d2eed9be41be27e",
+  "sha256Of": "file bytes",
+  "capturedSha256": "43ea03f29fb4b48b41382dc465347ec27921372fd1bb135de03551830f397098",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Collector tab viewport was emulated at 1440x900 so the desktop 'Change copy action' menu was visible. Verified on first attempt. Prompt also bundles the shadcn/button dependency file; its npm line lists @radix-ui/react-alert-dialog, @radix-ui/react-slot, class-variance-authority.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (8050) is the text's length in UTF-16 code units and equals the file's."
+}

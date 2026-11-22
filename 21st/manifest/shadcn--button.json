@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/button",
+  "title": "Button | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-slot, class-variance-authority, lucide-react",
+  "promptFile": "21st/prompts/shadcn--button.md",
+  "chars": 3814,
+  "sha256": "6891562e55a72f6f7a15947a61850b00fc5a61096459442b604d9c26f5d916ab",
+  "sha256Of": "file bytes",
+  "capturedSha256": "ea539ea5992eb528dde5df7461c5af872a7f57f88221daaeef717247770cf330",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Collector tab viewport was emulated at 1280x800 so the desktop 'Change copy action' menu was visible. First verify failed on one double blank line (collapsed by page-text extraction); fixed and re-verified.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (3814) is the text's length in UTF-16 code units and equals the file's."
+}

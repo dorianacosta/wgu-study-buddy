@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@magicui/components/blur-fade",
+  "title": "Blur Fade | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/10/2024",
+  "dependencies": "framer-motion",
+  "promptFile": "21st/prompts/magicui--blur-fade.md",
+  "chars": 2563,
+  "sha256": "bcc9abb3637fc490e3aacd86ca5053e35eee23ba1b4ea1314951b63a4f31fcce",
+  "sha256Of": "file bytes",
+  "capturedSha256": "e1bb357925fa05460933793811d9da5d3c6c3e3a1ebc5bb668ce1b220b58edd7",
+  "verified": true,
+  "notes": "Page redirected to https://21st.dev/@dillionverma/components/blur-fade (Magic UI by Dillion Verma). Prompt captured from the page's Copy prompt menu, 'Optimized for: Claude Code' option. Source listed on Info tab: magicui.design/docs/components/blur-fade.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2563) is the text's length in UTF-16 code units and equals the file's. The one-character gap (chars 2563, file 2562 code points) is not a missing character: line 92 (demo.tsx's \"Hello World\" heading, which ends in U+1F44B WAVING HAND SIGN) holds one character outside the BMP: one code point, two UTF-16 code units, and chars counts code units. The saved file is the whole captured text (the captured hash reproduces from it), so no re-capture is needed to restore content."
+}

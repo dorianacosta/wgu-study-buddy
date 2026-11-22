@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/table",
+  "title": "Table | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "",
+  "promptFile": "21st/prompts/shadcn--table.md",
+  "chars": 5370,
+  "sha256": "f5e4273221376083adbf67e7ad51f50bb3ae83c730427fa6478f6d6600a2101e",
+  "sha256Of": "file bytes",
+  "capturedSha256": "510ade4eabc78c052b7ea8866fee00a3f225ef543670577ce450a19a16f42b23",
+  "verified": true,
+  "notes": "Copied via Change copy action > Claude Code (tab viewport emulated at 1440x900 so the desktop copy menu was visible). Info tab lists no Dependencies section. First write missed one of two consecutive blank lines before demo.tsx (get_page_text collapsed it); fixed and re-verified.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (5370) is the text's length in UTF-16 code units and equals the file's."
+}

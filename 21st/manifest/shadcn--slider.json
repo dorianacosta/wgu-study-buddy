@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/slider",
+  "title": "Slider | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-slider",
+  "promptFile": "21st/prompts/shadcn--slider.md",
+  "chars": 2047,
+  "sha256": "7996e26ad6c4140230c2730c0b0751a3eca0ae78729f2dac94f52c007ca6ade7",
+  "sha256Of": "file bytes",
+  "capturedSha256": "e6808b348aeba14c88ab98f7f7843c315e8124c70c88a0184974ceae04ea3c9d",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Collector tab viewport was emulated at 1440x900 so the desktop 'Change copy action' menu was visible. First verify failed on one double blank line (collapsed by page-text extraction); fixed and re-verified.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2047) is the text's length in UTF-16 code units and equals the file's."
+}

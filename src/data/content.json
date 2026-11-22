@@ -1,0 +1,2607 @@
+{
+  "meta": {
+    "author": "Dorian Acosta",
+    "license": "MIT",
+    "bank": "original-1",
+    "questions": "60 original C952 practice questions",
+    "notice": "Not affiliated with Western Governors University. The practice questions are original and are not WGU assessment items."
+  },
+  "topics": [
+    {
+      "id": "t1",
+      "name": "Numbers & Binary",
+      "icon": "🔢",
+      "color": "#7c5cff",
+      "kid": "Computers only know two words: <b>ON</b> (1) and <b>OFF</b> (0). Every number, letter and instruction is a row of tiny light switches. A row of 8 switches is a <b>byte</b>. The more switches in the row, the bigger the number you can build. If you try to build a number too big for your row, it spills over the edge. That spill is called <b>overflow</b>, like pouring too much juice into a small cup.",
+      "keys": [
+        "<b>Unsigned n-bit range:</b> 0 to 2<sup>n</sup> − 1. 8-bit = 0–255, 32-bit = 0 to 2<sup>32</sup> − 1 (about 4.3 billion), 64-bit = 0 to 2<sup>64</sup> − 1 (about 1.8 × 10<sup>19</sup>).",
+        "<b>Signed (two's complement) n-bit range:</b> −2<sup>n−1</sup> to 2<sup>n−1</sup> − 1. The negative side is one bigger.",
+        "<b>k ones in a row = 2<sup>k</sup> − 1.</b> Five 1s = 31, ten 1s = 1,023, sixteen 1s = 65,535.",
+        "<b>Sign extension</b> copies the leftmost (sign) bit into every new bit. Negative numbers get 1s, positive numbers get 0s.",
+        "<b>Overflow</b> = the true answer needs more bits than the destination has.",
+        "<b>Machine language</b> = instructions in binary. <b>Assembly</b> = the same instructions as words (ADD, SUB)."
+      ]
+    },
+    {
+      "id": "t2",
+      "name": "Hardware & History",
+      "icon": "🧩",
+      "color": "#ff7a59",
+      "kid": "A computer is like a restaurant kitchen. The <b>control unit</b> is the head chef who tells everyone what to do. The <b>datapath</b> is the cooks doing the chopping and mixing (the math). <b>Memory</b> is the fridge and pantry. <b>Registers</b> are the cutting board right in front of the cook: tiny, but super close. <b>Input</b> and <b>output</b> are the order window and the serving window. Around 2005 the chefs couldn't work any faster without the kitchen catching fire (too much heat), so restaurants started hiring <b>more chefs</b> instead. That's multicore.",
+      "keys": [
+        "<b>Five classic components:</b> input, output, memory, datapath, control. Datapath + control = the processor.",
+        "<b>SRAM</b> = fast, less dense, 6–8 transistors per bit, used for caches. <b>DRAM</b> = dense, cheap, slower, needs refresh, used for main memory.",
+        "<b>DRAM organization:</b> banks → rows. A whole row is opened into a row buffer, and the column address picks the word.",
+        "<b>Power wall:</b> cooling limits stopped clock-rate growth, and around 2005 the industry switched to <b>multiprocessors (multicore)</b>.",
+        "<b>Dynamic pipeline scheduling</b> (Tomasulo's algorithm: rename registers, park waiting instructions, run each one as soon as its operands arrive) traces back to the IBM System/360 Model 91 of the late 1960s.",
+        "<b>Interconnect cost</b> grows with the number of switches, the number and width of links, and link length. Long wires are slow and power-hungry to signal across, so on-chip networks favor short neighbor-to-neighbor links (rings, 2D meshes)."
+      ]
+    },
+    {
+      "id": "t3",
+      "name": "ARM / LEGv8 Assembly",
+      "icon": "🧾",
+      "color": "#00b3a4",
+      "kid": "Assembly is a recipe card the computer reads one line at a time. Most lines say <b>where to put the answer</b> first, then <b>what to use</b>. <code>ADD X19, X20, X21</code> means \"put X20 plus X21 into box X19.\" The boxes are called <b>registers</b>. <b>XZR</b> is a magic box that is always zero, no matter what you put in it. A <b>#</b> means \"this is just a number,\" not a box.",
+      "keys": [
+        "<b>Format:</b> <code>OP destination, source1, source2</code>. The first register gets the result, except STUR, where it is the value stored, and CBZ/CBNZ, where it is the register tested.",
+        "<b>LDUR</b> = load from memory into a register (read a variable). <b>STUR</b> = store a register to memory (write a variable).",
+        "<b>CBZ</b> = branch if zero. <b>CBNZ</b> = branch if NOT zero. <b>B</b> = always branch.",
+        "<b>SUBS XZR, a, b</b> followed by <b>B.cond</b>: compare, then branch on the flags. A loop's exit branch checks the <b>reverse</b> of the condition that keeps the loop going (B.LT exit → while a ≥ b).",
+        "<b>Logic:</b> AND = &amp;, ORR = | (inclusive OR is spelled ORR), EOR = ^ (exclusive or). <b>LSL</b> by k = multiply by 2<sup>k</sup>.",
+        "<b>UDIV</b> = unsigned divide, <b>SDIV</b> = signed divide. <b>ESR</b> holds the exception's reason, <b>ELR</b> holds its address.",
+        "Every LEGv8 instruction is exactly one 32-bit word, so fetch always reads exactly 4 bytes (PC + 4 when no branch is taken) and decode finds the register fields in fixed spots. That regularity is a big reason RISC designs pipeline well."
+      ]
+    },
+    {
+      "id": "t4",
+      "name": "Performance Math",
+      "icon": "⏱️",
+      "color": "#ffb020",
+      "kid": "How long your homework takes = how many problems × how many steps each problem needs ÷ how fast you work. A computer is the same: <b>instructions × CPI</b> (steps per instruction) <b>÷ clock rate</b> (how fast it ticks). To finish sooner, do fewer steps or tick faster. But ticking faster doesn't help if you keep waiting for someone to bring you supplies. That waiting is memory.",
+      "keys": [
+        "<b>CPU time</b> = Instructions × CPI ÷ Clock rate = Clock cycles × Cycle time.",
+        "<b>Weighted CPI</b> = Σ (fraction × cycles). Example: 0.4×1 + 0.4×2 + 0.2×6 = 2.4.",
+        "<b>Time per instruction</b> = CPI ÷ clock rate. Compare it only when instruction counts match; otherwise compare total CPU time, never clock speed alone.",
+        "<b>Speedup</b> = old time ÷ new time. Same program and clock, CPI 2.4 → 2.0 (6-cycle class cut to 4): 2.4 ÷ 2.0 = 1.2, so 20% faster.",
+        "Clock rate (Hz) and cycle time (seconds) are inverses: 1 GHz ↔ 1 ns, 2.5 GHz ↔ 0.4 ns (400 ps).",
+        "Faster clock + same memory = <b>more stall cycles per cache miss</b>, so CPI can stay high."
+      ]
+    },
+    {
+      "id": "t5",
+      "name": "Pipelining",
+      "icon": "🧺",
+      "color": "#3fa9f5",
+      "kid": "Think about laundry. Without pipelining you wash, dry, fold and put away load 1 before you even start load 2. With pipelining, as soon as load 1 moves to the dryer, load 2 goes in the washer. No single load gets done any sooner (a real pipeline even adds a little time to each), but finished loads come out <b>much more often</b>. The slowest step sets the pace.",
+      "keys": [
+        "Pipelining <b>overlaps</b> instructions. It raises <b>throughput</b> (jobs finished per second), not the speed of one job (latency).",
+        "<b>Total time</b> = first item all the way through + (n − 1) × slowest stage.",
+        "<b>Equal stages:</b> total = (stages + n − 1) × stage time. Speedup ≈ number of stages when n is big.",
+        "<b>Superscalar</b> = the hardware issues two or more instructions in the same clock cycle, choosing them as the program runs.",
+        "<b>Dynamic pipeline scheduling</b> = hardware reorders instructions to avoid stalls. <b>Reservation station</b> = buffer holding operands + operation.",
+        "<b>8 great ideas:</b> Moore's law, abstraction, common case fast, parallelism, <b>pipelining (bucket brigade)</b>, prediction, memory hierarchy, redundancy."
+      ]
+    },
+    {
+      "id": "t6",
+      "name": "Cache & Virtual Memory",
+      "icon": "🗄️",
+      "color": "#e0559b",
+      "kid": "Your <b>desk</b> (cache) is small but right next to you. The <b>bookshelf</b> (main memory) is bigger but farther away. The <b>basement</b> (disk) holds everything but takes forever. You keep things you just used on your desk because you'll probably use them again soon. Virtual memory is a pretend address book: every program thinks it has its own giant house, and the OS keeps a <b>map</b> (page table) of where each room really is. The <b>TLB</b> is a sticky note with the map lines you looked at most recently, so you don't have to open the whole map every time.",
+      "keys": [
+        "<b>Temporal locality</b> = used again soon. <b>Spatial locality</b> = neighbors used soon.",
+        "<b>Direct-mapped:</b> block → (block mod #blocks). <b>Set-associative:</b> block → set (block mod #sets), any slot in the set. <b>Fully associative:</b> anywhere.",
+        "<b>More associativity</b> = fewer misses, but slower hits and more hardware. The biggest win is 1-way → 2-way.",
+        "<b>Page table register</b> points to the current process's page table. <b>TLB</b> caches translations for speed.",
+        "<b>ARMv8</b> uses <b>48-bit</b> virtual addresses. A 4 KiB page = <b>12-bit</b> offset.",
+        "<b>Virtual memory</b> lets a program be bigger than physical memory and keeps programs apart.",
+        "<b>Blocking</b> (working on small tiles of data that fit in cache) cuts cache misses."
+      ]
+    },
+    {
+      "id": "t7",
+      "name": "Parallelism",
+      "icon": "👯",
+      "color": "#8bc34a",
+      "kid": "One kid painting a fence alone takes all day. Four kids painting take about a quarter of the time, but only for the part that can be shared. If one step has to be done by one kid (like opening the paint can), that step never gets faster. That's <b>Amdahl's Law</b>. <b>SIMD</b> is a teacher shouting \"everyone add 1!\" and the whole class does it at the same moment on their own paper. <b>Multithreading</b> is when a kid who's waiting for more paint quickly helps a different fence so nobody stands around.",
+      "keys": [
+        "<b>Flynn:</b> SISD (one core, one data item), SIMD (one instruction, many data), MIMD (many instructions, many data = multicore). SPMD = one program run on MIMD.",
+        "<b>Vector</b> architectures = built for data-level parallelism. Fewer instructions fetched, fewer hazards.",
+        "<b>UMA</b> = same memory latency for every processor. <b>NUMA</b> = latency depends on which processor.",
+        "<b>Strong scaling</b> (fixed problem) is limited by Amdahl. <b>Weak scaling</b> (problem grows with processors) escapes it.",
+        "<b>Fine-grained MT</b> switches threads every cycle. <b>Coarse-grained</b> switches on long stalls. <b>SMT</b> mixes threads in the same cycle.",
+        "<b>ARM SIMD suffixes:</b> B = 8-bit, H = 16, S = 32, D = 64, Q = 128. <b>Subword parallelism:</b> a 128-bit register (x86 SSE2, ARM NEON) packs several narrow values, so one instruction does, for example, four 32-bit adds at once."
+      ]
+    },
+    {
+      "id": "t8",
+      "name": "VMs, Cloud & RAID",
+      "icon": "☁️",
+      "color": "#5c6bc0",
+      "kid": "A <b>virtual machine</b> is a pretend computer living inside a real one, like a dollhouse inside your house. The <b>hypervisor</b> is the babysitter who makes sure every dollhouse family shares the real house fairly and can't mess with the others. <b>Cloud computing</b> is renting computers instead of buying them, and they grow or shrink by themselves when more people show up. <b>RAID</b> is spreading your toys across several boxes. RAID 0 splits toys across boxes so you grab them faster, but lose one box and the toys are gone. RAID 1 keeps two identical boxes.",
+      "keys": [
+        "<b>Hypervisor (VMM)</b> runs multiple OSes on shared hardware and isolates them.",
+        "<b>Two-level mapping:</b> guest OS page tables map virtual → \"real\" memory, then the hypervisor maps real → physical.",
+        "On a <b>context switch</b> the OS saves the outgoing process's registers, PC and page table register, then loads the incoming process's. A hypervisor does the same for a whole guest.",
+        "<b>Why VMs:</b> isolation and security between guests, easier software management (each guest runs its own OS and stack), and easier hardware management (consolidate servers, move a running VM to another host).",
+        "<b>RAID 0</b> = striping only: full capacity and top throughput, but one failed disk loses data. <b>RAID 1</b> = mirroring. <b>RAID 5</b> = distributed parity (survives 1 failure). <b>RAID 6</b> = double parity (survives 2).",
+        "<b>Cloud computing:</b> rent capacity on demand. It grows and shrinks with load (<b>elasticity</b>), and the bill follows actual usage."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "n": 1,
+      "t": "t1",
+      "q": "An assembler reads the line <code>ADD X9, X10, X11</code> from a source file and writes the matching 32-bit binary word into an object file. What are the assembler's input and output called?",
+      "o": [
+        "Assembly language in, machine language out",
+        "Machine language in, assembly language out",
+        "High-level language in, assembly language out",
+        "High-level language in, machine language out"
+      ],
+      "a": 0,
+      "kid": "A music box can't read note names like C or G. It only reads a paper strip punched with <b>holes and no-holes</b>. Writing the song as note names is like <b>assembly language</b> (ADD, SUB), and the punched strip is <b>machine language</b> (1s and 0s). The <b>assembler</b> is the helper who punches the strip from your note names.",
+      "why": "The input, <code>ADD X9, X10, X11</code>, is assembly language: a mnemonic plus register names that people can read and write. The output is machine language: that same instruction as one 32-bit LEGv8 R-format word, the only form the hardware can decode. An assembler translates the first into the second; a compiler works one level higher, turning statements like <code>a = b + c;</code> into assembly.",
+      "w": [
+        null,
+        "That is the reverse trip, which a disassembler makes; the input here is the text line <code>ADD X9, X10, X11</code>, not a binary pattern.",
+        "That is a compiler's job, turning a statement like <code>a = b + c;</code> into assembly; the input here is already an assembly instruction.",
+        "The input is not high-level code: <code>ADD X9, X10, X11</code> names one machine operation and its registers, which makes it assembly language."
+      ],
+      "f": [
+        {
+          "q": "A <b>disassembler</b> reads a 32-bit binary instruction from a program file and prints it as <code>ADD X9, X10, X11</code>. What are its input and output called?",
+          "a": 1,
+          "why": "A disassembler runs the assembler's job backward: binary machine language goes in and readable assembly language comes out. Debuggers use one to show which instructions the processor is actually running."
+        },
+        {
+          "q": "A <b>compiler</b> reads the C statement <code>a = b + c;</code> and writes the line <code>ADD X9, X10, X11</code> to a file. What are its input and output called?",
+          "a": 2,
+          "why": "C is a high-level language, and the line the compiler writes is a symbolic instruction, which is assembly language. An assembler would then turn that line into machine language."
+        },
+        {
+          "q": "A compiler that skips the assembly step reads the C statement <code>a = b + c;</code> and writes the 32-bit binary instruction straight into an object file. What are its input and output called?",
+          "a": 3,
+          "why": "Many compilers emit object code directly. The input is still high-level C, and the output is binary machine language, with no assembly text produced in between."
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "t": "t1",
+      "q": "A robot's motor controller stores each wheel's speed setting as a 10-bit two's complement integer, where negative values make the wheel turn backward. What range of values can one setting hold?",
+      "o": [
+        "−511 to +511",
+        "−512 to +511",
+        "−1,024 to +1,023",
+        "0 to 1,023"
+      ],
+      "a": 1,
+      "kid": "Ten light switches can make 1,024 different on/off patterns, like a hallway of 1,024 lockers. <b>Two's complement</b> gives half of them, 512, to the negative numbers and the other half to zero and the positives. Zero fills one of the lockers on the <b>non-negative</b> side, so the positives stop at +511 while the negatives reach all the way to −512.",
+      "why": "An n-bit two's complement integer spans −2<sup>n−1</sup> to 2<sup>n−1</sup> − 1. For n = 10 that is −2<sup>9</sup> = −512 up to 2<sup>9</sup> − 1 = +511, which is 1,024 = 2<sup>10</sup> values in all. The most negative pattern, 10 0000 0000, has no positive partner, so the range is one bigger on the negative side.",
+      "w": [
+        "−511 to +511 is the symmetric range of sign-and-magnitude (or one's complement), which spends a pattern on negative zero.",
+        null,
+        "−1,024 to +1,023 is the 11-bit range; with 10 bits the limits are set by 2<sup>9</sup>, not 2<sup>10</sup>.",
+        "0 to 1,023 is the unsigned 10-bit range; two's complement spends half of its patterns on negative values."
+      ],
+      "f": [
+        {
+          "q": "The robot's battery gauge stores its charge level as an <b>unsigned</b> 10-bit integer instead, since charge is never negative. What range can one reading hold?",
+          "a": 3,
+          "why": "Unsigned n-bit values run from 0 to 2<sup>n</sup> − 1. Ten 1s in a row equal 2<sup>10</sup> − 1 = 1,023, so the range is 0 to 1,023."
+        },
+        {
+          "q": "An older controller stores each speed in 10-bit <b>sign-and-magnitude</b> form: 1 sign bit followed by a 9-bit magnitude. What range can one setting hold?",
+          "a": 0,
+          "why": "The 9-bit magnitude reaches 2<sup>9</sup> − 1 = 511, and the sign bit makes it positive or negative, giving −511 to +511. One pattern is spent on −0, so the negative side gains no extra value."
+        },
+        {
+          "q": "A newer controller widens each speed setting to an <b>11-bit</b> two's complement integer. What range can one setting hold?",
+          "a": 2,
+          "why": "For n = 11 the range is −2<sup>10</sup> = −1,024 to 2<sup>10</sup> − 1 = +1,023. One extra bit doubles the number of patterns, so both limits roughly double."
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "t": "t1",
+      "q": "A game controller reports its joystick's left-right position as one signed (two's complement) byte, shown below in hex. The game loads that byte into a 32-bit register using <b>sign extension</b>. What does the register hold?",
+      "code": "Joystick byte:  0x9C",
+      "o": [
+        "0x0000009C",
+        "0x9C000000",
+        "0x8000001C",
+        "0xFFFFFF9C"
+      ],
+      "a": 3,
+      "mono": true,
+      "kid": "Imagine copying a short row of beads onto a much longer string. To keep the pattern's meaning, you fill every new spot on the left with the <b>same color as the leftmost bead</b>, which here is the <b>sign bit</b>. This byte's sign bit is a 1, so all 24 new bits are 1s, and the value still means −100 (stick pushed well to the left).",
+      "why": "Sign extension copies the sign bit (bit 7) into every new upper bit, which keeps a two's complement value unchanged. 0x9C = 1001 1100 has sign bit 1 and equals 156 − 256 = −100. Bits 31 to 8 all become 1s, giving 0xFFFFFF9C, which equals 4,294,967,196 − 4,294,967,296 = −100, the same value.",
+      "w": [
+        "0x0000009C is zero extension, which fills the new bits with 0s and turns −100 into +156; a negative value needs copies of its 1 sign bit.",
+        "0x9C000000 puts the byte in the top 8 bits, which multiplies it by 2<sup>24</sup> and gives −1,677,721,600 instead of −100.",
+        "0x8000001C moves the sign bit to the top and pads the magnitude with 0s, which is how sign-and-magnitude numbers widen; in two's complement it reads as −2,147,483,620.",
+        null
+      ],
+      "f": [
+        {
+          "q": "Suppose the same byte, 0x9C, came from the controller's trigger, which reports an <b>unsigned</b> pressure level (156), and is loaded into the 32-bit register with <b>zero extension</b>. What does the register hold?",
+          "a": 0,
+          "why": "Zero extension fills every new upper bit with 0, which keeps an unsigned value unchanged: 0x0000009C is still 156."
+        },
+        {
+          "q": "Suppose the game instead copies the byte into the <b>top</b> 8 bits of the 32-bit register and clears the other 24 bits, the same as shifting it left by 24. What does the register hold?",
+          "a": 1,
+          "why": "The byte lands in bits 31 to 24 and the low 24 bits become 0s, giving 0x9C000000. A left shift by 24 multiplies the value by 2<sup>24</sup> = 16,777,216."
+        },
+        {
+          "q": "Suppose an older controller sends the byte in <b>sign-and-magnitude</b> form (sign 1, magnitude 001 1100 = 28, so −28), and the game widens it to 32-bit sign-and-magnitude. What does the register hold?",
+          "a": 2,
+          "why": "Sign-and-magnitude keeps the sign bit at the far left and pads the magnitude with 0s: 0x8000001C is still sign negative, magnitude 28, so it still means −28."
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "t": "t1",
+      "q": "A parking garage keeps its car count in an 8-bit unsigned register. The register holds 250 when 9 more cars drive in, and for each car the counter's ordinary 8-bit binary adder adds 1. What does the register hold after the ninth car?",
+      "o": [
+        "3",
+        "4",
+        "255",
+        "259"
+      ],
+      "a": 0,
+      "kid": "Think of an old car odometer: when it passes its largest number, it <b>rolls over</b> to zero and keeps counting. An 8-bit counter's largest number is 255, so the count goes 254, 255, then 0, 1, 2, 3. The true total, 259, is too big for the counter, and the part that spills over the edge is lost. That spill is called <b>overflow</b>.",
+      "why": "An 8-bit unsigned register holds 0 to 2<sup>8</sup> − 1 = 255. The true sum 250 + 9 = 259 needs 9 bits (1 0000 0011), so the 9th bit is lost and the register keeps the low 8 bits, 0000 0011 = 3. That equals 259 mod 256: the count overflowed and wrapped around.",
+      "w": [
+        null,
+        "4 comes from subtracting 255 instead of 256; the wrap from 255 to 0 is itself one step, so the ninth car lands on 3.",
+        "255 would need saturating hardware that sticks at the maximum; an ordinary add simply drops the carry out and wraps.",
+        "259 needs 9 bits (1 0000 0011), but the register has only 8, so the top bit is lost."
+      ],
+      "f": [
+        {
+          "q": "The garage upgrades to a <b>9-bit</b> unsigned register. It holds 250 when the same 9 cars drive in. What does it hold after the ninth car?",
+          "a": 3,
+          "why": "A 9-bit unsigned register holds 0 to 2<sup>9</sup> − 1 = 511. The sum 259 fits, so nothing overflows and the register reads 259."
+        },
+        {
+          "q": "The register is still 8-bit unsigned, but the adder <b>saturates</b>: on overflow it clamps the result at the largest value instead of wrapping. It holds 250 when 9 cars drive in. What does it hold afterward?",
+          "a": 2,
+          "why": "Saturating arithmetic replaces any too-big result with the largest value the register can hold, 2<sup>8</sup> − 1 = 255. Media hardware uses it so a bright pixel stays bright instead of wrapping around to dark."
+        },
+        {
+          "q": "Same 8-bit unsigned register and ordinary adder, but it holds <b>251</b> when the 9 cars drive in. What does it hold after the ninth car?",
+          "a": 1,
+          "why": "251 + 9 = 260, which needs 9 bits (1 0000 0100). Dropping the 9th bit leaves 0000 0100 = 4, the same as 260 mod 256."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "t": "t1",
+      "q": "A school library gives each of its 6,000 books a unique unsigned ID number, starting at 0. What is the fewest bits the ID field can use?",
+      "o": [
+        "12 bits",
+        "13 bits",
+        "14 bits",
+        "16 bits"
+      ],
+      "a": 1,
+      "kid": "Each bit is a light switch, and every extra switch <b>doubles</b> the number of different patterns you can make. Twelve switches give 4,096 patterns, not quite enough for 6,000 books. Thirteen switches give 8,192, so <b>13</b> is the shortest row of switches that gives every book its own number.",
+      "why": "The IDs run from 0 to 5,999, and an unsigned n-bit field reaches 2<sup>n</sup> − 1 (n ones in a row). Twelve bits top out at 2<sup>12</sup> − 1 = 4,095, which is too small, while thirteen bits reach 2<sup>13</sup> − 1 = 8,191, which covers 5,999. So the minimum is 13 bits, the same as rounding log<sub>2</sub> 6,000 ≈ 12.55 up.",
+      "w": [
+        "12 bits reach only 2<sup>12</sup> − 1 = 4,095, so the 1,904 books that need IDs 4,096 through 5,999 would have none.",
+        null,
+        "14 bits is what a two's complement signed field would need, but these IDs are unsigned and never negative, so the extra sign bit is wasted.",
+        "16 bits rounds up to two whole bytes; it works, but 13 bits already reach 8,191, so 16 is not the fewest."
+      ],
+      "f": [
+        {
+          "q": "A branch library has exactly <b>4,096</b> books, numbered from 0. What is the fewest bits its unsigned ID field can use?",
+          "a": 0,
+          "why": "The IDs run from 0 to 4,095, and twelve 1s in a row equal 2<sup>12</sup> − 1 = 4,095. So 12 bits are exactly enough; a 4,097th book (ID 4,096) would need a 13th bit."
+        },
+        {
+          "q": "The library's software stores every ID as a <b>two's complement signed</b> number, even though no ID is negative. What is the fewest bits the ID field can use?",
+          "a": 2,
+          "why": "A signed n-bit field tops out at 2<sup>n−1</sup> − 1. Thirteen bits reach only 2<sup>12</sup> − 1 = 4,095, which is below 5,999, while fourteen bits reach 2<sup>13</sup> − 1 = 8,191, so the field needs 14 bits."
+        },
+        {
+          "q": "The 6,000-book library's database stores every field in <b>whole bytes</b>. What is the smallest ID field it can use?",
+          "a": 3,
+          "why": "The IDs need 13 bits, and fields grow in steps of 8 bits. One byte is too small, so the field rounds up to two bytes, 16 bits, which reach 65,535."
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "t": "t2",
+      "q": "A student traces the LEGv8 store below and lists four things that happen while it runs. Which one is the control unit's job?",
+      "code": "STUR X3, [X4, #8]",
+      "o": [
+        "Reading X3 and X4 out of the register file",
+        "Decoding the opcode and enabling the memory write",
+        "Adding X4 and 8 in the ALU to form the address",
+        "Saving the doubleword at that address in memory"
+      ],
+      "a": 1,
+      "kid": "In an <b>orchestra</b>, the violins, drums and horns make all the sound, but the <b>conductor</b> reads the score and cues each section when to play. The conductor plays no notes; reading and cueing is the whole job. In a computer, <b>control</b> is the conductor: it reads (decodes) each instruction and sends the signals, while the register file, ALU and memory do the playing.",
+      "why": "Control decodes the STUR opcode and sets the control signals: ALUSrc = 1 and an add operation so the ALU adds the offset 8 to the base, MemWrite = 1 so memory writes, and RegWrite = 0 because a store changes no register. The datapath does the work: the register file reads X4 (the base address) and X3 (the data), and the ALU computes X4 + 8. Memory, a separate classic component, then saves X3's doubleword at that address. Datapath + control together form the processor.",
+      "w": [
+        "Reading registers is the work of the register file, which is part of the datapath; control only sends it signals.",
+        null,
+        "Adding is the work of the ALU, which is part of the datapath; control only tells it which operation to perform.",
+        "Saving the data is the work of memory, a separate classic component; control only turns on the memory-write signal."
+      ],
+      "f": [
+        {
+          "q": "Which listed step is done by a classic component outside the processor?",
+          "a": 3,
+          "why": "The processor is datapath + control. Memory is a separate classic component, and it is memory that saves X3's doubleword at address X4 + 8."
+        },
+        {
+          "q": "Which listed step is the ALU's work?",
+          "a": 2,
+          "why": "The ALU forms the effective address by adding the base register X4 and the offset 8 from the instruction; for STUR, control sets the ALU to add."
+        },
+        {
+          "q": "Which listed step uses the register file's read ports?",
+          "a": 0,
+          "why": "STUR needs two register values: X4 supplies the base address and X3 supplies the data to store, so the register file reads both."
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "t": "t2",
+      "q": "A designer is building the L1 cache that sits right beside a processor core. It must answer within a clock cycle or two, and packing in as many bits as possible matters less. Which memory technology fits best?",
+      "o": [
+        "DRAM",
+        "Flash memory",
+        "Magnetic disk",
+        "SRAM"
+      ],
+      "a": 3,
+      "kid": "Picture a chef's <b>spice rack</b> right beside the stove and the big <b>pantry</b> down the hall. The rack holds far less, but the chef grabs from it instantly. <b>SRAM</b> is the spice rack: small and costly per jar, but the quickest to reach.",
+      "why": "SRAM stores each bit in a 6–8 transistor circuit, so it is fast and keeps its value without refresh while powered, but it is less dense and costs more per bit; that makes it the choice for caches. DRAM uses one transistor and a capacitor per bit: dense and cheap, but slower and in need of refresh, so it is used for main memory. Flash and magnetic disk are nonvolatile storage, thousands to millions of times too slow for an L1 cache.",
+      "w": [
+        "DRAM is dense and cheap, but it is slower and must be refreshed, so it serves as main memory rather than a one- or two-cycle cache.",
+        "Flash keeps data without power, but its reads take microseconds, far too slow for an L1 cache.",
+        "Magnetic disk is the cheapest per bit, but each access takes milliseconds, millions of cycles too slow for a cache.",
+        null
+      ],
+      "f": [
+        {
+          "q": "The designer is now building the 16 GiB main memory of a laptop. It must cost far less per bit than SRAM, yet every access must still finish within tens of nanoseconds. Which technology fits best?",
+          "a": 0,
+          "why": "Main memory uses DRAM: one transistor and one capacitor per bit make it far denser and cheaper per bit than SRAM, and its access time of tens of nanoseconds meets the requirement, which flash and disk cannot."
+        },
+        {
+          "q": "A phone needs storage that keeps photos even when the battery is completely drained, with no moving parts. Which technology fits best?",
+          "a": 1,
+          "why": "Flash is nonvolatile semiconductor storage: it keeps data with no power and has no moving parts, which is why phones use it."
+        },
+        {
+          "q": "An archive must store hundreds of terabytes at the lowest cost per gigabyte, and milliseconds per access are acceptable. Which technology fits best?",
+          "a": 2,
+          "why": "Magnetic disk has the lowest cost per bit of these options, and its millisecond access time is fine for rarely touched archival data."
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "t": "t2",
+      "q": "A memory controller receives four separate read requests (four cache-block refills), and all four fall in the same DRAM row. They finish much sooner than four requests to four different rows of the same bank. Why?",
+      "o": [
+        "The row is copied into the row buffer once; each later request only sends a column address",
+        "Each request is sent to a different bank, so all four overlap in time",
+        "Each request refreshes the whole bank, which makes the next request faster",
+        "The DRAM pushes the open row into the processor's L1 cache, so later requests skip DRAM"
+      ],
+      "a": 0,
+      "kid": "Think of a clerk at a big <b>filing cabinet</b>. To reach any folder, the clerk pulls one whole drawer out onto the counter (the <b>row buffer</b>) and picks folders from it. If the next three folders sit in that same drawer, each one is quick to grab; a folder in another drawer means sliding this drawer back first (precharge) and pulling out the new one.",
+      "why": "A DRAM bank is organized as rows. An activate command copies an entire row into the bank's row buffer, and column addresses then select words from that buffer. Requests that hit the open row pay only the column access, while a request to a different row must first close (precharge) the open row and activate the new one.",
+      "w": [
+        null,
+        "A row lies inside a single bank, so four requests to one row all go to that bank; spreading requests across banks (interleaving) is a different technique.",
+        "Refresh restores leaking charge on a fixed schedule; it does not speed up the next read.",
+        "DRAM does not push data into the processor's caches; each of these requests is its own DRAM access."
+      ],
+      "f": [
+        {
+          "q": "Instead, the four requests go to four different banks, one row in each. Compared with four different rows in a single bank, what lets them finish sooner?",
+          "a": 1,
+          "why": "Each bank has its own row buffer and can open its row while the others are busy, so the four accesses overlap. Spreading addresses across banks this way is called address interleaving."
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "t": "t2",
+      "q": "For decades, single-processor performance rose largely through higher clock rates. Around 2005 that approach stalled, and the industry changed course. What change did it make, and why?",
+      "o": [
+        "Put several cores on each chip, because the chips could no longer be cooled",
+        "Put several cores on each chip, because transistor counts per chip stopped growing",
+        "Kept one core per chip and cut the supply voltage further to hold power down",
+        "Stopped shrinking transistors, because smaller ones could not switch any faster"
+      ],
+      "a": 0,
+      "kid": "Imagine a <b>delivery van</b> driven faster and faster until its engine <b>overheats</b>. The company stops pushing one van harder and buys <b>more vans</b> that each drive at a safe speed. Chips did the same around 2005: instead of one hotter, faster core, they got several cooler cores.",
+      "why": "Dynamic power grows with clock rate and with voltage squared, and by the early 2000s chips had reached the practical limit of what could be cooled: the <b>power wall</b>. Voltage could not keep falling without too much leakage, so clock rates leveled off. Transistor counts kept growing, so designers spent them on multiple processors (cores) per chip and turned to parallelism for further speedups.",
+      "w": [
+        null,
+        "Transistor counts kept growing after 2005; multicore chips are built from those extra transistors.",
+        "Supply voltage could not be cut much further without leakage soaring, which is exactly why single-core clock rates stalled and designers turned to multicore.",
+        "Transistors kept shrinking; the limit was heat from switching so fast, not an inability to switch faster."
+      ],
+      "f": [
+        {
+          "q": "Before about 2005, how did designers keep chip power from growing as fast as their soaring clock rates?",
+          "a": 2,
+          "why": "Mainstream chips kept one core while each technology generation lowered the supply voltage. Because dynamic power scales with voltage squared, this offset much of the extra power from faster clocks, until voltage could not drop much further."
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "t": "t2",
+      "q": "Dynamic power in a CMOS chip is proportional to ½ × capacitive load × voltage<sup>2</sup> × switching frequency. A redesign cuts the capacitive load by 10% and the supply voltage by 20% and keeps the same frequency. The new dynamic power is what percentage of the old?",
+      "o": [
+        "46.1%",
+        "57.6%",
+        "70.0%",
+        "72.0%"
+      ],
+      "a": 1,
+      "kid": "Picture filling <b>buckets</b> with a pump again and again. The effort depends on how big the buckets are (<b>capacitive load</b>), how hard you pump (<b>voltage</b>) and how often you fill them (<b>frequency</b>). Pump pressure counts <b>twice</b> because it is squared, so easing off a little saves a lot.",
+      "why": "Power ratio = load ratio × (voltage ratio)<sup>2</sup> × frequency ratio = 0.9 × 0.8<sup>2</sup> × 1 = 0.9 × 0.64 = 0.576, so the new design draws 57.6% of the old dynamic power. The ½ cancels because it appears in both designs. Voltage has the largest effect because it is squared.",
+      "w": [
+        "46.1% is 0.9 × 0.8<sup>2</sup> × 0.8, which also cuts the frequency by 20%, but the frequency is unchanged.",
+        null,
+        "70.0% subtracts 10% and 20% from 100%, but the factors multiply and the voltage factor is squared.",
+        "72.0% is 0.9 × 0.8, which forgets to square the voltage ratio."
+      ],
+      "f": [
+        {
+          "q": "Same chip, but the redesign cuts the capacitive load by 10% and the frequency by 20% and leaves the voltage unchanged. The new power is what percentage of the old?",
+          "a": 3,
+          "why": "0.9 × 1<sup>2</sup> × 0.8 = 0.72, so 72.0%. Frequency enters the formula only to the first power."
+        },
+        {
+          "q": "The redesign cuts the capacitive load by 10%, the voltage by 20% and the frequency by 20%. The new power is what percentage of the old?",
+          "a": 0,
+          "why": "0.9 × 0.8<sup>2</sup> × 0.8 = 0.9 × 0.64 × 0.8 = 0.4608, about 46.1%."
+        },
+        {
+          "q": "Only the capacitive load changes: it drops by 30%, with voltage and frequency unchanged. The new power is what percentage of the old?",
+          "a": 2,
+          "why": "Power scales linearly with capacitive load, so 0.7 × 1 × 1 = 0.70, which is 70.0%."
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "t": "t2",
+      "q": "Dynamic scheduling lets hardware execute instructions out of program order as soon as their operands are ready. Most high-performance processors do this today. Which machine pioneered the approach?",
+      "o": [
+        "ENIAC",
+        "EDSAC",
+        "Cray-1",
+        "IBM 360/91"
+      ],
+      "a": 3,
+      "kid": "Imagine a <b>sandwich shop</b> where a cook waiting on the toaster doesn't just stand there; they start the next order whose ingredients are ready. Serving orders a little out of line keeps everyone busy. The <b>IBM 360/91</b> pioneered a famous way to run a kitchen like this, with a waiting tray for each order (<b>reservation stations</b>), back in the 1960s.",
+      "why": "The IBM 360/91 (late 1960s) introduced Tomasulo's algorithm in its floating-point unit: reservation stations hold each operation and its operands, and register renaming removes false dependences, so an instruction runs as soon as its operands arrive. Combined later with speculation and in-order commit, the same ideas drive most high-performance processors today.",
+      "w": [
+        "ENIAC (unveiled 1946) was an early general-purpose electronic computer programmed with cables and switches; it had no dynamic scheduling.",
+        "EDSAC (1949) was an early stored-program computer that executed its instructions strictly in order.",
+        "The Cray-1 (1976) is famous for vector processing, and it came years after the 360/91.",
+        null
+      ],
+      "f": [
+        {
+          "q": "Which machine, unveiled in 1946, is often called the first general-purpose electronic computer and was programmed by plugging cables and setting switches?",
+          "a": 0,
+          "why": "ENIAC was a general-purpose electronic computer, but it was programmed by rewiring cables and setting switches rather than by loading a program into memory."
+        },
+        {
+          "q": "Which machine, running at Cambridge in 1949, was one of the first full-scale computers to keep its program in its own memory?",
+          "a": 1,
+          "why": "EDSAC, built by Maurice Wilkes's team, was among the first operational stored-program computers: instructions and data both sat in memory as numbers."
+        },
+        {
+          "q": "Which 1976 supercomputer made vector processing famous with its vector registers and vector instructions?",
+          "a": 2,
+          "why": "The Cray-1 used vector registers and pipelined vector units, so one instruction could operate on many data elements."
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "t": "t2",
+      "q": "A designer must connect 64 cores on one chip. Which layout best follows the rule that short links are cheaper and easier to run at a high clock rate?",
+      "o": [
+        "A fully connected network: every core has its own link to every other core",
+        "A single shared bus that all the cores take turns using",
+        "A 2D mesh: each core links only to its nearest neighbors",
+        "A star: every core links to one central switch"
+      ],
+      "a": 2,
+      "kid": "Think of houses on a <b>city grid</b>. Each house has a short street to its next-door neighbors, and short streets are cheap to pave and quick to walk. Building a private road from every house to every other house would mean a tangle of <b>long, expensive</b> roads crossing town.",
+      "why": "Link length is part of a network's cost: longer links cost more and are harder to drive at a high clock rate. A 2D mesh joins each core only to its physical neighbors, so every link is short (an 8 × 8 mesh needs just 112 links). A fully connected network needs 64 × 63 ÷ 2 = 2,016 links, many spanning the chip; a shared bus is one long set of wires that only one sender can use at a time; and a star needs long links from distant cores to the center.",
+      "w": [
+        "A fully connected network needs 2,016 links, many of them long, which is costly and hard to run at a high clock rate.",
+        "A shared bus is one long set of wires loaded by every core, and only one core can send at a time.",
+        null,
+        "A star forces long links from the far edges of the chip to the center, the opposite of the short-link rule."
+      ],
+      "f": [
+        {
+          "q": "A tiny 4-core chip needs every pair of cores joined directly, with no switch or shared wire in between, and the 6 links this takes are all short. Which layout fits?",
+          "a": 0,
+          "why": "A fully connected network joins every pair of cores directly: n(n − 1) ÷ 2 = 4 × 3 ÷ 2 = 6 links. With only 4 cores those links stay short; full connection becomes costly at 64 cores, where it needs 2,016 links, many spanning the chip."
+        },
+        {
+          "q": "Which layout uses one shared set of wires, so only one core can send at a time?",
+          "a": 1,
+          "why": "A bus is a single shared communication path: the cores take turns, so all of them share its bandwidth."
+        },
+        {
+          "q": "Which layout sends every message through one central switch, which can become a bottleneck?",
+          "a": 3,
+          "why": "In a star, all traffic passes through the central switch, so that switch's capacity limits the whole network."
+        }
+      ]
+    },
+    {
+      "n": 13,
+      "t": "t2",
+      "q": "A wafer costs $6,000 to make and holds 400 dies. After testing, 75% of the dies work. What is the cost of each working die?",
+      "o": [
+        "$11.25",
+        "$15.00",
+        "$20.00",
+        "$60.00"
+      ],
+      "a": 2,
+      "kid": "Imagine baking a <b>tray of 400 cookies</b> and a quarter of them burn. The cost of the whole tray has to be covered by the <b>good cookies</b> you can sell. So each good cookie costs more than the tray price divided by 400.",
+      "why": "Cost per die = Cost per wafer ÷ (Dies per wafer × Yield). Working dies = 400 × 0.75 = 300, so $6,000 ÷ 300 = $20.00 per die. The failed dies still had to be made, so their share of the wafer cost is carried by the good ones.",
+      "w": [
+        "$11.25 multiplies by the yield (6,000 × 0.75 ÷ 400) instead of dividing by it.",
+        "$15.00 is $6,000 ÷ 400, which ignores the 25% of dies that fail.",
+        null,
+        "$60.00 divides by the 25% that fail (6,000 ÷ 100) instead of the 75% that work."
+      ],
+      "f": [
+        {
+          "q": "Same wafer ($6,000, 400 dies), but only 25% of the dies work. What is the cost of each working die?",
+          "a": 3,
+          "why": "Working dies = 400 × 0.25 = 100, so $6,000 ÷ 100 = $60.00 per die. Low yield makes each good die expensive."
+        },
+        {
+          "q": "Same wafer ($6,000, 400 dies), but every die works (100% yield). What is the cost of each working die?",
+          "a": 1,
+          "why": "All 400 dies are good: $6,000 ÷ 400 = $15.00 per die."
+        }
+      ]
+    },
+    {
+      "n": 14,
+      "t": "t2",
+      "q": "A DDR SDRAM module has a 1,200 MHz clock and a 64-bit (8-byte) data path. What is its peak data rate?",
+      "o": [
+        "2.4 GB/s",
+        "9.6 GB/s",
+        "19.2 GB/s",
+        "38.4 GB/s"
+      ],
+      "a": 2,
+      "kid": "Picture a <b>conveyor belt</b> run by a clock that goes tick-tock. It drops off a box on the <b>tick</b> and another on the <b>tock</b>. That's <b>double data rate</b>: two deliveries every tick-tock instead of one. Multiply the tick-tocks per second by the two boxes per tick-tock and by the size of each box to see how much arrives each second.",
+      "why": "DDR (double data rate) moves data on both the rising and the falling clock edge: 1,200 MHz × 2 = 2,400 million transfers per second. Each transfer carries 8 bytes, so 2,400 × 10<sup>6</sup> × 8 B = 19.2 × 10<sup>9</sup> B/s = 19.2 GB/s.",
+      "w": [
+        "2.4 GB/s counts only 1 byte per transfer, but the data path is 8 bytes wide.",
+        "9.6 GB/s counts one transfer per clock, but DDR transfers on both clock edges.",
+        null,
+        "38.4 GB/s doubles the answer again, as if two modules on separate channels were working together."
+      ],
+      "f": [
+        {
+          "q": "A hypothetical single-data-rate module with the same 1,200 MHz clock and 8-byte data path transfers only once per clock. What is its peak data rate?",
+          "a": 1,
+          "why": "1,200 × 10<sup>6</sup> transfers per second × 8 B = 9.6 GB/s."
+        },
+        {
+          "q": "A system uses two of these DDR modules on independent channels at the same time. What is the combined peak data rate?",
+          "a": 3,
+          "why": "Each channel delivers 19.2 GB/s, so two channels deliver 2 × 19.2 = 38.4 GB/s."
+        },
+        {
+          "q": "A single DDR chip with the same 1,200 MHz clock has an 8-bit (1-byte) data path. What is its peak data rate?",
+          "a": 0,
+          "why": "2,400 × 10<sup>6</sup> transfers per second × 1 B = 2.4 GB/s; a module groups several such chips side by side to build a 64-bit path."
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "t": "t3",
+      "q": "X1 holds 7 and X2 holds 50. What value is in X4 after these two LEGv8 instructions run?",
+      "code": "LSL  X3, X1, #3\nSUB  X4, X2, X3",
+      "o": [
+        "−6",
+        "6",
+        "29",
+        "36"
+      ],
+      "a": 0,
+      "kid": "Read each line like a sentence that starts with <b>where the answer goes</b>. <b>LSL #3</b> is pressing the \"double it\" button three times: 7 → 14 → 28 → 56, so X3 = 56. Then SUB says \"put X2 take away X3 into X4\": 50 take away 56 is −6. Going below zero is fine; it's like owing 6 cookies.",
+      "why": "LSL by k multiplies by 2<sup>k</sup>, so X3 = 7 × 2<sup>3</sup> = 56. SUB Rd, Rn, Rm computes Rn − Rm, so X4 = X2 − X3 = 50 − 56 = −6, stored in two's complement as 0xFFFFFFFFFFFFFFFA.",
+      "w": [
+        null,
+        "6 is X3 − X2; SUB subtracts its second source from its first, so the result is 50 − 56, not 56 − 50.",
+        "29 treats LSL #3 as × 3; shifting left 3 places multiplies by 2<sup>3</sup> = 8, giving X3 = 56.",
+        "36 doubles X1 only once (X3 = 14); LSL #3 doubles three times, multiplying by 8."
+      ],
+      "f": [
+        {
+          "q": "Same starting values, but the second line is <code>SUB X4, X3, X2</code>. What value is in X4?",
+          "a": 1,
+          "why": "Now the first source is X3, so X4 = X3 − X2 = 56 − 50 = 6."
+        },
+        {
+          "q": "Same code and values, except the first line is <code>LSL X3, X1, #1</code>. What value is in X4?",
+          "a": 3,
+          "why": "LSL #1 multiplies by 2: X3 = 14, so X4 = 50 − 14 = 36."
+        }
+      ]
+    },
+    {
+      "n": 16,
+      "t": "t3",
+      "q": "The C statement <code>scores[26] = total;</code> writes one element of an array of 64-bit <code>long</code> values. The array's base address is in X22 and <code>total</code> is in X10. Which LEGv8 instruction performs it?",
+      "o": [
+        "LDUR X10, [X22, #104]",
+        "STUR X10, [X22, #26]",
+        "STUR X10, [X22, #104]",
+        "STUR X10, [X22, #208]"
+      ],
+      "a": 3,
+      "mono": true,
+      "kid": "Memory is a long street where every <b>byte</b> has its own house number, and each 64-bit value takes up <b>8 houses</b>. To reach item 26 you walk 26 × 8 = 208 houses past the start. You are <b>dropping off</b> a value, not picking one up, so you use the store instruction, STUR.",
+      "why": "LEGv8 is byte-addressed and a doubleword is 8 bytes, so element i of a <code>long</code> array sits at base + 8 × i = X22 + 208. Writing a register into memory is a store, so the instruction is STUR X10, [X22, #208]. LDUR moves data the other way, from memory into the register.",
+      "w": [
+        "LDUR reads memory into X10, the wrong direction, and offset 104 is scores[13], not scores[26].",
+        "Offset 26 counts elements, but LEGv8 offsets are in bytes; this would write bytes 26–33, across scores[3] and scores[4].",
+        "Offset 104 assumes 4-byte elements; each <code>long</code> is 8 bytes, so scores[26] starts 208 bytes in.",
+        null
+      ],
+      "f": [
+        {
+          "q": "The statement is <code>total = scores[13];</code> instead. Which instruction performs it?",
+          "a": 0,
+          "why": "A read is a load, and element 13 is 13 × 8 = 104 bytes in: LDUR X10, [X22, #104]."
+        },
+        {
+          "q": "The statement is <code>scores[13] = total;</code> instead. Which instruction performs it?",
+          "a": 2,
+          "why": "Element 13 starts 13 × 8 = 104 bytes past the base, and writing to memory is a store: STUR X10, [X22, #104]."
+        }
+      ]
+    },
+    {
+      "n": 17,
+      "t": "t3",
+      "q": "X19 starts at 0 and X20 starts at 12. What value is in X19 when this code reaches Exit?",
+      "code": "Top:  CBZ  X20, Exit\n      ADDI X19, X19, #3\n      SUBI X20, X20, #4\n      B    Top\nExit: ...",
+      "o": [
+        "0",
+        "3",
+        "9",
+        "12"
+      ],
+      "a": 2,
+      "kid": "CBZ is a guard at the door asking one question: \"Is this box <b>zero</b>?\" Only a yes sends you out the exit. The counter X20 drops 12, 8, 4, 0, so you walk through the room three times and drop 3 marbles in the jar each time: 9 marbles. <b>B</b> is the hallway that always leads back to the guard.",
+      "why": "CBZ X20, Exit branches only when X20 = 0, and B Top always branches. X20 is 12, 8 and 4 at the three checks that fall through, so the body runs three times and X19 = 3 × 3 = 9; at the fourth check X20 = 0 and the branch to Exit is taken.",
+      "w": [
+        "0 would require CBZ to branch on a nonzero value; CBZ branches only when the register is zero, and X20 starts at 12.",
+        "3 stops after one pass, but B Top is unconditional, so the loop repeats until X20 reaches 0.",
+        null,
+        "12 counts four passes, but the check that sees X20 = 0 exits before the body runs; only 12, 8 and 4 enter the body."
+      ],
+      "f": [
+        {
+          "q": "Same code and starting values, but the first line is <code>CBNZ X20, Exit</code>. What value is in X19 at Exit?",
+          "a": 0,
+          "why": "CBNZ branches when the register is not zero. X20 = 12, so it jumps straight to Exit and X19 stays 0."
+        },
+        {
+          "q": "Same code, but X20 starts at 4. What value is in X19 at Exit?",
+          "a": 1,
+          "why": "The first check sees 4 and falls through; the body adds 3 and X20 becomes 0, so the next CBZ exits with X19 = 3."
+        },
+        {
+          "q": "Same code, but X20 starts at 16. What value is in X19 at Exit?",
+          "a": 3,
+          "why": "X20 is 16, 12, 8 and 4 at four checks that fall through, so X19 = 4 × 3 = 12."
+        }
+      ]
+    },
+    {
+      "n": 18,
+      "t": "t3",
+      "q": "This code implements <code>if (a &gt;= b) { a = a - b; }</code> for signed a in X9 and b in X10. Which conditional branch belongs in the blank so the subtraction is skipped exactly when it should be?",
+      "code": "      SUBS XZR, X9, X10\n      ____ Skip\n      SUB  X9, X9, X10\nSkip: ...",
+      "o": [
+        "B.GE",
+        "B.LE",
+        "B.EQ",
+        "B.LT"
+      ],
+      "a": 3,
+      "mono": true,
+      "kid": "Think of the branch as a <b>detour sign</b> that lets you skip a chore. The chore is \"take b away from a, but only when a is at least b,\" so the detour is for the <b>opposite</b> case: a is less than b. If the sign doesn't send you around, you drive straight through and do the subtraction.",
+      "why": "SUBS XZR, X9, X10 sets the condition flags from a − b and throws the difference away. The branch jumps over the SUB, so it must be taken exactly when the if condition is false: NOT(a ≥ b) is a &lt; b, which for signed values is B.LT Skip. When a ≥ b the branch falls through and the SUB runs.",
+      "w": [
+        "B.GE skips exactly when a ≥ b, which is when the subtraction is supposed to run.",
+        "B.LE also skips when a = b, but a = b satisfies a ≥ b, so the subtraction must run then.",
+        "B.EQ skips only when a = b, so it subtracts when a &lt; b and skips when a = b, both wrong.",
+        null
+      ],
+      "f": [
+        {
+          "q": "Same code, but the C statement is <code>if (a &gt; b) { a = a - b; }</code>. Which branch belongs in the blank?",
+          "a": 1,
+          "why": "The skip must be taken when NOT(a &gt; b), which is a ≤ b: B.LE."
+        },
+        {
+          "q": "Same code, but the C statement is <code>if (a != b) { a = a - b; }</code>. Which branch belongs in the blank?",
+          "a": 2,
+          "why": "The skip must be taken when NOT(a ≠ b), which is a = b: B.EQ."
+        },
+        {
+          "q": "The code becomes a bottom-tested loop for <code>do { a = a - b; } while (a &gt;= b);</code>, with the SUB first, then SUBS XZR, X9, X10 and a branch back to the SUB. Which branch jumps back?",
+          "a": 0,
+          "why": "A branch that closes a loop jumps back while the condition is true, so it tests a ≥ b directly: B.GE."
+        }
+      ]
+    },
+    {
+      "n": 19,
+      "t": "t3",
+      "q": "X1 and X2 hold the values shown in the comments (all higher bits are 0). What value does X3 hold after the EOR?",
+      "code": "// X1 = 0x6C = 0110 1100\n// X2 = 0x3A = 0011 1010\nEOR  X3, X1, X2",
+      "o": [
+        "0x28",
+        "0x56",
+        "0x7E",
+        "0xA9"
+      ],
+      "a": 1,
+      "mono": true,
+      "kid": "EOR is the <b>odd one out</b> rule. Line the two numbers up like two rows of light switches: where exactly one switch in a column is on, the answer light turns on, and where both are on or both are off, it stays off. Columns that <b>differ</b> light up: 0101 0110, which is 0x56.",
+      "why": "EOR is bitwise exclusive OR: a result bit is 1 only where the two input bits differ. 0110 1100 XOR 0011 1010 = 0101 0110 = 0x56, and every higher bit is 0 XOR 0 = 0.",
+      "w": [
+        "0x28 = 0010 1000 keeps only bits that are 1 in both inputs; that is AND.",
+        null,
+        "0x7E = 0111 1110 sets every bit that is 1 in either input; that is ORR (inclusive OR).",
+        "0xA9 = 1010 1001 marks where the low 8 bits match (the low byte of NOT EOR); EOR marks the bits that differ."
+      ],
+      "f": [
+        {
+          "q": "Same values, but the instruction is <code>AND X3, X1, X2</code>. What value does X3 hold?",
+          "a": 0,
+          "why": "AND keeps bits that are 1 in both inputs: 0110 1100 AND 0011 1010 = 0010 1000 = 0x28."
+        },
+        {
+          "q": "Same values, but the instruction is <code>ORR X3, X1, X2</code>. What value does X3 hold?",
+          "a": 2,
+          "why": "ORR sets bits that are 1 in either input: 0111 1110 = 0x7E."
+        }
+      ]
+    },
+    {
+      "n": 20,
+      "t": "t3",
+      "q": "A thermostat program adds up temperature changes, so the sum in X1 is a signed <code>long</code> that is often negative. The number of readings (always positive) is in X2. Which instruction puts the average, X1 ÷ X2, into X3?",
+      "o": [
+        "UDIV X3, X1, X2",
+        "SDIV X3, X1, X2",
+        "SDIV X3, X2, X1",
+        "UDIV X3, X2, X1"
+      ],
+      "a": 1,
+      "mono": true,
+      "kid": "Dividing is like sharing cookies among kids, but some totals here are <b>IOUs</b> (negative numbers). <b>SDIV</b> understands the minus sign, so an IOU of 20 shared by 5 kids is an IOU of 4 each (−4). <b>UDIV</b> ignores the sign and misreads the IOU as a gigantic pile of cookies.",
+      "why": "SDIV Rd, Rn, Rm computes Rn ÷ Rm treating both as two's-complement signed values, with the quotient truncated toward zero. For example, if X1 = −20 and X2 = 5, SDIV X3, X1, X2 gives −4. UDIV would read −20 (0xFFFFFFFFFFFFFFEC) as 2<sup>64</sup> − 20 and return 3,689,348,814,741,910,319.",
+      "w": [
+        "UDIV treats X1 as unsigned, so a negative sum is read as a number near 1.8 × 10<sup>19</sup> and the quotient is wildly wrong.",
+        null,
+        "This computes X2 ÷ X1 (readings ÷ sum); SDIV divides its first source register by its second.",
+        "UDIV misreads the negative sum as a huge unsigned number, and the sources are swapped (readings ÷ sum)."
+      ],
+      "f": [
+        {
+          "q": "The program instead averages file sizes: X1 holds an unsigned 64-bit total that can exceed 2<sup>63</sup>, and X2 holds the file count. Which instruction puts X1 ÷ X2 into X3?",
+          "a": 0,
+          "why": "Unsigned values need UDIV; SDIV would treat a total of 2<sup>63</sup> or more as a negative number."
+        },
+        {
+          "q": "Same signed values, but the code needs X2 ÷ X1 in X3. Which instruction does that?",
+          "a": 2,
+          "why": "SDIV divides its first source by its second, so SDIV X3, X2, X1 computes X2 ÷ X1."
+        }
+      ]
+    },
+    {
+      "n": 21,
+      "t": "t3",
+      "q": "An instruction causes an exception, and control jumps to the operating system's handler. Which LEGv8 register gives the handler the <b>address</b> of the instruction that caused it?",
+      "o": [
+        "ESR",
+        "ELR",
+        "LR (X30)",
+        "PC"
+      ],
+      "a": 1,
+      "mono": true,
+      "kid": "Picture a teacher who hears a crash in class. One sticky note says <b>where</b> it happened, \"desk 14\": that's the ELR. Another note says <b>what</b> happened, \"dropped a jar\": that's the ESR. With both notes, the teacher can clean up and send the class back to the right spot.",
+      "why": "Before jumping to the handler, the hardware copies the faulting instruction's address into the Exception Link Register (ELR) and a cause code into the Exception Syndrome Register (ESR). The handler reads ELR to report or retry that instruction and ESR to choose its response.",
+      "w": [
+        "ESR (Exception Syndrome Register) records the reason for the exception, not the instruction's address.",
+        null,
+        "X30 holds the return address that BL saves for ordinary procedure calls; exceptions use ELR.",
+        "Once the handler is running, the PC points at the handler's own code, not at the instruction that failed."
+      ],
+      "f": [
+        {
+          "q": "The handler's first job is to pick one of two routines: one for undefined instructions and one for every other fault. Which register does it read to choose?",
+          "a": 0,
+          "why": "ESR holds a code for the cause; ELR only says where it happened."
+        },
+        {
+          "q": "Which register holds the return address after an ordinary <code>BL</code> procedure call?",
+          "a": 2,
+          "why": "BL writes the address of the next instruction (PC + 4) into X30, the link register."
+        },
+        {
+          "q": "Right after the jump, which register holds the address of the handler's first instruction?",
+          "a": 3,
+          "why": "The PC always holds the address of the instruction being fetched, which is now the handler's entry point."
+        }
+      ]
+    },
+    {
+      "n": 22,
+      "t": "t3",
+      "q": "Which LEGv8 instruction format encodes the third line, <code>B.NE Retry</code>?",
+      "code": "LDUR X5, [X7, #0]\nSUBS XZR, X5, X6\nB.NE Retry",
+      "o": [
+        "CB-format",
+        "R-format",
+        "D-format",
+        "B-format"
+      ],
+      "a": 0,
+      "kid": "Instruction formats are like <b>envelope styles</b> at the post office: every envelope is the same size (32 binary digits), but the boxes printed on it differ. A conditional branch needs a \"when\" box (the condition) and a \"where\" box (how far to jump), so it uses the <b>CB</b> envelope, short for conditional branch. The plain B envelope has only a big \"where\" box because it always jumps.",
+      "why": "LEGv8 encodes every conditional branch (CBZ, CBNZ and B.cond) in CB-format: an 8-bit opcode, a 19-bit branch offset and a 5-bit field that holds the tested register for CBZ/CBNZ or the condition code (NE here) for B.cond; 8 + 19 + 5 = 32. B-format, with a 26-bit offset, is used only by the unconditional B and BL.",
+      "w": [
+        null,
+        "R-format is for register-to-register operations like the SUBS on line 2; it has no branch-offset field.",
+        "D-format is for loads and stores like the LDUR on line 1, with a base register and a 9-bit byte offset.",
+        "B-format is only for the unconditional B and BL; a conditional branch also needs a field for its condition."
+      ],
+      "f": [
+        {
+          "q": "Same code. Which format encodes the second line, <code>SUBS XZR, X5, X6</code>?",
+          "a": 1,
+          "why": "SUBS with three register operands is R-format: opcode, Rm, shamt, Rn and Rd fields."
+        },
+        {
+          "q": "Same code. Which format encodes the first line, <code>LDUR X5, [X7, #0]</code>?",
+          "a": 2,
+          "why": "Loads and stores use D-format: opcode, 9-bit address offset, op, Rn (base) and Rt."
+        },
+        {
+          "q": "If the third line were the unconditional <code>B Retry</code>, which format would encode it?",
+          "a": 3,
+          "why": "B and BL use B-format: a 6-bit opcode and a 26-bit offset."
+        }
+      ]
+    },
+    {
+      "n": 23,
+      "t": "t3",
+      "q": "In LEGv8, ADDI and SUBI keep their constant in a 12-bit unsigned immediate field. Which instruction <b>cannot</b> be encoded as written?",
+      "o": [
+        "ADDI X9, X9, #4096",
+        "ADDI X9, X9, #4095",
+        "SUBI X9, X9, #3000",
+        "ADDI X9, X9, #2048"
+      ],
+      "a": 0,
+      "mono": true,
+      "kid": "The immediate field is a parking spot with room for exactly <b>12 binary digits</b>. The biggest number that fits is twelve 1s, which is 4095. The number 4096 needs a 13th digit, so it simply does not fit in the spot.",
+      "why": "Twelve unsigned bits hold 0 to 2<sup>12</sup> − 1 = 4095. 4096 = 2<sup>12</sup> = 1 0000 0000 0000 needs 13 bits, so ADDI X9, X9, #4096 cannot be encoded; the assembler or compiler must split it (for example ADDI #4095 then ADDI #1) or build the constant in a register first with MOVZ.",
+      "w": [
+        null,
+        "4095 = 2<sup>12</sup> − 1 = 1111 1111 1111, the largest value that fits in 12 bits.",
+        "3000 = 1011 1011 1000 needs only 12 bits, and SUBI uses the same 12-bit field.",
+        "2048 = 2<sup>11</sup> = 1000 0000 0000 fits in 12 bits."
+      ],
+      "f": [
+        {
+          "q": "Which instruction uses the <b>largest</b> immediate that still fits in the 12-bit field?",
+          "a": 1,
+          "why": "4095 = 2<sup>12</sup> − 1 is the maximum 12-bit unsigned value."
+        },
+        {
+          "q": "Which instruction's immediate is 1000 0000 0000 in binary, with only the field's top bit set?",
+          "a": 3,
+          "why": "Bit 11 alone is worth 2<sup>11</sup> = 2048."
+        }
+      ]
+    },
+    {
+      "n": 24,
+      "t": "t3",
+      "q": "When no branch is taken, how far does the program counter (PC) advance to reach the next LEGv8 instruction?",
+      "o": [
+        "1 byte",
+        "2 bytes",
+        "4 bytes",
+        "8 bytes"
+      ],
+      "a": 2,
+      "kid": "Think of memory as a row of mailboxes, one per byte. Every LEGv8 instruction is the same size and fills exactly <b>4 mailboxes</b>, so the next instruction is always 4 boxes over. A big number stored as a <code>long</code> fills 8 mailboxes, but an instruction always fills just 4.",
+      "why": "Every LEGv8 instruction is exactly 32 bits = 4 bytes, and memory is byte-addressed, so sequential execution uses PC + 4. Registers are 64 bits, but instructions are not.",
+      "w": [
+        "Addresses do count bytes, but one instruction spans 4 of them, so the PC skips 4, not 1.",
+        "2 bytes would mean 16-bit instructions; every LEGv8 instruction is 32 bits.",
+        null,
+        "8 bytes is a doubleword, the size of a register, but LEGv8 instructions are 32 bits, not 64."
+      ],
+      "f": [
+        {
+          "q": "In an array of 64-bit <code>long</code> values, how far apart are the addresses of consecutive elements?",
+          "a": 3,
+          "why": "A doubleword is 8 bytes, so element i + 1 is 8 bytes past element i."
+        },
+        {
+          "q": "In a string of 1-byte <code>char</code> values read with LDURB, how far apart are consecutive characters?",
+          "a": 0,
+          "why": "Each char is 1 byte, and memory is byte-addressed."
+        },
+        {
+          "q": "In an array of 16-bit halfwords read with LDURH, how far apart are consecutive elements?",
+          "a": 1,
+          "why": "A halfword is 16 bits = 2 bytes."
+        }
+      ]
+    },
+    {
+      "n": 25,
+      "t": "t4",
+      "q": "A benchmark executes 5 × 10<sup>9</sup> instructions with an average CPI of 1.6 on a processor whose clock cycle time is 250 ps. What is its CPU time?",
+      "o": [
+        "0.78 s",
+        "1.25 s",
+        "2.00 s",
+        "3.20 s"
+      ],
+      "a": 2,
+      "kid": "Think of a long list of chores, where each chore takes a few <b>ticks</b> of a kitchen timer. Total time = <b>chores × ticks per chore ÷ ticks per second</b>. Here that is 5 billion chores × 1.6 ticks = 8 billion ticks, and this timer ticks 4 billion times a second, so the list takes exactly 2 seconds.",
+      "why": "CPU time = instruction count × CPI × clock cycle time = 5 × 10<sup>9</sup> × 1.6 × 250 × 10<sup>−12</sup> s = 8 × 10<sup>9</sup> cycles × 250 ps = 2.0 s. Equivalently, a 250 ps cycle means a clock rate of 1 ÷ 250 ps = 4 GHz, and 8 × 10<sup>9</sup> cycles ÷ (4 × 10<sup>9</sup> cycles per second) = 2.0 s.",
+      "w": [
+        "0.78 s divides by the CPI instead of multiplying; needing 1.6 cycles per instruction makes the run longer, not shorter.",
+        "1.25 s leaves out the CPI, as if every instruction finished in a single cycle.",
+        null,
+        "3.20 s treats a 250 ps cycle as a 2.5 GHz clock; 1 ÷ 250 ps is 4 GHz, which gives 2.0 s."
+      ],
+      "f": [
+        {
+          "q": "The same 5 × 10<sup>9</sup> instructions run on a processor with a 250 ps cycle that completes an average of <b>1.6 instructions per cycle</b> (IPC = 1.6). What is the CPU time?",
+          "a": 0,
+          "why": "IPC is the reciprocal of CPI, so CPI = 1 ÷ 1.6 = 0.625. CPU time = 5 × 10<sup>9</sup> × 0.625 × 250 ps ≈ 0.78 s (0.78125 s)."
+        },
+        {
+          "q": "The same 5 × 10<sup>9</sup> instructions run on a 250 ps processor on which <b>every instruction takes exactly one cycle</b>. What is the CPU time?",
+          "a": 1,
+          "why": "With CPI = 1 the cycle count equals the instruction count: 5 × 10<sup>9</sup> × 1 × 250 ps = 1.25 s."
+        },
+        {
+          "q": "The same 5 × 10<sup>9</sup> instructions, still at a CPI of 1.6, run on a processor with a <b>2.5 GHz</b> clock. What is the CPU time?",
+          "a": 3,
+          "why": "A 2.5 GHz clock has a cycle time of 1 ÷ 2.5 GHz = 400 ps. CPU time = 5 × 10<sup>9</sup> × 1.6 × 400 ps = 8 × 10<sup>9</sup> cycles ÷ (2.5 × 10<sup>9</sup> Hz) = 3.2 s."
+        }
+      ]
+    },
+    {
+      "n": 26,
+      "t": "t4",
+      "q": "A profiler reports this instruction mix for a program: 50% ALU instructions (1 cycle each), 20% loads (5 cycles), 10% stores (3 cycles) and 20% branches (2 cycles). What is the program's average CPI?",
+      "o": [
+        "1.70",
+        "2.00",
+        "2.20",
+        "2.75"
+      ],
+      "a": 2,
+      "kid": "Imagine a class where half the kids finish a worksheet in 1 minute, a few take 5 minutes, and the rest land in between. To get the class average, you can't just average the different times; you have to count <b>how many kids</b> took each one. A computer's average <b>CPI</b> (clock ticks per instruction) works the same way: each kind of instruction counts as much as <b>how often</b> it shows up.",
+      "why": "Weighted CPI = Σ (fraction × cycles) = 0.50 × 1 + 0.20 × 5 + 0.10 × 3 + 0.20 × 2 = 0.50 + 1.00 + 0.30 + 0.40 = 2.20. Each class counts in proportion to how often it runs, so the common 1-cycle ALU instructions pull the average well below the plain average of the four class CPIs (2.75).",
+      "w": [
+        "1.70 leaves out the ALU class's 0.50 × 1 = 0.50 cycles; every class counts, even the 1-cycle one.",
+        "2.00 swaps the load and store fractions (0.10 × 5 + 0.20 × 3); loads are 20% of the mix and stores only 10%.",
+        null,
+        "2.75 is the plain average of 1, 5, 3 and 2, which ignores that ALU instructions make up half the mix."
+      ],
+      "f": [
+        {
+          "q": "Same cycle counts (ALU 1, load 5, store 3, branch 2), but a different program uses each class for exactly <b>25%</b> of its instructions. What is its average CPI?",
+          "a": 3,
+          "why": "With equal fractions, the weighted average equals the plain average: 0.25 × (1 + 5 + 3 + 2) = 0.25 × 11 = 2.75."
+        },
+        {
+          "q": "Same 50/20/10/20 mix, but a larger cache cuts the average load from 5 cycles to <b>2.5 cycles</b>. What is the program's average CPI now?",
+          "a": 0,
+          "why": "0.50 × 1 + 0.20 × 2.5 + 0.10 × 3 + 0.20 × 2 = 0.50 + 0.50 + 0.30 + 0.40 = 1.70. Speeding up a class that is 20% of the mix trims 0.20 × (5 − 2.5) = 0.50 from the average."
+        },
+        {
+          "q": "Same cycle counts (ALU 1, load 5, store 3, branch 2), but a different program's mix is 50% ALU, <b>10% loads</b>, <b>20% stores</b> and 20% branches. What is its average CPI?",
+          "a": 1,
+          "why": "0.50 × 1 + 0.10 × 5 + 0.20 × 3 + 0.20 × 2 = 0.50 + 0.50 + 0.60 + 0.40 = 2.00. Moving 10% of the mix from 5-cycle loads to 3-cycle stores lowers the average by 0.10 × (5 − 3) = 0.20."
+        }
+      ]
+    },
+    {
+      "n": 27,
+      "t": "t4",
+      "q": "Processors P and Q have different instruction sets. P runs at 4.4 GHz with a CPI of 2.0; Q runs at 2.5 GHz with a CPI of 1.25. Compiled for each, the same program executes 18.7 billion instructions on P but only 10 billion on Q. How do P and Q compare on this program?",
+      "o": [
+        "P is 1.1× faster",
+        "P is 1.76× faster",
+        "Q is 1.6× faster",
+        "Q is 1.7× faster"
+      ],
+      "a": 3,
+      "kid": "Two kids race to build the same LEGO castle. One snaps bricks on a little faster but uses tiny bricks, so she needs <b>almost twice as many</b>; the other is slower per brick but uses big ones. Counting <b>bricks per minute</b> (like MIPS) makes the tiny-brick builder look better, but the only fair test is <b>who finishes the castle first</b>.",
+      "why": "CPU time = instructions × CPI ÷ clock rate. P: 18.7 × 10<sup>9</sup> × 2.0 ÷ 4.4 GHz = 8.5 s; Q: 10 × 10<sup>9</sup> × 1.25 ÷ 2.5 GHz = 5.0 s, so Q is 8.5 ÷ 5.0 = 1.7× faster. P's higher rating (4,400 MHz ÷ 2.0 = 2,200 MIPS vs 2,500 MHz ÷ 1.25 = 2,000 MIPS) misleads because MIPS ignores that P's instruction set needs 1.87× as many instructions for the same job.",
+      "w": [
+        "1.1 is the MIPS ratio (2,200 ÷ 2,000 MIPS); MIPS counts instructions per second, not work done, and P must run 1.87× as many instructions.",
+        "1.76 is the clock-rate ratio (4.4 ÷ 2.5 GHz); clock rate alone ignores CPI and instruction count, and P's extra instructions and higher CPI outweigh its faster clock.",
+        "1.6 is the CPI ratio (2.0 ÷ 1.25); CPI alone ignores the different clock rates and instruction counts, and the real time ratio is 8.5 s ÷ 5.0 s = 1.7.",
+        null
+      ],
+      "f": [
+        {
+          "q": "Same processors (P: 4.4 GHz, CPI 2.0; Q: 2.5 GHz, CPI 1.25), but suppose the program executes <b>18.7 billion instructions on both</b>. How do P and Q compare?",
+          "a": 0,
+          "why": "P: 18.7 × 10<sup>9</sup> × 2.0 ÷ 4.4 GHz = 8.5 s; Q: 18.7 × 10<sup>9</sup> × 1.25 ÷ 2.5 GHz = 9.35 s, so P is 9.35 ÷ 8.5 = 1.1× faster. With equal instruction counts the MIPS ratio (2,200 ÷ 2,000 = 1.1) predicts performance correctly."
+        },
+        {
+          "q": "Suppose P and Q <b>both ran at 2.5 GHz</b> and executed the same number of instructions, keeping their CPIs of 2.0 and 1.25. How do they compare?",
+          "a": 2,
+          "why": "With equal clock rates and instruction counts, CPU time is proportional to CPI, so Q is 2.0 ÷ 1.25 = 1.6× faster, exactly the CPI ratio."
+        },
+        {
+          "q": "Suppose P and Q <b>both had a CPI of 2.0</b> and executed the same number of instructions, keeping their 4.4 GHz and 2.5 GHz clocks. How do they compare?",
+          "a": 1,
+          "why": "With equal CPIs and instruction counts, CPU time is inversely proportional to clock rate, so P is 4.4 ÷ 2.5 = 1.76× faster, exactly the clock ratio."
+        }
+      ]
+    },
+    {
+      "n": 28,
+      "t": "t4",
+      "q": "A photo-editing app spends 64% of its run time applying filters. A new GPU makes the filter step 10 times faster, and the other 36% of the run time is unchanged. What is the overall speedup?",
+      "o": [
+        "1.48×",
+        "2.36×",
+        "2.78×",
+        "10.00×"
+      ],
+      "a": 1,
+      "kid": "Say your morning routine takes 25 minutes: 16 minutes to get dressed and 9 minutes for breakfast. A magic closet makes dressing <b>10 times faster</b>, so it takes 1.6 minutes, but breakfast still takes 9. The whole morning drops to 10.6 minutes, only about 2.4 times faster, because the part you <b>didn't speed up</b> still takes its full time.",
+      "why": "Amdahl's law: new time = affected time ÷ improvement + unaffected time = 0.64 ÷ 10 + 0.36 = 0.064 + 0.36 = 0.424 of the old time. Speedup = old ÷ new = the reciprocal of 0.424 ≈ 2.36. The unchanged 36% caps the speedup at the reciprocal of 0.36 ≈ 2.78, no matter how fast the filters get.",
+      "w": [
+        "1.48× swaps the fractions, as if only 36% of the time were filtering: the reciprocal of (0.64 + 0.36 ÷ 10).",
+        null,
+        "2.78× is the ceiling if filtering took no time at all (the reciprocal of 0.36); a 10× faster filter still costs 0.064 of the old time.",
+        "10.00× would require all of the run time to be filtering; the unchanged 36% still takes its full time."
+      ],
+      "f": [
+        {
+          "q": "Same app (64% filters, 36% other work). What is the <b>largest</b> overall speedup any filter upgrade could give, even one that makes filtering take no time at all?",
+          "a": 2,
+          "why": "With filtering at zero time, only the unchanged 36% remains: speedup = the reciprocal of 0.36 ≈ 2.78. Amdahl's law says the part you leave alone sets the ceiling."
+        },
+        {
+          "q": "A different app spends only <b>36%</b> of its run time applying filters and 64% loading and saving files. It gets the same GPU upgrade, which makes filtering 10 times faster. What is the overall speedup?",
+          "a": 0,
+          "why": "Only the 36% filter share shrinks: new time = 0.64 + 0.36 ÷ 10 = 0.676 of the old time, so speedup = the reciprocal of 0.676 ≈ 1.48. When the improved part is small, even a big improvement barely helps."
+        },
+        {
+          "q": "A batch job spends <b>all</b> of its run time applying filters, and the new GPU makes filtering 10 times faster. What is the overall speedup?",
+          "a": 3,
+          "why": "When the improved part is the whole job, nothing is left unaffected: new time = old time ÷ 10 = 0.10 of the old time, so speedup = old ÷ new = 10.00. Amdahl's limit only bites when some of the work is not improved."
+        }
+      ]
+    },
+    {
+      "n": 29,
+      "t": "t4",
+      "q": "A processor's clock rate is raised from 2 GHz to 4 GHz, but main memory is not changed, so each cache miss still takes 60 ns to service. The program and its cache misses per instruction stay the same. What happens to the miss penalty, counted in clock cycles, and to the average CPI?",
+      "o": [
+        "The miss penalty stays at 120 cycles, and the CPI does not change",
+        "The miss penalty stays at 120 cycles, but the CPI goes up",
+        "The miss penalty grows to 240 cycles, and the CPI goes up",
+        "The miss penalty grows to 240 cycles, but the CPI does not change"
+      ],
+      "a": 2,
+      "kid": "Say you learn to chop vegetables <b>twice as fast</b>, but the grocery van still takes an hour to bring more carrots. Each hour spent waiting for the van now costs you <b>twice as many chops</b> as it used to. A computer counts time in clock ticks, so a faster clock makes every trip to slow memory cost <b>more ticks</b>, and its average ticks per instruction (its <b>CPI</b>) goes up.",
+      "why": "Miss penalty in cycles = memory time ÷ cycle time. At 2 GHz a cycle lasts 0.5 ns, so 60 ns = 120 cycles; at 4 GHz a cycle lasts 0.25 ns, so the same 60 ns = 240 cycles. With the same misses per instruction, memory-stall cycles per instruction double, so CPI (base CPI + stall cycles per instruction) goes up, and the program speeds up by less than 2×.",
+      "w": [
+        "120 cycles treats the miss penalty as fixed in cycles, but memory's 60 ns is fixed in time, and at 0.25 ns per cycle it spans 240 cycles.",
+        "The CPI does go up, but only because each miss now costs more cycles: with 0.25 ns cycles, the 60 ns wait spans 240 cycles, not 120.",
+        null,
+        "CPI includes memory-stall cycles, so the same number of misses per instruction at twice the cycles each raises the average cycles per instruction."
+      ],
+      "f": [
+        {
+          "q": "Suppose memory is upgraded at the same time, so each miss now takes <b>30 ns</b> instead of 60 ns. When the clock goes from 2 GHz to 4 GHz, what happens to the miss penalty in cycles and to the CPI?",
+          "a": 0,
+          "why": "30 ns ÷ 0.25 ns per cycle = 120 cycles, the same as 60 ns at 2 GHz. With the same misses per instruction, the stall cycles per instruction and the CPI do not change, so the program runs twice as fast."
+        },
+        {
+          "q": "Suppose the clock <b>stays at 2 GHz</b> and memory still takes 60 ns, but a smaller cache makes the program miss <b>twice as often</b>. What happens to the miss penalty in cycles and to the CPI?",
+          "a": 1,
+          "why": "At 2 GHz, 60 ns is still 60 ÷ 0.5 = 120 cycles per miss. Twice as many misses per instruction means twice the memory-stall cycles per instruction, so the CPI goes up."
+        },
+        {
+          "q": "Same 2 GHz to 4 GHz change and 60 ns memory, but this program's code and data are already in the cache, so it <b>never misses</b> while it runs. What happens to the miss penalty in cycles and to the CPI?",
+          "a": 3,
+          "why": "A miss would now cost 60 ns ÷ 0.25 ns = 240 cycles, but this program never misses, so it pays no stall cycles. Its CPI stays at its base value, and the faster clock halves its run time."
+        }
+      ]
+    },
+    {
+      "n": 30,
+      "t": "t5",
+      "q": "A single-cycle datapath finishes one instruction every 900 ps. Designers split it into 5 balanced stages of 180 ps, and each pipeline register adds 20 ps. Once the pipeline is full, what is each instruction's latency, and how often does an instruction complete?",
+      "o": [
+        "Latency 900 ps; one instruction completes every 200 ps",
+        "Latency 900 ps; one instruction completes every 180 ps",
+        "Latency 1,000 ps; one instruction completes every 200 ps",
+        "Latency 1,000 ps; one instruction completes every 1,000 ps"
+      ],
+      "a": 2,
+      "kid": "Picture neighbors in a <b>bucket brigade</b> passing water to a fire. Every bucket still goes through all the hands, and each hand-off costs a moment, so one bucket's trip is a little slower than one person running it the whole way. But a new bucket reaches the fire every few seconds instead of once per long run. That buckets-per-minute number is <b>throughput</b>, and it is what the line improves.",
+      "why": "The clock cycle has to cover one stage plus its pipeline register: 180 + 20 = 200 ps. Each instruction still passes through all 5 stages, so its latency is 5 × 200 = 1,000 ps, longer than the 900 ps single-cycle time. Once the pipeline is full, one instruction completes every 200 ps, so throughput rises 900 ÷ 200 = 4.5×.",
+      "w": [
+        "900 ps is the old single-cycle time, but each instruction now spends one 200 ps clock cycle in each of the 5 stages, so its latency is 5 × 200 = 1,000 ps.",
+        "900 ps and 180 ps leave out the 20 ps register delay; each stage, and so the clock cycle, is 180 + 20 = 200 ps.",
+        null,
+        "One completion every 1,000 ps would mean no overlap; a full pipeline finishes an instruction every 200 ps cycle."
+      ],
+      "f": [
+        {
+          "q": "Same design, but the pipeline registers are ideal and add no delay. Now what are the latency and the completion rate?",
+          "a": 1,
+          "why": "With no register delay the clock cycle is 180 ps: latency 5 × 180 = 900 ps, and one instruction completes every 180 ps."
+        },
+        {
+          "q": "Same 5 stages and registers, but the control lets only one instruction into the pipeline at a time, so the next starts only after the previous one finishes. Now what are the latency and the completion rate?",
+          "a": 3,
+          "why": "Each instruction still takes 5 × 200 = 1,000 ps, and with no overlap the next one finishes 1,000 ps after it."
+        }
+      ]
+    },
+    {
+      "n": 31,
+      "t": "t5",
+      "q": "A bakery decorates cakes on a three-station line: frosting 12 min, piping 20 min, boxing 8 min. Each station works on one cake at a time, and a cake moves on as soon as the next station is free. How long from the start of the first cake until the 7th cake is boxed?",
+      "o": [
+        "140 minutes",
+        "160 minutes",
+        "180 minutes",
+        "280 minutes"
+      ],
+      "a": 1,
+      "kid": "The slowest station, piping at 20 minutes, is the narrow neck of a funnel: once the line is busy, cakes can only come out <b>one every 20 minutes</b>. The first cake has to walk the whole line, 12 + 20 + 8 = 40 minutes. Each of the other 6 cakes pops out 20 minutes after the one before: 40 + 6 × 20 = <b>160</b>.",
+      "why": "Unequal stages: total = first item's full time + (n − 1) × slowest stage. The first cake takes 12 + 20 + 8 = 40 minutes, and the 20-minute piping station then releases one cake every 20 minutes: 40 + (7 − 1) × 20 = 160 minutes.",
+      "w": [
+        "140 = 7 × 20 counts only the bottleneck rhythm; the first cake still needs its full 40 minutes to get through.",
+        null,
+        "180 = (3 + 7 − 1) × 20 treats every station as 20 minutes; here cakes move as soon as the next station is free.",
+        "280 = 7 × 40 is the time with no overlap, finishing each cake before the next one starts."
+      ],
+      "f": [
+        {
+          "q": "Same stations, but a bell moves every cake forward one station at the same moment every 20 minutes, like a clocked processor, and the bell also moves each finished cake off the boxing station. When does the bell send the 7th cake off the line?",
+          "a": 2,
+          "why": "Every station now holds a cake for one 20-minute beat: (3 + 7 − 1) × 20 = 180 minutes. The 7th cake's boxing is done at 168, but it leaves only at the next bell, like an instruction that finishes at the end of its WB cycle."
+        },
+        {
+          "q": "Same stations, but one decorator does all three steps on a cake before starting the next. When is the 7th cake boxed?",
+          "a": 3,
+          "why": "No overlap: 7 × (12 + 20 + 8) = 7 × 40 = 280 minutes."
+        },
+        {
+          "q": "The line has been running all morning and is already full. In this steady state, how long does it take for the next 7 cakes to come off the end?",
+          "a": 0,
+          "why": "In steady state one cake finishes every 20 minutes (the bottleneck), so 7 × 20 = 140 minutes."
+        }
+      ]
+    },
+    {
+      "n": 32,
+      "t": "t5",
+      "q": "A non-pipelined processor takes 2.4 ns per instruction. Designers split it into 6 equal pipeline stages (ignore pipeline-register delay). With no stalls, what is the pipeline's speedup over the original processor for a program of 30 instructions, timed from the first fetch until the last instruction finishes?",
+      "o": [
+        "0.86×",
+        "5.00×",
+        "5.14×",
+        "6.00×"
+      ],
+      "a": 2,
+      "kid": "Picture a car wash split into <b>6 equal bays</b>, each doing one sixth of the old wash. The first car still needs all 6 bay-times to get through, but after that a clean car rolls out after <b>every</b> bay-time, so 30 cars need 6 + 29 = 35 bay-times instead of the old 30 × 6 = 180. That is 180 ÷ 35, about <b>5.1 times faster</b>: a bit short of 6, because the line has to fill up first.",
+      "why": "Each stage takes 2.4 ÷ 6 = 0.4 ns. Pipelined: (k + n − 1) × stage time = (6 + 30 − 1) × 0.4 = 14.0 ns. Unpipelined: 30 × 2.4 = 72.0 ns. Speedup = 72.0 ÷ 14.0 ≈ 5.14×, below the stage count because the pipeline needs 5 extra cycles to fill; it approaches 6 only as n grows.",
+      "w": [
+        "0.86× = 72 ÷ 84 uses the whole 2.4 ns as the clock cycle; each of the 6 stages takes only 2.4 ÷ 6 = 0.4 ns.",
+        "5.00× = 72 ÷ 14.4 counts 6 + 30 = 36 cycles; after the first instruction's 6 cycles only 29 more are needed, for 35.",
+        null,
+        "6.00× is the limit for a very long program; with only 30 instructions, the 5 cycles spent filling the pipeline keep the speedup lower."
+      ],
+      "f": [
+        {
+          "q": "Same pipeline, but the program runs billions of instructions. About what speedup does the pipeline approach?",
+          "a": 3,
+          "why": "For huge n, (6 + n − 1) × 0.4 ≈ n × 0.4 ns, so the speedup n × 2.4 ÷ (n × 0.4) approaches 6, the number of stages."
+        },
+        {
+          "q": "Same processors, but the program has only 25 instructions. What is the speedup?",
+          "a": 1,
+          "why": "Unpipelined: 25 × 2.4 = 60 ns. Pipelined: (6 + 25 − 1) × 0.4 = 30 × 0.4 = 12 ns. Speedup = 60 ÷ 12 = 5.00×."
+        },
+        {
+          "q": "Suppose a poor design splits the work into 6 stages but still clocks every stage at the full 2.4 ns. What is the \"speedup\" for the 30 instructions?",
+          "a": 0,
+          "why": "Pipelined time = (6 + 30 − 1) × 2.4 = 84 ns, so 72 ÷ 84 ≈ 0.86×, a slowdown: pipelining pays off only when the clock cycle shrinks."
+        }
+      ]
+    },
+    {
+      "n": 33,
+      "t": "t5",
+      "q": "In a superscalar processor, who decides which instructions start together in the same clock cycle, and when is that decision made?",
+      "o": [
+        "The compiler, before the program runs",
+        "The operating system's scheduler, between time slices",
+        "The programmer, by grouping statements in the source code",
+        "The processor's issue hardware, while the program runs"
+      ],
+      "a": 3,
+      "kid": "Picture a shelf stocker with <b>two free hands</b> and a cart of boxes in the order they came off the truck. Whenever the next two boxes go to different shelves, she puts both away at the same moment; when they need the same spot, she does one and then the other. Nobody hands her a plan ahead of time: she <b>picks the pairs herself as she goes</b>. That is how a <b>superscalar</b> chip chooses which instructions to start together.",
+      "why": "A superscalar processor is a dynamic multiple-issue design: its issue hardware examines the instruction stream while the program runs and starts two or more independent instructions in the same clock cycle, so CPI can drop below 1. Static multiple issue (VLIW) moves that grouping decision to the compiler, before the program runs. The operating system only decides which program or thread gets the core for each time slice.",
+      "w": [
+        "Grouping by the compiler before the program runs is static multiple issue (VLIW); a superscalar processor groups instructions in hardware at run time.",
+        "The OS scheduler picks which program or thread gets the core for the next time slice; it never chooses instructions cycle by cycle.",
+        "Programmers write ordinary sequential code; neither they nor the source language marks which instructions start together.",
+        null
+      ],
+      "f": [
+        {
+          "q": "In a VLIW (static multiple-issue) processor, who decides which instructions start together in the same clock cycle, and when?",
+          "a": 0,
+          "why": "VLIW leaves the grouping to the compiler, which packs independent instructions into issue packets before the program runs."
+        },
+        {
+          "q": "On one core shared by several programs, who decides which program runs during the next time slice, and when?",
+          "a": 1,
+          "why": "The operating system's scheduler makes that choice at each time-slice boundary, switching programs with a context switch."
+        }
+      ]
+    },
+    {
+      "n": 34,
+      "t": "t5",
+      "q": "In a dynamically scheduled processor, an ADD has been issued, but one of its source values is still coming from a load that missed in the cache. Where does the ADD wait until the missing value arrives?",
+      "o": [
+        "The reorder buffer in the commit unit",
+        "The IF/ID register between fetch and decode",
+        "The branch prediction buffer in the fetch unit",
+        "A reservation station at its functional unit"
+      ],
+      "a": 3,
+      "kid": "Picture a kitchen where each cook has an <b>order rail</b>. A ticket hangs there with the ingredients that have already arrived. The moment the missing ingredient shows up, the cook makes that dish, even if an older order is still stuck. That rail is the <b>reservation station</b>.",
+      "why": "In dynamic pipeline scheduling, issued instructions go to reservation stations, buffers in front of each functional unit that hold the operation and its operands. A missing operand is tagged with the unit that will produce it; when the load's result appears, it is copied in and the ADD can execute, possibly before older stalled instructions. Results then wait in the reorder buffer so they commit in program order.",
+      "w": [
+        "The reorder buffer holds finished results until they can be committed in program order; instructions waiting for operands sit in reservation stations.",
+        "IF/ID holds a freshly fetched instruction in the basic in-order pipeline; it is not a waiting area for issued instructions.",
+        "A branch prediction buffer stores taken/not-taken history for branches; it holds no operations or operands.",
+        null
+      ],
+      "f": [
+        {
+          "q": "Where does a finished result wait so that registers and memory are updated in the original program order?",
+          "a": 0,
+          "why": "The commit unit's reorder buffer holds results until they can be committed in order."
+        },
+        {
+          "q": "Where is a branch's recent taken/not-taken history kept so the fetch unit can guess its direction?",
+          "a": 2,
+          "why": "A branch prediction buffer (branch history table), indexed by the branch address, keeps the prediction bits."
+        },
+        {
+          "q": "In the basic in-order 5-stage pipeline, where is an instruction held between the fetch and decode stages?",
+          "a": 1,
+          "why": "The IF/ID pipeline register holds the fetched instruction (and its PC) for the ID stage."
+        }
+      ]
+    },
+    {
+      "n": 35,
+      "t": "t5",
+      "q": "Which setup is the clearest example of the great idea <i>performance via pipelining</i>?",
+      "o": [
+        "A dish crew where one person scrapes a plate while a second washes the one before it and a third dries the one before that",
+        "A library that keeps its most-borrowed books on a cart by the front desk and all the other books down in the back stacks",
+        "A grading team in which each of four teachers takes a quarter of the exams and grades every one of them from start to finish",
+        "A coffee shop that starts a regular customer's usual drink as they walk in and pours it out if they order something else"
+      ],
+      "a": 0,
+      "kid": "Picture three friends doing the dishes. While one scrapes a plate, the next friend is already washing the plate before it, and the third is drying the one before that. <b>Three plates are moving at once</b>, each at a <b>different step</b>, so a clean, dry plate comes off the end after every step instead of after every whole plate. That overlap is <b>pipelining</b>.",
+      "why": "Pipelining splits a job into steps and overlaps them, so different items are at different steps at the same time. In the dish crew three plates are in progress at once, and once the line is full one plate finishes every step time, even though each plate still goes through all three steps. The teachers work in parallel but each grades whole exams (plain parallelism), the cart is a memory hierarchy, and the early drink is prediction.",
+      "w": [
+        null,
+        "Keeping popular books close and the rest farther away is a hierarchy of memories; no job is split into overlapping steps.",
+        "Each teacher grades whole exams side by side with the others; that is parallelism, but no exam moves through a sequence of steps.",
+        "Starting a drink on a guess and pouring it out if the guess is wrong is performance via prediction, not overlapped steps."
+      ],
+      "f": [
+        {
+          "q": "Which setup is the clearest example of the great idea <i>hierarchy of memories</i>?",
+          "a": 1,
+          "why": "A small, fast spot close at hand (the cart) backed by a big, slow store (the stacks) is a memory hierarchy: keep what is used most where it is quickest to reach."
+        },
+        {
+          "q": "Which setup is the clearest example of the great idea <i>performance via parallelism</i>, with no pipelining at all?",
+          "a": 2,
+          "why": "Four teachers grading whole exams at the same time is plain parallelism; no exam is handed from one step to the next."
+        },
+        {
+          "q": "Which setup is the clearest example of the great idea <i>performance via prediction</i>?",
+          "a": 3,
+          "why": "Starting work on a guess and throwing it away if the guess is wrong is prediction, like a branch predictor fetching down the guessed path."
+        }
+      ]
+    },
+    {
+      "n": 36,
+      "t": "t5",
+      "q": "This code runs on the 5-stage LEGv8 pipeline (IF, ID, EX, MEM, WB) with full forwarding and a hazard detection unit. How many stall cycles (bubbles) are inserted?",
+      "code": "LDUR X10, [X20, #0]\nADD  X11, X10, X12\nSUB  X13, X14, X15\nORR  X16, X11, X13",
+      "o": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ],
+      "a": 1,
+      "kid": "Forwarding is like passing a pan straight from one cook's hands to the next instead of setting it on the shelf first. That works for anything cooked at the stove (the <b>ALU</b>). But an ingredient fetched from the pantry (a <b>load</b>) arrives one step later, so the very next cook who needs it has to wait <b>one beat</b>.",
+      "why": "Forwarding sends ALU results from the EX/MEM or MEM/WB register straight into a later instruction's EX stage, so ADD → ORR and SUB → ORR need no stall. The load is different: X10 is ready only at the end of MEM, but the ADD right after it needs X10 at the start of its EX, so one bubble is inserted (a load-use hazard). Total: 1 stall, 9 cycles instead of 8.",
+      "w": [
+        "Forwarding cannot fix a load-use pair: the loaded value exists only after MEM, one cycle too late for the next instruction's EX.",
+        null,
+        "There is only one load-use pair; SUB → ORR passes an ALU result, which EX/MEM forwarding delivers on time.",
+        "4 bubbles is the count with no forwarding at all (2 for LDUR → ADD and 2 for SUB → ORR)."
+      ],
+      "f": [
+        {
+          "q": "Same code, but the pipeline has <b>no forwarding</b>; instructions stall in ID until the register file has the value (it writes in the first half of a cycle and reads in the second). How many stall cycles?",
+          "a": 3,
+          "why": "ADD waits 2 cycles for LDUR's WB. SUB then sits right before ORR, so ORR waits 2 more for SUB's WB: 4 stalls, 12 cycles in all."
+        },
+        {
+          "q": "Full forwarding again, but the first line is <code>ADDI X10, X20, #0</code> instead of the load. How many stall cycles?",
+          "a": 0,
+          "why": "Every value now comes from the ALU, and forwarding delivers each one in time: 0 stalls."
+        },
+        {
+          "q": "Full forwarding, but the third line is <code>LDUR X13, [X20, #8]</code> instead of the SUB. How many stall cycles?",
+          "a": 2,
+          "why": "Now there are two load-use pairs (LDUR → ADD and LDUR → ORR), one bubble each: 2 stalls."
+        }
+      ]
+    },
+    {
+      "n": 37,
+      "t": "t6",
+      "q": "A program sums the brightness of every pixel in a large image. Each pixel is 4 bytes, and the program reads every pixel exactly once, in order of increasing address. The data cache uses 64-byte blocks, and most of these reads hit. Why?",
+      "o": [
+        "Each pixel is read again soon after, so it is still in the cache (temporal locality)",
+        "One miss also loads the next pixels, so the reads after it hit (spatial locality)",
+        "Changed pixels reach main memory only when their block is evicted (write-back)",
+        "The loop works on small tiles that are each reused many times over (blocking)"
+      ],
+      "a": 1,
+      "kid": "You need the next 16 pages of a book, one after another. Instead of walking to the shelf for each page, you carry the <b>whole chapter</b> to your desk on the first trip, so the next 15 pages are already there. Using things that sit <b>next to</b> what you just used is <b>spatial locality</b>.",
+      "why": "Spatial locality means addresses near a recent access are likely to be used soon. Each miss loads a 64-byte block holding 64 ÷ 4 = 16 pixels, so one miss is followed by 15 hits, a 15/16 ≈ 94% hit rate. Temporal locality does not help here, because no pixel is read twice.",
+      "w": [
+        "Each pixel is read exactly once, so no address is reused soon; temporal locality is not what produces these hits.",
+        null,
+        "The loop only reads pixels, and write-back only changes when stores reach memory; it cannot turn a first read into a hit.",
+        "The loop makes one straight pass with no tiles and no reuse; blocking is a different technique for code that revisits data."
+      ],
+      "f": [
+        {
+          "q": "A paint program re-reads the same pixel under the brush thousands of times in a row. Why do those reads keep hitting?",
+          "a": 0,
+          "why": "The same address is used again and again within a short time. That is temporal locality: after the first miss, the pixel stays in the cache and every later read hits."
+        },
+        {
+          "q": "A program stores to the same pixel 1,000 times in a row, yet main memory receives a single write for it, when its block finally leaves the cache. Which policy explains this?",
+          "a": 2,
+          "why": "A write-back cache updates the block in place and marks it dirty. Memory is written once, when the dirty block is evicted. A write-through cache would send all 1,000 stores toward memory."
+        }
+      ]
+    },
+    {
+      "n": 38,
+      "t": "t6",
+      "q": "A 2-way set-associative data cache holds 32 KiB of data in 64-byte blocks. Physical addresses are 40 bits, and memory is byte addressed. How many bits of each address go to the tag, the set index and the block offset?",
+      "o": [
+        "Tag 25, index 9, offset 6",
+        "Tag 29, index 8, offset 3",
+        "Tag 27, index 7, offset 6",
+        "Tag 26, index 8, offset 6"
+      ],
+      "a": 3,
+      "kid": "Read an address like a <b>mailing label</b>. The last 6 bits are the <b>apartment number</b>: which of the 64 bytes in the block you want. The next 8 bits are the <b>street</b>: which of the 256 sets to search. The rest is the <b>family name</b> (the tag) you check on the mailbox to be sure the block there is yours.",
+      "why": "Blocks = 32 KiB ÷ 64 B = 512. Sets = 512 ÷ 2 ways = 256, so index = log<sub>2</sub> 256 = 8 bits. Offset = log<sub>2</sub> 64 = 6 bits, because every byte must be addressable. Tag = 40 − 8 − 6 = 26 bits.",
+      "w": [
+        "Index 9 means 512 sets, which is the direct-mapped count; with 2 ways the 512 blocks form only 256 sets.",
+        "The offset must pick one byte of 64, which takes 6 bits; 3 bits would only pick one of 8 doublewords.",
+        "Index 7 means 128 sets, which is what a 4-way cache would have; 2 ways give 256 sets and 8 index bits.",
+        null
+      ],
+      "f": [
+        {
+          "q": "Same 32 KiB cache with 64-byte blocks and 40-bit addresses, but now direct-mapped. How do the address bits split?",
+          "a": 0,
+          "why": "Direct-mapped means one block per set, so 512 sets need 9 index bits. The offset is still 6 bits, leaving a tag of 40 − 9 − 6 = 25 bits."
+        },
+        {
+          "q": "Same 32 KiB cache with 64-byte blocks and 40-bit addresses, but now 4-way set associative. How do the address bits split?",
+          "a": 2,
+          "why": "512 blocks ÷ 4 ways = 128 sets, so the index is 7 bits. The offset stays 6 bits, and the tag is 40 − 7 − 6 = 27 bits."
+        },
+        {
+          "q": "A smaller 2-way cache holds 4 KiB in 8-byte blocks, still with 40-bit byte addresses. How do the address bits split?",
+          "a": 1,
+          "why": "4 KiB ÷ 8 B = 512 blocks, and 512 ÷ 2 ways = 256 sets, so the index is 8 bits. An 8-byte block needs a 3-bit offset, so the tag is 40 − 8 − 3 = 29 bits."
+        }
+      ]
+    },
+    {
+      "n": 39,
+      "t": "t6",
+      "q": "A processor runs at 2 GHz. Its L1 data cache hits in 2 clock cycles, misses on 3% of accesses, and each miss adds 150 cycles to fetch the block from main memory. What is the average memory access time (AMAT) in nanoseconds?",
+      "o": [
+        "3.25 ns",
+        "6.5 ns",
+        "2.25 ns",
+        "76 ns"
+      ],
+      "a": 0,
+      "kid": "Grabbing a snack from the <b>kitchen counter</b> (the cache) takes 2 seconds. But 3 times out of 100 the counter is empty, and the trip to the <b>garage freezer</b> adds 150 seconds. On average a snack costs 2 + (3% of 150) = 6.5 seconds. A computer does the same math in clock ticks, then turns ticks into nanoseconds: that average is the <b>AMAT</b>.",
+      "why": "AMAT = hit time + miss rate × miss penalty = 2 + 0.03 × 150 = 2 + 4.5 = 6.5 cycles. At 2 GHz one cycle is 1 ÷ (2 × 10<sup>9</sup>) s = 0.5 ns, so AMAT = 6.5 × 0.5 = 3.25 ns.",
+      "w": [
+        null,
+        "6.5 is the AMAT in clock cycles; at 2 GHz each cycle is 0.5 ns, so it still has to be converted.",
+        "This counts only the 4.5 average miss cycles and drops the 2-cycle hit time that every access pays.",
+        "This charges the full 150-cycle penalty to every access, but only 3% of accesses miss."
+      ],
+      "f": [
+        {
+          "q": "A different design runs at 1 GHz. Its cache also hits in 2 cycles and misses on 3% of accesses, and each miss also costs 150 cycles (150 ns at this clock). What is the AMAT in nanoseconds?",
+          "a": 1,
+          "why": "AMAT is still 2 + 0.03 × 150 = 6.5 cycles. At 1 GHz a cycle is 1 ns, so AMAT = 6.5 ns."
+        },
+        {
+          "q": "Same 2 GHz processor and cache, but right after a cold start every access misses (miss rate 100%). What is the AMAT in nanoseconds?",
+          "a": 3,
+          "why": "AMAT = 2 + 1.00 × 150 = 152 cycles, and 152 × 0.5 ns = 76 ns."
+        },
+        {
+          "q": "Same numbers as the original: on average, how many nanoseconds per access are spent only on miss stalls, not counting the hit time?",
+          "a": 2,
+          "why": "Average miss stall = miss rate × miss penalty = 0.03 × 150 = 4.5 cycles, and 4.5 × 0.5 ns = 2.25 ns."
+        }
+      ]
+    },
+    {
+      "n": 40,
+      "t": "t6",
+      "q": "A direct-mapped cache has 8 blocks and starts empty. The processor accesses the block addresses below, in order. How many of the 8 accesses are misses?",
+      "code": "Block addresses, in order:\n19, 10, 14, 19, 27, 10, 19, 10",
+      "o": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "a": 2,
+      "kid": "Picture 8 cubbies numbered 0 to 7. A toy may only go in the cubby that matches the <b>leftover when its number is divided by 8</b>. Toys 19 and 27 both leave 3, so they <b>fight over cubby 3</b> and keep kicking each other out. Each time one comes back after the other, it has to be fetched again: a <b>miss</b>.",
+      "why": "Slot = block address mod 8: 19 → 3, 10 → 2, 14 → 6, 27 → 3. Trace: 19 M, 10 M, 14 M, 19 H, 27 M (evicts 19), 10 H, 19 M (evicts 27), 10 H. That is 5 misses: 4 compulsory (first use of 19, 10, 14 and 27) plus 1 conflict miss when 19 returns to slot 3.",
+      "w": [
+        "3 is the number of hits (8 accesses − 5 misses), not the number of misses.",
+        "4 counts only the first-time (compulsory) misses and skips the conflict miss when 19 comes back after 27 took slot 3.",
+        null,
+        "6 is what you get using mod 4, as if the cache had 4 blocks; with 8 blocks, 10 and 14 go to different slots."
+      ],
+      "f": [
+        {
+          "q": "Same 8 blocks and sequence, but the cache is 2-way set associative (4 sets, LRU replacement). How many accesses miss?",
+          "a": 1,
+          "why": "Set = address mod 4: 19 and 27 share set 3, and 10 and 14 share set 2, but each set holds 2 blocks. Trace: M, M, M, H, M, H, H, H, so only the 4 compulsory misses remain."
+        },
+        {
+          "q": "Same sequence, but the direct-mapped cache has only 4 blocks (slot = block address mod 4). How many accesses miss?",
+          "a": 3,
+          "why": "Slots: 19 → 3, 10 → 2, 14 → 2, 27 → 3. Trace: M, M, M (14 evicts 10), H, M (27 evicts 19), M (10 evicts 14), M (19 evicts 27), H. That is 6 misses."
+        },
+        {
+          "q": "Same 8-block direct-mapped cache and the same sequence: how many of the 8 accesses are hits?",
+          "a": 0,
+          "why": "The trace M, M, M, H, M, H, M, H has 3 hits: the second use of 19 and the second and third uses of 10."
+        }
+      ]
+    },
+    {
+      "n": 41,
+      "t": "t6",
+      "q": "A designer changes a 64 KiB L1 cache from direct-mapped to 4-way set associative, keeping the total capacity and the block size the same. Which outcome should she expect?",
+      "o": [
+        "More conflict misses, because each block now has fewer legal places to go",
+        "Fewer conflict misses, because each block has four legal slots in its set",
+        "A shorter hit time, because only one tag has to be checked on each access",
+        "No change in miss rate, because the total capacity stays exactly the same"
+      ],
+      "a": 1,
+      "kid": "In a <b>direct-mapped</b> parking lot your car may only park in space #7, so if a friend's car is already there it gets <b>towed away</b> to make room, even when the lot is half empty, and your friend has to come back for it later. A <b>4-way</b> lot gives you four spaces to pick from, so that rarely happens. The catch: the attendant has to look at four spaces to find your car, which takes a little longer.",
+      "why": "Higher associativity lets blocks that map to the same set live there together, which cuts conflict misses and lowers the miss rate. The cost is one tag comparator per way plus a multiplexer to choose the hitting way, so the hit time rises slightly and the hardware grows. The biggest drop in miss rate comes from 1-way to 2-way; each further doubling helps less.",
+      "w": [
+        "It is the reverse: with 4 legal slots instead of 1, up to 4 blocks that share a set can stay together instead of evicting each other, so conflict misses drop.",
+        null,
+        "A 4-way lookup compares 4 tags and then picks a way, which adds delay; checking one tag is the direct-mapped case.",
+        "Capacity is not the only factor: blocks that collided on one slot can now share a set, so the miss rate falls."
+      ],
+      "f": [
+        {
+          "q": "The designer goes the other way, from 4-way set associative to direct-mapped, at the same capacity and block size. Which benefit can she count on?",
+          "a": 2,
+          "why": "A direct-mapped cache reads one tag and compares it once, with no way-select multiplexer, so its hit time is the shortest and its hardware the simplest."
+        },
+        {
+          "q": "The designer goes from 4-way set associative to direct-mapped at the same capacity and block size. Which drawback should she expect?",
+          "a": 0,
+          "why": "Each block now has exactly one legal slot, so blocks that used to share a set evict each other, and conflict misses rise."
+        }
+      ]
+    },
+    {
+      "n": 42,
+      "t": "t6",
+      "q": "On an ARMv8 core with 48-bit virtual addresses and 4 KiB pages, every load needs its 36-bit virtual page number mapped to a physical page number. Which hardware keeps recently used page mappings so most loads can skip reading the page table in memory?",
+      "o": [
+        "The translation lookaside buffer",
+        "The page table register",
+        "The level-1 data cache",
+        "The write buffer that queues stores"
+      ],
+      "a": 0,
+      "kid": "The page table is a thick <b>map book</b> kept in a closet down the hall. Taped by the front door is a <b>sticky note</b>, the <b>TLB</b>, listing the handful of routes you have used today. You check the note first and walk to the closet (a page-table read) only when the route you need is missing from it.",
+      "why": "The TLB (translation lookaside buffer) is a small, fast cache of page table entries. On a TLB hit the 36-bit virtual page number (48 − 12, since 4 KiB = 2<sup>12</sup>) becomes a physical page number at once, and the 12-bit page offset is copied unchanged. Only on a TLB miss does the hardware read the page table in memory, starting from the address in the page table register.",
+      "w": [
+        null,
+        "The page table register only holds where the current process's page table starts; it stores no translations.",
+        "The L1 data cache keeps copies of data blocks; it is the TLB that holds virtual-to-physical page mappings.",
+        "A write buffer holds stores waiting to reach memory; it plays no part in translating addresses."
+      ],
+      "f": [
+        {
+          "q": "Process B's page table starts at a different physical address than process A's. When the OS hands the core from A to B, which register must it reload?",
+          "a": 1,
+          "why": "The page table register holds the physical address where the running process's page table begins. Reloading it with B's table address makes every later page-table walk use B's mappings."
+        },
+        {
+          "q": "Which hardware keeps copies of recently used data blocks so most loads avoid a trip to main memory?",
+          "a": 2,
+          "why": "The L1 data cache holds recently used blocks of data close to the core. Keeping data is the data cache's job; the TLB keeps only translations."
+        },
+        {
+          "q": "With a write-through cache, which hardware lets the processor keep running while its stores wait to be written to main memory?",
+          "a": 3,
+          "why": "A write buffer queues stores so the processor does not stall for each memory write; the buffer drains to memory in the background."
+        }
+      ]
+    },
+    {
+      "n": 43,
+      "t": "t6",
+      "q": "Two programs run at the same time, and each one keeps its data at virtual address 0x4000. Neither program can see or change the other's data. What makes this work?",
+      "o": [
+        "The cache stores each program's blocks in a different set of slots",
+        "Each program runs on a separate core that has its own private RAM",
+        "Pages a program is not using can wait on disk until they are needed",
+        "Each program's page table maps that address to a separate physical page"
+      ],
+      "a": 3,
+      "kid": "Two kids in different houses both have a <b>bedroom #4</b>. A letter addressed just to \"bedroom #4\" needs each family's own <b>address book</b> to find the right house. Every program has its own address book (its <b>page table</b>), so the same room number leads to different real rooms, and nobody walks into the wrong one.",
+      "why": "Each process has its own page table, and the OS loads the page table register on every context switch. The same virtual page in two processes maps to different physical pages, and a process can reach only the pages its own table maps, so programs are protected from each other. Only the OS may change page tables.",
+      "w": [
+        "Cache placement is about speed, not protection; the programs are kept apart earlier, when their addresses are translated.",
+        "Cores in one machine share the same physical memory, and the two programs would stay apart even on a single core.",
+        "Keeping idle pages on disk lets programs be larger than RAM, but it does not explain why equal virtual addresses never collide.",
+        null
+      ],
+      "f": [
+        {
+          "q": "A 12 GiB program runs on a laptop with only 8 GiB of RAM. Which idea lets it run?",
+          "a": 2,
+          "why": "Virtual memory keeps only the pages in use in physical memory and leaves the rest on disk (swap space). A page fault brings a missing page in when it is touched, so a program can be larger than RAM."
+        }
+      ]
+    },
+    {
+      "n": 44,
+      "t": "t6",
+      "q": "A program multiplies two 2,048 × 2,048 matrices of 8-byte doubles and misses in the cache constantly. The programmer rewrites the loops to work on 16 × 16 sub-matrices that fit in the cache together, finishing with each before moving on. Why does this cut the misses?",
+      "o": [
+        "It lowers the number of multiply and add instructions that must run",
+        "It makes each cache hit faster, because fewer tags are checked",
+        "It reuses each piece of data many times before it can be evicted",
+        "It makes every cache block hold more of the matrix elements"
+      ],
+      "a": 2,
+      "kid": "Painting a giant mural, you could run to the paint shelf for every brushstroke all across the wall. Instead you finish <b>one small square</b> at a time and keep just that square's paints on your <b>cart</b>. Each paint gets used many times before it goes back on the shelf. That's <b>blocking</b>: work in tiles small enough to fit on the cart (the cache).",
+      "why": "Blocking (tiling) reorders the loops so a small tile of each matrix is reused many times while it is still in the cache. Three 16 × 16 tiles of 8-byte doubles take 3 × 2 KiB = 6 KiB, which fits easily in a typical 32 KiB L1 data cache, while each full matrix is 32 MiB. The arithmetic is unchanged, but capacity misses fall because data is reused before it is evicted (better temporal locality).",
+      "w": [
+        "Blocking changes only the order of the work; the product still needs the same n<sup>3</sup> multiply-add steps.",
+        "Hit time is fixed by the cache hardware; reordering loops changes how often you hit, not how fast a hit is.",
+        null,
+        "Block size is set by the hardware; blocking changes the order in which the loops visit data, not what a block holds."
+      ],
+      "f": [
+        {
+          "q": "One of the two matrices turns out to be diagonal, so the programmer skips every multiply by an off-diagonal zero. Why does the program now run faster?",
+          "a": 0,
+          "why": "Skipping the zero terms removes most of the multiply and add instructions outright. That changes how much work is done, not how well the cache is used."
+        }
+      ]
+    },
+    {
+      "n": 45,
+      "t": "t7",
+      "q": "In Flynn's taxonomy, which of these machines is MIMD?",
+      "o": [
+        "A 1980s home computer adding two price lists with plain ADDs, one pair at a time",
+        "A 6-core workstation running a renderer, a database and a mail server at once",
+        "A single-core image processor whose one instruction brightens 16 pixels at once",
+        "A single-core PC that switches between two open programs every 10 ms"
+      ],
+      "a": 1,
+      "kid": "Picture a kitchen with three cooks, each following a <b>different recipe</b> with <b>their own ingredients</b>: one bakes, one grills, one makes soup. Many recipes and many ingredient piles at once: that's <b>MIMD</b>. If one chef instead shouted \"chop!\" and everyone chopped their own carrot together, that would be SIMD. One cook hopping between two recipes is still just one cook.",
+      "why": "The workstation's 6 cores carry out independent instruction streams, each with its own data, so it is Multiple Instruction, Multiple Data. For one large job, MIMD machines are usually programmed SPMD: every core runs a copy of the same program on a different slice of the data. The single-core PC only time-slices, so it keeps one hardware instruction stream and its two programs merely take turns.",
+      "w": [
+        "Its lone processor performs one ADD on one pair of prices at a time, so it is SISD, the simplest Flynn class.",
+        null,
+        "One instruction acting on 16 pixels together is data-level parallelism from a single instruction stream, which makes the chip SIMD.",
+        "Switching programs every 10 ms is time-slicing: the one core still follows a single instruction stream at any moment, so nothing runs in parallel."
+      ],
+      "f": [
+        {
+          "q": "Same four machines: which one is SIMD?",
+          "a": 2,
+          "why": "The image processor applies one instruction to 16 pixels in lockstep (for example, 16 8-bit pixels packed into a 128-bit register), which is Single Instruction, Multiple Data."
+        },
+        {
+          "q": "Which of these machines handles more than one program yet carries out only one instruction stream at any moment?",
+          "a": 3,
+          "why": "The single-core PC gives each program a 10 ms turn, so the two only look simultaneous. Its hardware follows one instruction stream at a time, unlike the workstation, whose 6 cores run their streams side by side."
+        }
+      ]
+    },
+    {
+      "n": 46,
+      "t": "t7",
+      "q": "A scalar loop adds two 64-element arrays one element per iteration. A vector processor does the same job with two vector loads, one vector add and one vector store. Why is the four-instruction vector version more efficient than the scalar loop?",
+      "o": [
+        "Its clock ticks faster, so every cycle of the loop takes less time",
+        "Each of its element additions finishes in fewer clock cycles",
+        "It guesses the outcome of the loop branch correctly more often",
+        "It fetches far fewer instructions and checks hazards once per vector"
+      ],
+      "a": 3,
+      "kid": "A mail carrier could make <b>64 separate trips</b> from the post office, one letter per house, phoning the office before each stop. Instead she gets <b>one bundle</b> for all 64 houses on the street and delivers it in a single run, with no calls in between. A <b>vector instruction</b> is that bundle: one instruction, 64 deliveries.",
+      "why": "Four vector instructions replace a scalar loop that executes several instructions per element, hundreds in all, so far fewer instructions are fetched and decoded. Because the 64 element additions cannot depend on each other, the hardware does one dependence check for the whole vector add, and the per-element loop branch is gone. This is data-level parallelism.",
+      "w": [
+        "Vector processors do not win on clock rate; the gain comes from doing 64 operations per instruction.",
+        "Each element still goes through an adder with the usual latency; the savings come from one instruction covering all 64 additions, not from faster adds.",
+        "The vector version has no per-element loop branch at all; it removes the branch rather than predicting it better.",
+        null
+      ],
+      "f": [
+        {
+          "q": "A scalar core replaces its fixed \"predict not taken\" guess with a dynamic predictor that learns the loop. Why does the same scalar loop now run faster?",
+          "a": 2,
+          "why": "The loop's backward branch is taken on every iteration but the last, so a fixed \"not taken\" guess is wrong almost every time. A dynamic predictor learns the pattern, guesses correctly far more often and avoids most flush penalties."
+        },
+        {
+          "q": "The same scalar loop runs on an identical chip clocked at 3.6 GHz instead of 3.0 GHz. Assume the CPI does not change. Why does it finish sooner?",
+          "a": 0,
+          "why": "With the same instructions and the same CPI, each cycle lasts 1 ÷ 3.6 GHz ≈ 0.28 ns instead of 1 ÷ 3.0 GHz ≈ 0.33 ns, so the run is 3.6 ÷ 3.0 = 1.2 times faster. Without that assumption the gain would be smaller, because each memory stall costs more cycles at the higher clock."
+        }
+      ]
+    },
+    {
+      "n": 47,
+      "t": "t7",
+      "q": "In a two-socket server, every core can load from any address in one shared physical address space. Each core reads memory attached to its own socket in about 80 ns and memory attached to the other socket in about 130 ns. How is this machine best described?",
+      "o": [
+        "A NUMA shared-memory multiprocessor",
+        "A UMA shared-memory multiprocessor",
+        "A message-passing cluster of separate nodes",
+        "A UMA multiprocessor whose second socket has slower DRAM"
+      ],
+      "a": 0,
+      "kid": "Two kitchens share one big pantry split into two rooms. Any cook can grab anything from either room, but the room beside <b>their own kitchen</b> is closer, so it's faster. One pantry for everybody, but different walking distances: that's <b>NUMA</b>, non-uniform memory access.",
+      "why": "All cores share one physical address space and communicate with ordinary loads and stores, so this is a shared-memory multiprocessor. Because latency depends on which core touches which memory (80 ns local, 130 ns remote), it is non-uniform memory access (NUMA). In a UMA machine every core sees the same latency to every word.",
+      "w": [
+        null,
+        "UMA means every core sees the same latency to every address; here it depends on which socket owns the memory.",
+        "A cluster gives each node a private address space and moves data with messages; these cores use ordinary loads to one shared space.",
+        "UMA means one latency for every core and address, and neither socket's DRAM is slow: each socket's own cores reach it in 80 ns, so the gap depends on whether the memory is local to the reading core."
+      ],
+      "f": [
+        {
+          "q": "A single-socket chip connects all of its cores to memory through one shared controller, so every core reads any address in about 90 ns. How is this machine best described?",
+          "a": 1,
+          "why": "One shared address space with the same latency for every core and every address is uniform memory access (UMA)."
+        }
+      ]
+    },
+    {
+      "n": 48,
+      "t": "t7",
+      "q": "A program spends 90% of its single-core run time on work that splits perfectly across cores; the other 10% must run on one core. By Amdahl's Law, what speedup does it get on 16 cores?",
+      "o": [
+        "16.0×",
+        "10.0×",
+        "6.4×",
+        "14.5×"
+      ],
+      "a": 2,
+      "kid": "Friends are making sandwiches. Spreading fillings can be shared, but there's <b>only one bread knife</b>, and slicing is 10% of the job. Even with 16 helpers, everyone waits on that knife, so you finish only about <b>6.4 times</b> faster, not 16. The part one person must do sets the limit: that's <b>Amdahl's Law</b>.",
+      "why": "Speedup = 1 ÷ [(1 − p) + p ÷ N] = 1 ÷ [0.10 + 0.90 ÷ 16] = 1 ÷ (0.10 + 0.05625) = 1 ÷ 0.15625 = 6.4. The serial 10% caps the speedup at 1 ÷ 0.10 = 10 no matter how many cores are added. This is strong scaling: the problem size stays fixed.",
+      "w": [
+        "16× would need 100% of the work to be parallel; the serial 10% still takes as long as before.",
+        "10× is the ceiling with unlimited cores (1 ÷ 0.10); 16 cores cannot reach it.",
+        null,
+        "14.5 = 0.1 + 0.9 × 16 is the scaled speedup when the problem grows with the cores (weak scaling), not this fixed-size run."
+      ],
+      "f": [
+        {
+          "q": "Same program (10% serial), but now with an unlimited number of cores. What is the largest speedup Amdahl's Law allows?",
+          "a": 1,
+          "why": "As N grows, 0.90 ÷ N approaches 0, so the speedup approaches 1 ÷ 0.10 = 10."
+        },
+        {
+          "q": "Instead of a fixed problem, the parallel work grows 16 times along with the 16 cores (weak scaling) while the serial part stays the same. What is the scaled speedup?",
+          "a": 3,
+          "why": "On 16 cores the run still takes 0.1 + 0.9 = 1.0 time unit. One core would need 0.1 + 0.9 × 16 = 14.5 units for the bigger problem, so the speedup is 14.5."
+        },
+        {
+          "q": "Same 16 cores, but the program has no serial part at all: 100% of it splits perfectly. What is the speedup?",
+          "a": 0,
+          "why": "With p = 1, speedup = 1 ÷ (0 + 1 ÷ 16) = 16."
+        }
+      ]
+    },
+    {
+      "n": 49,
+      "t": "t7",
+      "q": "A team runs a fluid simulation on 8, then 64, then 512 nodes. Each time they enlarge the grid so every node always handles about 2 million cells, and the run time stays nearly flat. Which term describes this experiment?",
+      "o": [
+        "Weak scaling of the simulation",
+        "Strong scaling of the simulation",
+        "Load imbalance among the nodes",
+        "Amdahl's Law limit on speedup"
+      ],
+      "a": 0,
+      "kid": "If one kid can paint one fence in an hour, then 8 kids can paint 8 fences in an hour, and 512 kids can paint 512 fences in an hour. The job got <b>bigger as more kids joined</b>, and the time stayed the same. That's <b>weak scaling</b>. Strong scaling would be 512 kids squeezing onto one fence.",
+      "why": "Weak scaling grows the problem in proportion to the processor count so the work per processor stays constant: 2 million cells per node means 16 million cells on 8 nodes and about 1 billion on 512. A flat run time means it scales well. Strong scaling keeps the total problem fixed and is limited by Amdahl's Law, because the serial part never shrinks.",
+      "w": [
+        null,
+        "Strong scaling keeps the total problem fixed as nodes are added; here the grid grows from 16 million to about 1 billion cells.",
+        "Load imbalance means some nodes get more work than others while the rest sit idle; here every node gets the same 2 million cells.",
+        "The Amdahl's Law limit is the cap a serial part puts on the speedup of a fixed-size problem; growing the problem with the nodes is how weak scaling escapes it."
+      ],
+      "f": [
+        {
+          "q": "The team instead keeps the grid at 64 million cells and runs it on 8, 64 and 512 nodes to see how much sooner it finishes. Which term describes this?",
+          "a": 1,
+          "why": "A fixed total problem spread over more and more processors is strong scaling, and its speedup is bounded by Amdahl's Law."
+        }
+      ]
+    },
+    {
+      "n": 50,
+      "t": "t7",
+      "q": "A server core runs two hardware threads with coarse-grained multithreading. Which event makes it set the running thread aside and start the other one?",
+      "o": [
+        "The start of each new clock cycle, whatever the running thread is doing",
+        "A cycle in which one thread leaves some of the issue slots empty",
+        "A 1-cycle bubble while an ADD waits on the load just ahead of it",
+        "A load that must wait about 300 cycles for its data to come from DRAM"
+      ],
+      "a": 3,
+      "kid": "A cashier helps one customer until that customer has to <b>run back to the car for a wallet</b>, a long wait, and then serves the next person in line. If a customer only pauses a second to sign, the cashier just waits, because switching would take longer than the pause. Switching only on the <b>long waits</b> is <b>coarse-grained multithreading</b>.",
+      "why": "A thread switch empties the pipeline, and the other thread must refill it before its instructions complete, which costs several cycles. A coarse-grained core therefore switches only for a wait long enough to repay that cost, such as a 300-cycle trip to DRAM, and simply sits through a 1-cycle bubble. Fine-grained multithreading instead rotates threads every cycle, and SMT mixes instructions from both threads within one cycle.",
+      "w": [
+        "Rotating threads on every clock tick describes fine-grained multithreading; this core keeps the same thread running until something slow happens.",
+        "Filling one thread's empty issue slots with the other thread's instructions in the same cycle is SMT; a coarse-grained core issues from only one thread at a time.",
+        "A 1-cycle bubble is over long before a switch could empty and refill the pipeline, so the core just waits it out.",
+        null
+      ],
+      "f": [
+        {
+          "q": "The same two-thread core is rebuilt to use fine-grained multithreading. When does it now move from one thread to the other?",
+          "a": 0,
+          "why": "A fine-grained core interleaves its threads cycle by cycle, issuing from the other ready thread every clock, so it switches at each new cycle whether or not anything has stalled."
+        },
+        {
+          "q": "A 4-wide out-of-order core runs its two threads with simultaneous multithreading (SMT) instead. When do the second thread's instructions issue alongside the first thread's?",
+          "a": 1,
+          "why": "SMT lets both threads compete for the 4 issue slots every cycle, so whenever one thread cannot fill all 4, ready instructions from the other thread take the empty slots in that same cycle."
+        },
+        {
+          "q": "Under coarse-grained multithreading, which of these stalls is too short to be worth a thread switch?",
+          "a": 2,
+          "why": "Emptying the pipeline and refilling it with the other thread costs several cycles, more than the bubble itself, so the core stays on the same thread and lets the bubble pass."
+        }
+      ]
+    },
+    {
+      "n": 51,
+      "t": "t7",
+      "q": "Each trip from a GPU to its graphics memory takes hundreds of clock cycles, yet the GPU's arithmetic units stay busy. How does it hide that memory latency?",
+      "o": [
+        "It keeps the whole working set in a very large last-level cache",
+        "It switches among many hardware threads, running whichever are ready",
+        "It predicts branches and runs one thread's instructions far out of order",
+        "It issues several instructions per clock from each thread (superscalar)"
+      ],
+      "a": 1,
+      "kid": "A pizza shop with <b>dozens of orders</b> never lets its cooks stand around. While one pizza bakes (waiting), the cook starts the next order, then the next. With enough orders going, there is always something ready to work on. That's how a GPU <b>hides waiting</b>: tons of threads, and it switches to whichever is ready.",
+      "why": "GPUs rely on hardware multithreading, not large multilevel caches, to hide memory latency. Each multithreaded SIMD processor keeps many groups of threads resident; when one group waits on memory, the scheduler issues from another that is ready. GPU memory is built for bandwidth rather than low latency, and many threads in flight keep it and the arithmetic units busy.",
+      "w": [
+        "GPU caches are small compared with the data they stream, so GPUs do not count on caches to cover memory latency.",
+        null,
+        "Deep speculation and out-of-order execution are CPU techniques; GPU cores issue each thread's instructions in order.",
+        "Wider issue only speeds up instructions that are ready; a thread waiting hundreds of cycles on memory soon has nothing it can issue."
+      ],
+      "f": [
+        {
+          "q": "A server CPU runs one thread whose 40 MiB of data fits entirely in the chip's 64 MiB last-level cache, so it almost never waits on DRAM. How does it avoid memory latency?",
+          "a": 0,
+          "why": "With the whole working set held on chip, nearly every access hits in the large last-level cache. That is the usual CPU strategy: a deep cache hierarchy instead of many threads."
+        },
+        {
+          "q": "A single-threaded desktop CPU keeps working past a slow load by executing later independent instructions and guessing which way branches go. How does it hide latency?",
+          "a": 2,
+          "why": "Out-of-order execution with branch prediction and speculation finds independent work inside one thread, which is how CPUs hide latency without extra threads."
+        }
+      ]
+    },
+    {
+      "n": 52,
+      "t": "t7",
+      "q": "A lab links 32 rack servers through an Ethernet switch and runs one large job on all of them, each server running a copy of the same program. Which statements describe this cluster? (Select all that apply.)",
+      "o": [
+        "Each node has its own private memory and runs its own copy of the OS",
+        "Any core can read another node's memory with an ordinary load instruction",
+        "Nodes share data by explicitly sending and receiving messages",
+        "Since every node runs the same program, the cluster counts as SIMD"
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "kid": "Think of <b>pen pals in different towns</b>. Each one has their own house and stuff, and nobody can reach into anybody else's drawer. To share anything, they <b>mail a letter</b>. A cluster works the same way: each computer keeps its own memory and sends messages to share data.",
+      "why": "A cluster is a set of whole computers, each with its own memory and OS, joined by a network. With no shared address space, one node cannot load another node's data, so programs move data with explicit send and receive calls (for example MPI). Running the same program on every node is SPMD, a way to program MIMD hardware, not SIMD.",
+      "w": [
+        null,
+        "Cluster nodes have separate address spaces; one node cannot load from another's memory, so data must travel as a message.",
+        null,
+        "One program on many independent processors is SPMD on MIMD hardware; SIMD means one instruction applied to many data items in lockstep."
+      ],
+      "f": [
+        {
+          "q": "In a NUMA shared-memory server built from several nodes (sockets), how can a core use data that sits in another node's memory?",
+          "a": 1,
+          "why": "A shared-memory multiprocessor has one physical address space, so a core simply issues an ordinary load; the hardware fetches the data from the remote node, just more slowly."
+        }
+      ]
+    },
+    {
+      "n": 53,
+      "t": "t7",
+      "q": "A perfectly parallel job takes 120 seconds on one core. It is split across 4 cores, but one core is given 40% of the work and the other three get 20% each. Ignoring overhead, what speedup over one core does it get?",
+      "o": [
+        "4.0×",
+        "3.0×",
+        "2.5×",
+        "1.7×"
+      ],
+      "a": 2,
+      "kid": "Four kids clean a house. One gets the <b>kitchen</b> (a big job) and the other three get small closets. The closet kids finish fast and then sit and wait. The house isn't clean until the kitchen kid is done, so the <b>busiest helper</b> sets the finish time, which is why sharing the work evenly (<b>load balancing</b>) matters.",
+      "why": "Parallel time is set by the busiest core: 0.40 × 120 s = 48 s, while the others finish at 0.20 × 120 s = 24 s and sit idle. Speedup = 120 ÷ 48 = 2.5, compared with 120 ÷ 30 = 4 for a perfect 25% split. Balancing the load matters as much as adding cores.",
+      "w": [
+        "4× needs each core to get exactly 25% of the work; with 40% on one core, the others finish early and wait.",
+        "3.0× divides 120 by 40, reading the 40% share as 40 seconds; 40% of 120 s is 48 s, and that busiest core sets the finish time.",
+        null,
+        "This treats the 40% share as serial work done before the rest starts; in fact all four cores run at the same time."
+      ],
+      "f": [
+        {
+          "q": "Same 120-second job on 4 cores, but now each core gets exactly 25% of the work. What is the speedup?",
+          "a": 0,
+          "why": "Each core runs 0.25 × 120 = 30 s, so the speedup is 120 ÷ 30 = 4."
+        },
+        {
+          "q": "Same 120-second job on 4 cores, but now one core gets a third of the work and the other three share the rest equally. What is the speedup?",
+          "a": 1,
+          "why": "The busiest core runs 120 ÷ 3 = 40 s, while the other three run 80 ÷ 3 ≈ 26.7 s each, so the speedup is 120 ÷ 40 = 3.0."
+        },
+        {
+          "q": "Same 4 cores, but the 40% share must finish on one core before the other 60% can start, split evenly across the remaining 3 cores. What is the speedup?",
+          "a": 3,
+          "why": "Time = 0.40 × 120 + (0.60 × 120) ÷ 3 = 48 + 24 = 72 s, so the speedup is 120 ÷ 72 ≈ 1.7."
+        }
+      ]
+    },
+    {
+      "n": 54,
+      "t": "t7",
+      "q": "A loop adds two arrays of 4,096 16-bit integers. It uses ARM SIMD instructions on 128-bit registers with H (16-bit) lanes, and each vector ADD works on one full register. How many vector ADD instructions does the loop need?",
+      "o": [
+        "1,024",
+        "256",
+        "512",
+        "4,096"
+      ],
+      "a": 2,
+      "kid": "A 128-bit register is like a <b>tray 128 inches wide</b>. Each 16-bit number takes 16 inches, so <b>8</b> fit on a tray. One SIMD add handles a whole tray at once, so 4,096 numbers need 4,096 ÷ 8 = <b>512</b> trays.",
+      "why": "A 128-bit register split into H (16-bit) lanes holds 128 ÷ 16 = 8 elements, so one vector ADD performs 8 additions. 4,096 elements ÷ 8 per instruction = 512 vector ADDs. The ARM lane suffixes are B = 8-bit, H = 16-bit, S = 32-bit and D = 64-bit; Q names the whole 128-bit register.",
+      "w": [
+        "1,024 assumes 4 lanes per register, which is S (32-bit) lanes; 16-bit H lanes fit 8 per register.",
+        "256 assumes 16 lanes per register, which is B (8-bit) lanes; 16-bit elements fill only 8 lanes.",
+        null,
+        "4,096 is one add per element, the scalar count; each SIMD ADD here does 8 additions at once."
+      ],
+      "f": [
+        {
+          "q": "Same loop and 128-bit registers, but the arrays hold 32-bit integers in S lanes. How many vector ADD instructions are needed?",
+          "a": 0,
+          "why": "128 ÷ 32 = 4 lanes, so 4,096 ÷ 4 = 1,024 vector ADDs."
+        },
+        {
+          "q": "Same loop and 128-bit registers, but the arrays hold 8-bit integers in B lanes. How many vector ADD instructions are needed?",
+          "a": 1,
+          "why": "128 ÷ 8 = 16 lanes, so 4,096 ÷ 16 = 256 vector ADDs."
+        },
+        {
+          "q": "The same 4,096 additions of 16-bit integers are done with ordinary scalar ADD instructions, one element each. How many ADDs are needed?",
+          "a": 3,
+          "why": "A scalar ADD handles one element, so 4,096 elements need 4,096 ADDs, 8 times as many as the SIMD version."
+        }
+      ]
+    },
+    {
+      "n": 55,
+      "t": "t8",
+      "q": "A hypervisor runs two guest operating systems on one server, and each guest kernel runs at a lower privilege level than the hypervisor. Guest A's kernel executes a privileged instruction that turns off interrupts. On a processor built to support virtualization, what happens?",
+      "o": [
+        "It runs directly and turns off interrupts on the real core",
+        "It silently does nothing, and guest A carries on as if it worked",
+        "The hypervisor shuts guest A down, because guests may never use privileged instructions",
+        "Only guest A's virtual interrupts are turned off; the hypervisor keeps the real ones"
+      ],
+      "a": 3,
+      "kid": "Two families rent rooms in one <b>house</b>, and the <b>landlord</b> (the hypervisor) keeps the keys to the main fuse box. If one family tries to flip the main breaker, the landlord steps in and switches off only that family's lights. The other family never notices a thing.",
+      "why": "On a virtualizable processor, every privileged instruction traps when it runs below the top privilege level. The hypervisor (VMM), running at the highest level, catches the trap and emulates the instruction on guest A's virtual state, marking only guest A's virtual interrupts as disabled while the real interrupt system stays under its control. Hardware support such as Intel VT-x or ARMv8's EL2 can keep this per-guest state in hardware without a trap. Either way guest A behaves as if it owned the hardware, and guest B stays isolated.",
+      "w": [
+        "Letting a guest change real machine state would break isolation; only the hypervisor may control the real interrupt system.",
+        "Quietly ignoring the instruction is the flaw of ISAs that are not fully virtualizable; guest A would then misbehave.",
+        "Guests may issue privileged instructions; the hypervisor emulates their effect for that guest instead of shutting it down.",
+        null
+      ],
+      "f": [
+        {
+          "q": "The same OS runs alone on bare metal in the most privileged mode, with no hypervisor. What happens when its kernel executes this instruction?",
+          "a": 0,
+          "why": "With no hypervisor, the OS is the most privileged software, so the instruction executes directly and turns off interrupts on the real core that runs it."
+        },
+        {
+          "q": "On an older ISA, the instruction that turns off interrupts is not privileged: at low privilege it neither traps nor changes the interrupt setting. What happens when guest A executes it?",
+          "a": 1,
+          "why": "Nothing traps, so the hypervisor never sees the instruction; the interrupt setting is left alone while guest A wrongly believes interrupts are off. The x86 POPF instruction behaved this way, which made classic x86 hard to virtualize."
+        }
+      ]
+    },
+    {
+      "n": 56,
+      "t": "t8",
+      "q": "A guest OS runs under a hypervisor. The guest's page table maps virtual page 0x2A to frame 0x113. What is frame 0x113?",
+      "o": [
+        "A guest \"real\" frame, which the hypervisor maps again to a host physical frame",
+        "A physical frame that the hardware can use with no further mapping",
+        "A frame owned by another guest, which the two guests share",
+        "A guest virtual page, which the guest OS translates a second time"
+      ],
+      "a": 0,
+      "kid": "A tour leader hands out her own room list: \"You're in room 3.\" But the <b>hotel front desk</b> keeps a second list that turns her room 3 into the actual hotel room 512. Getting to your bed takes <b>two lists</b>: the leader's (the guest OS) and the front desk's (the hypervisor).",
+      "why": "Under a hypervisor there are three levels: guest virtual, guest \"real\" and host physical memory. The guest OS's page tables map virtual pages to real frames, and the hypervisor's tables map real frames to physical frames. To avoid paying for both lookups on every access, the hypervisor can keep a shadow page table that maps guest virtual pages straight to host physical frames.",
+      "w": [
+        null,
+        "That holds only without a hypervisor; a guest's frame numbers are one mapping away from the hardware.",
+        "Each guest's real frames belong to that guest; the hypervisor keeps guests isolated unless it deliberately maps a shared page.",
+        "A page table outputs frame numbers, not virtual pages; the guest OS translates each virtual page once, and only the hypervisor adds a second mapping."
+      ],
+      "f": [
+        {
+          "q": "The same OS runs directly on the hardware with no hypervisor. What is frame 0x113 in its page table?",
+          "a": 1,
+          "why": "Without virtualization there is only one mapping: the OS's page table maps virtual pages straight to physical frames, so 0x113 is a physical frame the hardware uses directly."
+        },
+        {
+          "q": "To skip the second lookup, the hypervisor builds a shadow page table for this guest. What does the shadow entry for virtual page 0x2A hold?",
+          "a": 1,
+          "why": "A shadow page table combines the guest's map and the hypervisor's map, so each entry maps a guest virtual page directly to a host physical frame the hardware can use."
+        }
+      ]
+    },
+    {
+      "n": 57,
+      "t": "t8",
+      "q": "A hypervisor stops running VM 2 on a core so that VM 3 can run there. Which items must it save so that VM 2 can later resume exactly where it left off? (Select all that apply.)",
+      "o": [
+        "Its registers, including the program counter",
+        "A copy of every memory page it owns",
+        "Its page table register",
+        "The contents of the caches it was using"
+      ],
+      "a": [
+        0,
+        2
+      ],
+      "kid": "Two cooks share one <b>stove</b>. When cook A steps away, she clips a <b>card</b> to the rail with the recipe step she is on (the program counter), what is in each of her bowls (the registers) and which <b>shelf</b> holds her ingredients (the page table register). Her ingredients stay on her shelf, so nothing else has to move.",
+      "why": "A VM's (or process's) state is its registers, its program counter and its page table. Its memory pages stay where they are, kept apart from other VMs by the page tables, so the hypervisor saves VM 2's registers, PC and page table register (the pointer to its page table), then loads VM 3's values. Caches need no saving: they are managed by hardware and tagged by physical address, so VM 2's blocks stay correct (dirty ones are written back when evicted) and VM 3's accesses simply miss and refill.",
+      "w": [
+        null,
+        "The pages stay in memory, protected by the page tables; copying all of them on every switch would be far too slow and is not needed.",
+        null,
+        "Caches are managed by hardware: VM 2's blocks stay correct, dirty ones are written back when evicted, and VM 3's misses simply refill them, so they are not part of the saved state."
+      ],
+      "f": [
+        {
+          "q": "The hypervisor live-migrates VM 2 to a different physical server. Besides VM 2's registers and page table pointer, which listed item must it also send?",
+          "a": 1,
+          "why": "The new server has its own separate memory, so VM 2's memory pages must be copied over before it can resume there."
+        },
+        {
+          "q": "Right after the switch, VM 3 runs slowly for a moment because of a burst of misses. Which listed item still holds mostly VM 2's data and so causes those misses?",
+          "a": 3,
+          "why": "The caches are not saved or reloaded on a switch, so right after it they still hold mostly VM 2's blocks. VM 3's first accesses miss and refill the caches from memory, which is why it starts slowly."
+        }
+      ]
+    },
+    {
+      "n": 58,
+      "t": "t8",
+      "q": "A three-person startup has written its own web app. Traffic jumps tenfold every weekend, so the team wants capacity that grows and shrinks automatically and bills only for what is used. They also do not want to install or patch operating systems. Which choice fits best?",
+      "o": [
+        "IaaS: rent virtual machines by the hour",
+        "PaaS: deploy code to a managed platform",
+        "SaaS: subscribe to a ready-made application",
+        "On-premises: buy and run your own servers"
+      ],
+      "a": 1,
+      "kid": "Think of a <b>caterer</b> who rents a fully equipped commercial kitchen by the hour. The caterer just brings the recipes; the owner keeps the ovens and plumbing working and opens <b>more stations</b> on busy weekends. That's PaaS: you bring the code, and the provider runs everything underneath it.",
+      "why": "Cloud service models differ in who manages what. IaaS rents virtual machines, but the customer installs and patches the OS and everything above it; PaaS runs the customer's code on an OS and runtime that the provider manages and scales automatically; SaaS delivers a finished application. Like other cloud offerings, PaaS is elastic and pay-per-use, so the weekend spike costs extra only while it lasts.",
+      "w": [
+        "IaaS can also scale and bill by use, but the team would still install and patch the OS on every virtual machine.",
+        null,
+        "SaaS is a finished product run by someone else; the startup needs to run its own app.",
+        "Owned servers must be bought for the weekend peak, sit mostly idle on weekdays and still need patching, the opposite of elastic pay-per-use."
+      ],
+      "f": [
+        {
+          "q": "The team now needs to choose its own operating system and change kernel settings, but still wants to rent capacity by the hour. Which choice fits best?",
+          "a": 0,
+          "why": "IaaS gives the customer virtual machines with full control of the OS, while the provider still owns the hardware and bills per use."
+        },
+        {
+          "q": "A different company has no app of its own; it just needs email and shared documents for its staff. Which choice fits best?",
+          "a": 2,
+          "why": "SaaS delivers ready-made applications, such as email or office suites, that the provider runs and maintains."
+        },
+        {
+          "q": "A contract requires the company to own its hardware and keep it in its own locked server room. Which choice fits best?",
+          "a": 3,
+          "why": "Owning the servers and housing them in the company's own room means running on premises; the IaaS, PaaS and SaaS offerings listed here are rented and run on a provider's hardware."
+        }
+      ]
+    },
+    {
+      "n": 59,
+      "t": "t8",
+      "q": "A file server's six 10 TB drives are set up as RAID 6. How much usable space does it have, and how many drive failures can it survive at once?",
+      "o": [
+        "50 TB; survives any one failure",
+        "60 TB; survives no failures",
+        "30 TB; survives one failure per mirrored pair",
+        "40 TB; survives any two failures"
+      ],
+      "a": 3,
+      "kid": "Imagine spreading one cookbook across six <b>binders</b>, splitting the recipes among them. Then you add <b>check notes</b> (parity) worth two binders' pages, spread across all six. That leaves four binders' worth of pages for recipes, and the notes can rebuild any <b>two</b> binders that go missing.",
+      "why": "RAID 6 keeps two independent parity blocks in every stripe, spread across all the drives, so it gives up two drives' worth of space and survives any two failures at once: (6 − 2) × 10 TB = 40 TB usable. RAID 5 keeps one parity block per stripe, (6 − 1) × 10 TB = 50 TB, and survives one failure; RAID 0 keeps all 6 × 10 TB = 60 TB with no redundancy; three mirrored pairs keep 6 × 10 TB ÷ 2 = 30 TB and survive one failure in each pair.",
+      "w": [
+        "50 TB and one failure describe RAID 5, which keeps only one parity block per stripe; RAID 6 keeps two.",
+        "60 TB and no protection describe RAID 0 striping; RAID 6 gives up two drives' worth of space to parity.",
+        "30 TB and one failure per pair describe mirroring; RAID 6 protects data with parity, not mirrored pairs.",
+        null
+      ],
+      "f": [
+        {
+          "q": "The same six 10 TB drives are set up as RAID 5 instead. How much usable space is there, and how many drive failures can it survive at once?",
+          "a": 0,
+          "why": "RAID 5 spreads one parity block per stripe across the drives: (6 − 1) × 10 TB = 50 TB usable, and it survives any single failure."
+        },
+        {
+          "q": "The same six 10 TB drives are striped as RAID 0 instead. How much usable space is there, and how many drive failures can it survive?",
+          "a": 1,
+          "why": "RAID 0 stripes data across all six drives with no redundancy: 6 × 10 TB = 60 TB usable, and losing any one drive loses data."
+        },
+        {
+          "q": "The same six 10 TB drives are set up as three mirrored pairs instead. How much usable space is there, and how many drive failures can it survive?",
+          "a": 2,
+          "why": "Each pair stores the same data twice, so half the raw space is usable: 6 × 10 TB ÷ 2 = 30 TB. The data survives as long as every pair keeps one working drive, so it can lose one drive in each pair, but not both drives of the same pair."
+        }
+      ]
+    },
+    {
+      "n": 60,
+      "t": "t8",
+      "q": "A warehouse-scale computer has 73,000 servers, and each server has a mean time to failure (MTTF) of 20 years (175,200 hours). Assuming failures are spread evenly over time, about how often will a server fail somewhere in the building?",
+      "o": [
+        "About once every 20 years",
+        "About 0.4 times per day",
+        "About 10 times per day",
+        "About 200 times per day"
+      ],
+      "a": 2,
+      "kid": "One <b>light bulb</b> that lasts 20 years almost never needs changing. But a stadium with 73,000 of those bulbs sees <b>about ten burn out every day</b>, just because there are so many. A huge data center is the same: with enough servers, something is always breaking.",
+      "why": "Failures per day ≈ number of servers ÷ MTTF in days = 73,000 ÷ (20 × 365) = 73,000 ÷ 7,300 = 10. Each server rarely fails, but at warehouse scale failures are routine, so the software and the facility must be designed to tolerate them through redundancy.",
+      "w": [
+        "Once every 20 years is the rate for a single server; 73,000 servers fail 73,000 times as often.",
+        "About 0.4 is the rate per hour (73,000 ÷ 175,200 ≈ 0.42); per day it is 24 times larger.",
+        null,
+        "200 per day would need an MTTF of just 1 year (73,000 ÷ 365), not 20 years."
+      ],
+      "f": [
+        {
+          "q": "Same 73,000 servers, but each has an MTTF of only 1 year. About how often will a server fail?",
+          "a": 3,
+          "why": "73,000 ÷ 365 days = 200 failures per day."
+        },
+        {
+          "q": "A small cluster has 2,920 servers with the same 20-year MTTF. About how often will one fail?",
+          "a": 1,
+          "why": "2,920 ÷ 7,300 days = 0.4 failures per day, or about one every two and a half days."
+        },
+        {
+          "q": "Only one such server is running. About how often will it fail?",
+          "a": 0,
+          "why": "A single server with a 20-year MTTF fails, on average, once every 20 years."
+        }
+      ]
+    }
+  ],
+  "plan": [
+    [
+      "30 min",
+      "Read the <b>Cheat Sheet</b> twice. Say each formula out loud."
+    ],
+    [
+      "60 min",
+      "<b>Performance Math</b> + <b>Pipelining</b>: work every problem on paper before revealing."
+    ],
+    [
+      "45 min",
+      "<b>Numbers & Binary</b> + <b>ARM Assembly</b>: trace every code question line by line."
+    ],
+    [
+      "15 min",
+      "Break. Walk around, drink water."
+    ],
+    [
+      "60 min",
+      "<b>Cache & Virtual Memory</b> + <b>VMs, Cloud & RAID</b>."
+    ],
+    [
+      "45 min",
+      "<b>Parallelism</b> + <b>Hardware & History</b>."
+    ],
+    [
+      "15 min",
+      "Break."
+    ],
+    [
+      "45 min",
+      "Take the <b>Full Practice Exam</b> (every question, shuffled)."
+    ],
+    [
+      "30 min",
+      "Redo <b>My Misses</b>, then take the <b>Remix Exam</b> (twisted questions)."
+    ]
+  ],
+  "formulas": [
+    [
+      "CPU time",
+      "Instructions × CPI ÷ Clock rate",
+      "Also = Clock cycles × Cycle time. 2×10⁹ instr × 1.6 CPI ÷ 2.5 GHz = 1.28 s, same as 3.2×10⁹ cycles × 0.4 ns."
+    ],
+    [
+      "Weighted CPI",
+      "Σ (fraction × cycles)",
+      "0.4×1 + 0.4×2 + 0.2×6 = 2.4"
+    ],
+    [
+      "Time per instruction",
+      "CPI ÷ Clock rate",
+      "Same instruction count: 1.8 ÷ 900 MHz = 2 ns beats 6 ÷ 2.4 GHz = 2.5 ns. Different counts: compare total CPU time."
+    ],
+    [
+      "Speedup",
+      "Old time ÷ New time",
+      "Same program and clock, CPI 2.4 → 2.0: 2.4 ÷ 2.0 = 1.2 → 20% faster"
+    ],
+    [
+      "Pipeline total (equal stages)",
+      "(k + n − 1) × stage time",
+      "6 stages, 20 items, 2 ns per stage → 50 ns (2.5 ns per item)"
+    ],
+    [
+      "Pipeline total (unequal stages)",
+      "First item full time + (n − 1) × slowest stage",
+      "Car wash 4 + 6 + 3 min, 5 cars: 13 + 4 × 6 = 37 min. Clocked pipeline: (3 + 5 − 1) × 6 = 42 min"
+    ],
+    [
+      "Pipeline speedup (many items)",
+      "≈ number of stages",
+      "6 stages, 400 items: (400 × 6) ÷ (6 + 400 − 1) = 2,400 ÷ 405 ≈ 5.9×"
+    ],
+    [
+      "Unsigned n-bit range",
+      "0 to 2ⁿ − 1",
+      "8-bit: 0–255 · 32-bit: 0–4,294,967,295 · 64-bit: 0–1.8×10¹⁹"
+    ],
+    [
+      "Signed n-bit range",
+      "−2ⁿ⁻¹ to 2ⁿ⁻¹ − 1",
+      "32-bit: −2³¹ to 2³¹ − 1 (about ±2.1 billion)"
+    ],
+    [
+      "Cache placement",
+      "Direct: block mod #blocks · Set-assoc: block mod #sets",
+      "Fully associative: anywhere"
+    ]
+  ],
+  "signals": [
+    [
+      "one opcode drives many data lanes at once (NEON, SSE)",
+      "SIMD"
+    ],
+    [
+      "one instruction processes a whole vector of elements (say 64) through deeply pipelined units",
+      "Vector architecture"
+    ],
+    [
+      "hardware issues 2+ instructions per cycle, decided at run time (IPC can exceed 1)",
+      "Superscalar (vs VLIW: compiler-planned)"
+    ],
+    [
+      "each stage works on a different instruction at the same time (bucket brigade)",
+      "Pipelining"
+    ],
+    [
+      "the core interleaves several threads so one thread's stall doesn't leave its units idle",
+      "Multithreading"
+    ],
+    [
+      "every core reaches main memory in about the same time",
+      "UMA"
+    ],
+    [
+      "latency depends on which processor",
+      "NUMA"
+    ],
+    [
+      "the same address is reused within a short time (loop counters, running totals)",
+      "Temporal locality"
+    ],
+    [
+      "nearby addresses referenced soon",
+      "Spatial locality"
+    ],
+    [
+      "small cache of recent page-table entries, checked on every access",
+      "TLB"
+    ],
+    [
+      "each program sees a large private address space; pages spill to disk",
+      "Virtual memory"
+    ],
+    [
+      "holds the start address of the running process's page table; reloaded on each context switch",
+      "Page table register"
+    ],
+    [
+      "6 to 8 transistors per bit, no refresh, used for caches; faster and pricier per bit than DRAM",
+      "SRAM"
+    ],
+    [
+      "dense, cheap, needs refresh",
+      "DRAM"
+    ],
+    [
+      "decodes each instruction and sets the signals that steer the datapath (ALU operation, register write, memory read or write)",
+      "Control"
+    ],
+    [
+      "three register operands; fields opcode, Rm, shamt, Rn, Rd (ADD X19, X20, X21)",
+      "R-format"
+    ],
+    [
+      "striping with no mirror or parity: full capacity and top throughput, but one dead disk loses data",
+      "RAID 0"
+    ],
+    [
+      "software layer that lets several guest OSes share one physical machine, isolated from each other",
+      "Hypervisor (VMM)"
+    ],
+    [
+      "problem size grows with the processor count",
+      "Weak scaling (vs strong scaling: fixed size)"
+    ],
+    [
+      "fixed problem, more processors",
+      "Strong scaling (limited by Amdahl)"
+    ],
+    [
+      "the mid-2000s turn from one faster core to several cores per chip",
+      "Multicore era"
+    ],
+    [
+      "dynamic power ∝ C × V² × f runs into what a chip can shed as heat",
+      "Power wall"
+    ],
+    [
+      "restructure loops to work on sub-blocks that fit in the cache (blocked matrix multiply)",
+      "Blocking (tiling)"
+    ],
+    [
+      "LEGv8 exception registers: one records the cause, one the faulting instruction's address",
+      "ESR (cause), ELR (address)"
+    ],
+    [
+      "one instruction length, few formats, memory touched only by loads and stores",
+      "Pipeline-friendly ISA (RISC, LEGv8)"
+    ],
+    [
+      "the 1s and 0s the processor actually decodes",
+      "Machine language (assembly is its text form)"
+    ],
+    [
+      "reservation stations + register renaming (Tomasulo's algorithm)",
+      "Dynamic (out-of-order) scheduling"
+    ],
+    [
+      "what the OS saves and restores on a context switch",
+      "Process state: registers, PC, page table register"
+    ],
+    [
+      "rented capacity that grows and shrinks with demand, billed per use",
+      "Cloud elasticity"
+    ],
+    [
+      "switch count, link count and width, and wire length set the price of a network",
+      "Interconnect cost"
+    ]
+  ],
+  "tables": [
+    {
+      "head": [
+        "Clue",
+        "Concept"
+      ],
+      "lead": "Clue words and the concept each one points to.",
+      "rows": null
+    },
+    {
+      "head": [
+        "",
+        "Single data",
+        "Multiple data"
+      ],
+      "rows": [
+        [
+          "<b>Single instruction</b>",
+          "SISD: classic one-core CPU",
+          "SIMD: vector, SSE, NEON"
+        ],
+        [
+          "<b>Multiple instruction</b>",
+          "MISD: rare / none",
+          "MIMD: multicore, clusters (SPMD style runs here)"
+        ]
+      ]
+    },
+    {
+      "head": [
+        "Level",
+        "How",
+        "Usable space",
+        "Survives",
+        "Pick it when…"
+      ],
+      "rows": [
+        [
+          "<b>RAID 0</b>",
+          "Striping",
+          "100%",
+          "0 failures",
+          "Pure speed + capacity for data you can rebuild (scratch space, caches)"
+        ],
+        [
+          "<b>RAID 1</b>",
+          "Mirroring",
+          "50%",
+          "1 failure",
+          "Simple full copy"
+        ],
+        [
+          "<b>RAID 5</b>",
+          "Distributed parity",
+          "(n−1)/n",
+          "1 failure",
+          "Balance of space + safety"
+        ],
+        [
+          "<b>RAID 6</b>",
+          "Double parity",
+          "(n−2)/n",
+          "2 failures",
+          "Big arrays, extra safety"
+        ]
+      ]
+    },
+    {
+      "head": [
+        "Instruction",
+        "Means"
+      ],
+      "rows": [
+        [
+          "<code>ADD X19, X20, X21</code>",
+          "X19 = X20 + X21 (the first register is the destination for arithmetic, logic and loads)"
+        ],
+        [
+          "<code>SUB X22, X23, X24</code>",
+          "X22 = X23 − X24"
+        ],
+        [
+          "<code>ADDI X11, XZR, #5</code>",
+          "X11 = 0 + 5 (XZR always reads 0; # = immediate constant)"
+        ],
+        [
+          "<code>AND / ORR / EOR</code>",
+          "&amp; / | / ^ (inclusive OR is spelled ORR)"
+        ],
+        [
+          "<code>LSL X12, X13, #3</code>",
+          "X12 = X13 shifted left 3 = X13 × 8 (shift by k = ×2<sup>k</sup>)"
+        ],
+        [
+          "<code>LDUR X14, [X25,#16]</code>",
+          "Load: X14 = memory[X25 + 16] (reading a variable)"
+        ],
+        [
+          "<code>STUR X14, [X25,#32]</code>",
+          "Store: memory[X25 + 32] = X14 (writing a variable)"
+        ],
+        [
+          "<code>CBZ X15, L</code> / <code>CBNZ X15, L</code>",
+          "Branch if X15 = 0 / branch if X15 ≠ 0"
+        ],
+        [
+          "<code>SUBS XZR, a, b</code> + <code>B.cond L</code>",
+          "Compare a to b, then branch on the flags (EQ, NE; signed LT, LE, GT, GE; unsigned LO, LS, HI, HS); a loop's exit branch tests the opposite of its condition"
+        ],
+        [
+          "<code>UDIV / SDIV</code>",
+          "Unsigned / signed divide"
+        ],
+        [
+          "ESR / ELR",
+          "Exception reason / exception address"
+        ],
+        [
+          "SIMD suffixes",
+          "B = 8 · H = 16 · S = 32 · D = 64 bits per lane · Q = the whole 128-bit register"
+        ]
+      ]
+    },
+    {
+      "head": [
+        "Level",
+        "Built from",
+        "Speed",
+        "Size"
+      ],
+      "rows": [
+        [
+          "Registers",
+          "Flip-flops",
+          "Fastest",
+          "Tiny"
+        ],
+        [
+          "Cache (L1–L3)",
+          "SRAM",
+          "Very fast",
+          "Small"
+        ],
+        [
+          "Main memory",
+          "DRAM (banks → rows → columns)",
+          "Medium",
+          "Large"
+        ],
+        [
+          "Storage",
+          "Flash / disk",
+          "Slow",
+          "Huge"
+        ]
+      ]
+    }
+  ],
+  "ideas": [
+    "Design for Moore's Law",
+    "Use abstraction",
+    "Make the common case fast",
+    "Performance via parallelism",
+    "Performance via pipelining (bucket brigade)",
+    "Performance via prediction (guessing)",
+    "Hierarchy of memories",
+    "Dependability via redundancy (spare tire)"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@magicui/components/dot-pattern",
+  "title": "Dot Pattern | Community Components | 21st",
+  "license": "MIT License",
+  "published": "12/4/2024",
+  "dependencies": "None listed on the Info tab",
+  "promptFile": "21st/prompts/magicui--dot-pattern.md",
+  "chars": 2206,
+  "sha256": "5cd4465fcab1164c6670b556928869d252c00d7e5b62d5ba9553feec16425109",
+  "sha256Of": "file bytes",
+  "capturedSha256": "f7df491f7fec09e87ed1eea638976345dee3f7321d9b2f2110d3cdbe64263b56",
+  "verified": true,
+  "notes": "Page redirected to https://21st.dev/@dillionverma/components/dot-pattern (Magic UI by Dillion Verma). Prompt captured from the page's Copy prompt menu, 'Optimized for: Claude Code' option.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2206) is the text's length in UTF-16 code units and equals the file's."
+}

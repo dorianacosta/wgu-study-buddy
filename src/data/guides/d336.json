@@ -1,0 +1,726 @@
+{
+  "code": "D336",
+  "summary": "D336 is a 4-CU course on IT service management with ITIL 4, and you pass it by passing PeopleCert's ITIL 4 Foundation certification exam: 40 multiple-choice questions in 60 minutes, closed book, with 65% (26 of 40) to pass, covered by WGU tuition. Two student reports describe about 10 hours to a week of study, and one calls it among the easiest courses in the CS degree; the key is knowing the definitions, the seven guiding principles, the service value system and the practices well enough to match them to short scenarios. PeopleCert released ITIL (Version 5) Foundation in 2026 and plans to retire all ITIL 4 modules on Dec 31, 2027, so confirm which exam your voucher covers before you start.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Certification exam: PeopleCert ITIL 4 Foundation, taken in place of a WGU objective assessment",
+    "format": "40 multiple-choice questions · 60 minutes · closed book · 65% (26 of 40) to pass · PeopleCert online proctoring",
+    "details": [
+      "The course's assessment is the ITIL 4 Foundation exam from PeopleCert, which acquired ITIL's former owner AXELOS in 2021 and now runs the ITIL exams. WGU's ITIL page says the exam is part of tuition, and students report getting an exam code through the course and redeeming it on peoplecert.org, where the learner kit also includes a Quick Reference Guide of definitions.",
+      "Format (PeopleCert): 40 multiple-choice questions, 60 minutes, closed book, and a 65% pass mark, which works out to 26 correct. Exams are offered in 12 languages. A Mar 2026 passer describes a mix of definition questions and short scenarios where you match concepts to a situation, and says to know the practices in detail, the seven guiding principles and the key definitions.",
+      "What's tested: the 2019 ITIL 4 Foundation syllabus has seven learning outcomes (key concepts, guiding principles, four dimensions, the service value system, the service value chain, the purpose of 15 practices, and 7 practices in detail). Training providers that reproduce the syllabus put about 17 of the 40 marks on those 7 practices, the largest single block.",
+      "Online proctoring: PeopleCert's Web Based Exam Driver needs Windows 10 or 11 or macOS 10.14 or later, Edge, Chrome or Opera, a webcam you can turn a full 360° for the room scan, a microphone and speakers, and at least 4 Mbps. Review the requirements at least 72 hours ahead, and run the compatibility check on the exam computer at least 24 hours ahead (it's mandatory) and again about two hours before. Bring an original, valid government photo ID that matches your booking, and use a quiet room with one entrance, nobody else present and a clear desk.",
+      "Version change: PeopleCert released ITIL (Version 5) Foundation in 2026 with the same format (40 questions, 60 minutes, closed book, 65%). Its ITIL FAQ calls Dec 31, 2027 the current plan for sunsetting all ITIL 4 modules and says ITIL 4 voucher validity dates will be announced later. WGU's D336 competencies still refer to ITIL 4's six value chain activities, and both student reports (Jan 2025 and Mar 2026) describe the ITIL 4 exam, so check which exam your voucher is for.",
+      "Practice and retakes: students report CyberVista practice exams inside the course, which commenters call long. PeopleCert lets you reschedule free up to 48 hours before the exam. Its Take2 resit can only be bought before you sit the exam (up to 15 minutes before the session), never after a failed attempt, and the resit must be taken within 6 months of the first exam date. WGU's process for a second voucher isn't public, so ask your instructor how retakes work before your first attempt."
+    ],
+    "tips": [
+      "Learn the definitions precisely: service, value, outcome, output, cost, risk, utility, warranty, customer, user, sponsor, incident, problem, known error, workaround, change, event, configuration item and service request. Students say the exam is definition-focused.",
+      "Know the seven guiding principles well enough to say which one a scenario shows, and know the four dimensions and the six value chain activities by name and purpose.",
+      "For the seven detailed practices, learn each purpose and its key terms, then the boundaries between them: incident vs problem, service request vs incident, and standard vs normal vs emergency change.",
+      "Use practice exams as your gate. A Mar 2026 passer treated 70–80% on Jason Dion's six Udemy practice exams as ready (the fourth was hardest), and a Jan 2025 passer aimed for about 85% closed book; commenters on the Jan 2025 post say the real exam is easier than Dion's tests.",
+      "Watch the free Value Insights ITIL 4 Foundation playlist two or three times (one passer used 2x speed). A Mar 2026 passer also used Technical Institute of America's ITIL 4 cram course, which runs about 2 h 23 min, as a first watch and a night-before refresher.",
+      "Review the Quick Reference Guide from your PeopleCert learner kit on the last day; it's the official wording of the definitions.",
+      "Read every option before answering. Wrong choices are usually real ITIL terms from a different practice or principle, so eliminate the ones that describe something else.",
+      "Run PeopleCert's compatibility check on the exam computer at least 72 hours ahead, while you can still reschedule for free, with a webcam you can turn around the room."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and build your personalized course plan together.",
+    "The learner applies ITIL concepts, core components, principles and models of service management.",
+    "The learner applies the six activities of the ITIL service value chain."
+  ],
+  "topics": [
+    {
+      "title": "ITIL 4, PeopleCert and the Foundation exam",
+      "eli5": "ITIL is a big shared playbook of good habits for running IT services, and the Foundation exam checks that you know its vocabulary and main ideas.",
+      "detail": "ITIL is a widely used framework of good practice for IT and digital service management. ITIL 4 arrived in 2019 and replaced the older five-stage lifecycle with a model built on value co-creation, a service value system and 34 management practices. AXELOS developed ITIL 4, and PeopleCert, which acquired AXELOS in 2021, now owns the framework and runs its exams. Foundation is the entry-level certification and has no prerequisites. The exam checks recall and understanding: the 2019 syllabus has seven learning outcomes running from key concepts and the guiding principles to the purpose of 15 practices and a detailed understanding of 7 of them. In 2026 PeopleCert added ITIL (Version 5) Foundation, which keeps the core ideas, simplifies the value chain and adds a product and service lifecycle model.",
+      "points": [
+        "Exam: 40 multiple-choice questions · 60 minutes · closed book · 65% (26 of 40) to pass",
+        "2019 learning outcomes: key concepts · guiding principles · four dimensions · SVS · value chain · purpose of 15 practices · 7 practices in detail",
+        "Marks reported by trainers for those outcomes, in order: about 5, 6, 2, 1, 2, 7 and 17",
+        "The 7 detailed practices: continual improvement, change enablement, incident management, problem management, service request management, service desk and service level management",
+        "Older material says change control and newer ITIL 4 material says change enablement; they're the same practice"
+      ]
+    },
+    {
+      "title": "Service management, services and value",
+      "eli5": "A service is help you pay for so you get a result without the hassle and risk of doing it all yourself, like taking a taxi instead of buying a car.",
+      "detail": "ITIL defines <b>service management</b> as a set of specialized organizational capabilities for enabling value for customers in the form of services. A <b>service</b> is a way of enabling value co-creation by helping customers reach the outcomes they want without having to manage specific costs and risks themselves. <b>Value</b> is how beneficial, useful and important something is perceived to be, so it's subjective and depends on the stakeholder. ITIL 4 stresses <b>value co-creation</b>: value comes from active collaboration between provider and consumer rather than something the provider simply hands over. An <b>organization</b> is a person or group with its own functions, responsibilities, authorities and relationships to achieve its objectives, and the same organization can be a provider in one relationship and a consumer in another. A <b>product</b> is a configuration of an organization's resources designed to offer value for a consumer, and a <b>service offering</b> formally describes one or more services for a target consumer group; it can include goods, access to resources and service actions.",
+      "points": [
+        "Offering parts: goods (ownership transfers, such as a phone) · access to resources (no ownership, such as a mailbox or network access) · service actions (work done for the consumer, such as user support)",
+        "Stakeholders who receive value include customers, users, sponsors, the provider's staff, shareholders, partners, suppliers and society",
+        "Value is co-created, perceived and subjective",
+        "One organization can be a service provider and a service consumer at the same time"
+      ]
+    },
+    {
+      "title": "Outcomes, outputs, costs, risks, utility and warranty",
+      "eli5": "The output is the thing you got (a report), the outcome is what it let you do (make a better decision), utility is what the service does, and warranty is how dependably it does it.",
+      "detail": "An <b>output</b> is a tangible or intangible deliverable of an activity, while an <b>outcome</b> is a result for a stakeholder that one or more outputs make possible: a monthly report is an output, and the better staffing decision it supports is an outcome. Services can remove <b>costs</b> from the consumer (no hardware to buy) and add others (the service fee), and they can remove <b>risks</b> (server failure is now the provider's problem) and add others (dependence on the provider). ITIL describes a risk as a possible event that could cause harm or loss or make objectives harder to achieve, and also as uncertainty of outcome, which includes positive outcomes. To judge whether a service will deliver value, ITIL looks at <b>utility</b>, the functionality a product or service offers to meet a particular need (what it does, fit for purpose), and <b>warranty</b>, the assurance that it will meet agreed requirements (how well it does it, fit for use), usually expressed as availability, capacity, security and continuity. A service needs both to create value.",
+      "points": [
+        "Output = deliverable · outcome = the result it enables for a stakeholder",
+        "Utility = fit for purpose (features, what it does) · warranty = fit for use (availability, capacity, security, continuity)",
+        "Services take some costs and risks away from consumers and may add others",
+        "Exam trap: a 99.9% availability promise is warranty, not utility"
+      ]
+    },
+    {
+      "title": "Consumer roles and service relationships",
+      "eli5": "The customer decides what's needed, the user actually uses it, and the sponsor pays for it; sometimes that's one person and sometimes three.",
+      "detail": "ITIL names three service consumer roles. The <b>customer</b> defines the requirements for a service and takes responsibility for the outcomes of consuming it, the <b>user</b> uses the service, and the <b>sponsor</b> authorizes the budget for consuming it. One person can hold more than one role. A <b>service relationship</b> is a cooperation between a service provider and a service consumer, and it includes <b>service provision</b> (the provider's activities, such as managing its resources and performing agreed service actions), <b>service consumption</b> (the consumer's activities, such as managing its own resources and the actions users take) and <b>service relationship management</b> (joint activities that keep value co-creation going, based on agreed offerings). In ITIL's service relationship model, a consumer combines a provider's services with its own resources to create new resources, which it may use to serve its own consumers.",
+      "points": [
+        "Customer = sets requirements and owns the outcomes · user = uses it · sponsor = authorizes the budget",
+        "Service relationship = provision + consumption + service relationship management",
+        "Example: a CFO approves funding (sponsor), the head of sales defines needs (customer), sales reps log in daily (users)",
+        "Service relationships are ongoing, not one-off transactions"
+      ]
+    },
+    {
+      "title": "The seven guiding principles",
+      "eli5": "Seven pieces of advice that fit almost any decision, such as 'start with what you already have' and 'take small steps and check'.",
+      "detail": "Guiding principles are recommendations that can guide an organization in any circumstance, whatever its goals, strategy or structure. <b>Focus on value</b>: everything should link back, directly or indirectly, to value for the organization, its customers and other stakeholders. <b>Start where you are</b>: don't start from scratch; assess what already exists, by direct observation where possible, and reuse what works. <b>Progress iteratively with feedback</b>: break work into smaller pieces that can be finished in a timely way, and use feedback to steer each step. <b>Collaborate and promote visibility</b>: work across boundaries, involve the right people at the right time, and make work and information visible so decisions rest on facts. <b>Think and work holistically</b>: no service or component stands alone, so consider the whole system and how its parts interact. <b>Keep it simple and practical</b>: use the fewest steps that achieve the goal and drop anything that produces no value or useful outcome. <b>Optimize and automate</b>: get the most value from human and technical resources, optimize work before automating it, and use automation for frequent, repetitive tasks. The principles interact, and not every one applies to every decision.",
+      "points": [
+        "In order: focus on value · start where you are · progress iteratively with feedback · collaborate and promote visibility · think and work holistically · keep it simple and practical · optimize and automate",
+        "Start where you are: measuring can change what's measured, so observe directly where you can",
+        "Progress iteratively: iterations can run in parallel, and each should be small enough to finish",
+        "Collaborate and promote visibility: too little visibility leads to poor decisions; show the work, for example on a board",
+        "Optimize and automate: automating a broken process just speeds up the mistakes",
+        "Close calls: cutting steps that add nothing points to keep it simple and practical; improving a process before automating it points to optimize and automate"
+      ]
+    },
+    {
+      "title": "The four dimensions of service management",
+      "eli5": "Every service needs four things to work: people, information and technology, outside partners, and a clear way for the work to flow.",
+      "detail": "To manage services holistically, ITIL considers four dimensions, and each one applies to every part of the service value system. <b>Organizations and people</b> covers structure, roles and responsibilities, authority, culture, staffing, competencies and communication. <b>Information and technology</b> covers the information and knowledge needed to manage services and the technologies that support them, such as workflow tools, knowledge bases, cloud, mobile and AI, along with the related security and compliance requirements. <b>Partners and suppliers</b> covers relationships with other organizations involved in designing, delivering, supporting and improving services, including contracts and the organization's sourcing strategy. <b>Value streams and processes</b> covers how the organization's parts work together: the activities, workflows, controls and procedures that turn demand into value. External factors summed up as <b>PESTLE</b> (political, economic, social, technological, legal and environmental) influence all four. Neglect any dimension and services may become undeliverable or fall short on quality or efficiency.",
+      "points": [
+        "Organizations and people · information and technology · partners and suppliers · value streams and processes",
+        "PESTLE = political, economic, social, technological, legal, environmental",
+        "Sourcing factors under partners and suppliers include strategic focus, corporate culture, resource scarcity, cost, subject-matter expertise, external constraints and demand patterns",
+        "Process = interrelated or interacting activities that turn inputs into outputs · value stream = the series of steps that creates and delivers products and services to consumers"
+      ]
+    },
+    {
+      "title": "The service value system (SVS) and governance",
+      "eli5": "The SVS is the whole machine: needs and ideas go in one end, value comes out the other, and principles, rules, activities and improvement keep it running.",
+      "detail": "The <b>service value system</b> describes how all of an organization's components and activities work together to enable value creation. Its inputs are <b>opportunity</b> (options or possibilities to add value for stakeholders or otherwise improve the organization) and <b>demand</b> (the need or desire for products and services among internal and external consumers), and what it produces is <b>value</b>. Its five components are the <b>guiding principles</b>, <b>governance</b>, the <b>service value chain</b>, <b>practices</b> and <b>continual improvement</b>. <b>Governance</b> is the means by which an organization is directed and controlled: a governing body evaluates the organization's situation, directs it by setting strategy and policies, and monitors performance and compliance. A key aim of the SVS is to break down organizational silos, which slow work down and make it hard to respond flexibly to change. The four dimensions apply to the whole SVS.",
+      "points": [
+        "Inputs: opportunity + demand → produces: value",
+        "Components: guiding principles · governance · service value chain · practices · continual improvement",
+        "Governance: evaluate · direct · monitor",
+        "Silos are what the SVS is designed to overcome; integration and coordination make an organization flexible",
+        "Continual improvement appears three times: as an SVS component, as the improve value chain activity and as a practice"
+      ]
+    },
+    {
+      "title": "The service value chain and value streams",
+      "eli5": "Six kinds of work that snap together in different orders, like building blocks, to turn a request into something useful.",
+      "detail": "The <b>service value chain</b> is an operating model of six interconnected activities that an organization combines to respond to demand and create value. <b>Plan</b> gives everyone a shared understanding of the vision, the current status and the direction of improvement, across all four dimensions and every product and service. <b>Improve</b> keeps products, services and practices improving continually, in every activity and dimension. <b>Engage</b> builds a good understanding of what stakeholders need and keeps relationships with them transparent, ongoing and healthy; it's the activity that works most directly with external stakeholders. <b>Design and transition</b> makes sure products and services keep meeting stakeholder expectations for quality, cost and time to market. <b>Obtain/build</b> makes sure service components, bought or built, are available when and where they're needed and meet agreed specifications. <b>Deliver and support</b> runs and supports services so they meet agreed specifications and stakeholder expectations. A <b>value stream</b> combines these activities, supported by practices, into a specific series of steps for one scenario, such as restoring a failed service or onboarding a new customer. The activities have no fixed order, and any practice can contribute to any activity.",
+      "points": [
+        "Plan · improve · engage · design and transition · obtain/build · deliver and support",
+        "Engage = stakeholder needs and relationships · obtain/build = components available and to spec · deliver and support = running and supporting services",
+        "Design and transition = meet expectations for quality, cost and time to market",
+        "Value streams combine activities in whatever order each scenario needs",
+        "One of WGU's D336 competencies is applying these six activities"
+      ]
+    },
+    {
+      "title": "Continual improvement",
+      "eli5": "Keep asking where you are, where you want to be, how to get there and whether it worked, and then go around again.",
+      "detail": "The <b>continual improvement</b> practice aligns an organization's practices and services with changing business needs through ongoing improvement of products, services, practices and anything else involved in managing them. It's everyone's responsibility, though a larger organization may have a dedicated team to lead and coordinate it. The <b>continual improvement model</b> has seven steps: <b>What is the vision?</b> <b>Where are we now?</b> <b>Where do we want to be?</b> <b>How do we get there?</b> <b>Take action.</b> <b>Did we get there?</b> <b>How do we keep the momentum going?</b> Ideas are recorded, prioritized and tracked in a <b>continual improvement register</b> (CIR) from the moment they're identified until they're acted on. Methods such as Lean, Agile, DevOps, SWOT analysis and balanced scorecards can support the model, and the work itself should follow the guiding principles, especially progress iteratively with feedback.",
+      "points": [
+        "Vision → where are we now (baseline) → where do we want to be (targets) → how do we get there (plan) → take action → did we get there (measure) → keep the momentum going",
+        "Continual improvement register = where improvement ideas are captured, prioritized and tracked",
+        "Everyone contributes; a dedicated team may coordinate",
+        "Steps 2 and 6 both rely on measurement: without a baseline you can't tell whether you got there"
+      ]
+    },
+    {
+      "title": "Change enablement, release, deployment and configuration",
+      "eli5": "Change enablement decides whether a change is safe, deployment moves the new thing into place, release switches it on for people, and configuration management keeps the map of what's where.",
+      "detail": "<b>Change enablement</b> (called change control in the 2019 Foundation book) aims to maximize the number of successful service and product changes by making sure risks are properly assessed, authorizing changes to proceed and managing the change schedule. A <b>change</b> is the addition, modification or removal of anything that could directly or indirectly affect services. <b>Standard changes</b> are low-risk, pre-authorized, well understood and fully documented, so they run without further authorization, and many start as service requests. <b>Normal changes</b> must be scheduled, assessed and authorized by the right <b>change authority</b>, a person or group that varies with the type of change; low-risk normal changes can be authorized quickly, often automatically. <b>Emergency changes</b> must be implemented as soon as possible, for example to resolve an incident or apply a security patch; they're still assessed and authorized, but faster, possibly by a separate change authority, and some documentation can be completed afterward. The <b>change schedule</b> helps plan changes, communicate, avoid conflicts and assign resources. <b>Deployment management</b> moves new or changed components into live (or other) environments, <b>release management</b> makes new and changed services and features available for use, <b>service configuration management</b> keeps accurate, reliable information about services and the <b>configuration items</b> (CIs) that support them available when and where it's needed, and <b>IT asset management</b> manages the full lifecycle of IT assets to maximize value, control costs and manage risk.",
+      "points": [
+        "Standard = low risk, pre-authorized · normal = assessed and authorized by a change authority · emergency = as soon as possible, with faster assessment and authorization",
+        "Change authority = the person or group that authorizes a change; high-velocity organizations often decentralize it, for example to peer review",
+        "Deployment = moving components into environments · release = making features available for use (feature flags separate the two)",
+        "CI = any component that needs to be managed to deliver an IT service · IT asset = any financially valuable component that can contribute to delivering an IT product or service",
+        "Deployment approaches include phased, continuous delivery, big bang and pull deployment"
+      ]
+    },
+    {
+      "title": "Incident management, problem management and the service desk",
+      "eli5": "Incident management puts out the fire fast, problem management figures out why fires keep starting, and the service desk is the number everyone calls.",
+      "detail": "An <b>incident</b> is an unplanned interruption to a service or a reduction in its quality, and <b>incident management</b> minimizes the negative impact of incidents by restoring normal service operation as quickly as possible. Incidents are logged, prioritized by an agreed classification based on business impact, and resolved by whoever is best placed: users through self-help, the service desk, support teams, suppliers or a temporary team for major incidents. <b>Swarming</b> brings many people together on an incident until it's clear who should own it. A <b>problem</b> is a cause, or potential cause, of one or more incidents, and <b>problem management</b> reduces the likelihood and impact of incidents by identifying actual and potential causes and managing workarounds and known errors. It runs in three phases: <b>problem identification</b> (spotting problems through trend analysis, recurring or major incidents and information from suppliers, developers and testers), <b>problem control</b> (analyzing problems and documenting workarounds and known errors) and <b>error control</b> (managing known errors and finding permanent solutions, which may lead to change requests). A <b>known error</b> is a problem that has been analyzed but not resolved, and a <b>workaround</b> reduces or eliminates the impact of an incident or problem when a full resolution isn't yet available. The <b>service desk</b> captures demand for incident resolution and service requests and should be the entry point and single point of contact between the provider and all of its users, through channels such as phone, portals and mobile apps, live chat and chatbots, email, walk-in desks, text and social messaging, and forums. Empathy, emotional intelligence and clear communication are core service desk skills, and a desk can be centralized or virtual.",
+      "points": [
+        "Incident = unplanned interruption or reduced quality · problem = cause or potential cause of incidents · known error = an analyzed, unresolved problem",
+        "Incident management restores service; problem management finds and manages causes; error control looks for permanent fixes",
+        "Workarounds can come from incident or problem management and are recorded in problem records",
+        "Service desk = single point of contact for users; it captures incidents and service requests",
+        "Swarming = many people work an incident together until the right owner is clear"
+      ]
+    },
+    {
+      "title": "Service requests, service levels, monitoring and the other Foundation practices",
+      "eli5": "Some calls aren't breakdowns at all, just normal asks like 'I need a new laptop', and service level management checks that the service is as good as promised.",
+      "detail": "A <b>service request</b> is a request from a user or a user's authorized representative that starts a service action agreed as a normal part of service delivery, and <b>service request management</b> supports the agreed quality of a service by handling all predefined, user-initiated requests effectively and in a user-friendly way. Requests include service delivery actions, information, provision of a resource or service, access, and feedback, compliments and complaints. They aren't failures, so they should be standardized and automated as far as possible, with approvals only where policy requires them. <b>Service level management</b> (SLM) sets clear business-based targets for service levels and makes sure delivery is assessed, monitored and managed against them. A <b>service level agreement</b> (SLA) is a documented agreement between a provider and a customer that identifies the services required and the expected level of service; good SLAs are simple, tied to outcomes and agreed by both sides. Relying only on operational metrics produces the <b>watermelon effect</b> (green reports outside, unhappy customers inside), so SLM also uses customer engagement, feedback and service reviews. <b>Monitoring and event management</b> systematically observes services and components and records and reports selected changes of state, called <b>events</b>, classed as informational, warning or exception. For the remaining Foundation practices, know the purpose: <b>information security management</b> protects the information the organization needs (confidentiality, integrity and availability, plus authentication and non-repudiation), <b>relationship management</b> establishes and nurtures links with stakeholders at strategic and tactical levels, and <b>supplier management</b> makes sure suppliers and their performance are managed to support seamless, quality products and services.",
+      "points": [
+        "Service request = a normal, agreed action (access, a new laptop, a password reset, information), not a failure",
+        "SLA = documented agreement between provider and customer on the services and expected service levels",
+        "Watermelon effect = green metrics, unhappy customers; fix it with business-based targets and customer feedback",
+        "Event = any change of state that matters for managing a service or other CI · informational · warning · exception",
+        "Information security: confidentiality · integrity · availability · authentication · non-repudiation"
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Exam format",
+      "value": "40 multiple-choice questions · 60 minutes · closed book · 65% to pass (26 of 40)",
+      "note": "PeopleCert; the same format applies to ITIL (Version 5) Foundation"
+    },
+    {
+      "label": "Version status (Nov 2026)",
+      "value": "ITIL (Version 5) Foundation released in 2026; ITIL 4 modules planned to sunset Dec 31, 2027",
+      "note": "ITIL 4 voucher validity dates not yet announced; confirm your voucher's exam"
+    },
+    {
+      "label": "Syllabus weights (2019, as reported)",
+      "value": "Key concepts 5 · guiding principles 6 · four dimensions 2 · SVS 1 · value chain 2 · purpose of 15 practices 7 · 7 practices in detail 17",
+      "note": "From trainers' copies of the syllabus; PeopleCert doesn't publish it openly"
+    },
+    {
+      "label": "Service management",
+      "value": "A set of specialized organizational capabilities for enabling value for customers in the form of services"
+    },
+    {
+      "label": "Service",
+      "value": "A way of enabling value co-creation by helping customers reach outcomes they want without managing specific costs and risks themselves"
+    },
+    {
+      "label": "Value",
+      "value": "The perceived benefits, usefulness and importance of something",
+      "note": "Co-created by provider and consumer"
+    },
+    {
+      "label": "Output vs outcome",
+      "value": "Output = a tangible or intangible deliverable of an activity · outcome = a result for a stakeholder enabled by one or more outputs"
+    },
+    {
+      "label": "Risk",
+      "value": "A possible event that could cause harm or loss or make objectives harder to achieve; also uncertainty of outcome (positive or negative)"
+    },
+    {
+      "label": "Utility vs warranty",
+      "value": "Utility = functionality to meet a need (fit for purpose) · warranty = assurance of meeting agreed requirements (fit for use)",
+      "note": "Warranty covers availability, capacity, security and continuity"
+    },
+    {
+      "label": "Consumer roles",
+      "value": "Customer = defines requirements, owns outcomes · user = uses the service · sponsor = authorizes the budget"
+    },
+    {
+      "label": "Service offering",
+      "value": "Goods (ownership transfers) · access to resources (no ownership) · service actions (performed for the consumer)"
+    },
+    {
+      "label": "Service relationship",
+      "value": "Service provision + service consumption + service relationship management"
+    },
+    {
+      "label": "Seven guiding principles",
+      "value": "Focus on value · start where you are · progress iteratively with feedback · collaborate and promote visibility · think and work holistically · keep it simple and practical · optimize and automate"
+    },
+    {
+      "label": "Four dimensions",
+      "value": "Organizations and people · information and technology · partners and suppliers · value streams and processes",
+      "note": "External factors: PESTLE (political, economic, social, technological, legal, environmental)"
+    },
+    {
+      "label": "Service value system",
+      "value": "Inputs: opportunity and demand → it produces value · components: guiding principles, governance, service value chain, practices, continual improvement"
+    },
+    {
+      "label": "Governance",
+      "value": "The means by which an organization is directed and controlled: evaluate · direct · monitor"
+    },
+    {
+      "label": "Service value chain",
+      "value": "Plan · improve · engage · design and transition · obtain/build · deliver and support",
+      "note": "Value streams combine these activities for specific scenarios"
+    },
+    {
+      "label": "Continual improvement model",
+      "value": "What is the vision? · Where are we now? · Where do we want to be? · How do we get there? · Take action · Did we get there? · How do we keep the momentum going?",
+      "note": "Ideas are tracked in a continual improvement register (CIR)"
+    },
+    {
+      "label": "34 practices",
+      "value": "14 general management · 17 service management · 3 technical management",
+      "note": "Foundation covers 15 by purpose and 7 in detail"
+    },
+    {
+      "label": "Incident",
+      "value": "An unplanned interruption to a service or a reduction in its quality; incident management restores normal service as quickly as possible",
+      "note": "Swarming = many people work it together until the right owner is clear"
+    },
+    {
+      "label": "Problem, known error, workaround",
+      "value": "Problem = cause or potential cause of incidents · known error = analyzed but unresolved problem · workaround = reduces or removes impact until a full fix exists",
+      "note": "Phases: problem identification · problem control · error control"
+    },
+    {
+      "label": "Change types",
+      "value": "Standard = low risk, pre-authorized · normal = scheduled, assessed, authorized by a change authority · emergency = as soon as possible, expedited",
+      "note": "Change = adding, modifying or removing anything that could affect services"
+    },
+    {
+      "label": "Service request",
+      "value": "A user request that starts a service action agreed as a normal part of service delivery",
+      "note": "Standardize and automate where possible"
+    },
+    {
+      "label": "Service desk",
+      "value": "Captures demand for incident resolution and service requests; the single point of contact between provider and users",
+      "note": "Channels include phone, portal, chat and chatbots, email, walk-in, text and social media"
+    },
+    {
+      "label": "SLA and the watermelon effect",
+      "value": "SLA = documented provider–customer agreement on services and expected service levels · watermelon = green metrics, unhappy customers"
+    },
+    {
+      "label": "Events",
+      "value": "Any change of state that matters for managing a service or other CI: informational · warning · exception"
+    },
+    {
+      "label": "Release vs deployment",
+      "value": "Deployment moves components into environments · release makes services and features available for use"
+    },
+    {
+      "label": "CI and IT asset",
+      "value": "CI = any component that needs to be managed to deliver an IT service · IT asset = any financially valuable component that can contribute to an IT product or service"
+    },
+    {
+      "label": "Information security management",
+      "value": "Protects the information the organization needs: confidentiality, integrity, availability, plus authentication and non-repudiation"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Confirm the exam and take a first pass",
+      "tasks": [
+        "Review your course planning tool report with your instructor, ask whether your voucher is for ITIL 4 Foundation or ITIL (Version 5) Foundation, and start the course's steps for getting your exam code today, so you have it before you book on Days 7-8.",
+        "Watch a full ITIL 4 cram video once at normal speed for the big picture (the one in Resources runs about 2 h 23 min); don't take notes yet.",
+        "Start a one-page sheet with three columns: term, ITIL meaning in your words, everyday example."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Key concepts",
+      "tasks": [
+        "Service management, service, value and value co-creation, organization, product, service offering (goods, access, actions).",
+        "Output vs outcome, costs and risks, utility vs warranty; customer, user and sponsor; service relationships.",
+        "Write one example from your own job or life for each term, then start the Value Insights playlist."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "The seven guiding principles",
+      "tasks": [
+        "Learn each principle's core idea and the close calls between them (simple vs automate, start where you are vs focus on value).",
+        "Write two short scenarios per principle and swap the labels to test yourself.",
+        "Continue the Value Insights playlist through the guiding principles."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Four dimensions, the SVS and governance",
+      "tasks": [
+        "Four dimensions, what each covers, and PESTLE.",
+        "SVS inputs, what it produces and its five components; governance as evaluate, direct and monitor; why silos matter.",
+        "Draw the SVS from memory and label every part."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Value chain, value streams and continual improvement",
+      "tasks": [
+        "The six value chain activities and the purpose of each, then map one value stream (for example, restoring a failed service) onto them.",
+        "The seven-step continual improvement model and the continual improvement register.",
+        "Explain how plan, improve and continual improvement differ, out loud."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "The 15 practices you need by purpose",
+      "tasks": [
+        "Learn the purpose and key terms of information security, relationship, supplier, IT asset, monitoring and event, release, service configuration and deployment management.",
+        "Know which category each of the 34 practices sits in (14 general, 17 service, 3 technical) at a glance.",
+        "Make a purpose flashcard for each of the 15 practices."
+      ]
+    },
+    {
+      "day": "Days 7-8",
+      "focus": "The 7 practices in detail (the biggest block of marks), and booking",
+      "tasks": [
+        "Incident, problem (three phases, known errors, workarounds) and the service desk (channels, skills, single point of contact).",
+        "Change enablement (standard, normal, emergency, change authority, change schedule), service request management and service level management (SLAs, watermelon effect).",
+        "Continual improvement as a practice; then finish the Value Insights playlist and rewatch the practice videos.",
+        "Redeem your exam code on peoplecert.org, book your exam for Day 11 and run the compatibility check on the exam computer now. PeopleCert asks you to review the requirements at least 72 hours ahead, and rescheduling is free only up to 48 hours before the exam."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Practice exams, round one",
+      "tasks": [
+        "Take two of Dion's six practice exams closed book and timed at 60 minutes.",
+        "Log every miss with the term you confused it with, and fix your one-page sheet.",
+        "Ask an AI chatbot to explain any practice you keep missing, then check its answer against your Quick Reference Guide."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Practice exams, round two, and final checks",
+      "tasks": [
+        "Take the remaining practice exams (a Mar 2026 passer found the fourth the hardest); aim for 70–80% or better closed book.",
+        "Rerun PeopleCert's compatibility check on the exam computer at least 24 hours before your exam slot, and confirm your ID matches your booking.",
+        "Read the Quick Reference Guide end to end."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Exam day",
+      "tasks": [
+        "Rerun the compatibility check about two hours before, clear the desk and have your original ID ready.",
+        "Skim your one-page sheet in the morning if it helps, then stop studying.",
+        "Answer every question (wrong answers cost nothing), flag the doubtful ones and use any spare minutes to review them."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A streaming service lets subscribers watch films in 4K on any device, and it stays available 99.9% of the time with enough capacity for evening peaks. Which statement correctly applies ITIL's terms?",
+      "choices": [
+        "Streaming 4K films is warranty; availability and capacity are utility",
+        "Streaming 4K films is utility; availability and capacity are warranty",
+        "Both are utility, because both describe what customers get",
+        "Both are warranty, because both are promised in the SLA"
+      ],
+      "answer": "Streaming 4K films is utility; availability and capacity are warranty",
+      "why": "Utility is the functionality a service offers to meet a need, what it does, so streaming films in 4K is utility (fit for purpose). Warranty is the assurance that the service will meet agreed requirements, how well it performs, usually expressed as availability, capacity, security and continuity (fit for use). Customers need both to get value. Either can be written into an agreement, which is why the SLA option is a trap."
+    },
+    {
+      "q": "A hospital rolls out a new shift-scheduling service. The CFO approves the budget, the director of nursing defines the requirements and is accountable for the results, and nurses use it every day. In ITIL terms, who is the customer?",
+      "choices": [
+        "The CFO",
+        "The nurses",
+        "The director of nursing",
+        "The IT service provider"
+      ],
+      "answer": "The director of nursing",
+      "why": "ITIL separates three service consumer roles. The customer defines the requirements and takes responsibility for the outcomes of consuming the service, which is the director of nursing. The sponsor authorizes the budget (the CFO), and users use the service (the nurses). One person can hold more than one role, but here they're split. The provider sits on the other side of the service relationship."
+    },
+    {
+      "q": "An IT team plans to replace its ticketing process. Before designing anything new, it watches how the current process actually runs, measures it and identifies which parts are worth keeping. Which guiding principle is this?",
+      "choices": [
+        "Focus on value",
+        "Think and work holistically",
+        "Keep it simple and practical",
+        "Start where you are"
+      ],
+      "answer": "Start where you are",
+      "why": "Start where you are warns against throwing everything out: look at what exists, preferably by direct observation and measurement, and reuse what works. Focus on value ties work back to stakeholder value, think and work holistically looks at how all the parts of a system interact, and keep it simple and practical removes steps that add no value. Each could matter in a redesign, but observing the current state and reusing what works is the signature of start where you are."
+    },
+    {
+      "q": "A team delivers a new self-service portal in small releases every two weeks, gathers user feedback after each one and adjusts the next release accordingly. Which guiding principle does this best show?",
+      "choices": [
+        "Progress iteratively with feedback",
+        "Optimize and automate",
+        "Collaborate and promote visibility",
+        "Start where you are"
+      ],
+      "answer": "Progress iteratively with feedback",
+      "why": "Progress iteratively with feedback means organizing work into smaller pieces that can be finished quickly and using feedback before, during and after each iteration to steer the next one. Collaboration matters here too, but the defining features in the stem are the small releases and the feedback loop. Optimize and automate is about improving work before automating it, and start where you are is about building on the current state."
+    },
+    {
+      "q": "A team wants to automate a slow approval workflow that includes several redundant sign-offs. According to the relevant guiding principle, what should it do first?",
+      "choices": [
+        "Automate the workflow exactly as it is, so the redundant sign-offs at least happen faster",
+        "Optimize the workflow by removing the redundant sign-offs, then automate what remains",
+        "Keep the workflow manual, because automation always adds risk",
+        "Hand the whole workflow to an outside supplier to run"
+      ],
+      "answer": "Optimize the workflow by removing the redundant sign-offs, then automate what remains",
+      "why": "Optimize and automate says to optimize work as far as is reasonable before automating it, because automating a poor process only produces poor results faster. Removing redundant steps also fits keep it simple and practical, which is why the two principles often appear together, but the question is about how to approach automation. Refusing to automate or outsourcing the work doesn't remove the waste."
+    },
+    {
+      "q": "A new service fails at launch: nobody was assigned to approve changes, team roles overlap, and the support staff were never trained. Which dimension of service management was neglected?",
+      "choices": [
+        "Information and technology",
+        "Partners and suppliers",
+        "Value streams and processes",
+        "Organizations and people"
+      ],
+      "answer": "Organizations and people",
+      "why": "Organizations and people covers roles and responsibilities, structure, culture, staffing and competencies, which is everything that went wrong here. Information and technology covers the information, knowledge and technology a service needs, partners and suppliers covers relationships with other organizations, and value streams and processes covers how work flows through activities and controls. A missing approval step can look like a process gap, but unassigned roles and untrained staff point to organizations and people."
+    },
+    {
+      "q": "In the ITIL service value system, what are the inputs, and what does the system produce?",
+      "choices": [
+        "Opportunity and demand go in; value comes out",
+        "Incidents and service requests go in; resolutions come out",
+        "Customer requirements go in; services come out",
+        "Budget and staff go in; outputs come out"
+      ],
+      "answer": "Opportunity and demand go in; value comes out",
+      "why": "The SVS shows how all of an organization's components and activities work together to turn opportunity and demand into value for the organization and its stakeholders. Opportunities are possibilities to add value or improve the organization, and demand is the need or desire for products and services. The five components in between are the guiding principles, governance, the service value chain, practices and continual improvement. Incidents, requirements and budgets are handled along the way, but they aren't the system's defined inputs or what it produces."
+    },
+    {
+      "q": "A provider orders 200 laptops from a vendor, builds a standard configured image and checks that every device meets the agreed specification before handing them over. Which service value chain activity is this mainly?",
+      "choices": [
+        "Engage",
+        "Design and transition",
+        "Obtain/build",
+        "Deliver and support"
+      ],
+      "answer": "Obtain/build",
+      "why": "Obtain/build ensures service components are available when and where they're needed and meet agreed specifications, whether they're bought or built. Engage is about understanding and working with stakeholders, design and transition about making sure products and services meet expectations for quality, cost and time to market, and deliver and support about delivering and supporting services in operation. A real value stream would chain several activities together, but sourcing and building components is obtain/build."
+    },
+    {
+      "q": "Email goes down at 9 a.m., and the service desk restores it by restarting a server. The same failure has happened three times this month, so a team starts investigating why the server keeps crashing. Which practice does the investigation belong to?",
+      "choices": [
+        "Incident management",
+        "Change enablement",
+        "Service request management",
+        "Problem management"
+      ],
+      "answer": "Problem management",
+      "why": "Restoring email quickly is incident management, whose purpose is to minimize the negative impact of incidents by restoring normal service as fast as possible. Finding the cause of the recurring crashes is problem management: a problem is the cause, or potential cause, of one or more incidents, and repeated incidents are a classic way problems are identified. A permanent fix would later go through change enablement, and nothing here is a routine user request."
+    },
+    {
+      "q": "Analysis shows a memory leak makes an application crash every few days. The vendor's fix is weeks away, so the team restarts the application every night, which prevents the crashes. In ITIL terms, the nightly restart is a:",
+      "choices": [
+        "Workaround",
+        "Known error",
+        "Service request",
+        "Problem record"
+      ],
+      "answer": "Workaround",
+      "why": "A workaround reduces or eliminates the impact of an incident or problem when a full resolution isn't yet available, which is exactly what the nightly restart does. The memory leak, analyzed but not yet fixed, is the known error, and it's tracked in a problem record where the workaround is documented. Nothing here is a user asking for a normal service action, so it isn't a service request."
+    },
+    {
+      "q": "A vulnerability in a public web server is being actively exploited, and the vendor has released a patch. How should change enablement treat applying it tonight?",
+      "choices": [
+        "As a standard change, because security patches are pre-authorized and well understood, so no assessment is needed",
+        "As an emergency change, with expedited assessment and authorization",
+        "As a normal change that waits for the next scheduled review meeting",
+        "Not as a change at all, because it fixes an incident"
+      ],
+      "answer": "As an emergency change, with expedited assessment and authorization",
+      "why": "Emergency changes must be implemented as soon as possible, for example to resolve an incident or apply a security patch. They're still assessed and authorized, but faster, sometimes by a separate change authority, and documentation can be finished later. Standard changes are low-risk, well understood and pre-authorized, which an urgent patch to an exposed server isn't automatically. Waiting for a routine meeting ignores the urgency, and a fix that modifies a service is still a change even when it resolves an incident."
+    },
+    {
+      "q": "A user asks for access to a shared project folder, which the provider has agreed to grant as a normal part of the service. How should this be handled?",
+      "choices": [
+        "As an incident, because the user can't work without access",
+        "As a problem, because access requests keep recurring",
+        "As a service request, fulfilled through service request management",
+        "As an emergency change, because the user is waiting"
+      ],
+      "answer": "As a service request, fulfilled through service request management",
+      "why": "A service request is a request from a user or their authorized representative that starts a service action agreed as a normal part of service delivery, such as access, information, a resource or a routine action. Nothing has failed, so it isn't an incident, and requests that recur are a reason to standardize and automate them, not a problem. When fulfilling a request involves a change, it's usually a pre-authorized standard change, and a routine, pre-agreed request like this gives no reason for an emergency change."
+    },
+    {
+      "q": "Every SLA metric for a service has been green for six months, yet customer satisfaction keeps falling. What does ITIL's service level management guidance point to?",
+      "choices": [
+        "The watermelon effect: base targets and service reviews on business outcomes and customer feedback",
+        "Too few measures: add per-server uptime and ticket counts so the SLA covers more ground",
+        "Unrealistic expectations: the SLA is met, so ask the customer to accept current service levels",
+        "A warranty gap: raise the availability target so the service performs better"
+      ],
+      "answer": "The watermelon effect: base targets and service reviews on business outcomes and customer feedback",
+      "why": "ITIL calls this the watermelon effect: green on the outside, red inside. Service level management sets clear business-based targets and checks delivery against them, which means engaging customers, measuring what matters to their outcomes and holding service reviews, not just reporting technical measures like uptime. Adding per-server metrics or raising the availability target only piles more onto operational measures that already look green, and asking the customer to accept current levels ignores the value they're losing."
+    },
+    {
+      "q": "A team using the ITIL continual improvement model has agreed on the vision and measured a baseline of current performance. Which step comes next?",
+      "choices": [
+        "Take action",
+        "Where do we want to be?",
+        "Did we get there?",
+        "How do we keep the momentum going?"
+      ],
+      "answer": "Where do we want to be?",
+      "why": "The seven steps run: What is the vision? Where are we now? Where do we want to be? How do we get there? Take action. Did we get there? How do we keep the momentum going? The baseline answers <i>Where are we now?</i>, so next the team sets measurable targets for where it wants to be. Action comes only after there's a plan, and the last two steps check the results and sustain them."
+    },
+    {
+      "q": "A team moves new code into production on Monday but keeps the new feature hidden behind a switch, then turns it on for all users on Friday. Which statement is correct?",
+      "choices": [
+        "Monday is release management and Friday is deployment management, because the release comes first",
+        "Both days are deployment management",
+        "Monday is deployment management; Friday, when the feature becomes available for use, is release management",
+        "Both days are change enablement only"
+      ],
+      "answer": "Monday is deployment management; Friday, when the feature becomes available for use, is release management",
+      "why": "Deployment management moves new or changed components into live (or other) environments, which happened on Monday. Release management makes new and changed services and features available for use, which happened on Friday when users got the feature. ITIL 4 separates the two practices precisely so situations like feature flags make sense. Both events may be governed by change enablement, but that doesn't make them the same practice."
+    }
+  ],
+  "pitfalls": [
+    "<b>Studying the wrong version.</b> ITIL (Version 5) Foundation launched in 2026 with a simplified value chain and a new product and service lifecycle model. Both student reports (Jan 2025 and Mar 2026) describe ITIL 4, but confirm which exam your voucher covers before you buy or watch anything.",
+    "<b>Mixing up incidents and problems.</b> An incident is the interruption; a problem is its cause; a known error is a problem that's been analyzed but not fixed. Restoring service is incident management even when the cause is unknown.",
+    "<b>Treating service requests as incidents.</b> A request for access, a laptop or information is a normal, agreed action, not a failure, and it goes to service request management.",
+    "<b>Swapping utility and warranty.</b> Utility is what the service does (fit for purpose); warranty is how well it does it (availability, capacity, security, continuity: fit for use).",
+    "<b>Confusing customer, user and sponsor.</b> The customer defines requirements and owns the outcomes, the user uses the service, the sponsor authorizes the budget.",
+    "<b>Guiding-principle lookalikes.</b> Removing pointless steps is keep it simple and practical; improving a process so it can be automated is optimize and automate; reusing what already exists is start where you are; seeing how the parts affect each other is think and work holistically.",
+    "<b>Thinking emergency changes skip assessment.</b> They're still assessed and authorized, just faster and sometimes by a separate change authority, with some documentation allowed afterward.",
+    "<b>Studying all 34 practices in depth.</b> Foundation asks for the purpose of 15 and detail on 7. Spend most of your time on incident, problem, change enablement, service request, service desk, service level management and continual improvement.",
+    "<b>Trusting dump sites.</b> Studying from leaked exam content breaks certification exam rules and WGU's academic integrity policy, and commenters on a Jan 2025 post say Jason Dion's legitimate practice exams are already harder than the real thing.",
+    "<b>Online proctoring surprises.</b> The webcam must turn a full 360° for the room scan, only one screen may be active, and the compatibility check is due at least 24 hours ahead. A laptop's built-in camera works only if you can rotate the laptop."
+  ],
+  "resources": [
+    {
+      "label": "Value Insights: ITIL 4 Foundation free exam preparation eLearning (YouTube playlist)",
+      "url": "https://www.youtube.com/playlist?list=PLVzkjYR3xN1V9nlcECuygEZVlS4rj5qaf",
+      "kind": "video",
+      "note": "The core resource in both community posts: passers watched it two or three times, one at 2x speed."
+    },
+    {
+      "label": "Technical Institute of America: ITIL 4 Foundation Full Cram Course (YouTube)",
+      "url": "https://www.youtube.com/watch?v=uI0n0kmoYy0",
+      "kind": "video",
+      "note": "One video of about 2 h 23 min; a Mar 2026 passer used it as a first watch and again as a night-before refresher."
+    },
+    {
+      "label": "Jason Dion: ITIL 4 Foundation Practice Certification Exams (6 Exams) (Udemy)",
+      "url": "https://www.udemy.com/course/itil-4-foundation-practice-certification-exams-6-exams-q/",
+      "kind": "practice",
+      "note": "Six timed 40-question exams. WGU students get access through WGU's Udemy account. The two passers treated 70–80% and about 85% closed book as ready, and commenters on the Jan 2025 post say the real exam is easier."
+    },
+    {
+      "label": "Jason Dion: Introduction to Service Management with ITIL 4 (Udemy)",
+      "url": "https://www.udemy.com/course/service-management-itil-4/",
+      "kind": "video",
+      "note": "A short primer (under two hours) rather than full exam prep; a Jan 2025 passer kept its one-page ITIL 4 study guide PDF handy. Available through WGU's Udemy account."
+    },
+    {
+      "label": "PeopleCert learner kit and Quick Reference Guide (after you redeem your exam code)",
+      "kind": "official",
+      "note": "Students report the kit on peoplecert.org includes a Quick Reference Guide of definitions, the official wording to review on the last day."
+    },
+    {
+      "label": "CyberVista practice exams (in the course)",
+      "kind": "practice",
+      "note": "Students report them inside the course materials and call them long; useful extra question volume once you know the concepts."
+    },
+    {
+      "label": "PeopleCert: ITIL 4 Foundation",
+      "url": "https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565",
+      "kind": "official",
+      "note": "The official exam facts: 40 questions, 60 minutes, closed book, 65%, 12 languages, renewal rules."
+    },
+    {
+      "label": "PeopleCert: ITIL FAQ",
+      "url": "https://www.peoplecert.org/help-and-support/faq-itil",
+      "kind": "official",
+      "note": "How ITIL 4 and ITIL (Version 5) coexist, the planned Dec 31, 2027 sunset for ITIL 4 modules, and renewal routes."
+    },
+    {
+      "label": "PeopleCert: Web Based Exam Driver guidelines",
+      "url": "https://www.peoplecert.org/ways-to-get-certified/examshield-guidelines",
+      "kind": "tool",
+      "note": "System, webcam, ID and room rules for online exams, plus the compatibility check timing."
+    },
+    {
+      "label": "WGU: ITIL certifications",
+      "url": "https://www.wgu.edu/online-it-degrees/it-certifications/itil-certifications.html",
+      "kind": "official",
+      "note": "Which WGU degrees include the ITIL 4 Foundation exam and confirmation that it's part of tuition."
+    },
+    {
+      "label": "WGU B.S. Information Technology Program Guidebook (catalog 202608)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSIT.pdf",
+      "kind": "official",
+      "note": "The official D336 description, competencies and CUs."
+    },
+    {
+      "label": "Flashcards you write yourself",
+      "kind": "tool",
+      "note": "One card per definition, principle, dimension, value chain activity and practice purpose, checked against the Quick Reference Guide."
+    },
+    {
+      "label": "An AI chatbot as a tutor",
+      "kind": "tool",
+      "note": "A Mar 2026 passer used AI to explain the practices and how the service value system fits together. Check its wording against official definitions, since chatbots paraphrase loosely."
+    }
+  ],
+  "community": {
+    "summary": "Two posts, from Jan 2025 and Mar 2026, describe a quick pass: the Jan 2025 poster called D336 one of the easiest courses in the CS degree, studied about 10 hours and scored 95%, and the Mar 2026 poster scored 88% (35/40) after a week. Both used the free Value Insights ITIL 4 Foundation playlist, watched two or three times, and Jason Dion's six Udemy practice exams (the Mar 2026 poster through WGU's Udemy access). The Jan 2025 poster also kept Dion's one-page study guide handy, and the Mar 2026 poster used a 2 h 23 min ITIL 4 cram video as a first watch and night-before refresher. Readiness marks on Dion's exams were about 85% closed book (Jan 2025) and 70–80% (Mar 2026, whose poster found the fourth exam hardest). Commenters on the Jan 2025 post say the real exam is definition-focused and easier than Dion's tests, and the Mar 2026 poster describes definitions plus matching concepts to scenarios: know the practices in detail, the seven guiding principles and the key definitions. Neither post mentions ITIL (Version 5).",
+    "coverage": "2 posts, Jan 2025 – Mar 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "D336 - Scored 88% in 7 days",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s2xaq8/d336_scored_88_in_7_days/",
+        "date": "Mar 2026",
+        "takeaway": "Scored 35/40 after a week: the Value Insights playlist two or three times, a single ITIL 4 overview video as a first watch and night-before refresher, and Dion's six practice exams through WGU's Udemy access, where 70–80% meant ready and the fourth exam was hardest. Used AI to explain the practices and the service value system. Passing is 26/40, and the exam is definitions plus matching concepts to scenarios."
+      },
+      {
+        "title": "Business of IT – Applications - D336 Study Guide // Easiest way to pass",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1hww18k/business_of_it_applications_d336_study_guide/",
+        "date": "Jan 2025",
+        "takeaway": "Called one of the easiest courses in the CS degree: about 10 hours total and a 95% score. Watched the Value Insights playlist twice at 2x, kept Dion's one-page study guide handy, and used Dion's six practice exams, with about 85% closed book as the readiness mark. Comments say the exam is definition-focused and easier than Dion's tests, and the in-course CyberVista practice exams are long."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "PeopleCert: ITIL 4 Foundation (40 questions, 60 minutes, closed book, 65%, languages, renewal)",
+      "url": "https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation-2565"
+    },
+    {
+      "label": "PeopleCert: ITIL FAQ (ITIL 4 and Version 5 in parallel, Dec 31, 2027 sunset plan, renewal routes)",
+      "url": "https://www.peoplecert.org/help-and-support/faq-itil"
+    },
+    {
+      "label": "PeopleCert: ITIL Foundation (Version 5) (format and coverage)",
+      "url": "https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-5-foundation-version-50-4154"
+    },
+    {
+      "label": "PeopleCert: New ITIL explained for certified professionals (ITIL 4 remains available)",
+      "url": "https://www.peoplecert.org/news-and-announcements/itil-version-5-explained"
+    },
+    {
+      "label": "ITIL.com: ITIL Foundation (Version 5), what's new (simplified value chain, lifecycle model)",
+      "url": "https://www.itil.com/Itil-News-and-Announcements/itil-version-5-foundation-whats-new-guide"
+    },
+    {
+      "label": "ITSM Professor blog: ITIL (Version 5) Foundation exam live Feb 12, 2026 (posted Feb 16, 2026)",
+      "url": "https://www.itsmprofessor.net/2026/02/itil-version-5-foundation-exam-goes.html"
+    },
+    {
+      "label": "PeopleCert: Web Based Exam Driver guidelines (online proctoring requirements)",
+      "url": "https://www.peoplecert.org/ways-to-get-certified/examshield-guidelines"
+    },
+    {
+      "label": "WGU: ITIL certifications (degrees that include ITIL 4 Foundation, exam in tuition)",
+      "url": "https://www.wgu.edu/online-it-degrees/it-certifications/itil-certifications.html"
+    },
+    {
+      "label": "WGU: B.S. Information Technology Program Guidebook, catalog 202608, published Oct 26, 2026 (D336 description, competencies, 4 CU)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSIT.pdf"
+    },
+    {
+      "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (course list)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    }
+  ],
+  "caveats": [
+    "Version change: PeopleCert released ITIL (Version 5) Foundation in 2026 (an ITSM blog dates the exam's launch to Feb 12, 2026; PeopleCert's own pages give no date), and its FAQ gives Dec 31, 2027 as the current plan for sunsetting all ITIL 4 modules, with ITIL 4 voucher validity dates still to be announced. No WGU notice about switching D336 to Version 5 was found, and its competencies still describe ITIL 4, so confirm your voucher's exam with your instructor.",
+    "Students who start on WGU's newest BSCS version (202611, from the Nov 2026 catalog) don't see D336 in their plan; this guide covers D336. The description and competencies here come from WGU's B.S. IT guidebook (catalog 202608), and the guide assumes the course and exam are the same across programs.",
+    "The per-outcome marks (5, 6, 2, 1, 2, 7 and 17) come from trainers' reproductions of the 2019 ITIL 4 Foundation syllabus. PeopleCert doesn't publish the syllabus openly, so treat the split as a guide to emphasis, not an exact blueprint.",
+    "Renewal: WGU's ITIL page says the certification doesn't expire, while PeopleCert's page says ITIL certifications renew every three years through CPD points or another exam in the same product suite. It doesn't affect passing D336, but check PeopleCert's current terms if the credential matters for your job.",
+    "Voucher steps, the learner kit contents and the in-course CyberVista exams come from student reports, and WGU's retake process for this exam isn't public.",
+    "The practice questions are original and written from the ITIL 4 concepts. Short definitions and practice purposes here stay close to ITIL 4's official wording, since the exam is definition-focused (ITIL belongs to PeopleCert, which acquired AXELOS in 2021); the Quick Reference Guide in your learner kit has the exact text."
+  ]
+}

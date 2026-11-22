@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@magicui/components/border-beam",
+  "title": "Border Beam | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/10/2024",
+  "dependencies": "None listed on the Info tab",
+  "promptFile": "21st/prompts/magicui--border-beam.md",
+  "chars": 2715,
+  "sha256": "4141869130d4a79145fe32cbe4c117c33bca2e7850655808a52de19a15ee8d0a",
+  "sha256Of": "file bytes",
+  "capturedSha256": "65b7f638540a97a008219dcc5e216af56c8751d54f058f890aada11b54aa9954",
+  "verified": true,
+  "notes": "Page redirected to https://21st.dev/@dillionverma/components/border-beam (Magic UI by Dillion Verma). Prompt captured from the page's Copy prompt menu, 'Optimized for: Claude Code' option. The copied prompt uses the Tailwind class after:animate-border-beam but contains no Tailwind keyframes/animation config for it.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2715) is the text's length in UTF-16 code units and equals the file's."
+}

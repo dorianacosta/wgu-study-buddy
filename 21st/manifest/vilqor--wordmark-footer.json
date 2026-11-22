@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@vilqor/components/wordmark-footer",
+  "title": "Footer with Big Wordmark | Community Components | 21st",
+  "license": "MIT License",
+  "published": "11/14/2026",
+  "dependencies": "clsx, lucide-react, tailwind-merge",
+  "promptFile": "21st/prompts/vilqor--wordmark-footer.md",
+  "chars": 7979,
+  "sha256": "039b2222e391ef6132c55e644702a7d3e8088e1aa6fe9cbcbaf4ad276c7ed552",
+  "sha256Of": "file bytes",
+  "capturedSha256": "f6710cec7260422c2cf5b76ac29c7989c61b240d64c0f171effde81445eaa103",
+  "verified": true,
+  "notes": "Info tab: Dependencies clsx, lucide-react, tailwind-merge; Tags Footer, Landing Page, Navigation; License MIT License; Published 11/14/2026. Prompt copied via Change copy action > Claude Code. Contains non-ASCII copyright signs (U+00A9). get_page_text collapsed a double blank line before demo.tsx; restored and hash verified.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (7979) is the text's length in UTF-16 code units and equals the file's."
+}

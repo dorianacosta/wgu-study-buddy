@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@serafimcloud/components/question-tool/multiple-choice",
+  "title": "Question Tool | Community Components | 21st",
+  "license": "MIT License",
+  "published": "5/1/2026",
+  "dependencies": "clsx, tailwind-merge",
+  "promptFile": "21st/prompts/serafimcloud--question-tool--multiple-choice.md",
+  "chars": 20815,
+  "sha256": "e825caaa5a5428308e99961714c6a5154f9fe041e1fe3b96e79e84df8956a6ac",
+  "sha256Of": "file bytes",
+  "capturedSha256": "e3ab1027b4797719e5fa427130c545abaa9f69702b12cfde73b6974173c3be23",
+  "verified": true,
+  "notes": "Info tab: Dependencies clsx, tailwind-merge; Tags Input, Form, Agent, Prompt; Source agent-elements.21st.dev/docs/question-tool; License MIT License; Published 5/1/2026. Prompt copied via Change copy action > Claude Code on the multiple-choice variant page (demo.tsx uses two kind 'multi' questions). Contains one non-ASCII character (U+2022 bullet in the summary join). get_page_text collapsed a double blank line before demo.tsx; restored and hash verified.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (20815) is the text's length in UTF-16 code units and equals the file's."
+}

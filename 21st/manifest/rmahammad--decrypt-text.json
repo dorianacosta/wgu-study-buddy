@@ -1,0 +1,11 @@
+{
+  "url": "https://21st.dev/@rmahammad/components/decrypt-text",
+  "title": "Decrypt Text | Community Components | 21st",
+  "author": "rmahammad (Mehi), Motiq library",
+  "license": "MIT License",
+  "published": "7/30/2026",
+  "dependencies": ["clsx", "tailwind-merge"],
+  "sha256": "2527fad2137b7a3437aa0ce7d16ea220ba38ee1dbf8a3df77599d27a20035338",
+  "verified": true,
+  "note": "Prompt captured with Change copy action > Claude Code (tab viewport 1280x800, clipboard writeText hooked in the page, nothing reached the system clipboard). 18,162 characters / 18,183 UTF-8 bytes. The page's SHA-256 of the captured string equals the SHA-256 of the saved file byte for byte, no normalization. Text was moved out of the page as a JSON-escaped string (not get_page_text), so blank lines are exact. Non-ASCII characters kept as UTF-8: em dash U+2014, ellipsis U+2026, plus-minus U+00B1, middle dot U+00B7. Info tab: Dependencies clsx, tailwind-merge; Tags Animation, Text, Hero, Terminal, Scramble; License MIT License; Published 7/30/2026. The component ships its own --motiq-* color tokens in a low @layer (blue accent, green caret); the app must map them to the theme's tokens. Default loop is 7000 ms; real text sits in an sr-only span, the glyph layer is aria-hidden; honors prefers-reduced-motion."
+}

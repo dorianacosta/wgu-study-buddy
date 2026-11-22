@@ -1,0 +1,840 @@
+{
+  "code": "D686",
+  "summary": "D686 is a 3-CU survey of how operating systems work: processes and threads, synchronization and deadlocks, CPU scheduling, main and virtual memory, mass storage and I/O, file systems, and protection and security. You study from a zyBook whose Instructor Notes say what to skip, then take a proctored multiple-choice OA that 2026 passers call a carefully worded vocabulary test, heaviest on storage and file systems. Most recent passers report 20 to 31 hours over 3 to 7 days; some needed 2 to 4 weeks.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple choice)",
+    "format": "Multiple choice · proctored · time limit and cut score not published",
+    "details": [
+      "WGU's BSCS Program Guidebook (published Jun 2026) lists the course at 3 CUs and grades it against five competencies: file systems and I/O, protection and security, OS structure, processes and threads, and memory management.",
+      "The learning resource is a zyBook with Instructor Notes that mark which sections you can skip. WGU doesn't publicly name the source textbook. Its topics match Silberschatz, Galvin and Gagne's <i>Operating System Concepts</i> (10th ed.), but the chapter numbers students cite don't line up reliably, so this guide goes by topic names.",
+      "Students report a pre-assessment (PA), section quizzes and chapter tests, a zyBook practice exam, and a blank instructor study guide that you fill in as you read.",
+      "Exam facts: no public source gives the time limit, the passing score, or retake rules. Students describe results against a \"competent\" bar rather than a published percentage, so check the assessment page in the portal.",
+      "Emphasis (reported): storage management and file systems come up the most, including FAT32, NTFS, ext2/3/4, mounting, how file metadata is stored, and disk scheduling. STREAMS, internal vs external fragmentation, the classic synchronization problems, and basic Linux commands also show up.",
+      "Difficulty (reported): the PA is vocabulary plus light what-ifs, while the OA is harder and more specific and often combines concepts, for example asking what happens under a given memory-management method and scheduling algorithm. A Jun 2026 passer said everything on the OA came from the zyBook; a Mar 2026 passer felt about 10 questions covered material they hadn't seen.",
+      "D686 is the current-catalog counterpart of the older C191 Operating Systems for Programmers. In 2026, mentors were still moving C191 students into D686, reportedly because its exam lines up better with the zyBook."
+    ],
+    "tips": [
+      "Read every zyBook section the Instructor Notes don't skip, and fill in the instructor's study guide as you go. 2026 passers call the study guide the single most useful resource.",
+      "Write out every vocabulary term the Instructor Notes list. The newest comments describe the OA as mainly a vocabulary test with careful wording.",
+      "Use the PA as a loop: take it, study each miss until you can explain why every wrong option is wrong, then retake it. Aim for a comfortable margin, since the OA is reported to be harder and more specific.",
+      "Practice combining ideas (a memory-management method with a scheduling algorithm, paging with thrashing), because the OA reportedly asks what-if combinations the PA doesn't.",
+      "Give storage and file systems extra time: FAT32, NTFS, ext2/3/4, inodes and file metadata, mounting, disk scheduling, RAID, NAND flash, and STREAMS.",
+      "On test day, eliminate the two clearly wrong options, then decide between the last two. Flag anything slow and come back to it.",
+      "Several 2026 students say taking C952 Computer Architecture first makes D686's jargon familiar, so take D686 soon after C952 while that vocabulary is fresh."
+    ]
+  },
+  "competencies": [
+    "Describe different file systems and I/O algorithms.",
+    "Describe the operating system's protection and security mechanisms and how they relate to software applications.",
+    "Describe operating systems, their functions, and their structure.",
+    "Describe processes and threads and how they relate to multithreading and parallel programming.",
+    "Explain the different approaches to memory management and how they affect CPU utilization."
+  ],
+  "topics": [
+    {
+      "title": "OS structure, dual mode, and system calls",
+      "eli5": "The OS is both referee and butler: it shares the hardware safely among programs and hands them services like files, memory, and networking.",
+      "detail": "User programs run in user mode and the kernel runs in kernel (privileged) mode; a hardware mode bit tracks which, and privileged instructions such as I/O control and timer management only work in kernel mode. A system call is a deliberate trap into the kernel, usually reached through an API like POSIX or the C library, with parameters passed in registers, a memory block, or on the stack. Hardware interrupts and software traps (exceptions) both jump through a vector table to a handler, and a timer interrupt lets the OS take the CPU back from a program that never gives it up. Kernel designs trade speed against isolation: a monolithic kernel runs every service in one privileged image, a microkernel moves services to user space and communicates by message passing, and most real systems (Linux with loadable kernel modules, Windows, macOS) are modular or hybrid. At power-on, a bootstrap loader in firmware (BIOS or UEFI) loads the kernel.",
+      "points": [
+        "Interrupt = an asynchronous signal from hardware; trap = generated by software (a system call or an error such as divide by zero).",
+        "System-call groups: process control, file management, device management, information maintenance, communications, protection.",
+        "Monolithic: fast, but one bug can crash everything. Microkernel: more reliable and secure, slower because of message passing. Loadable modules add code to a running kernel.",
+        "Separate policy (what to do) from mechanism (how to do it) so policies can change without rewriting the mechanism.",
+        "Clustered systems are separate computers sharing storage, often for high availability."
+      ]
+    },
+    {
+      "title": "Processes, PCBs, context switches, and IPC",
+      "eli5": "A program is a recipe; a process is someone cooking it right now, with their own counter space and a bookmark showing where they are.",
+      "detail": "A process is a program in execution: its code, data, heap, and stack plus the CPU state, moving through the states new, ready, running, waiting, and terminated. The OS tracks each process in a process control block (PCB) holding its state, program counter, registers, scheduling and memory-management information, accounting data, and I/O status such as open files. A context switch saves the running process's state into its PCB and loads another's; it does no useful work, so it's pure overhead whose cost depends on hardware support. On UNIX, <code>fork()</code> creates a child that copies the parent and returns 0 to the child and the child's PID to the parent, <code>exec()</code> replaces the program the process runs, and <code>wait()</code> lets the parent collect the child's exit status. Cooperating processes communicate through shared memory (fast after setup, but they must synchronize themselves) or message passing through the kernel (simpler and safer, good for small messages and across machines), plus pipes, sockets, and remote procedure calls.",
+      "points": [
+        "Transitions: ready → running (dispatched), running → ready (interrupt or preemption), running → waiting (I/O or event wait), waiting → ready (event done), running → terminated (exit).",
+        "Zombie: exited, but the parent hasn't called <code>wait()</code>. Orphan: the parent exited first, and init/systemd adopts it.",
+        "n unconditional <code>fork()</code> calls in a row produce 2<sup>n</sup> processes (2<sup>n</sup> − 1 new ones).",
+        "Message passing choices: direct or indirect (mailboxes, ports), blocking (synchronous) or nonblocking (asynchronous), and zero, bounded, or unbounded buffering.",
+        "Ordinary (anonymous) pipes are one-way and need a parent-child relationship; named pipes (FIFOs) outlive the process and connect unrelated processes."
+      ]
+    },
+    {
+      "title": "Threads and concurrency models",
+      "eli5": "Threads are several cooks in one kitchen: they share the pantry and tools (code, data, open files) but each keeps their own notepad (registers, program counter, stack).",
+      "detail": "A thread is the basic unit of CPU use: its own thread ID, program counter, registers, and stack, sharing its process's code, data, heap, and open files. Threads give responsiveness, resource sharing, economy (cheaper to create and switch than processes), and scalability on multicore chips. Concurrency means several tasks make progress by taking turns; parallelism means they run at the same moment on different cores, with work split by data (data parallelism) or by task (task parallelism). User threads map to kernel threads many-to-one (one blocking call blocks them all, and they can't run in parallel), one-to-one (Linux and Windows: true parallelism at the cost of more kernel threads), or many-to-many (many user threads multiplexed onto an equal or smaller number of kernel threads). Amdahl's law caps the speedup from adding cores: with serial fraction S and N cores, speedup ≤ 1 / (S + (1 − S)/N).",
+      "points": [
+        "Shared by a process's threads: code, data, heap, open files. Private to each thread: ID, program counter, registers, stack.",
+        "Amdahl example: S = 0.25 and N = 4 gives 1 / (0.25 + 0.1875) ≈ 2.29× speedup; no number of cores can beat 1/S = 4×.",
+        "Implicit threading hands thread management to libraries and compilers: thread pools, fork-join, OpenMP, Grand Central Dispatch.",
+        "Thread libraries: POSIX Pthreads, Windows threads, Java threads.",
+        "Threading issues: whether <code>fork()</code> copies all threads, which thread receives a signal, asynchronous vs deferred cancellation, and thread-local storage."
+      ]
+    },
+    {
+      "title": "Synchronization and the classic problems",
+      "eli5": "When two people edit the same whiteboard at once, the result depends on who writes when. Locks and semaphores make them take turns.",
+      "detail": "A race condition happens when the result depends on the order in which threads touch shared data; <code>count++</code> is a load, an add, and a store, so two threads can interleave and lose an update. The critical-section problem asks for entry and exit code that guarantees mutual exclusion (one thread inside at a time), progress (if nobody is inside, only threads trying to enter take part in choosing the next one, and the choice can't be put off forever), and bounded waiting (a limit on how many times others can enter ahead of a waiting thread). Peterson's solution handles two threads in software with <code>flag[]</code> and <code>turn</code>, but modern CPUs reorder memory accesses, so real systems rely on hardware support: memory barriers and atomic instructions such as <code>test_and_set()</code> and <code>compare_and_swap()</code>. On top of those sit mutex locks (<code>acquire()</code> and <code>release()</code>; a spinlock busy-waits), semaphores (an integer changed only by atomic <code>wait()</code>/P and <code>signal()</code>/V, either counting or binary), and monitors (a language construct that lets only one thread be active inside, with condition variables for waiting). Liveness failures include deadlock, starvation, and priority inversion, where a low-priority thread holding a lock blocks a high-priority one; priority inheritance fixes it.",
+      "points": [
+        "Bounded buffer: <code>mutex = 1</code>, <code>empty = n</code>, <code>full = 0</code>. Producer: <code>wait(empty)</code>, <code>wait(mutex)</code>, add, <code>signal(mutex)</code>, <code>signal(full)</code>; the consumer mirrors it with full and empty swapped.",
+        "Readers-writers: many readers or one writer at a time. The first variant (readers have priority) can starve writers; the second (writers have priority) can starve readers.",
+        "Dining philosophers: if all five grab their left chopstick, they deadlock. Fixes: at most four at the table, pick up both chopsticks only when both are free, or odd philosophers reach left first and even ones right first.",
+        "Spinlocks only make sense for short waits on multicore systems; on one CPU they burn the whole time slice.",
+        "Semaphore with a waiting list: <code>wait()</code> decrements and blocks the caller if the value drops below 0 (a negative value counts the waiters); <code>signal()</code> increments and, if any thread is waiting, wakes one.",
+        "Monitor <code>x.signal()</code> resumes exactly one waiting thread and does nothing if none is waiting, unlike a semaphore's <code>signal()</code>, which always changes the count."
+      ]
+    },
+    {
+      "title": "CPU scheduling",
+      "eli5": "The scheduler is the person at the front of the line deciding who gets the CPU next, balancing getting lots done against being fair and answering quickly.",
+      "detail": "Scheduling decisions happen when a process goes from running to waiting, running to ready, waiting to ready, or terminates; if only the first and last can trigger a switch the scheduler is nonpreemptive, otherwise it's preemptive. The goals are high CPU utilization and throughput and low turnaround, waiting, and response time. FCFS is simple but suffers the convoy effect behind long jobs; SJF gives the minimum average waiting time but needs burst predictions, and its preemptive form is shortest-remaining-time-first (SRTF); priority scheduling can starve low-priority processes, which aging fixes by raising a process's priority the longer it waits; round robin gives each process a time quantum, so a huge quantum turns into FCFS and a tiny one drowns in context switches. A multilevel queue gives each class of process (for example system, interactive, batch) its own queue and algorithm, with fixed priority or time slices between queues, and processes never move; a multilevel feedback queue lets processes move, demoting CPU-heavy ones and promoting (aging) ones that wait too long. Linux's Completely Fair Scheduler (CFS) gives each task a share of CPU time weighted by its nice value, tracks each task's virtual runtime, keeps runnable tasks in a red-black tree, and always runs the task with the smallest virtual runtime.",
+      "points": [
+        "Starvation-prone: SJF, SRTF, and priority. Fix: aging.",
+        "Rule of thumb: about 80% of CPU bursts should be shorter than the RR quantum. RR improves response time, not average turnaround.",
+        "An MLFQ is defined by the number of queues, each queue's algorithm, when to promote, when to demote, and which queue a new process enters.",
+        "CFS: nice values run from −20 to +19 (lower = higher priority); a low-priority task's virtual runtime grows faster, so it runs less.",
+        "Multiprocessor: processor affinity (soft or hard) keeps a thread's cache warm; push and pull migration balance the load.",
+        "Real-time: rate-monotonic uses static priorities (shorter period = higher priority); earliest-deadline-first picks the nearest deadline."
+      ]
+    },
+    {
+      "title": "Deadlocks",
+      "eli5": "Deadlock is gridlock at a four-way stop: every driver holds their spot and waits for someone else to move first, so nobody ever does.",
+      "detail": "Deadlock needs all four conditions at once: mutual exclusion, hold and wait, no preemption, and circular wait. In a resource-allocation graph, a request edge points from process to resource and an assignment edge from resource to process: no cycle means no deadlock, a cycle with single-instance resources means deadlock, and a cycle with multi-instance resources means deadlock is possible but not certain. A wait-for graph removes the resource nodes (an edge P<sub>i</sub> → P<sub>j</sub> means P<sub>i</sub> waits for something P<sub>j</sub> holds) and detects deadlock when every resource has a single instance; multi-instance systems use a Banker's-style detection algorithm instead. The OS can prevent deadlock (break a condition), avoid it (grant a request only if the system stays in a safe state, as the Banker's algorithm does), detect it and recover, or ignore it, which is what Linux and Windows do for most resources. Recovery means terminating processes (all deadlocked ones, or one at a time until the cycle breaks) or preempting resources, which requires choosing a victim, rolling it back, and counting rollbacks so the same victim doesn't starve.",
+      "points": [
+        "Prevention, one condition each: make resources sharable (mutual exclusion; rarely possible); request everything at once or only when holding nothing (hold and wait); take resources from a waiting process (no preemption); number resource types and request in increasing order (circular wait, the most practical).",
+        "Safe state: some order lets every process finish. Unsafe isn't the same as deadlocked; it means deadlock is possible.",
+        "Banker's safety: Need = Max − Allocation; Work = Available; repeatedly pick an unfinished process with Need ≤ Work and add its Allocation to Work; safe if all finish.",
+        "Banker's request: check Request ≤ Need and Request ≤ Available, pretend to grant, run the safety check, and grant only if the result is safe; otherwise the process waits.",
+        "Starvation is one process waiting indefinitely while others progress; deadlock is a set of processes each waiting on another in the set."
+      ]
+    },
+    {
+      "title": "Main memory: allocation, paging, TLB, segmentation",
+      "eli5": "Memory management gives every program the illusion of its own private memory starting at address 0, while packing many programs into RAM without letting them touch each other.",
+      "detail": "The CPU generates logical addresses and the memory-management unit (MMU) maps them to physical addresses at run time; base (relocation) and limit registers give the simplest version of protection and relocation. Contiguous allocation gives each process one block chosen by first fit, best fit, or worst fit, and it suffers external fragmentation, where enough memory is free in total but not in one piece; compaction can fix it if relocation is dynamic. Paging splits physical memory into fixed-size frames and logical memory into same-size pages, so any free frame works (no external fragmentation) but a process's last page usually has unused space (internal fragmentation). A logical address splits into a page number, which indexes the page table, and an offset; because the page table lives in memory, each access would cost two memory reads, so a TLB (a small, fast associative cache of recent translations) skips the table lookup on a hit. Segmentation divides memory into variable-size logical units such as code, data, and stack, addressed as segment number plus offset with a base and limit per segment; it matches how programmers think but brings back external fragmentation.",
+      "points": [
+        "Page number = ⌊address / page size⌋; offset = address mod page size; physical address = frame × page size + offset.",
+        "First fit and best fit both beat worst fit in speed and memory use; first fit is usually fastest.",
+        "Page-table structures: hierarchical (two-level), hashed (common above 32-bit address spaces), inverted (one entry per physical frame: less memory, slower search).",
+        "Page-table entries carry a valid-invalid bit, protection bits (read, write, execute), and dirty and reference bits.",
+        "TLB entries can carry address-space identifiers (ASIDs) so the TLB needn't be flushed on every context switch.",
+        "Swapping moves a whole process, or today individual pages, out to a backing store to free memory."
+      ]
+    },
+    {
+      "title": "Virtual memory: demand paging, replacement, thrashing",
+      "eli5": "Keep only the pages you're using on your desk (RAM) and fetch the rest from the filing cabinet (disk) when you touch them. Touching a page that's still in the cabinet is a page fault.",
+      "detail": "Demand paging loads a page only when it's first referenced, and the valid-invalid bit marks pages that aren't in memory. On a page fault the OS checks that the reference is legal, finds a free frame (running page replacement if none is free), reads the page in from backing store, updates the page table, and restarts the instruction. FIFO evicts the oldest page and can suffer Belady's anomaly (more frames, more faults); OPT evicts the page whose next use is farthest away and is the unbeatable benchmark; LRU evicts the page unused longest and is approximated in practice with reference bits and the second-chance (clock) algorithm. Thrashing happens when processes don't have enough frames for the pages they're actively using: they fault constantly, CPU utilization collapses, and admitting more processes makes it worse. The working-set model (the pages used in the last Δ references) and page-fault-frequency control keep each process supplied, and when total demand D = ΣWSS<sub>i</sub> exceeds the available frames, the OS suspends a process.",
+      "points": [
+        "Demand-paging EAT = (1 − p) × memory access + p × fault service time; with milliseconds per fault, even one fault per thousand accesses makes memory dozens of times slower.",
+        "Copy-on-write: after <code>fork()</code>, parent and child share pages until one writes, and only that page is copied.",
+        "LRU and OPT are stack algorithms and never show Belady's anomaly.",
+        "The dirty (modify) bit lets the OS skip writing back a victim that hasn't changed, so that fault needs one transfer instead of two.",
+        "Frame allocation: equal or proportional (a<sub>i</sub> = s<sub>i</sub> / S × m); global replacement takes frames from any process, local replacement only from the faulting one, which limits thrashing's spread.",
+        "Kernel memory: the buddy system splits memory into power-of-2 blocks (fast coalescing, internal fragmentation); slab allocation keeps caches of ready-made kernel objects (no fragmentation)."
+      ]
+    },
+    {
+      "title": "Mass storage: HDD vs NVM, disk scheduling, RAID",
+      "eli5": "A hard drive is a record player with a moving arm, so the OS orders requests to cut arm travel; a flash drive has no arm but can't overwrite in place. RAID spreads data over several drives for speed, safety, or both.",
+      "detail": "HDD access time = seek time (moving the arm to the cylinder) + rotational latency (waiting for the sector, half a revolution on average) + transfer time. HDD scheduling: FCFS is fair but slow; SSTF serves the closest request, which cuts movement but can starve distant requests; SCAN (the elevator algorithm) sweeps from one end to the other and back; C-SCAN sweeps one way and jumps back to the start for more uniform waits; LOOK and C-LOOK turn around at the last request instead of the disk's edge. NVM devices such as NAND flash SSDs have no moving parts, so they're usually scheduled FCFS; NAND writes in pages but erases only whole blocks, can't overwrite in place, and wears out after a limited number of erase cycles, so the controller's flash translation layer remaps pages, garbage-collects blocks full of invalid pages, keeps spare (over-provisioned) space, and uses wear leveling. RAID combines disks: level 0 stripes for speed with no redundancy, 1 mirrors, 4 stripes blocks with a dedicated parity disk, 5 spreads parity across all disks, 6 keeps two parity blocks to survive two failures, and 10 stripes across mirrored pairs.",
+      "points": [
+        "Average rotational latency = ½ × (60,000 / RPM) ms: about 4.17 ms at 7,200 RPM.",
+        "Linux disk schedulers: deadline (sorted read and write queues, reads favored, an age limit so nothing starves), NOOP (FCFS that merges adjacent requests, good for NVM), and CFQ (Completely Fair Queuing: real-time, best-effort, and idle queues served in that priority order, and it may idle briefly to catch a process's next nearby request). Check your zyBook's HDD-scheduling section for its exact wording.",
+        "Usable RAID capacity with n disks of size D: RAID 0 = nD; RAID 1 (two-way mirror) and RAID 10 = nD/2; RAID 4 and 5 = (n − 1)D; RAID 6 = (n − 2)D.",
+        "RAID survives disk failures, not deletion or corruption, so it isn't a backup. RAID 5 avoids RAID 4's parity-disk bottleneck.",
+        "Device management: low-level formatting, partitioning, logical formatting (creating a file system), the boot block, and bad-block handling (sector sparing or slipping).",
+        "Attachment: host-attached (SATA, NVMe), network-attached storage (file access via NFS or CIFS/SMB), storage-area networks (a private network for block access), and iSCSI (block access over IP)."
+      ]
+    },
+    {
+      "title": "I/O systems and STREAMS",
+      "eli5": "The OS talks to hundreds of different devices through a few standard patterns, like a receptionist who uses the same script for every caller.",
+      "detail": "A device controller exposes registers (status, control, data-in, data-out) that the CPU reaches through special I/O instructions or memory-mapped I/O. With polling, the CPU loops reading the status register until the device is ready (busy-waiting), which is efficient only when the device is fast; with interrupts, the device raises the interrupt-request line and the CPU saves its state and jumps to a handler found through the interrupt vector (maskable interrupts can be deferred, nonmaskable ones can't). Direct memory access (DMA) lets a DMA controller move whole blocks between a device and memory without the CPU touching each byte, interrupting the CPU once when the transfer is done. The kernel I/O subsystem provides scheduling, buffering (for speed mismatches, transfer-size mismatches, and copy semantics), caching, spooling (queuing output such as print jobs), error handling, and protection, while applications see blocking, nonblocking, and asynchronous calls over block, character, and network devices. STREAMS, from UNIX System V, is a full-duplex connection between a user process and a device driver built from a stream head (next to the user process), a driver end (controls the device), and zero or more modules in between, each with a read queue and a write queue that pass messages.",
+      "points": [
+        "Polling = the CPU keeps asking; interrupt = the device tells the CPU; DMA = the device moves the data itself and interrupts once at the end.",
+        "Blocking: the caller sleeps until the I/O finishes. Nonblocking: returns right away with whatever is ready. Asynchronous: returns at once and signals completion later.",
+        "Block devices (disks: read, write, seek), character devices (keyboards: get, put), network devices (sockets).",
+        "STREAMS modules are pushed onto a stream with <code>ioctl()</code>; queues can use flow control; processes write with <code>write()</code> or <code>putmsg()</code> and read with <code>read()</code> or <code>getmsg()</code>.",
+        "STREAMS is asynchronous except where the user process meets the stream head, where reads and writes can block; its payoff is a modular way to build drivers and network protocols.",
+        "Faster I/O comes from fewer context switches, fewer data copies, fewer interrupts, and more DMA."
+      ]
+    },
+    {
+      "title": "File systems: directories, allocation, FAT/NTFS/ext, mounting",
+      "eli5": "A file is a named bag of bytes, a directory is a phone book from names to files, and the file system tracks which disk blocks hold what, even after a crash.",
+      "detail": "Directories map names to files and range from single-level and two-level to tree-structured, acyclic-graph (shared files through hard and symbolic links), and general graph. Each file has a file control block (FCB); in UNIX that's the inode, which holds the owner, permissions, timestamps, size, link count, and block pointers but not the file name, which lives in the directory entry. Allocation is contiguous (fast, but external fragmentation and hard to grow), linked (no external fragmentation, but only sequential access), or indexed (an index block of pointers; ext2 and ext3 inodes hold 12 direct pointers plus single, double, and triple indirect pointers). FAT is linked allocation with the links moved into a table at the start of the volume, one entry per block holding the next block's number; NTFS keeps a Master File Table record per file, uses ACLs, and journals metadata; ext2 has no journal, ext3 adds one while staying compatible with ext2, and ext4 adds extents and much larger limits. To mount a file system, the OS is given the device and a mount point, verifies the device holds a valid file system, and records the mount in its directory structure (the mount table), so the new file system's root appears at the mount point.",
+      "points": [
+        "Journaling writes intended metadata changes to a log first; after a crash, the OS replays committed transactions instead of scanning the whole disk with <code>fsck</code>.",
+        "FAT32: no journal, no permissions or ACLs, files up to 4 GiB minus 1 byte; still common on removable media.",
+        "Mounting over a non-empty directory hides its old files until you unmount; it doesn't delete them.",
+        "Free-space tracking: bit vector (bitmap), linked list, grouping, counting.",
+        "On disk: boot control block, volume control block (UNIX superblock, NTFS MFT), directory structure, FCBs. In memory: mount table, directory cache, system-wide and per-process open-file tables.",
+        "A virtual file system (VFS) layer lets one kernel support many file-system types; NFS lets a client mount a remote directory over the network."
+      ]
+    },
+    {
+      "title": "Protection and security",
+      "eli5": "Security keeps attackers out and data trustworthy; protection decides what the legitimate users and programs already inside are allowed to touch.",
+      "detail": "Protection is the internal mechanism that controls which processes and users may access which resources; security also defends against outside attacks and relies on protection to work. The access matrix models protection: rows are domains (users, processes), columns are objects (files, devices), and each entry lists the allowed operations; storing it by column gives access-control lists (ACLs), and storing it by row gives capability lists. Protection rings separate privilege levels in hardware (ring 0 for the kernel, the outermost ring for user code), and the principle of least privilege gives each user, program, or process only the rights it needs, which limits the damage from a bug or a break-in. Common threats include malware (Trojan horses, viruses, worms, spyware, ransomware), trap doors and logic bombs, code injection through buffer overflows, and network attacks such as sniffing, spoofing, man-in-the-middle, port scanning, and denial of service. Cryptography provides confidentiality and authentication: symmetric encryption (such as AES) uses one shared key and is fast, asymmetric encryption (such as RSA) uses a public and private key pair, and hashes plus digital signatures detect tampering.",
+      "points": [
+        "CIA: confidentiality, integrity, availability. Other breaches: theft of service, denial of service.",
+        "Trojan horse: harmful code disguised as something useful. Virus: attaches to a host program and spreads when it runs. Worm: a standalone program that copies itself across networks. Trap door: a hidden way past authentication. Logic bomb: triggers on a condition.",
+        "Store passwords as salted hashes; add multifactor authentication or one-time passwords.",
+        "DAC: owners set permissions (UNIX rwx). MAC: the system enforces labels users can't change (SELinux). RBAC: rights belong to roles, and users get roles.",
+        "Buffer-overflow defenses: stack canaries, non-executable stacks, address-space layout randomization (ASLR).",
+        "Defense in depth layers firewalls, intrusion detection, antivirus, auditing, and logging."
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Turnaround time",
+      "value": "<code>completion − arrival</code>"
+    },
+    {
+      "label": "Waiting time",
+      "value": "<code>turnaround − burst</code>",
+      "note": "The total time spent in the ready queue."
+    },
+    {
+      "label": "Response time",
+      "value": "<code>first run − arrival</code>",
+      "note": "Round robin improves this; it usually doesn't improve average turnaround."
+    },
+    {
+      "label": "SJF burst prediction",
+      "value": "<code>τ<sub>n+1</sub> = α·t<sub>n</sub> + (1 − α)·τ<sub>n</sub></code>",
+      "note": "t<sub>n</sub> = the last actual burst, τ<sub>n</sub> = the last prediction. With α = 0.5, τ<sub>0</sub> = 10, and an actual burst of 6, the next prediction is 8."
+    },
+    {
+      "label": "Amdahl's law",
+      "value": "<code>speedup ≤ 1 / (S + (1 − S) / N)</code>",
+      "note": "S = serial fraction, N = cores; the ceiling is 1/S."
+    },
+    {
+      "label": "Critical-section requirements",
+      "value": "Mutual exclusion, progress, bounded waiting"
+    },
+    {
+      "label": "Bounded-buffer semaphores",
+      "value": "<code>mutex = 1</code>, <code>empty = n</code>, <code>full = 0</code>"
+    },
+    {
+      "label": "Deadlock conditions",
+      "value": "Mutual exclusion, hold and wait, no preemption, circular wait (all four at once)"
+    },
+    {
+      "label": "Banker's algorithm",
+      "value": "<code>Need = Max − Allocation</code>; safe if some order lets each process finish with <code>Need ≤ Work</code>, adding its Allocation to Work"
+    },
+    {
+      "label": "Resource-allocation graph",
+      "value": "No cycle → no deadlock. Cycle with single-instance resources → deadlock. Cycle with multi-instance resources → deadlock possible"
+    },
+    {
+      "label": "Paging address split",
+      "value": "page = <code>⌊addr / page size⌋</code>, offset = <code>addr mod page size</code>, physical = <code>frame × page size + offset</code>",
+      "note": "4 KB pages, address 20,500 → page 5, offset 20; if page 5 sits in frame 9, the physical address is 36,884."
+    },
+    {
+      "label": "Page-table size",
+      "value": "entries = <code>2<sup>address bits − offset bits</sup></code>; size = entries × entry size",
+      "note": "32-bit addresses, 4 KB pages, 4-byte entries → 2<sup>20</sup> entries, 4 MB per process."
+    },
+    {
+      "label": "EAT with a TLB",
+      "value": "<code>h(t + m) + (1 − h)(t + 2m)</code>",
+      "note": "h = hit ratio, t = TLB lookup, m = memory access. If the problem ignores TLB time, use <code>h·m + (1 − h)·2m</code>."
+    },
+    {
+      "label": "Demand-paging EAT",
+      "value": "<code>(1 − p) × m + p × fault service time</code>",
+      "note": "m = 100 ns, 5 ms per fault, p = 0.0005 → 99.95 + 2,500 ≈ 2,600 ns."
+    },
+    {
+      "label": "TLB reach",
+      "value": "<code>TLB entries × page size</code>",
+      "note": "64 entries × 4 KB = 256 KB."
+    },
+    {
+      "label": "Page replacement",
+      "value": "FIFO: evict the oldest load. LRU: evict the least recently used. OPT: evict the page used farthest in the future (the lower bound)",
+      "note": "Belady's anomaly (more frames, more faults) can hit FIFO, never LRU or OPT."
+    },
+    {
+      "label": "Fragmentation",
+      "value": "Internal = unused space inside an allocated block (paging's last page). External = free memory split into holes too small to use (contiguous allocation, segmentation)",
+      "note": "Compaction or paging fixes external fragmentation."
+    },
+    {
+      "label": "Working set and thrashing",
+      "value": "<code>D = Σ WSS<sub>i</sub></code>; if D exceeds the available frames, suspend a process",
+      "note": "Admitting more processes during thrashing makes it worse."
+    },
+    {
+      "label": "Disk access time",
+      "value": "seek + rotational latency + transfer",
+      "note": "Average rotational latency = ½ × 60,000 / RPM ms (7,200 RPM → 4.17 ms)."
+    },
+    {
+      "label": "RAID usable capacity (n disks of size D)",
+      "value": "RAID 0: <code>nD</code>; RAID 1 and 10: <code>nD/2</code>; RAID 4 and 5: <code>(n − 1)D</code>; RAID 6: <code>(n − 2)D</code>",
+      "note": "4 × 2 TB: RAID 0 = 8 TB, RAID 5 = 6 TB, RAID 6 = 4 TB, RAID 10 = 4 TB."
+    },
+    {
+      "label": "FAT32",
+      "value": "Linked allocation through a file allocation table; no journal, no ACLs; maximum file size 4 GiB − 1 byte"
+    },
+    {
+      "label": "NTFS",
+      "value": "A Master File Table record per file; ACLs; journals metadata"
+    },
+    {
+      "label": "ext2 / ext3 / ext4",
+      "value": "ext2: inodes, no journal. ext3: ext2 plus a journal, backward compatible. ext4: journal plus extents and much larger file and volume limits"
+    },
+    {
+      "label": "inode",
+      "value": "Owner, permissions, timestamps, size, link count, and block pointers (12 direct plus single, double, triple indirect in ext2/ext3), but not the name",
+      "note": "The directory entry maps the name to the inode number."
+    },
+    {
+      "label": "Mounting steps",
+      "value": "1. Get the device and the mount point. 2. Verify the device holds a valid file system. 3. Record the mount in the directory structure (mount table)"
+    },
+    {
+      "label": "<code>fork()</code>",
+      "value": "Returns 0 in the child, the child's PID in the parent, −1 on failure",
+      "note": "n unconditional forks in a row → 2<sup>n</sup> processes."
+    },
+    {
+      "label": "<code>chmod</code> octal",
+      "value": "r = 4, w = 2, x = 1 for owner, group, other",
+      "note": "<code>chmod 754 f</code> → <code>rwxr-xr--</code>."
+    },
+    {
+      "label": "Basic Linux commands",
+      "value": "<code>ps</code> and <code>top</code> (processes), <code>kill</code> (send a signal), <code>mount</code> and <code>umount</code>, <code>df</code> (space per file system), <code>ls -l</code> (permissions)"
+    },
+    {
+      "label": "Linux CFS",
+      "value": "Runs the task with the smallest virtual runtime, kept in a red-black tree; nice −20 to +19, lower = more CPU"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup and the big picture",
+      "tasks": [
+        "Open the course page, read the Instructor Notes (mark every section they say to skip), and get the instructor's blank study guide.",
+        "Review your course-planning report with your instructor and set a target OA date. 2026 passers report about 20-31 hours, so budget roughly 2 hours on weekdays and 4-5 on weekend days.",
+        "Read the intro and OS-structure sections: dual mode, interrupts and traps, system calls, kernel designs, booting.",
+        "Start a vocabulary list with every term the Instructor Notes name; add to it every day."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Processes, IPC, and threads",
+      "tasks": [
+        "Read processes: states, PCB, context switch, <code>fork()</code>/<code>exec()</code>/<code>wait()</code>, shared memory vs message passing, pipes.",
+        "Read threads: what's shared vs private, the threading models, implicit threading, Amdahl's law.",
+        "Draw the five-state process diagram from memory and fill in the matching study-guide items."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "CPU scheduling",
+      "tasks": [
+        "Read scheduling criteria, FCFS, SJF and SRTF, priority with aging, round robin, multilevel and multilevel feedback queues, and Linux CFS.",
+        "Work Practice Q1 on paper with Gantt charts before checking the answer.",
+        "Make up a process set of your own and run it through SRTF and preemptive priority."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Synchronization",
+      "tasks": [
+        "Read the critical-section problem, Peterson's solution, hardware support, mutex locks, semaphores, monitors, and liveness.",
+        "Read the classic problems (bounded buffer, readers-writers, dining philosophers) and write a two-line summary of each fix.",
+        "Do Practice Q8 and Q9."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Deadlocks",
+      "tasks": [
+        "Read the four conditions, resource-allocation vs wait-for graphs, prevention, avoidance, detection, and recovery.",
+        "Do Practice Q3 and Q7. Then, using Q3's state, check whether P3's request for (1, 0, 1) can be granted (it can't: Available drops to (1, 1, 1) and no process's Need fits, so the state is unsafe).",
+        "Add starvation vs deadlock and safe vs unsafe to your vocabulary list."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Main memory",
+      "tasks": [
+        "Read contiguous allocation, first/best/worst fit, fragmentation, paging, page-table structures, the TLB, and segmentation.",
+        "Do Practice Q4 and Q6, and translate a few logical addresses to physical ones by hand.",
+        "Write one sentence each on internal vs external fragmentation; one 2026 passer had 4-5 questions on them."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Virtual memory",
+      "tasks": [
+        "Read demand paging, page-fault handling, copy-on-write, page replacement, frame allocation, thrashing, the working set, and kernel allocators.",
+        "Do Practice Q2 and Q5. Then see Belady's anomaly for yourself: run 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 through FIFO with 3 frames, then 4 (9 faults, then 10).",
+        "Sketch a mind map: paging → TLB → page faults → replacement → thrashing."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Mass storage and I/O",
+      "tasks": [
+        "Read HDD vs NVM, disk scheduling (FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK), Linux's deadline, NOOP, and CFQ schedulers, and RAID.",
+        "Read I/O hardware (polling, interrupts, DMA), the application I/O interface, the kernel I/O subsystem, and STREAMS.",
+        "Do Practice Q10, Q11, and Q12, and build a RAID table (level, method, usable capacity, failures survived) from memory."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "File systems (the most-tested area)",
+      "tasks": [
+        "Read the file-system interface: attributes, operations, access methods, directory structures, protection.",
+        "Read implementation and internals: on-disk structures, allocation methods, free-space management, journaling and recovery, mounting, VFS, NFS.",
+        "Build a FAT32 vs NTFS vs ext2/ext3/ext4 comparison (allocation, metadata, journaling, permissions) and recite the three mounting steps.",
+        "Do Practice Q13 and Q14."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Protection, security, and basic Linux",
+      "tasks": [
+        "Read protection (goals, least privilege, rings, domains, the access matrix and its implementations, RBAC) and security (threats, cryptography, authentication, defenses).",
+        "Do Practice Q15.",
+        "Review basic Linux commands and <code>chmod</code> octal permissions; 2026 passers say these appear."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Pre-assessment",
+      "tasks": [
+        "Take the PA in one sitting under exam conditions.",
+        "Log every miss by topic, plus which wrong option fooled you and why.",
+        "Finish any blank parts of the instructor study guide."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "Fix the misses, retake the PA",
+      "tasks": [
+        "Re-read the zyBook sections behind each miss; use a video or AI explanation only where you're still stuck.",
+        "Redo the calculations (Q1-Q4, Q6, Q10) without looking.",
+        "Retake the PA and aim to pass with room to spare. If it's close, add 2-3 days on your weakest areas, storage and file systems first.",
+        "Once the retake looks good, schedule the OA (check the portal for any approval step)."
+      ]
+    },
+    {
+      "day": "Day 14",
+      "focus": "Final review and the OA",
+      "tasks": [
+        "Do a last flashcard pass on your vocabulary list, weighted toward storage, file systems, STREAMS, and fragmentation.",
+        "Take the OA: read every word of each stem, eliminate the two clearly wrong options, flag hard items, and come back to them."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Four processes arrive as follows (times in ms): P1 at 0 with a 5 ms burst, P2 at 1 with 3, P3 at 3 with 6, and P4 at 7 with 2. Find the average waiting time and average turnaround time under FCFS, non-preemptive SJF, and round robin with a 2 ms quantum.",
+      "answer": "FCFS: waiting 4.0 ms, turnaround 8.0 ms. SJF: waiting 3.0 ms, turnaround 7.0 ms. RR (q = 2): waiting 5.0 ms, turnaround 9.0 ms.",
+      "why": "Turnaround = completion − arrival; waiting = turnaround − burst.<br><b>FCFS:</b> P1 0-5, P2 5-8, P3 8-14, P4 14-16. Turnaround 5, 7, 11, 9 (sum 32, average 8.0). Waiting 0, 4, 5, 7 (sum 16, average 4.0).<br><b>SJF:</b> only P1 is there at 0, so it runs 0-5. At 5, P2 (3) beats P3 (6); P4 hasn't arrived. At 8, P4 (2) beats P3 (6). Order: P1 0-5, P2 5-8, P4 8-10, P3 10-16. Turnaround 5, 7, 13, 3 (sum 28, average 7.0). Waiting 0, 4, 7, 1 (sum 12, average 3.0).<br><b>RR, q = 2:</b> P1 0-2 (queue: P2, P1), P2 2-4 (P3 arrived at 3; queue: P1, P3, P2), P1 4-6 (queue: P3, P2, P1), P3 6-8 (P4 joins at 7; queue: P2, P1, P4, P3), P2 8-9 done, P1 9-10 done, P4 10-12 done, P3 12-16 done. Turnaround 10, 8, 13, 5 (sum 36, average 9.0). Waiting 5, 5, 7, 3 (sum 20, average 5.0).<br>SJF wins on waiting time, and preemptive SRTF would do even better (P1 0-1, P2 1-4, P1 4-8, P4 8-10, P3 10-16: average wait 2.75 ms). RR loses on turnaround but has the best average response time: 1.75 ms vs 4.0 for FCFS. Check: turnaround minus waiting always averages 4, the mean burst."
+    },
+    {
+      "q": "A process has 3 frames, all empty at the start, and references pages in this order: 1, 2, 3, 2, 4, 1, 2, 5, 2, 1, 3, 2. How many page faults occur under FIFO, LRU, and OPT?",
+      "answer": "FIFO 8, LRU 7, OPT 6.",
+      "why": "The first three references fault under every policy (frames 1, 2, 3), and the 2 that follows is a hit.<br><b>FIFO</b> (evict the oldest load): 4 evicts 1; 1 evicts 2; 2 evicts 3; 5 evicts 4 (frames 1, 2, 5); 2 and 1 hit; 3 evicts 1; the last 2 hits. Faults: 3 + 5 = 8.<br><b>LRU</b> (evict the least recently used): 4 evicts 1; 1 evicts 3; 2 hits; 5 evicts 4 (frames 2, 1, 5); 2 and 1 hit; 3 evicts 5; the last 2 hits. Faults: 3 + 4 = 7.<br><b>OPT</b> (evict the page used farthest in the future): 4 evicts 3 (not needed for 6 more references); 1 and 2 hit; 5 evicts 4 (never used again); 2 and 1 hit; 3 evicts 1 or 5 (neither is used again); the last 2 hits. Faults: 3 + 3 = 6.<br>OPT is the lower bound. FIFO is the one that can show Belady's anomaly (more frames, more faults); LRU and OPT can't."
+    },
+    {
+      "q": "Resources A, B, C. Available = (2, 1, 2). Allocation: P0 (1, 0, 2), P1 (2, 1, 0), P2 (1, 2, 1), P3 (0, 1, 1). Max: P0 (5, 3, 4), P1 (3, 2, 2), P2 (4, 2, 2), P3 (2, 4, 3). Using the Banker's safety algorithm, which statement is correct?",
+      "choices": [
+        "Safe; P1, P2, P3, P0 is a safe sequence",
+        "Safe; P2, P1, P0, P3 is a safe sequence",
+        "Safe; P1, P3, P2, P0 is a safe sequence",
+        "Unsafe; no order lets every process finish"
+      ],
+      "answer": "Safe; P1, P2, P3, P0 is a safe sequence",
+      "why": "Need = Max − Allocation: P0 (4, 3, 2), P1 (1, 1, 2), P2 (3, 0, 1), P3 (2, 3, 2).<br>Start with Work = Available = (2, 1, 2). Only P1 fits: its Need (1, 1, 2) ≤ (2, 1, 2), while P0 and P2 need more A and P3 needs more B. P1 finishes and returns its Allocation: Work = (2, 1, 2) + (2, 1, 0) = (4, 2, 2).<br>P2 now fits (3, 0, 1): Work = (4, 2, 2) + (1, 2, 1) = (5, 4, 3). P0 and P3 each needed 3 of B, so P2 had to come before them.<br>P3 fits (2, 3, 2): Work = (5, 5, 4). P0 fits (4, 3, 2): Work = (6, 5, 6), the system total, so every process can finish and the state is safe.<br>The other sequences break early: P2 can't go first (needs 3 of A, 2 available), and P3 can't go second (needs 3 of B, 2 available). P1, P2, P0, P3 is also safe; a state can have more than one safe sequence."
+    },
+    {
+      "q": "Memory access takes 50 ns and a TLB lookup takes 5 ns, counted on every access (hit or miss). The page table is single-level and the TLB hit ratio is 90%. What is the effective memory-access time?",
+      "choices": [
+        "55 ns",
+        "59.5 ns",
+        "60 ns",
+        "105 ns"
+      ],
+      "answer": "60 ns",
+      "why": "A hit costs the lookup plus one memory access: 5 + 50 = 55 ns. A miss costs the lookup, one access to read the page-table entry, and one access for the data: 5 + 50 + 50 = 105 ns.<br>EAT = 0.90 × 55 + 0.10 × 105 = 49.5 + 10.5 = <b>60 ns</b>.<br>55 ns is what you'd get by ignoring TLB time (0.9 × 50 + 0.1 × 100), and 59.5 ns forgets the lookup on a miss. Always check whether the stem counts TLB time."
+    },
+    {
+      "q": "A system uses demand paging with global page replacement. Its processes start faulting constantly, the paging device is saturated, and CPU utilization drops. The scheduler sees the low CPU utilization and admits more processes. What happens next?",
+      "choices": [
+        "CPU utilization recovers because more processes are ready to run",
+        "Thrashing gets worse because the new processes take frames from the others and the fault rate climbs",
+        "Global replacement guarantees each new process enough frames, so faults level off",
+        "The page-fault rate drops because the new processes share the existing working sets"
+      ],
+      "answer": "Thrashing gets worse because the new processes take frames from the others and the fault rate climbs",
+      "why": "This is the classic thrashing spiral. With global replacement, a faulting process takes frames from other processes, which then fault too; they all queue for the paging device, the ready queue empties, and CPU utilization falls. Raising the degree of multiprogramming leaves each process even fewer frames. The cure is the opposite: suspend or swap out processes, give each one its working set, or use page-fault-frequency control. Local replacement limits the spread but doesn't remove the cause."
+    },
+    {
+      "q": "A system uses paging with 4 KB (4,096-byte) pages. A process needs 18,000 bytes. Which statement is correct?",
+      "choices": [
+        "It wastes 2,480 bytes to internal fragmentation in its last page",
+        "It wastes 2,480 bytes to external fragmentation between its frames",
+        "It wastes 1,616 bytes to internal fragmentation in its last page",
+        "It wastes nothing, because paging eliminates both kinds of fragmentation"
+      ],
+      "answer": "It wastes 2,480 bytes to internal fragmentation in its last page",
+      "why": "18,000 / 4,096 ≈ 4.39, so the process needs 5 pages = 20,480 bytes. Waste = 20,480 − 18,000 = <b>2,480 bytes</b>, and it's internal: the space is allocated to the process but unused, at the end of its last page. 1,616 is how much of the last page is used (18,000 − 4 × 4,096). Paging removes external fragmentation, since any free frame works, but not internal fragmentation; contiguous allocation and segmentation are the schemes that suffer external fragmentation."
+    },
+    {
+      "q": "Which pairing of a deadlock-prevention rule with the condition it removes is correct?",
+      "choices": [
+        "Each process requests every resource it needs before it starts → removes circular wait",
+        "Every resource is made sharable → removes hold and wait",
+        "The OS may take resources away from a process that is waiting → removes mutual exclusion",
+        "Resource types are numbered and requested only in increasing order → removes circular wait"
+      ],
+      "answer": "Resource types are numbered and requested only in increasing order → removes circular wait",
+      "why": "With a total order, a process only ever waits for a higher-numbered resource than any it holds, so a cycle of waits can't form; it's the most practical prevention rule. Requesting everything up front removes hold and wait (at the cost of low utilization and possible starvation). Taking resources from a waiting process removes no preemption. Making every resource sharable would remove mutual exclusion, but things like mutex locks and printers can't be shared."
+    },
+    {
+      "q": "Two threads share <code>turn</code>. Thread i spins until <code>turn == i</code>, runs its critical section, then sets <code>turn</code> to the other thread's number. Thread 0 finishes its critical section and wants to enter again, but thread 1 is in its remainder section and won't try to enter for a long time. Which critical-section requirement does this strict alternation violate?",
+      "choices": [
+        "Mutual exclusion",
+        "Progress",
+        "Bounded waiting",
+        "None; it satisfies all three"
+      ],
+      "answer": "Progress",
+      "why": "Mutual exclusion holds, since only the thread whose turn it is can enter. Progress fails: the critical section is empty and only thread 0 wants it, yet thread 0 must wait for thread 1, a thread in its remainder section, to take its turn first. Bounded waiting holds, because each thread can enter at most once while the other is waiting. Peterson's solution fixes this by adding <code>flag[]</code>, so a thread waits only when the other actually wants to enter."
+    },
+    {
+      "q": "Five dining philosophers each pick up the chopstick on their left, then the one on their right. Which change is guaranteed to prevent deadlock?",
+      "choices": [
+        "Have every philosopher pick up the right chopstick first instead",
+        "Make each philosopher wait a fixed time before reaching for the second chopstick",
+        "Allow at most four philosophers at the table at the same time",
+        "Raise the priority of whichever philosopher has waited longest"
+      ],
+      "answer": "Allow at most four philosophers at the table at the same time",
+      "why": "If all five grab their first chopstick at once, each holds one and waits for a neighbor's: circular wait, so deadlock. With at most four seated, five chopsticks are shared by four philosophers, so at least one can always get both, eat, and release them. Switching everyone to right-first is still symmetric, so they can all grab their right chopstick and wait forever. A fixed delay doesn't break the cycle, since all five can pause and then wait in lockstep. Raising the longest waiter's priority is aging, which targets starvation, not deadlock. The textbook's other fixes: pick up both chopsticks only when both are free, or have odd and even philosophers reach in opposite orders. A deadlock-free solution can still starve a philosopher."
+    },
+    {
+      "q": "A disk head is at cylinder 70. The pending requests, in arrival order, are 25, 110, 64, 180, 90, 12. Using SSTF, what is the total head movement?",
+      "choices": [
+        "278 cylinders",
+        "290 cylinders",
+        "316 cylinders",
+        "460 cylinders"
+      ],
+      "answer": "290 cylinders",
+      "why": "SSTF always goes to the closest pending request: 70 → 64 (6) → 90 (26) → 110 (20) → 180 (70) → 25 (155) → 12 (13). Total = 6 + 26 + 20 + 70 + 155 + 13 = <b>290</b>.<br>The other numbers come from other algorithms on the same queue (cylinders 0-199, head moving toward higher numbers): FCFS = 460, SCAN = 316 (up to 199, then down to 12), LOOK = 278 (up to 180, then down to 12). So SSTF isn't optimal, and it can starve requests far from the head."
+    },
+    {
+      "q": "Which statement about NAND flash (NVM) storage is correct?",
+      "choices": [
+        "A page can be overwritten in place, just like an HDD sector",
+        "Its cells survive unlimited erase cycles, so wear leveling isn't needed",
+        "Seek time and rotational latency dominate its access time, so SCAN-style scheduling helps a lot",
+        "Data is written in pages but erased only in whole blocks, so the controller writes updates to fresh pages and garbage-collects blocks full of invalid pages"
+      ],
+      "answer": "Data is written in pages but erased only in whole blocks, so the controller writes updates to fresh pages and garbage-collects blocks full of invalid pages",
+      "why": "NAND can't overwrite in place: a page must be erased first, and erases happen a block (many pages) at a time and are slow. So the flash translation layer writes new data to a free page and marks the old one invalid, and garbage collection later copies any valid pages out of a block and erases it; over-provisioned spare space gives it room to work. Cells wear out after a limited number of program-erase cycles, so wear leveling spreads erases evenly. With no moving parts there's no seek or rotation, so NVM is usually scheduled FCFS (Linux's NOOP scheduler merges adjacent requests)."
+    },
+    {
+      "q": "In UNIX System V STREAMS, which part of a stream interfaces directly with the user process?",
+      "choices": [
+        "The stream head",
+        "The driver end",
+        "A stream module",
+        "The interrupt vector"
+      ],
+      "answer": "The stream head",
+      "why": "A stream is a full-duplex connection between a user process and a device driver: the stream head talks to the user process, the driver end controls the device, and zero or more modules sit between them. Each part has a read queue and a write queue, and they pass messages; modules are pushed onto a stream with <code>ioctl()</code>. The interrupt vector is the table of interrupt-handler addresses, not part of a stream."
+    },
+    {
+      "q": "When an OS mounts a file system, which step comes right after it is given the device name and the mount point?",
+      "choices": [
+        "It copies the device's files into the mount-point directory",
+        "It formats the device to match the mount point's file-system type",
+        "It verifies that the device holds a valid file system",
+        "It deletes any files already in the mount-point directory"
+      ],
+      "answer": "It verifies that the device holds a valid file system",
+      "why": "The textbook mount procedure has three steps: (1) the OS is given the device and the mount point (some systems also need the file-system type); (2) it verifies the device holds a valid file system, by having the device driver read the device's directory and checking its format; (3) it records in its directory structure (the mount table) that a file system is mounted there. Nothing is formatted or copied. If the mount-point directory already had files, they're hidden, not deleted, until the file system is unmounted. Check your zyBook's mounting section for its exact wording."
+    },
+    {
+      "q": "Which statement about common file systems is correct?",
+      "choices": [
+        "FAT32 journals metadata, so it recovers quickly after a crash",
+        "NTFS keeps a Master File Table record for every file and journals metadata changes",
+        "ext2 added journaling to ext3 while staying backward compatible",
+        "An ext4 inode stores the file's name along with its block pointers"
+      ],
+      "answer": "NTFS keeps a Master File Table record for every file and journals metadata changes",
+      "why": "NTFS describes every file with at least one Master File Table record, supports ACLs, and logs metadata changes so it can recover quickly. FAT32 has no journal and no permissions or ACLs. The third choice has the order backwards: ext3 added a journal to ext2 and stays compatible with it, and ext4 later added extents and larger limits. No inode stores the file name; the directory entry maps the name to the inode number, and the inode holds metadata and block pointers (extents in ext4)."
+    },
+    {
+      "q": "In an access matrix, rows are domains and columns are objects. If the OS stores the matrix by column, keeping with each object a list of the domains that may use it and their rights, what is that implementation called?",
+      "choices": [
+        "A lock-key scheme",
+        "A capability list",
+        "A global table",
+        "An access-control list"
+      ],
+      "answer": "An access-control list",
+      "why": "Storing each column with its object gives an access-control list (ACL): the file itself records who may read, write, or execute it. Storing each row with its domain gives a capability list: the domain holds protected tokens for the objects it may use. A global table keeps every (domain, object, rights) triple in one big list, and the lock-key scheme is a compromise between the two (objects have locks, domains have keys). Pair this with least privilege: each domain should get only the rights it needs."
+    }
+  ],
+  "pitfalls": [
+    "Skimming the zyBook or swapping it for AI summaries. 2026 passers who skimmed were humbled by the PA, and one lost about two days to an AI summary that dropped figures and included skippable material.",
+    "Trusting the PA's topic weights. Students report that the OA's mix of topics differs from the PA's, and newer reports say the OA asks more specific, combined questions.",
+    "Retaking the PA until you've memorized it. One commenter blamed a narrow miss on skimming the zyBook and over-repeating the PA; learn why each option is right or wrong.",
+    "Mixing up scheduling metrics: turnaround runs from arrival to completion, waiting is turnaround minus burst, and response runs from arrival to first run. Plain SJF usually means the non-preemptive version; preemptive SJF is called SRTF. Round robin improves response time, not average turnaround.",
+    "Treating unsafe as deadlocked, or every resource-allocation-graph cycle as a deadlock. Unsafe only means deadlock is possible, and a cycle proves deadlock only when every resource has a single instance.",
+    "Swapping internal and external fragmentation. Paging and the buddy allocator waste space inside allocations (internal); contiguous allocation and segmentation leave unusable holes between them (external).",
+    "Applying Belady's anomaly to LRU or OPT. Only FIFO-style algorithms can fault more with more frames, and LRU usually beats FIFO but not on every reference string.",
+    "File-system mix-ups: the inode doesn't store the file name, FAT32 and ext2 don't journal, ext3 is the one that added the journal, and mounting hides (doesn't delete) the mount point's old files.",
+    "Disk-scheduling totals: check whether C-SCAN and C-LOOK count the return seek, and remember that SSTF can starve far-away requests.",
+    "Rushing the wording. Stems hinge on words like not, always, best, and guaranteed; eliminate the two clearly wrong options, then compare the last two."
+  ],
+  "resources": [
+    {
+      "label": "Course zyBook and Instructor Notes",
+      "kind": "official",
+      "note": "The core text in every 2026 account. Read it in order and skip only the sections the Instructor Notes mark as skippable. In the WGU course portal."
+    },
+    {
+      "label": "Instructor study guide",
+      "kind": "official",
+      "note": "A blank guide you fill in while reading; 2026 passers call it the most valuable resource. Ask your instructor if you can't find it."
+    },
+    {
+      "label": "Pre-assessment, section quizzes, chapter tests, and the zyBook practice exam",
+      "kind": "practice",
+      "note": "Use them as a loop: take the PA, study every miss, retake. One Jan 2026 passer found the OA closer to the zyBook practice questions than to the PA."
+    },
+    {
+      "label": "WGU Program Guidebook: B.S. Computer Science",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf",
+      "kind": "official",
+      "note": "The official course description and the five competencies (published Jun 2026)."
+    },
+    {
+      "label": "Operating System Concepts 10e table of contents (zyBooks)",
+      "url": "https://www.zybooks.com/catalog/silberschatz-operating-system-concepts-10th-edition/",
+      "kind": "tool",
+      "note": "Handy for mapping topics if your zyBook follows this book; WGU hasn't confirmed that it does."
+    },
+    {
+      "label": "Operating System Concepts 10e slides",
+      "url": "https://www.os-book.com/OS10/slide-dir/index.html",
+      "kind": "tool",
+      "note": "Free chapter slides from the textbook's authors; the closest free match to the zyBook's topics."
+    },
+    {
+      "label": "OSTEP: Operating Systems: Three Easy Pieces",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+      "kind": "tool",
+      "note": "A free textbook with the clearest explanations of scheduling, paging, concurrency, disks, RAID, and file systems. It's thin on STREAMS, NAS/SAN, and protection rings, so use the zyBook for those."
+    },
+    {
+      "label": "Brian Will: Operating systems basics (YouTube)",
+      "kind": "video",
+      "note": "A Jan 2026 passer recommended it as a final review right before the OA. Search the title on YouTube."
+    },
+    {
+      "label": "UC Berkeley CS162 lectures",
+      "kind": "video",
+      "note": "A free university OS course a 2026 r/WGU commenter suggested. It goes deeper than the OA needs, so use it for topics that won't click."
+    },
+    {
+      "label": "Flashcards from your own vocabulary list",
+      "kind": "practice",
+      "note": "Several passers finished with a flashcard pass. Build cards from the Instructor Notes and the study guide, and skip any shared deck that claims to hold real exam questions."
+    },
+    {
+      "label": "Garg and Verma, Operating Systems: An Introduction (2017)",
+      "kind": "tool",
+      "note": "An Aug 2026 passer read this roughly 300-page textbook instead of the zyBook. A fallback if the zyBook isn't clicking, but a Jun 2026 passer said everything on the OA came from the zyBook."
+    },
+    {
+      "label": "D686 - How I Completed it in a Week (Full Guide)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1qripob/d686_how_i_completed_it_in_a_week_full_guide/",
+      "kind": "community",
+      "note": "The most complete 2026 step-by-step plan and topic list from a passer."
+    }
+  ],
+  "community": {
+    "summary": "The 2026 posts agree that the zyBook is enough if you really read it: people who skimmed got humbled by the PA, and AI summaries left gaps. The recipe that keeps coming up is to read the zyBook with the Instructor Notes' skips, fill in the instructor's study guide, take the PA, study every miss, retake it, then drill vocabulary. Storage and file systems (FAT32, NTFS, ext2/3/4, mounting, disk scheduling) dominate most reports, with STREAMS, fragmentation, and basic Linux commands close behind, though the topic mix varies between attempts. The newest comments (Jul-Nov 2026) call the OA a carefully worded vocabulary test that's harder and more specific than the PA, and several students say to take Computer Architecture first. Reported study time is mostly 20-31 hours over 3-7 days, though some needed 2-4 weeks.",
+    "coverage": "12 posts, Jan 2025 - Aug 2026, r/WGU_CompSci (comments through Nov 2026, plus replies on one r/WGU thread)",
+    "posts": [
+      {
+        "title": "D686 - Finished in 5 Days (20 Hrs Study Time)!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vrl0vq/d686_finished_in_5_days_20_hrs_study_time/",
+        "date": "Aug 2026",
+        "takeaway": "Finished in 5 days and about 20 hours by reading a Garg and Verma OS textbook instead of the zyBook. Called the instructor's study guide the most valuable resource and used flashcards, Wikipedia, and GeeksforGeeks for confusing topics."
+      },
+      {
+        "title": "D686 how do people memorize all of the information? The amount is insane",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1v2yw3u/d686_how_do_people_memorize_all_of_the/",
+        "date": "Jul 2026",
+        "takeaway": "A student swamped by the terminology got a long thread of advice: run the PA loop, focus on streams, file systems, fragmentation, and simple Linux commands, and take Computer Architecture first. One replier said the OA felt close to the PA; another said most of their questions were on streams and file systems."
+      },
+      {
+        "title": "D686 Operating System and C952 Computer Architecture",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1ure3tj/d686_operating_system_and_c952_computer/",
+        "date": "Jul 2026",
+        "takeaway": "Asked which textbooks the D686 and C952 zyBooks are built on. Replies on the r/WGU original suggested other OS books and the free OSTEP text, but nobody confirmed the zyBook's source."
+      },
+      {
+        "title": "D686 Completed in 31h",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u9k7o0/d686_completed_in_31h/",
+        "date": "Jun 2026",
+        "takeaway": "No tech background, 31 hours, zyBook only: skimming first sank the PA, so read carefully and map how processes, threads, synchronization, and scheduling connect. Comments mention FAT and NTFS questions, and a Nov 2026 reply calls the OA mostly a vocabulary test and suggests writing out every term the Instructor Notes list."
+      },
+      {
+        "title": "D686 Operating Systems for Computer Scientists",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1st65et/d686_operating_systems_for_computer_scientists/",
+        "date": "Apr 2026",
+        "takeaway": "About half the OA was close to the PA and the rest felt like guessing, so passing the PA alone isn't enough preparation."
+      },
+      {
+        "title": "how is c191 actually different from d686?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1somqgm/how_is_c191_actually_different_from_d686/",
+        "date": "Apr 2026",
+        "takeaway": "A student moving from C191 to D686 asked how they differ. Replies said the zyBook sections are short and the course tells you what to read, but there's no shortcut around reading them, and AI-generated study guides left gaps."
+      },
+      {
+        "title": "Passed D686 in a couple weeks! Here's what worked for me",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1ridoly/passed_d686_in_a_couple_weeks_heres_what_worked/",
+        "date": "Mar 2026",
+        "takeaway": "Failed narrowly, then passed the retake. Found storage management the heaviest area, fragmentation well covered, and some material they hadn't seen in the course."
+      },
+      {
+        "title": "D686 Passed",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1razauu/d686_passed/",
+        "date": "Feb 2026",
+        "takeaway": "Read the zyBook in order, skipping only what the Instructor Notes flag, and recommends taking Computer Architecture first. In the comments, one student took about 4 weeks and another blamed a narrow miss on skimming and over-retaking the PA."
+      },
+      {
+        "title": "D686 - How I Completed it in a Week (Full Guide)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1qripob/d686_how_i_completed_it_in_a_week_full_guide/",
+        "date": "Jan 2026",
+        "takeaway": "A step-by-step plan: zyBook with the instructor's skips, fill in the blank study guide, chapter quizzes and tests, PA, review, PA again, OA. Its topic list covers STREAMS, file systems, the classic sync problems, Banker's, resource-allocation and wait-for graphs, basic Linux, and the three mounting steps; a Jul 2026 reply adds the critical-section problem, NAND storage, and CFQ."
+      },
+      {
+        "title": "Another one down! Just passed D686 - Operating Systems for Computer Scientists.",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1qrby6n/another_one_down_just_passed_d686_operating/",
+        "date": "Jan 2026",
+        "takeaway": "An image post whose comments say disk scheduling and file systems are a big part of the OA; the rest of the course covers the kernel and system calls, CPU scheduling, and memory management."
+      },
+      {
+        "title": "Passed D686 Operating Systems OA – What Worked for Me",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1qqwgo2/passed_d686_operating_systems_oa_what_worked_for/",
+        "date": "Jan 2026",
+        "takeaway": "Passed in 3-4 days at 5-8 hours a day: PA early, instructor study guide, zyBook practice test, PA retake, then flashcards. Found the OA harder than the PA and suggests eliminating the two clearly wrong options; know FAT32, NTFS, ext2/3/4, mounting, file metadata, STREAMS, and basic Linux."
+      },
+      {
+        "title": "New (2025) CS Program Completion (more in comments...)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1i674zv/",
+        "date": "Jan 2025",
+        "takeaway": "An early account of the new BSCS courses: D686 felt about as hard as Computer Architecture, the zyBook's instructor-added sections, quizzes, and tests were worth doing, and the PA was a decent gauge."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU Program Guidebook: B.S. Computer Science (published Jun 2026)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "zyBooks catalog: Silberschatz, Operating System Concepts 10e (table of contents)",
+      "url": "https://www.zybooks.com/catalog/silberschatz-operating-system-concepts-10th-edition/"
+    },
+    {
+      "label": "Operating System Concepts 10e slides (os-book.com)",
+      "url": "https://www.os-book.com/OS10/slide-dir/index.html"
+    },
+    {
+      "label": "OSTEP: Scheduling: Introduction",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf"
+    },
+    {
+      "label": "OSTEP: Swapping: Policies (page replacement, thrashing)",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf"
+    },
+    {
+      "label": "OSTEP: Hard Disk Drives (access time, disk scheduling)",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/file-disks.pdf"
+    },
+    {
+      "label": "OSTEP: Flash-based SSDs",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/file-ssd.pdf"
+    },
+    {
+      "label": "OSTEP: File System Implementation (inodes)",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf"
+    },
+    {
+      "label": "Wikipedia: Banker's algorithm",
+      "url": "https://en.wikipedia.org/wiki/Banker%27s_algorithm"
+    },
+    {
+      "label": "Wikipedia: STREAMS",
+      "url": "https://en.wikipedia.org/wiki/STREAMS"
+    },
+    {
+      "label": "Wikipedia: File Allocation Table",
+      "url": "https://en.wikipedia.org/wiki/File_Allocation_Table"
+    },
+    {
+      "label": "Wikipedia: NTFS",
+      "url": "https://en.wikipedia.org/wiki/NTFS"
+    },
+    {
+      "label": "Wikipedia: ext3",
+      "url": "https://en.wikipedia.org/wiki/Ext3"
+    },
+    {
+      "label": "r/WGU_CompSci: Passed D686 in a couple weeks (Mar 2026; question count and weights)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1ridoly/passed_d686_in_a_couple_weeks_heres_what_worked/"
+    },
+    {
+      "label": "r/WGU_CompSci: D686 Completed in 31h (Jun 2026; comments through Nov 2026)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u9k7o0/d686_completed_in_31h/"
+    }
+  ],
+  "caveats": [
+    "WGU doesn't name the book behind the D686 zyBook. Its topics match Silberschatz, Galvin and Gagne's Operating System Concepts (10th ed.), but students' chapter numbers don't line up with that book consistently: a Jun 2026 post puts synchronization before CPU scheduling, and a Nov 2026 comment's five-area grouping (intro, process management, memory management, storage management, protection and security) uses numbers that don't match it either. This guide goes by topic names, so follow your zyBook's own table of contents.",
+    "Exam numbers are thin: no public source gives the time limit, passing score, or retake rules. Check the assessment page in the portal.",
+    "Reports differ on how closely the OA matches the PA and on which topics show up: one Mar 2026 passer got no STREAMS questions while a Jul 2026 student got mostly STREAMS and file systems, and one test had no deadlock-graph questions. That suggests question sets vary between attempts, so cover every area.",
+    "The newest D686 posts in the research are from Aug 2026 (comments run to Nov 2026). Check the course announcements and recent posts when you begin in case the zyBook or OA has changed.",
+    "Reddit details reached this guide through an archive tool and a pasted digest, so wording and numbers are paraphrased and approximate. Older advice for the predecessor course, C191, isn't used because it describes a different exam.",
+    "The practice questions and worked numbers are original, built from textbook topics rather than the PA or OA, so they can't be calibrated to real exam difficulty. Textbooks differ on conventions (whether TLB time counts, round-robin tie-breaking, whether a low priority number means high priority), so read each stem for them."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@serafimcloud/components/empty-state",
+  "title": "Empty State | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/25/2024",
+  "dependencies": "lucide-react (Info tab); the prompt also bundles shadcn/button and lists NPM installs: lucide-react, @radix-ui/react-slot, class-variance-authority",
+  "promptFile": "21st/prompts/serafimcloud--empty-state.md",
+  "chars": 7123,
+  "sha256": "ad2daa3a09deecfbba4e217a82f67e1a14093757551a6c4c798ecfdaa4210536",
+  "sha256Of": "file bytes",
+  "capturedSha256": "b44bd77da0eccba11dd0cff94ccaaf71ce7f77ce11ccb3fb26b1ce0a2fcd386c",
+  "verified": true,
+  "notes": "Info tab: Dependencies lucide-react; Tags Card, Empty State; License MIT License; Published 10/25/2024. Prompt copied via Change copy action > Claude Code. Hash verified on first write.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 9 line ends (line 4 (2 spaces), line 10 (1 space), line 92 (1 space), line 93 (1 space), line 94 (1 space), line 95 (1 space), line 96 (1 space), line 97 (1 space), line 98 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (7123) is the text's length in UTF-16 code units and equals the file's."
+}

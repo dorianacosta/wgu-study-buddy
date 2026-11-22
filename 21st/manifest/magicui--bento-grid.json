@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@magicui/components/bento-grid",
+  "title": "Bento Grid | Community Components | 21st",
+  "license": "MIT License",
+  "published": "12/4/2024",
+  "dependencies": "@radix-ui/react-icons (Info tab); the prompt's install step lists @radix-ui/react-icons, @radix-ui/react-slot, class-variance-authority, and it bundles the shadcn/button file as a registry dependency",
+  "promptFile": "21st/prompts/magicui--bento-grid.md",
+  "chars": 6848,
+  "sha256": "c3eaead1efa238985d958a81a299dec070edbb22f332f1721ec5ef24839b778b",
+  "sha256Of": "file bytes",
+  "capturedSha256": "052792bbb4d9fd206ef58eda8cbbed0d59ba46b503af2d6688ddf8bc3a7bd7fb",
+  "verified": true,
+  "notes": "Page redirected to https://21st.dev/@dillionverma/components/bento-grid (Magic UI by Dillion Verma). Prompt captured from the page's Copy prompt menu, 'Optimized for: Claude Code' option. Source listed on Info tab: magicui.design/docs/components/bento-grid.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (6848) is the text's length in UTF-16 code units and equals the file's."
+}

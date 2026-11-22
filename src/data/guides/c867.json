@@ -1,0 +1,575 @@
+{
+  "code": "C867",
+  "summary": "C867 teaches C++ and is graded by one performance assessment: there's no exam, just a multi-file student-records program built from classes, an enumerated type, an array of pointers, string parsing and dynamic memory, graded against a rubric and, students report, kept in a WGU GitLab repository. WGU lists it at 4 CUs in term 3 of the B.S. Computer Science; a Feb 2026 beginner called it the hardest course so far because the real challenge is seeing how the pieces fit together and getting C++ to compile, and two passers report taking 8 days and about 2.5 weeks. Commit history may count too: a commenter on a Dec 2024 post reports a submission came back because its history lacked a separate commit for each rubric part.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (C++ project, evaluator-graded)",
+    "format": "One task · a multi-file C++ program kept in a WGU GitLab repository (students report) · graded against a rubric · no exam",
+    "details": [
+      "No exam: you pass by submitting one C++ program that evaluators score against the task's rubric, and anything that misses a rubric line comes back for revision. WGU lists the course at 4 CUs in term 3 of both BSCS 202412 and BSCS 202611, and its description centers on C++ syntax, the development environment and tools for solving real-world problems.",
+      "In general terms (your task page has the exact requirements), the task is a small student-records program. You get a short table of student records written as comma-separated strings, and you build header and source files for an enumerated type, a class that holds one record (private data, accessors, mutators, a constructor and a print function) and a roster class that parses each string into an object held through an array of pointers. Roster functions report on and remove stored records, main() runs them in the order the task gives, and a destructor frees the memory you allocated.",
+      "Version control: students report the project lives in a WGU-provided GitLab repository whose history the evaluators read. A commenter on a Dec 2024 post says a submission came back because the history didn't have a separate commit for each rubric part (B through G), so commit and push after every part.",
+      "Supplemental resources on the course page include a video on parsing the student data string and a reorganized version of the task prompt; a Feb 2026 passer recommends both.",
+      "Integrity rules from WGU's catalog: the work must be your own, AI use must follow WGU's AI policy, and students may not review completed assessments for any reason, which covers finished versions of this project posted online. Performance assessments go through a similarity check, and WGU keeps a copy of every submission.",
+      "Effort: a Feb 2026 beginner took about 2.5 weeks at 1–4 hours a day and called it the hardest course so far, while an experienced developer new to C++ finished in 8 days (Dec 2024)."
+    ],
+    "tips": [
+      "Read the whole task, the rubric and the reorganized prompt before writing code, then sketch how the pieces connect: which file declares what, which code creates each object and which code deletes it. The Feb 2026 passer says understanding how the project fits together was the hard part.",
+      "Build in steps that compile: the enum and the record class first, then parsing one string, then the roster's array, then one roster function at a time, running the program after each step.",
+      "Commit and push after each rubric part with a message that names the part, so the history maps onto the rubric; a commenter on a Dec 2024 post reports a submission came back because its history lacked a separate commit for each part.",
+      "Learn only the C++ the task needs: classes, headers, arrays, pointers with <code>new</code> and <code>delete</code>, string parsing with <code>find</code> and <code>substr</code>, enums and loops. The Feb 2026 passer found the zyBook inefficient for the project and used it for early syntax and a few chapter 7–9 labs.",
+      "Use AI tools only as WGU's AI policy allows. The Feb 2026 passer used ChatGPT just to explain concepts and catch typos, and warns it over-engineers memory management beyond what the task asks.",
+      "Meet the rubric and stop: the program only has to satisfy the task, so skip menus, file input and smart-pointer rewrites it doesn't ask for.",
+      "Before submitting, pull a fresh copy of the repository, rebuild from scratch, run it once more and compare the output line by line with the task's required order.",
+      "Book an instructor appointment early if you're stuck on pointers or linker errors; a short screen share often fixes what hours of searching don't."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your Course Planning Tool report with your instructor and create your personalized course plan together.",
+    "The learner applies fundamental programming concepts in a specific programming environment.",
+    "The learner applies object-oriented programming concepts in order to create a basic application.",
+    "The learner applies pointers to solve complex problems.",
+    "The learner creates arrays in order to solve complex problems.",
+    "The learner prepares code which declares, initializes, and assigns values to variables of appropriate types as part of the application development process.",
+    "The learner writes code that creates and manipulates functions and files.",
+    "The learner writes code that implements decision and loop constructs to control the flow of a program."
+  ],
+  "topics": [
+    {
+      "title": "How a multi-file C++ project fits together",
+      "eli5": "Think of the program as a small office: header files are the job descriptions, source files are the people doing the work, and main() is the manager handing out tasks in order.",
+      "detail": "A program this size is split into header files (.h), which declare what exists (classes, member functions, enums), and source files (.cpp), which define how each part works; main.cpp holds <code>main()</code>, where execution starts. Each .cpp file is compiled on its own into an object file, and the linker joins them into one executable, so every function that's declared in a header and called somewhere needs exactly one definition, normally in a .cpp file that's part of the build (a body written inside the class definition also counts). Before writing code, trace the data's path: text records come in, each record is split into fields, each set of fields becomes an object created with <code>new</code>, a container class stores pointers to those objects, <code>main()</code> asks the container to print, filter or remove, and the container's destructor deletes whatever it created. Knowing which class owns each object, and therefore which one deletes it, prevents most memory bugs.",
+      "points": [
+        "Interface vs implementation: <code>book.h</code> says <i>what</i> a class offers, and <code>book.cpp</code> says <i>how</i>",
+        "Ownership rule: the code that calls <code>new</code> is responsible for the matching <code>delete</code>, usually in a destructor",
+        "Grow the program in compiling increments: add one class or function, build, run, commit",
+        "Commit and push after each rubric part; a commenter on a Dec 2024 post reports a submission came back for missing per-part commits",
+        "The rubric is the spec: extra features don't earn credit, and every extra line is another place for a bug"
+      ]
+    },
+    {
+      "title": "Compiling, linking and your IDE",
+      "eli5": "The compiler translates each recipe card into machine language, and the linker staples all the cards into one cookbook, complaining if a page is missing.",
+      "detail": "Building happens in three stages: the preprocessor pastes in <code>#include</code> files and expands macros, the compiler turns each .cpp file into an object file and reports syntax and type errors with a file and line number, and the linker combines the object files and libraries into an executable, reporting missing or duplicate definitions. Any IDE works: Visual Studio Community on Windows, Xcode on macOS, CLion, or VS Code with g++ or clang++; from a terminal, <code>g++ -std=c++17 -Wall -o app main.cpp shelf.cpp book.cpp</code> compiles and links three files. Fix the first compiler error first, since one missing semicolon or brace can cascade into dozens of messages. A linker error such as \"undefined reference\" (GCC, or Clang on Linux), \"Undefined symbols for architecture …\" (a Mac, whether you run clang++ or g++) or \"unresolved external symbol\" (Visual Studio) usually means a function was declared and called but never defined, a .cpp file isn't part of the project, or a free function's definition has a different signature from its declaration; a member function defined with a different signature fails earlier, as a compile error. Turn on warnings and treat them as bugs.",
+      "points": [
+        "Compile error: the compiler can't understand a file (missing <code>;</code>, misspelled name, wrong type)",
+        "Linker error: every file compiled, but a function that's called has no definition, or something is defined twice",
+        "A definition such as <code>void Shelf::printAll() const</code> must match its declaration exactly, including <code>const</code> and the parameter types",
+        "Compile .cpp files and include .h files; never <code>#include</code> a .cpp file",
+        "Mac: <code>xcode-select --install</code> installs the command-line tools with clang++; Windows: Visual Studio's \"Desktop development with C++\" workload"
+      ]
+    },
+    {
+      "title": "Variables, types, strings and console output",
+      "eli5": "Each variable is a box with a fixed shape: an int box holds whole numbers, a double box holds decimals, and a string box holds text.",
+      "detail": "C++ is statically typed, so every variable is declared with a type: <code>int</code> for whole numbers, <code>double</code> for decimals, <code>char</code> for one character, <code>bool</code> for true or false and <code>std::string</code> (from &lt;string&gt;) for text. Initialize variables when you declare them, because an uninitialized local <code>int</code> holds garbage. Integer division truncates toward zero, so <code>(30 + 35 + 41) / 3</code> is 35, not 35.33; convert first, as in <code>static_cast&lt;double&gt;(sum) / 3</code> or <code>sum / 3.0</code>, when you need the fraction. Output goes through <code>std::cout</code> with <code>&lt;&lt;</code>: <code>'\\t'</code> inserts a tab, <code>'\\n'</code> or <code>std::endl</code> ends a line, and <code>const</code> marks values that must not change. <code>std::string</code> objects compare with <code>==</code>, unlike C-style character arrays.",
+      "points": [
+        "<code>int count = 0;</code> · <code>double avg = 0.0;</code> · <code>std::string name = \"Ada\";</code> · <code>const int MAX = 5;</code>",
+        "<code>7 / 2</code> is 3, <code>7 / 2.0</code> is 3.5, <code>7 % 2</code> is 1, and <code>-7 / 2</code> is -3 (truncation toward zero)",
+        "<code>std::cout &lt;&lt; \"ID: \" &lt;&lt; id &lt;&lt; '\\t' &lt;&lt; name &lt;&lt; '\\n';</code>",
+        "<code>using namespace std;</code> is tolerable in a small program's .cpp files but not in a header, where it leaks into every file that includes it",
+        "<code>std::cout &lt;&lt; 35.0;</code> prints 35: a double with no fraction prints without a decimal point unless you set the format"
+      ]
+    },
+    {
+      "title": "Decisions and loops",
+      "eli5": "An if chooses a path, a switch picks from a menu of exact values, and a loop repeats until its condition says stop.",
+      "detail": "<code>if</code>, <code>else if</code> and <code>else</code> choose one path; conditions use <code>==</code>, <code>!=</code>, <code>&lt;</code> and <code>&gt;</code> plus the logical operators <code>&amp;&amp;</code>, <code>||</code> and <code>!</code>; <code>&amp;&amp;</code> and <code>||</code> short-circuit, so the right side isn't evaluated once the left side decides the result. A <code>switch</code> compares an integer, character or enum value with <code>case</code> labels, and each case needs a <code>break</code> or execution falls through into the next one; it can't switch on a <code>std::string</code>. A counting <code>for</code> loop such as <code>for (int i = 0; i &lt; size; ++i)</code> is the workhorse for arrays, <code>while</code> suits loops that run until something changes, and <code>do-while</code> always runs at least once. A range-based loop (<code>for (int r : ratings)</code>) visits every element of a real array, but not of an array that has decayed to a pointer inside a function. <code>break</code> leaves a loop early, for example when a search finds its target, and <code>continue</code> skips to the next pass, for example past an empty slot.",
+      "points": [
+        "<code>if (x = 5)</code> assigns and is always true; compare with <code>if (x == 5)</code>",
+        "Short-circuit guard: <code>if (p != nullptr &amp;&amp; p-&gt;getId() == id)</code> never dereferences a null pointer",
+        "A <code>case</code> without <code>break</code> runs straight into the next case",
+        "Search pattern: set <code>bool found = false;</code> before the loop, set it to true on a match, and check it afterward to print a not-found message",
+        "<code>++i</code> and <code>i++</code> both add 1; the difference only matters when the value is used in the same expression"
+      ]
+    },
+    {
+      "title": "Functions: declarations, definitions and parameter passing",
+      "eli5": "A function declaration is a promise (this function exists and takes these inputs), and the definition keeps the promise by doing the work.",
+      "detail": "A declaration, or prototype, such as <code>double average(const int vals[], int size);</code> tells the compiler a function's name, return type and parameters; the definition supplies the body, and every call must match the declaration in the number and types of its arguments. Parameters are passed by value by default, so the function works on a copy and the caller's variable doesn't change. A reference parameter (<code>int&amp; total</code>) lets the function change the caller's variable, and a const reference (<code>const std::string&amp; id</code>) avoids copying a string without allowing changes. A function returns one value with <code>return</code>, or is declared <code>void</code> if it returns nothing, and a non-void function must return a value on every path. Overloading lets several functions share a name when their parameter lists differ, and default arguments, such as <code>void print(int width = 10);</code>, go in the declaration only.",
+      "points": [
+        "By value: a copy · by reference (<code>T&amp;</code>): the caller's variable · by const reference (<code>const T&amp;</code>): no copy, no changes",
+        "Prototype in the header, body in the .cpp: <code>void Shelf::printAll() const { … }</code>",
+        "An array parameter is really a pointer, so pass its size too",
+        "Calling a function before the compiler has seen its declaration is an error; include the header or declare it first",
+        "One job per function makes it obvious which rubric line each function satisfies"
+      ]
+    },
+    {
+      "title": "Arrays",
+      "eli5": "An array is a fixed row of same-sized lockers numbered from 0, and since you can't add lockers later, you plan the size up front.",
+      "detail": "A built-in array has a fixed size known at compile time (<code>int ratings[3];</code>), stores elements of one type side by side, and is indexed from 0 to size − 1. C++ doesn't check bounds, so reading <code>ratings[3]</code> is undefined behavior that may print garbage or crash later, far from the real mistake. Arrays can't be assigned or compared as a whole; copy them element by element in a loop, which matters when a class keeps an array member and a constructor or setter receives an array. Passed to a function, an array decays to a pointer to its first element, so the function can't tell its size; pass the size as another parameter. A brace list initializes an array (<code>int ratings[3] = {4, 5, 3};</code>), <code>std::size(arr)</code> (C++17) counts the elements of a real array, and an array of pointers such as <code>Book* shelf[5]</code> holds addresses rather than objects.",
+      "points": [
+        "<code>int ratings[3] = {4, 5, 3};</code> → <code>ratings[0]</code> is 4 and <code>ratings[2]</code> is 3",
+        "Copy an array parameter into a member array: <code>for (int i = 0; i &lt; 3; ++i) this-&gt;ratings[i] = ratings[i];</code>",
+        "Average of an int array: sum in a loop, then divide as a double",
+        "Out-of-range writes can corrupt other variables, so check loop bounds first when output looks random",
+        "<code>std::vector</code> can grow, but use a plain array when the task asks for one"
+      ]
+    },
+    {
+      "title": "Pointers and dynamic memory",
+      "eli5": "A pointer is a slip of paper with a locker number on it: copying the slip is cheap, and you use it to go find the real thing.",
+      "detail": "A pointer stores a memory address: <code>&amp;x</code> takes x's address, <code>*p</code> follows the pointer to the value, and <code>p-&gt;method()</code> is shorthand for <code>(*p).method()</code> when p points to an object. <code>nullptr</code> means the pointer points nowhere, and dereferencing it crashes the program, so initialize pointers and check them before use. <code>new</code> creates an object on the heap and returns its address, and the object lives until you <code>delete</code> it: forget the delete and you leak memory, while deleting twice or using the pointer afterward (a dangling pointer) is undefined behavior. Use <code>delete</code> for an object from <code>new</code> and <code>delete[]</code> for an array from <code>new[]</code>; mixing them is undefined behavior, and deleting a null pointer is safe and does nothing. An array of pointers lets a class hold objects created at run time: each slot holds an address, a removal can delete the object and set its slot to <code>nullptr</code> or shift later slots down, and the destructor deletes whatever remains.",
+      "points": [
+        "<code>Book* b = new Book(\"Dune\", 1965);</code> … <code>b-&gt;print();</code> … <code>delete b;</code> then <code>b = nullptr;</code>",
+        "One <code>new</code>, exactly one <code>delete</code>: zero deletes leak, two deletes corrupt memory",
+        "<code>p</code> is the address, <code>*p</code> is the object, and <code>p-&gt;x</code> means <code>(*p).x</code>",
+        "After deleting through a slot, set the slot to <code>nullptr</code> and skip null slots in every loop",
+        "Smart pointers such as <code>std::unique_ptr</code> are modern practice but go beyond a task built on raw pointers; the Feb 2026 passer warns that AI suggestions over-engineer this part"
+      ]
+    },
+    {
+      "title": "Classes and objects: encapsulation, accessors and mutators",
+      "eli5": "A class is a blueprint and an object is one house built from it, where private walls keep outsiders from moving the furniture and public doors (getters and setters) are the only way in.",
+      "detail": "A class bundles data members with the member functions that work on them. Members are private by default in a <code>class</code> (public by default in a <code>struct</code>), and good encapsulation keeps the data private and exposes public accessors (getters, which return a value) and mutators (setters, which change one), so every change goes through code you control. Mark functions that don't modify the object as <code>const</code>, as in <code>std::string getTitle() const;</code>; a const member function can't change data members and is the only kind you can call on a const object or through a const reference. Inside a member function, <code>this</code> points to the current object, so <code>this-&gt;title = title;</code> tells a member apart from a parameter with the same name. Define member functions outside the class with the scope operator, as in <code>std::string Book::getTitle() const { return title; }</code>, and give a class a print function that writes its own fields so other code doesn't need to know its layout.",
+      "points": [
+        "<code>class Book { private: std::string title; int year; public: std::string getTitle() const; void setYear(int y); };</code>",
+        "Getter: returns a copy and is marked <code>const</code> · setter: takes the new value and returns <code>void</code>",
+        "Objects call members with <code>.</code>; pointers to objects use <code>-&gt;</code>",
+        "Calling a non-const function through a <code>const</code> reference won't compile",
+        "A class definition ends with <code>};</code>, and a missing semicolon there causes confusing errors in the next file"
+      ]
+    },
+    {
+      "title": "Constructors and destructors",
+      "eli5": "A constructor is the move-in checklist that runs when an object is born, and a destructor is the move-out checklist that runs when it's destroyed.",
+      "detail": "A constructor has the class's name and no return type and runs automatically when an object is created. A default constructor takes no arguments, and a parameterized constructor sets every member from its arguments, ideally through a member initializer list: <code>Book::Book(std::string t, int y) : title(t), year(y) {}</code>. Once you write any constructor, the compiler stops supplying a default one, which matters when code creates objects without arguments. A destructor (<code>~Shelf()</code>) takes no parameters, has no return type and can't be overloaded; it runs automatically when an object on the stack goes out of scope, or when <code>delete</code> is applied to an object on the heap, and it's where a class releases what it allocated with <code>new</code>. A class that owns raw pointers and also gets copied needs a copy constructor and copy assignment too (the rule of three), but for one object created once in <code>main()</code>, a correct destructor is the part that matters.",
+      "points": [
+        "Default: <code>Book();</code> · parameterized: <code>Book(std::string t, int y);</code> · destructor: <code>~Book();</code>",
+        "Members are initialized in the order they're declared in the class, whatever order the initializer list uses",
+        "Stack object: destroyed at the closing brace of its scope · heap object: destroyed only when you call <code>delete</code>",
+        "While testing, print a line inside the destructor to see exactly when it runs, then remove it",
+        "An array passed to a constructor arrives as a pointer; copy each element into the member array"
+      ]
+    },
+    {
+      "title": "Header files, include guards and the scope operator",
+      "eli5": "A header is the table of contents everybody reads, and the include guard is a sticky note saying \"already read this one,\" so the compiler doesn't read it twice.",
+      "detail": "Put class definitions, enum definitions and function declarations in headers, and member function bodies in .cpp files that <code>#include</code> their own header. Use quotes for your own headers (<code>#include \"book.h\"</code>) and angle brackets for standard ones (<code>#include &lt;string&gt;</code>), and include what each file uses instead of relying on another header to bring it in. Include guards (<code>#ifndef BOOK_H</code>, <code>#define BOOK_H</code> … <code>#endif</code>) or the nonstandard but widely supported <code>#pragma once</code> stop a header from being processed twice in one file, which otherwise causes redefinition errors when one header includes another. Guards don't stop a header from being compiled once in each .cpp file, so a free function or an out-of-class member function defined in a header that several .cpp files include triggers multiple-definition errors at link time; bodies written inside the class definition are implicitly inline and don't. <code>ClassName::</code> ties a definition in a .cpp file back to its class.",
+      "points": [
+        "Guard pattern: <code>#ifndef SHELF_H</code> / <code>#define SHELF_H</code> / … / <code>#endif</code>",
+        "\"redefinition of class\" usually means a missing include guard",
+        "\"does not name a type\" or \"incomplete type\" usually means a missing <code>#include</code> or a circular include",
+        "In headers, write <code>std::string</code> instead of adding <code>using namespace std;</code>",
+        "Keep member function bodies in the .cpp file unless you mean to make them inline"
+      ]
+    },
+    {
+      "title": "Enumerations",
+      "eli5": "An enum is a short menu of named choices, so you write PREMIUM instead of remembering that 2 means premium.",
+      "detail": "An enumeration defines a type with a fixed set of named values, such as <code>enum Plan { BASIC, PLUS, PREMIUM };</code>. In a plain (unscoped) enum the first name is 0 and each later name is one more than the previous unless you assign a value, so BASIC is 0, PLUS 1 and PREMIUM 2, and the values convert to int automatically. A scoped enum (<code>enum class Plan { BASIC, PLUS, PREMIUM };</code>) keeps its names inside the type (<code>Plan::PLUS</code>) and doesn't convert to int without <code>static_cast&lt;int&gt;</code>, which prevents accidental mixing. Printing an unscoped enum with <code>std::cout</code> shows its number, not its name, and printing a scoped one doesn't compile, so programs map values to text with a <code>switch</code> or an array of strings indexed by the value (<code>const std::string planNames[] = {\"BASIC\", \"PLUS\", \"PREMIUM\"};</code>). Turning text back into an enum takes one comparison per name.",
+      "points": [
+        "Unscoped: <code>Plan p = PLUS;</code> · scoped: <code>Plan p = Plan::PLUS;</code>",
+        "<code>enum Plan { BASIC, PLUS = 5, PREMIUM };</code> makes PREMIUM 6",
+        "With the default numbering (<code>enum Plan { BASIC, PLUS, PREMIUM };</code>), <code>std::cout &lt;&lt; PLUS;</code> prints 1 and <code>planNames[PLUS]</code> gives the text; an array of names works only when the values run 0, 1, 2 and so on",
+        "Compare values directly: <code>if (m.getPlan() == PREMIUM)</code>",
+        "Define the enum in its own header and include that header wherever the type appears"
+      ]
+    },
+    {
+      "title": "Parsing and validating strings",
+      "eli5": "Parsing a comma-separated line is like cutting a ribbon at each knot: find the next comma, snip off the piece before it, and repeat on what's left.",
+      "detail": "<code>std::string</code> has the tools you need. <code>s.find(',')</code> returns the index of the first comma, or <code>std::string::npos</code> if there isn't one, and <code>s.find(',', start)</code> searches from a given position; <code>s.substr(pos, len)</code> copies len characters starting at pos, and <code>s.substr(pos)</code> copies to the end. A loop of find and substr walks a line field by field, keeping a start index that moves just past each comma, and the last field is whatever follows the final comma. <code>std::stoi</code> converts a numeric field to an int: it skips leading spaces, reads as many digits as it can and throws <code>std::invalid_argument</code> when there's no number at all. An alternative is a <code>std::stringstream</code> (from &lt;sstream&gt;) read with <code>std::getline(ss, field, ',')</code>, one field per call. Validating text uses the same tools: <code>s.find(' ') != std::string::npos</code> means the string contains a space, and comparing the indexes that find returns tells you whether one required character comes before another.",
+      "points": [
+        "<code>std::string s = \"B7,Ada,42\";</code> → <code>s.find(',')</code> is 2 · <code>s.substr(0, 2)</code> is \"B7\" · <code>s.substr(3)</code> is \"Ada,42\"",
+        "Field loop: start at 0, find the next comma, take <code>s.substr(start, comma - start)</code>, then set <code>start = comma + 1</code>",
+        "Store find's result in a <code>size_t</code> and compare it with <code>std::string::npos</code>, never with -1 in an int",
+        "<code>std::stoi(\"42\")</code> is 42, <code>std::stoi(\"4x\")</code> is 4, and <code>std::stoi(\"x4\")</code> throws",
+        "Example rule: a product code is valid if <code>code.find('-') != std::string::npos &amp;&amp; code.find(' ') == std::string::npos</code>"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Course", "value": "4 CUs · catalog number ITSW 2130 · term 3 in BSCS 202412 and 202611", "note": "No exam; one evaluator-graded C++ project" },
+    { "label": "Version control", "value": "Commit and push after each rubric part, with a message that names the part", "note": "A commenter on a Dec 2024 post reports a submission came back for lacking separate commits for parts B through G" },
+    { "label": "Build from a terminal", "value": "<code>g++ -std=c++17 -Wall -o app main.cpp shelf.cpp book.cpp</code>", "note": "Compile .cpp files; headers come in through #include" },
+    { "label": "Compile vs link errors", "value": "Compile: a file can't be understood (file and line given), including a member definition that doesn't match its declaration · link: \"undefined reference\", \"Undefined symbols\" (Mac) or \"unresolved external symbol\" = called but never defined, a free function's signature mismatch, or file not built" },
+    { "label": "Include guard", "value": "<code>#ifndef BOOK_H</code> · <code>#define BOOK_H</code> · … · <code>#endif</code>", "note": "<code>#pragma once</code> is nonstandard but widely supported" },
+    { "label": "Includes", "value": "<code>#include \"book.h\"</code> your files · <code>#include &lt;string&gt;</code> standard library" },
+    { "label": "Class skeleton", "value": "<code>class Book { private: … public: … };</code>", "note": "class members are private by default; struct members are public" },
+    { "label": "Member definition", "value": "<code>std::string Book::getTitle() const { return title; }</code>", "note": "Must match the header's declaration exactly" },
+    { "label": "Initializer list", "value": "<code>Book::Book(std::string t, int y) : title(t), year(y) {}</code>" },
+    { "label": "Destructor", "value": "<code>~Shelf();</code> · no parameters, no return type", "note": "Runs at the end of scope for stack objects and on <code>delete</code> for heap objects" },
+    { "label": "const member function", "value": "<code>int getYear() const;</code> can't change data members and can be called on const objects" },
+    { "label": "Pointer syntax", "value": "<code>&amp;x</code> address · <code>*p</code> value · <code>p-&gt;f()</code> = <code>(*p).f()</code> · <code>nullptr</code> points nowhere" },
+    { "label": "new and delete", "value": "<code>new T(args)</code> ↔ <code>delete p;</code> · <code>new T[n]</code> ↔ <code>delete[] p;</code>", "note": "Mixing them is undefined behavior; deleting a null pointer (<code>delete p;</code> when <code>p</code> is <code>nullptr</code>) does nothing" },
+    { "label": "Array of pointers", "value": "<code>Book* shelf[5] = {};</code> → five null slots", "note": "Delete each object once, then set its slot to <code>nullptr</code>" },
+    { "label": "Built-in arrays", "value": "Indexes 0 to size − 1 · no bounds checking · no whole-array assignment · decay to a pointer when passed" },
+    { "label": "Integer division", "value": "<code>106 / 3</code> = 35 · <code>106 / 3.0</code> ≈ 35.33 · <code>static_cast&lt;double&gt;(sum) / 3</code>", "note": "Truncates toward zero: <code>-7 / 2</code> = -3" },
+    { "label": "find", "value": "<code>s.find(c)</code> → index of the first match, or <code>std::string::npos</code> · <code>s.find(c, from)</code> starts at <code>from</code>" },
+    { "label": "substr", "value": "<code>s.substr(pos, len)</code> → characters [pos, pos + len) · <code>s.substr(pos)</code> → to the end", "note": "Throws <code>std::out_of_range</code> if pos &gt; size()" },
+    { "label": "stoi", "value": "<code>std::stoi(\"42\")</code> → 42 · <code>\"4x\"</code> → 4 · <code>\"x4\"</code> throws <code>std::invalid_argument</code>", "note": "From &lt;string&gt;" },
+    { "label": "getline with a delimiter", "value": "<code>std::stringstream ss(line);</code> then <code>std::getline(ss, field, ',')</code>", "note": "From &lt;sstream&gt;" },
+    { "label": "Enums", "value": "<code>enum Plan { BASIC, PLUS, PREMIUM };</code> → 0, 1, 2 · <code>enum class</code> needs <code>Plan::PLUS</code> and <code>static_cast&lt;int&gt;</code>", "note": "Print names through a switch or an array of strings indexed by the value" },
+    { "label": "Parameter passing", "value": "Value: a copy · <code>T&amp;</code>: the caller's variable · <code>const T&amp;</code>: no copy, read-only" },
+    { "label": "switch", "value": "Works on ints, chars and enums, not strings · each <code>case</code> needs <code>break</code> or it falls through" },
+    { "label": "Output", "value": "<code>std::cout &lt;&lt; a &lt;&lt; '\\t' &lt;&lt; b &lt;&lt; '\\n';</code>", "note": "<code>'\\t'</code> tab · <code>'\\n'</code> or <code>std::endl</code> new line" },
+    { "label": "Integrity rules", "value": "Your own work · AI only as WGU's policy allows · no reviewing completed assessments · similarity check on submissions", "note": "WGU Institutional Catalog, Nov 2026" },
+    { "label": "Reported time", "value": "8 days (experienced developer, Dec 2024) to about 2.5 weeks at 1–4 hours a day (beginner, Feb 2026)" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Read the task and set up the tools",
+      "tasks": [
+        "Read the task directions, the rubric and the reorganized prompt in the supplemental resources, and make a checklist with one line per rubric part.",
+        "Install a C++ toolchain (Visual Studio Community, Xcode command-line tools, CLion or VS Code with g++ or clang++) and build a hello-world program.",
+        "Open the WGU GitLab repository the task provides, clone it, and push a first small commit to confirm everything works."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "C++ basics: types, strings and output",
+      "tasks": [
+        "Work through variables, <code>int</code> vs <code>double</code>, <code>std::string</code>, <code>std::cout</code>, tabs and new lines, with the early zyBook sections or the first hours of a video course.",
+        "Write a program that averages three integers both ways, with integer division and with <code>static_cast&lt;double&gt;</code>, and explain the difference."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Decisions, loops and functions",
+      "tasks": [
+        "Practice <code>if</code> chains, <code>switch</code> with <code>break</code>, counting loops and a search loop with a found flag.",
+        "Write three small functions using pass by value, by reference and by const reference, and print the caller's variable after each call."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Multi-file builds and include guards",
+      "tasks": [
+        "Split a small program into <code>main.cpp</code>, a header and a matching .cpp file, with include guards, and build it.",
+        "Break it on purpose: remove the guard and include that header twice in <code>main.cpp</code>, delete the body of a function that <code>main()</code> calls, add <code>const</code> to one declaration only, and read the error each change produces."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Arrays",
+      "tasks": [
+        "Declare, fill and loop over fixed-size arrays; pass one to a function along with its size.",
+        "Copy an array parameter into a class's member array element by element and print both."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Classes, constructors and destructors",
+      "tasks": [
+        "Build a practice class such as <code>Book</code> with private members, a parameterized constructor using an initializer list, const getters, setters and a print function.",
+        "Add a destructor that prints a message, then create objects on the stack and with <code>new</code> to see when each destructor runs.",
+        "Do the zyBook's class exercises or the matching LearnCpp chapters for anything that's still unclear."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Enumerations",
+      "tasks": [
+        "Write an unscoped enum and a scoped one, print each value as a number and as text through an array of names.",
+        "Convert a string such as \"PLUS\" back into the enum with a chain of comparisons."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Pointers and dynamic memory",
+      "tasks": [
+        "Practice <code>&amp;</code>, <code>*</code>, <code>-&gt;</code> and <code>nullptr</code> until the syntax is automatic.",
+        "Build a practice container class with an array of pointers: add objects with <code>new</code>, remove one by deleting it and nulling its slot, skip null slots when printing, and delete the rest in the destructor.",
+        "Run it under your IDE's debugger and watch the pointer values change."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Parsing comma-separated strings",
+      "tasks": [
+        "Watch the course's supplemental video on parsing the data string.",
+        "Parse made-up lines such as <code>\"B7,Ada,42\"</code> with <code>find</code> and <code>substr</code>, convert numeric fields with <code>std::stoi</code>, and repeat with <code>std::stringstream</code> and <code>getline</code>."
+      ]
+    },
+    {
+      "day": "Days 12-15",
+      "focus": "Build the project, one rubric part at a time",
+      "tasks": [
+        "Work through the rubric in order, compiling and running after every function you add.",
+        "Commit and push after each rubric part with a message that names it, and check that each commit appears in GitLab.",
+        "Book an instructor appointment the moment you're stuck for more than an hour."
+      ]
+    },
+    {
+      "day": "Day 16",
+      "focus": "Final checks and submission",
+      "tasks": [
+        "Clone the repository fresh, rebuild from scratch with warnings on, and run the program.",
+        "Compare the output with the task's required order line by line, and confirm each destructor and removal behaves as the task describes.",
+        "Re-read the rubric one last time, then submit as the task directs."
+      ]
+    },
+    {
+      "day": "Day 17",
+      "focus": "Buffer for a revision",
+      "tasks": [
+        "If the submission comes back, read the evaluator's comments against the rubric and fix exactly those lines.",
+        "Commit the fix with a message that explains it, push, and resubmit."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "What does this code print?<br><code>int a = 30, b = 35, c = 41;</code><br><code>double avg = (a + b + c) / 3;</code><br><code>std::cout &lt;&lt; avg;</code>",
+      "choices": ["35", "35.3333", "36", "35.33"],
+      "answer": "35",
+      "why": "<code>a + b + c</code> is the int 106, and dividing it by the int 3 is integer division, which truncates to 35 before the result is stored in the double. <code>std::cout</code> prints the double 35.0 as 35. To keep the fraction, convert first: <code>static_cast&lt;double&gt;(a + b + c) / 3</code> prints 35.3333 with the default six significant digits. Integer division drops the fraction (it truncates toward zero), so it can't give 36, and 35.33 would need floating-point division plus explicit precision formatting."
+    },
+    {
+      "q": "What does <code>first</code> hold after this code runs?<br><code>std::string s = \"K9,Rex,4\";</code><br><code>std::string first = s.substr(0, s.find(','));</code>",
+      "choices": ["K", "K9", "K9,", "Rex"],
+      "answer": "K9",
+      "why": "<code>s.find(',')</code> returns 2, the index of the first comma. <code>substr(0, 2)</code> copies two characters starting at index 0, which is \"K9\", and the comma itself is excluded because the length stops just before it. \"K9,\" would need a length of 3, \"K\" a length of 1, and \"Rex\" starts at index 3, just past the comma."
+    },
+    {
+      "q": "Given <code>std::string code = \"AB12\";</code>, what does <code>code.find('-') == std::string::npos</code> evaluate to?",
+      "choices": [
+        "false, because find returns 0 when nothing is found",
+        "true, because npos is 0",
+        "true, because the string contains no dash",
+        "It doesn't compile, because find needs a string argument"
+      ],
+      "answer": "true, because the string contains no dash",
+      "why": "When <code>find</code> doesn't locate its target, it returns <code>std::string::npos</code>, the largest value of the string's size type. There's no dash in \"AB12\", so the comparison is true. find returns 0 only when the match is at index 0, npos is not 0, and find has an overload that takes a single <code>char</code>."
+    },
+    {
+      "q": "Inside <code>void show(int vals[])</code>, why can't <code>sizeof(vals) / sizeof(vals[0])</code> tell you how many elements the caller's array has?",
+      "choices": [
+        "Because arrays always hold 0 elements inside functions",
+        "Because sizeof works only on classes",
+        "Because the array is copied into a new, smaller array",
+        "Because the parameter is really a pointer, so sizeof measures the pointer"
+      ],
+      "answer": "Because the parameter is really a pointer, so sizeof measures the pointer",
+      "why": "An array passed to a function decays to a pointer to its first element, so <code>int vals[]</code> in a parameter list means <code>int* vals</code>. <code>sizeof(vals)</code> is then the size of a pointer (often 8 bytes), not of the array, and the result has nothing to do with the element count. Nothing is copied, sizeof works on any type, and the elements are still there; pass the size as a second parameter."
+    },
+    {
+      "q": "After <code>Book* p = new Book(\"Dune\", 1965);</code>, which expression correctly calls the object's <code>getTitle()</code> member function?",
+      "choices": ["p.getTitle()", "p-&gt;getTitle()", "*p-&gt;getTitle()", "&amp;p.getTitle()"],
+      "answer": "p-&gt;getTitle()",
+      "why": "p holds an address, so you reach the object through it with <code>-&gt;</code>, which means the same as <code>(*p).getTitle()</code>. <code>p.getTitle()</code> treats the pointer as if it were the object and doesn't compile. <code>*p-&gt;getTitle()</code> calls getTitle and then tries to dereference the returned string, and <code>&amp;p.getTitle()</code> applies the dot to the pointer before taking an address."
+    },
+    {
+      "q": "Which statement correctly releases the memory allocated by <code>int* temps = new int[7];</code>?",
+      "choices": ["delete temps;", "temps = nullptr;", "delete[] temps;", "free(temps);"],
+      "answer": "delete[] temps;",
+      "why": "Memory from the array form <code>new[]</code> must be released with <code>delete[]</code>. Plain <code>delete</code> on it is undefined behavior even when it seems to work, <code>free</code> is for memory from <code>malloc</code>, and setting the pointer to <code>nullptr</code> without deleting first just loses the address and leaks all seven ints."
+    },
+    {
+      "q": "What happens to the two <code>Shelf</code> objects when this function returns?<br><code>void run() {</code><br><code>\u00a0\u00a0\u00a0\u00a0Shelf s;</code><br><code>\u00a0\u00a0\u00a0\u00a0Shelf* h = new Shelf;</code><br><code>}</code>",
+      "choices": [
+        "Only s is destroyed; the Shelf that h points to is never destroyed, so its memory leaks",
+        "Both are destroyed, because the function ended",
+        "Only the Shelf that h points to is destroyed",
+        "Neither is destroyed until the program exits"
+      ],
+      "answer": "Only s is destroyed; the Shelf that h points to is never destroyed, so its memory leaks",
+      "why": "s lives on the stack, so its destructor runs automatically at the closing brace. The pointer h is also a local variable and disappears, but the heap object it pointed to is destroyed only by <code>delete h;</code>, which never runs, so that object and its memory leak. That's why an owning class deletes its heap objects in its destructor."
+    },
+    {
+      "q": "A class declares <code>int getYear() const;</code>. What does the <code>const</code> at the end promise?",
+      "choices": [
+        "The function returns a value that callers can't store",
+        "The year can never change after the object is constructed",
+        "The function is shared by every object, like a static function",
+        "The function won't modify the object's data members, so it can be called on const objects"
+      ],
+      "answer": "The function won't modify the object's data members, so it can be called on const objects",
+      "why": "A trailing <code>const</code> makes <code>this</code> point to a const object inside the function, so the compiler rejects any change to data members, and the function can be called on const objects and through const references. It says nothing about the return value, a setter can still change the year, and shared functions are marked <code>static</code>, which is a different keyword."
+    },
+    {
+      "q": "<code>main.cpp</code> includes both <code>shelf.h</code> and <code>book.h</code>, and <code>shelf.h</code> also includes <code>book.h</code>. <code>book.h</code> defines <code>class Book</code> but has no include guard. What happens when you build?",
+      "choices": [
+        "The compiler reports a redefinition of class Book",
+        "The linker reports an undefined reference to Book",
+        "It builds normally, because the compiler skips repeated headers automatically",
+        "It builds, but the program prints everything twice"
+      ],
+      "answer": "The compiler reports a redefinition of class Book",
+      "why": "#include pastes a file's text in place, so main.cpp ends up containing the definition of Book twice, once through shelf.h and once directly, and the compiler rejects the second one. An include guard (<code>#ifndef BOOK_H</code> / <code>#define BOOK_H</code> / <code>#endif</code>) or <code>#pragma once</code> makes the second copy empty. Compilers don't skip repeated headers on their own, this happens before linking, and headers don't change what a program prints."
+    },
+    {
+      "q": "Every file compiles, but the build fails with <code>undefined reference to Shelf::printAll() const</code>. What's the most likely cause?",
+      "choices": [
+        "A semicolon is missing after the class definition",
+        "printAll should have been declared private",
+        "printAll is declared in shelf.h, but no compiled .cpp file defines it",
+        "main.cpp needs <code>#pragma once</code>"
+      ],
+      "answer": "printAll is declared in shelf.h, but no compiled .cpp file defines it",
+      "why": "An undefined reference (\"Undefined symbols\" on a Mac) is a linker error: the call compiled against the declaration in shelf.h, but the linker found no definition. Since every file compiled, the likely causes are a missing body or shelf.cpp not being part of the build. A body with a different signature, such as <code>void Shelf::printAll()</code> without <code>const</code>, wouldn't get this far: shelf.cpp would fail to compile with an error saying the definition matches no declaration in the class. A missing semicolon is a compile error, access level wouldn't cause a link error, and pragma once belongs in headers."
+    },
+    {
+      "q": "Given <code>enum Plan { BASIC, PLUS = 5, PREMIUM };</code>, what is the value of <code>PREMIUM</code>?",
+      "choices": ["2", "6", "5", "1"],
+      "answer": "6",
+      "why": "An enumerator without an initializer is one more than the one before it, and the first defaults to 0. BASIC is 0, PLUS is explicitly 5, so PREMIUM is 6. 2 would be right only without the <code>= 5</code>, and 5 belongs to PLUS."
+    },
+    {
+      "q": "Given <code>enum class Size { SMALL, LARGE };</code>, what happens with <code>std::cout &lt;&lt; Size::LARGE;</code>?",
+      "choices": [
+        "It prints LARGE",
+        "It prints 1",
+        "It prints the enumerator's memory address",
+        "It doesn't compile, because a scoped enum doesn't convert to int on its own"
+      ],
+      "answer": "It doesn't compile, because a scoped enum doesn't convert to int on its own",
+      "why": "Scoped enums (<code>enum class</code>) have no implicit conversion to integers, and the standard library has no output operator for your enum, so the line doesn't compile. <code>std::cout &lt;&lt; static_cast&lt;int&gt;(Size::LARGE);</code> prints 1. With an unscoped enum, the value converts to int and prints 1 without the cast. C++ never prints an enumerator's name by itself; you map values to text with a switch or an array."
+    },
+    {
+      "q": "What is <code>x</code> after this code runs?<br><code>void bump(int n) { n = n + 10; }</code><br><code>void bumpRef(int&amp; n) { n = n + 10; }</code><br><code>int x = 5;</code><br><code>bump(x);</code><br><code>bumpRef(x);</code>",
+      "choices": ["5", "15", "25", "10"],
+      "answer": "15",
+      "why": "<code>bump</code> takes its parameter by value, so it adds 10 to a copy and x stays 5. <code>bumpRef</code> takes a reference, so n is another name for x, and x becomes 15. 25 assumes both calls changed x, and 5 assumes neither did."
+    },
+    {
+      "q": "What does this code print?<br><code>int level = 1;</code><br><code>switch (level) {</code><br><code>\u00a0\u00a0\u00a0\u00a0case 1: std::cout &lt;&lt; \"A\";</code><br><code>\u00a0\u00a0\u00a0\u00a0case 2: std::cout &lt;&lt; \"B\"; break;</code><br><code>\u00a0\u00a0\u00a0\u00a0case 3: std::cout &lt;&lt; \"C\";</code><br><code>}</code>",
+      "choices": ["A", "B", "AB", "ABC"],
+      "answer": "AB",
+      "why": "Execution jumps to <code>case 1</code> and prints A, but that case has no <code>break</code>, so it falls through into case 2 and prints B, and the <code>break</code> there leaves the switch before case 3. Only A would need a break after it, and ABC would need case 2's break removed too."
+    },
+    {
+      "q": "The task's rubric is split into lettered parts, and students report the work lives in a GitLab repository. Which habit best fits what evaluators look for in the history?",
+      "choices": [
+        "Commit and push after finishing each rubric part, with a message that names the part",
+        "Write everything first, then make one commit called final",
+        "Squash all commits into one before submitting so the history looks clean",
+        "Keep the code local and upload a zip file at the end"
+      ],
+      "answer": "Commit and push after finishing each rubric part, with a message that names the part",
+      "why": "A commenter on a Dec 2024 post reports a submission came back because the GitLab history didn't show a separate commit for each rubric part, which suggests evaluators read the history itself (WGU doesn't publish how they judge it, so follow the commit instructions in your task directions). A single final commit or a squashed history erases that evidence, and a local folder with a zip skips the repository entirely. Small, labeled commits also give you restore points while you work."
+    }
+  ],
+  "pitfalls": [
+    "<b>Writing everything before compiling once.</b> Dozens of errors at once are hard to untangle; compile and run after every function, and fix the first error first.",
+    "<b>Too few commits.</b> A commenter on a Dec 2024 post reports a submission came back because the history lacked a separate commit for each rubric part. Commit and push after every part.",
+    "<b>Integer division in an average.</b> <code>sum / 3</code> with ints truncates; convert to <code>double</code> before dividing.",
+    "<b>Off-by-one array loops.</b> <code>i &lt;= size</code> reads past the end, and C++ won't stop you; out-of-range access is undefined behavior that may show up far away.",
+    "<b>Memory mistakes.</b> A <code>new</code> with no <code>delete</code> leaks, deleting twice or using a slot after deleting it is undefined behavior, and <code>delete</code> and <code>delete[]</code> aren't interchangeable. Null each slot after deleting and skip null slots.",
+    "<b>Header problems.</b> Missing include guards cause redefinition errors, <code>using namespace std;</code> in a header leaks into every file, and non-inline function bodies in a header that several .cpp files include cause multiple-definition link errors.",
+    "<b>Signatures that don't match.</b> If the header says <code>void printAll() const;</code> and the .cpp defines <code>void Shelf::printAll()</code> without const, shelf.cpp won't compile, and the error says the definition doesn't match any declaration in the class. Copy each signature from the header so the return type, parameters and <code>const</code> agree. With a free function, a mismatched definition compiles as a separate overload, and the build fails later with a linker error.",
+    "<b>Printing an enum directly.</b> An unscoped enum prints its number, and a scoped one won't compile; map values to text with a switch or an array of names.",
+    "<b>Over-engineering.</b> Smart pointers, vectors, menus and file input the task doesn't ask for add risk without credit, and the Feb 2026 passer says AI suggestions push in that direction.",
+    "<b>Looking at finished projects.</b> Don't open finished versions of this project posted online: WGU's catalog bars reviewing completed assessments for any reason, submissions go through a similarity check, and AI-written code falls under WGU's AI policy. Use the supplemental video, the docs and your instructor instead."
+  ],
+  "resources": [
+    {
+      "label": "Task directions, rubric and supplemental resources (course page)",
+      "kind": "official",
+      "note": "The source of truth for every requirement and the required output order. The supplemental resources include the video on parsing the student data string and the reorganized prompt that a Feb 2026 passer recommends."
+    },
+    {
+      "label": "Course zyBook",
+      "kind": "official",
+      "note": "Good practice but inefficient for the project, according to the Feb 2026 passer. That passer did a few early exercises for syntax and some of the chapter 7–9 labs; skip what the task doesn't need."
+    },
+    {
+      "label": "Course instructors and WGU Connect",
+      "kind": "community",
+      "note": "Course page → Course Community → Join WGU Connect → Resources for posts and webinars, and book instructor appointments when pointers or linker errors stall you."
+    },
+    {
+      "label": "Bro Code: C++ full course (YouTube)",
+      "url": "https://www.youtube.com/watch?v=-TkoO8Z07hI",
+      "kind": "video",
+      "note": "Free beginner course the Feb 2026 passer used; watch the sections on classes, pointers and dynamic memory first."
+    },
+    {
+      "label": "Beginning C++ Programming - From Beginner to Beyond (Udemy)",
+      "url": "https://www.udemy.com/course/beginning-c-plus-plus-programming/",
+      "kind": "video",
+      "note": "The course a Dec 2024 passer used to finish in 8 days. WGU students get access through WGU's Udemy account; the public page is linked here."
+    },
+    {
+      "label": "cppreference.com",
+      "url": "https://en.cppreference.com/",
+      "kind": "tool",
+      "note": "The standard reference for C++ syntax and the standard library; look up <code>std::string::find</code>, <code>substr</code>, <code>std::stoi</code> and <code>delete</code> here when a tutorial's explanation isn't enough."
+    },
+    {
+      "label": "LearnCpp.com",
+      "url": "https://www.learncpp.com/",
+      "kind": "practice",
+      "note": "Free, thorough text tutorial with quizzes; its chapters on header guards, classes, constructors, pointers and dynamic memory line up closely with what the task needs."
+    },
+    {
+      "label": "W3Schools C++ tutorial",
+      "url": "https://www.w3schools.com/cpp/",
+      "kind": "practice",
+      "note": "Short pages with runnable examples, handy for quick syntax checks; the Feb 2026 passer lists it alongside cppreference and Stack Overflow."
+    },
+    {
+      "label": "CS50x: Harvard's introduction to computer science",
+      "url": "https://cs50.harvard.edu/x/",
+      "kind": "video",
+      "note": "Free lectures whose C weeks explain memory, addresses and pointers clearly; a commenter on a Dec 2024 post says CS50 helps with C-style syntax."
+    },
+    {
+      "label": "Visual Studio Community",
+      "url": "https://visualstudio.microsoft.com/vs/community/",
+      "kind": "tool",
+      "note": "Free Windows IDE with a strong debugger; install the \"Desktop development with C++\" workload. On a Mac, Xcode or CLion fills the same role."
+    },
+    {
+      "label": "GitLab Docs: Make your first Git commit",
+      "url": "https://docs.gitlab.com/tutorials/make_first_git_commit/",
+      "kind": "tool",
+      "note": "Clone, branch, add, commit and push in GitLab, step by step; enough Git to keep a clean per-part history."
+    },
+    {
+      "label": "C867 Done, here's my advice (r/WGU_CompSci, Feb 2026)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1r0slc1/c867_done_heres_my_advice/",
+      "kind": "community",
+      "note": "The newest detailed write-up from a beginner: what made the project hard, which resources helped and how to use AI without letting it write the code."
+    }
+  ],
+  "community": {
+    "summary": "Both posts describe a project course with no OA. The Feb 2026 beginner calls it the hardest course so far: the struggle is understanding how the whole project fits together, plus C++ syntax and compiler quirks, over about 2.5 weeks at 1–4 hours a day, while an experienced developer new to C++ finished in 8 days by taking a Udemy course and building small practice apps to learn the error messages. Both posts favor learning just the C++ the task needs over working through the whole zyBook. The Feb 2026 passer leaned on Bro Code's YouTube course, cppreference, Stack Overflow, W3Schools and the course's supplemental parsing video and reorganized prompt, and used AI only to explain concepts and catch typos, warning that it over-engineers memory management. Commenters on the Dec 2024 post advise taking the time to understand pointers and committing to GitLab after every rubric part: one reports a submission came back because the history lacked a separate commit for each part. The Feb 2026 passer also mentions older instructor walkthrough videos; ask your course instructor which walkthroughs and supplemental materials are current.",
+    "coverage": "2 posts, Dec 2024 – Feb 2026, r/WGU_CompSci",
+    "posts": [
+      {
+        "title": "C867 Done, here's my advice",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1r0slc1/c867_done_heres_my_advice/",
+        "date": "Feb 2026",
+        "takeaway": "A beginner's hardest course so far, about 2.5 weeks at 1–4 hours a day. The zyBook is good practice, but for the project it felt like reading a dictionary cover to cover; Bro Code, cppreference, Stack Overflow, W3Schools, the parsing video and the reorganized prompt helped. ChatGPT was used only to explain concepts and catch typos, and it over-engineers memory management."
+      },
+      {
+        "title": "Passed C867 in 8 days!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1h4lkn6/passed_c867_in_8_days/",
+        "date": "Dec 2024",
+        "takeaway": "An experienced developer new to C++ used the Udemy course Beginning C++ Programming, basic LeetCode and YouTube, and built small apps to learn the errors. Commenters say to skip most labs, learn pointers well and meet the rubric, and one reports a submission came back for lacking a separate GitLab commit for each rubric part (B through G)."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Program Guidebook, B.S. Computer Science (catalog 202611, published Jun 30, 2026): C867 description and competencies", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026: C867 description, 4 CUs in BSCS 202611 term 3, and assessment integrity rules", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, May 2025: C867 at 4 CUs in BSCS 202412 term 3", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2025/catalog-may-2025.pdf" },
+    { "label": "WGU B.S. Computer Science degree page: course list and C867 description", "url": "https://www.wgu.edu/online-it-degrees/computer-science.html" },
+    { "label": "cppreference: std::basic_string::find", "url": "https://en.cppreference.com/w/cpp/string/basic_string/find" },
+    { "label": "cppreference: std::basic_string::substr", "url": "https://en.cppreference.com/w/cpp/string/basic_string/substr" },
+    { "label": "cppreference: std::stoi, std::stol, std::stoll", "url": "https://en.cppreference.com/w/cpp/string/basic_string/stol" },
+    { "label": "cppreference: delete expression", "url": "https://en.cppreference.com/w/cpp/language/delete" },
+    { "label": "cppreference: Destructors", "url": "https://en.cppreference.com/w/cpp/language/destructor" },
+    { "label": "cppreference: Enumeration declaration", "url": "https://en.cppreference.com/w/cpp/language/enum" },
+    { "label": "cppreference: Arithmetic operators (integer division)", "url": "https://en.cppreference.com/w/cpp/language/operator_arithmetic" },
+    { "label": "LearnCpp: Header guards", "url": "https://www.learncpp.com/cpp-tutorial/header-guards/" },
+    { "label": "GitLab Docs: Tutorial: Make your first Git commit", "url": "https://docs.gitlab.com/tutorials/make_first_git_commit/" },
+    { "label": "r/WGU_CompSci: C867 Done, here's my advice (Feb 2026)", "url": "https://www.reddit.com/r/WGU_CompSci/comments/1r0slc1/c867_done_heres_my_advice/" },
+    { "label": "r/WGU_CompSci: Passed C867 in 8 days! (Dec 2024)", "url": "https://www.reddit.com/r/WGU_CompSci/comments/1h4lkn6/passed_c867_in_8_days/" }
+  ],
+  "caveats": [
+    "WGU's task directions and rubric are behind the student login. The task outline here is a general summary from long-standing public descriptions of the project; the two student posts confirm only that it's a project with lettered rubric parts and a student-data string to parse, so check every requirement, its rubric letter and the required output against your own task page.",
+    "The GitLab requirement and the return for missing per-part commits come from a single comment on a Dec 2024 post; WGU doesn't publish how evaluators judge commit history, and the rubric's lettering (B through G) may have changed since.",
+    "Community coverage is thin: two r/WGU_CompSci posts (Dec 2024 and Feb 2026) taken from pasted notes, because Reddit couldn't be opened directly. Post dates are approximate, converted from Reddit's relative timestamps.",
+    "The competencies come from the BSCS 202611 guidebook, an image-only PDF that was read with text recognition; compare them with your course page if a word looks off.",
+    "Code examples use made-up classes (Book, Shelf, Plan) on purpose: they teach the C++ the project needs without solving any part of it."
+  ]
+}

@@ -1,0 +1,576 @@
+{
+  "code": "D480",
+  "summary": "D480 applies quality assurance to every phase of the software life cycle, and students report that it's graded on two written performance-assessment tasks built on one bug-ticket scenario: a software design plan for the fix, then a quality assurance plan for testing it. Both 2025 posters passed both tasks on the first try, and one reports about 8 hours of work and 10 days including grading, with tips such as labeling requirements for traceability and answering in the rubric's own words.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment: two written tasks, a software design plan and a quality assurance plan, evaluator-graded",
+    "format": "2 tasks (reported) · Task 1 design plan + Task 2 QA plan for the same bug-fix scenario · rubric-graded, no exam",
+    "details": [
+      "<b>The tasks (reported):</b> in general terms (your task page has the exact requirements), both tasks work from one scenario built around a bug ticket for an existing application. Task 1 plans the fix as a software design plan, from the problem and its requirements to the design and how the work gets done. Task 2 plans how you'll verify the fix as a quality assurance plan, with quality metrics, test cases and a test order, so it builds directly on Task 1.",
+      "<b>Effort and grading:</b> a Jan 2025 passer reports about 8 hours of work and 10 days including grading, with both tasks passing first time, and the Jul 2025 poster also passed both first try. Evaluators grade each task against its rubric and return it with feedback when an item falls short (WGU's general PA process). One student whose Task 2 came back met with an instructor and learned the summary needed more detail on deliverables, tools, languages and methodology.",
+      "<b>Catalog status:</b> D480 is 3 CU in term 8 of both BSCS 202412 and 202611 and is also part of B.S. Software Engineering (202610)."
+    ],
+    "tips": [
+      "Label every item for traceability (BR1, FR1, NFR1, TC1) and reuse the same labels from Task 1 through Task 2, so each test case points back to a requirement.",
+      "Use the rubric's own words in headings and sentences so the evaluator finds every item.",
+      "Keep it small and concrete: a problem statement of about a paragraph, as many items as your rubric asks for and no more, and every item tied to the ticket.",
+      "Give every non-functional requirement a number, a unit and a condition, then reuse that number as its Task 2 quality metric and pass criterion.",
+      "For a bug fix, both 2025 passers chose Agile. Compare it with the other methodologies on the same criteria, and justify the choice with the fix's size, urgency and need for fast feedback.",
+      "List test environments short of production: the Jan 2025 passer used local, development, test and user acceptance testing (UAT) environments.",
+      "In Task 2's summary, restate Task 1's deliverables, tools, languages and methodology; that's what one returned summary lacked.",
+      "Fix Grammarly's correctness suggestions before submitting. The Jan 2025 passer says references are needed only if you used sources."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and create your personalized course plan together (listed first in the program guidebook).",
+    "The learner defines plans for development tasks and environments based on desired quality outcomes.",
+    "The learner determines the impact of business requirements on software design patterns and software systems.",
+    "The learner identifies goals and potential roadblocks as part of software development plans.",
+    "The learner recommends tools and services to address functional and non-functional testing outcomes."
+  ],
+  "topics": [
+    {
+      "title": "Software quality: QA, QC and testing",
+      "eli5": "Quality assurance is making sure the kitchen follows good recipes and hygiene rules, and testing is tasting the dish before it leaves the kitchen.",
+      "detail": "D480 applies a QA focus to every phase of the life cycle, not just a test phase at the end. Quality assurance is process-oriented and preventive: standards, checklists, process audits and plans that make defects less likely. Quality control is product-oriented and detective: activities, testing among them, that find defects in what was built. Testing either executes the software (dynamic testing) or examines work products without running them (static testing, such as reviews and static analysis) to find defects and build confidence. In ISTQB's terms, a person makes an error (a mistake), which can leave a defect (a fault or bug) in code or a document, and executing a defect can cause a failure that users see. Finding problems early, by reviewing requirements and designs and testing as the code is written (often called shifting left), costs far less than finding them in production, which is why a QA plan starts from the requirements. The course description gives usability special weight because users ultimately decide whether an application succeeds.",
+      "points": [
+        "QA prevents (process) · QC detects (product) · testing, dynamic or static (reviews, static analysis), is the main form of QC",
+        "Error (human mistake) → defect (in the work product) → failure (visible wrong behavior)",
+        "Verification asks whether you built it right, against the specification; validation asks whether you built the right thing for users",
+        "A bug ticket is a failure report: the design plan finds and fixes the defect, and the QA plan proves it's gone without breaking anything else"
+      ]
+    },
+    {
+      "title": "Problem statements, business requirements and scope for a fix",
+      "eli5": "Before fixing a leak, you write down which pipe it is, what it should do, what it's doing now and which nearby pipes you're deliberately not touching.",
+      "detail": "A design plan opens by framing the ticket. A good problem statement says which application, users and feature are involved, what should happen, and what actually happens, how often and with what impact, in plain language and without proposing the solution yet; the Jul 2025 passer needed only about 140 words. Business requirements state what the business needs from the feature, such as customers completing checkout or staff seeing accurate stock levels, and it helps to say how the current app falls short of each. In-scope action items are the concrete pieces of work the fix includes, each mapped to the business requirement it serves. Out-of-scope items are related things the ticket might tempt you to do but won't, such as redesigning the whole page, adding new features or fixing an unrelated bug noticed nearby. A clear scope keeps a fix small, testable and quick to ship, and it later tells you what to test and what to leave out.",
+      "points": [
+        "Problem statement checklist: who is affected · what should happen · what happens instead · how often · why it matters",
+        "Map every action item to a business requirement; an action item with no requirement behind it is probably scope creep",
+        "Good out-of-scope items are plausible: they relate to the ticket but not to the fix",
+        "Write business requirements from the business's side, as outcomes, not as technical tasks"
+      ]
+    },
+    {
+      "title": "Functional and non-functional requirements with measurable targets",
+      "eli5": "A functional requirement is what the button does, and a non-functional requirement is how fast, how safely and for whom it does it, written as a number you can check.",
+      "detail": "Functional requirements describe behavior, and for a bug fix they read like acceptance criteria for each action item: specific, testable statements of what the system shall do. The Given-When-Then format from behavior-driven development keeps them testable: Given a starting context, When an action or event happens, Then an observable outcome follows. Non-functional requirements set quality targets drawn from ISO/IEC 25010:2023's characteristics, such as performance efficiency, reliability, security, interaction capability (called usability in the 2011 edition), compatibility and maintainability, and each needs a metric, a target value and the condition it applies under. For web performance, Google's Core Web Vitals give ready-made thresholds, measured at the 75th percentile of page loads: Largest Contentful Paint within 2.5 seconds, Interaction to Next Paint within 200 milliseconds and Cumulative Layout Shift of 0.1 or less. Accessibility targets can cite WCAG 2.2 level AA, and security targets can cite the OWASP Application Security Verification Standard (ASVS 5.0, published May 2025). Label each requirement (FR1, NFR1) and trace it to its business requirement.",
+      "points": [
+        "Functional: Given a signed-in customer with items in the cart, When they apply a valid coupon, Then the discounted total appears and the coupon shows as applied",
+        "Non-functional: the order-history page loads within 2 seconds for 95% of requests with 500 concurrent users",
+        "Vague words to replace with numbers: fast, secure, reliable, user-friendly, scalable",
+        "Reuse the same numbers in Task 2: a non-functional requirement's target becomes its quality metric and its pass criterion"
+      ]
+    },
+    {
+      "title": "Software behavior and software structure",
+      "eli5": "Behavior is how the system acts (press this and that happens), and structure is how it's built (which parts exist and what each part is responsible for).",
+      "detail": "A design plan describes the fixed system from both views. Behavior describes inputs and events, the responses they should produce and the constraints around them: for example, when a user submits a form with an empty required field, the form shows an inline error, doesn't submit and announces the error to screen readers. State, timing and error handling belong here too, including what happens on invalid input, timeouts or a lost connection. UML's behavior diagrams express these views: use case diagrams (actors and goals), activity diagrams (workflows), sequence diagrams (messages between objects over time) and state machine diagrams (states and the events that change them). Structure describes the static organization: the modules or components, each one's purpose and responsibilities, and how they depend on each other. A common way to present it is by layer, such as the user interface, the controllers or services that hold business logic, and the data-access layer and database, with UML structure diagrams such as class, component, package and deployment diagrams. High cohesion within modules and low coupling between them keep a fix contained to the modules that own the problem.",
+      "points": [
+        "Behavior entry pattern: trigger (input or event) → expected response → constraints (time, validation, security)",
+        "Structure entry pattern: module → purpose → components → responsibilities",
+        "Name the same modules in your structure section that your behavior steps pass through",
+        "Single responsibility: each module should have one reason to change"
+      ]
+    },
+    {
+      "title": "Design patterns and how requirements shape design",
+      "eli5": "Design patterns are proven blueprints for common problems, like a standard staircase design, so you don't have to invent a new one every time you need to reach another floor.",
+      "detail": "One competency asks how business requirements affect design patterns and software systems. A design pattern is a named, reusable solution to a recurring design problem. The Gang of Four catalog has 23 of them: five creational patterns for creating objects (Factory Method, Abstract Factory, Builder, Prototype, Singleton), seven structural patterns for composing objects (Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy) and eleven behavioral patterns for how objects interact (Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor). Architectural patterns work at a larger scale, such as layered architecture and Model-View-Controller (MVC), which separates data and rules (model), presentation (view) and input handling (controller). Requirements drive the choice: supporting several interchangeable payment providers points to Strategy, wrapping a third-party API whose interface doesn't match points to Adapter, notifying many parts of the system when an order changes points to Observer, and simplifying access to a tangled legacy subsystem points to Facade. A bug fix should usually respect the patterns already in the codebase rather than introduce new ones, because changing a pattern ripples into every module that depends on it.",
+      "points": [
+        "Strategy: swap interchangeable algorithms at run time, such as shipping-cost rules",
+        "Observer: one change notifies many subscribers, such as order-status updates",
+        "Adapter: wrap an incompatible interface so your code can use it",
+        "Facade: one simple entry point to a complex subsystem",
+        "Singleton: exactly one shared instance; use it sparingly, since it adds hidden global state"
+      ]
+    },
+    {
+      "title": "Deliverables, sequencing and roadblocks",
+      "eli5": "Planning the work is like planning a road trip: list the stops, put them in an order that makes sense, and think ahead about the detours that could slow you down.",
+      "detail": "A list of deliverables, in order, turns the design into a plan of work. Deliverables are tangible outputs, such as an updated design document, the corrected code, automated tests and a deployed release, each with the steps that produce it, usually design, implement and test. A sequence table orders the deliverables and justifies the order through dependencies: you can't test code that hasn't been written, and an interface should be settled before the code that calls it. A work breakdown structure splits deliverables into smaller tasks, and a finish-to-start dependency means one task must end before the next begins. A competency asks you to identify goals and potential roadblocks, so note what could block each step, such as an unclear root cause, missing test data, no access to an environment, a third-party outage or competing priorities, along with a mitigation for each. Justifications are strongest when they name the dependency or risk that makes the order sensible.",
+      "points": [
+        "A complete sequence row: deliverable · steps · owner · depends on · justification",
+        "Typical order for a fix: reproduce and analyze → design the change → implement → unit and integration tests → regression → UAT → release",
+        "Roadblock examples: the bug can't be reproduced, no production-like data, a reviewer is unavailable, an API rate limit",
+        "Define done for each deliverable, such as all tests passing and the code review approved"
+      ]
+    },
+    {
+      "title": "Development environment and tooling",
+      "eli5": "The development environment is the workshop: the languages, tools and machines you'll use, chosen because they fit the job and the people doing it.",
+      "detail": "Describe the development environment and justify each part. List the programming languages and frameworks (matching the existing application, since a fix shouldn't switch stacks), the IDE, version control (Git, with a branch per ticket and pull requests for review), build and dependency tools, issue tracking (such as Jira or GitHub Issues), testing tools and the hosting or deployment target. Continuous integration means merging work into a shared mainline at least daily, with an automated, self-testing build on every push; continuous delivery keeps the product releasable at all times, so releasing is a business decision; and continuous deployment sends every change that passes the pipeline to production automatically. A competency asks you to plan development tasks and environments based on desired quality outcomes, so tie each tool to a quality goal: linting and static analysis to maintainability, automated tests in the pipeline to regression safety, and a staging environment that mirrors production to trustworthy test results. Separate environments, typically local, development, test or QA, staging or UAT, and production, keep unfinished work away from users.",
+      "points": [
+        "Justify by fit: the existing stack, the team's skills, cost, how the tool joins the pipeline, and the quality goal it supports",
+        "Feature-branch workflow for a ticket: branch → commits → pull request → automated checks and code review → merge (the GitHub flow pattern; Git Flow is a different model with develop, release and hotfix branches)",
+        "Example pairings: Java with Spring Boot in IntelliJ IDEA · TypeScript with React in VS Code · Python with Django in PyCharm",
+        "Test in a clone of production, with the same versions, configuration and realistic data, so results carry over"
+      ]
+    },
+    {
+      "title": "Methodologies for a bug fix",
+      "eli5": "A small, urgent repair doesn't need a year-long master plan; it needs a quick loop of fix, check and ship, with the customer able to see progress.",
+      "detail": "Choose a methodology and compare it with the alternatives. Waterfall runs requirements, design, implementation, testing and deployment once, in sequence, which suits large fixed-scope projects but is slow and rigid for a small fix. The incremental model delivers working pieces in planned increments; RAD (rapid application development) moves fast through prototypes and heavy user involvement; and continuous development, meaning continuous integration plus continuous delivery or deployment, moves small changes through an automated pipeline so that each one is releasable as soon as it passes (continuous delivery) or goes live automatically (continuous deployment). Agile methods, whether Scrum's sprints or Kanban's continuous flow, suit a bug fix because the work is small, priorities can shift, feedback arrives quickly and each change can be tested and released on its own; both 2025 passers chose Agile. A strong answer states the choice, compares it with the alternatives on the same criteria, and ties each reason to the ticket's size, urgency and risk. Agile and continuous delivery combine well: sprints or a Kanban board plan the work, and the pipeline tests and releases it.",
+      "points": [
+        "Waterfall: one long pass, heavy documentation, late feedback",
+        "Incremental: planned slices of functionality, each delivered working",
+        "RAD: prototypes and user feedback in short cycles, strongest when the user interface is the main risk",
+        "Kanban: pull the ticket when capacity frees up and limit work in progress, which fits a steady stream of fixes",
+        "Continuous delivery: always releasable · continuous deployment: every passing change goes live automatically"
+      ]
+    },
+    {
+      "title": "Quality metrics",
+      "eli5": "Metrics are the scoreboard for quality: numbers that show whether testing was thorough, whether the fix works and whether the system is fast and stable enough.",
+      "detail": "A QA plan sets quality metrics for the functional and non-functional requirements and says why each one matters. A metric needs a definition, a formula or measurement method, a target and a reason. Test and process metrics include requirements coverage (requirements with at least one passing test divided by all requirements in scope), test pass rate (passed tests divided by executed tests), code coverage (statement coverage counts executed statements and branch coverage counts exercised branches, including both outcomes of every decision, and 100% statement coverage doesn't guarantee 100% branch coverage), defect density (defects per thousand lines of code or per function point), defect removal efficiency (defects found before release divided by all defects found before and after release) and escaped defects (defects found in production). Product metrics map to non-functional requirements: response time at a percentile such as p95, error rate (failed requests divided by total requests), availability (uptime divided by total time), mean time between failures (MTBF), mean time to recovery (MTTR), Core Web Vitals for web pages, WCAG 2.2 AA conformance for accessibility, and usability scores such as the System Usability Scale (SUS), a 10-item questionnaire scored from 0 to 100 on which about 68 is average. Tie each metric to a requirement label and state the threshold that counts as a pass.",
+      "points": [
+        "Functional examples: 100% of in-scope functional requirements covered by a passing test · no open critical or high-severity defects at release",
+        "Non-functional examples: p95 response time ≤ 2 s · error rate under 1% · availability ≥ 99.9% · every WCAG 2.2 Level A and AA success criterion met on the changed pages",
+        "Why a metric matters: the risk it reveals and the decision it supports, such as release or don't release",
+        "Defect removal efficiency = pre-release defects ÷ (pre-release + post-release defects) × 100%"
+      ]
+    },
+    {
+      "title": "Test levels and test types",
+      "eli5": "Testing happens at different zoom levels, from one tiny part up to the whole system in users' hands, and it asks different questions: does it work, is it fast, is it secure, is it easy to use?",
+      "detail": "The ISTQB Foundation syllabus separates test levels, which describe scope, from test types, which describe the quality being checked. CTFL v4.0 names five levels: component (unit) testing checks one component in isolation, often with test doubles; component integration testing checks the interfaces and interactions between components; system testing checks the whole system against its requirements in a production-like environment; system integration testing checks the interfaces with other systems and external services; and acceptance testing confirms the system meets users' business needs, with user acceptance testing (UAT) as one of its main forms. Many teams shorten the list to unit, integration, system and acceptance. Types: functional testing checks what the system does; non-functional testing checks how well it does it (performance, load, stress, security, usability, accessibility, compatibility); white-box testing is based on the internal structure; and black-box testing is based on the specification. After a fix, confirmation testing (re-testing) checks that the original failure is gone, regression testing checks that the change didn't break anything that used to work, and a smoke test is a quick check that a build is stable enough to test further. The test pyramid advises many fast unit tests, fewer integration tests and only a handful of slow end-to-end tests. The course description names test plans, test cases, and unit, integration, regression and usability tests, so expect to choose among them and justify your choices.",
+      "points": [
+        "Level = scope (component → component integration → system → system integration → acceptance) · type = the quality being checked (functional, performance, security, usability …)",
+        "Performance family: load (expected peak), stress (beyond the peak until it breaks), spike (sudden jumps), endurance or soak (sustained load for hours)",
+        "Usability testing: real users attempt realistic tasks while you measure success rate, time on task and errors",
+        "Confirmation testing proves the bug is fixed; regression testing proves nothing else broke"
+      ]
+    },
+    {
+      "title": "Writing test cases",
+      "eli5": "A test case is a mini-experiment: a clear setup, an exact action, a specific input and a prediction you check.",
+      "detail": "Each test case should trace to one requirement (FR1, NFR2), name a test type that fits it (unit, integration, system, regression, performance, usability or acceptance), give concrete sample input, and state an expected result that's observable and clearly passes or fails. Black-box design techniques choose efficient inputs: equivalence partitioning (one representative from each class of inputs that should behave the same), boundary value analysis (values at and just beyond each edge), decision tables (every combination of conditions and the action each requires) and state transition testing (valid and invalid moves between states). Include negative tests that feed invalid input and expect a specific, graceful error, plus a regression test for the scenario that originally failed.",
+      "points": [
+        "Row checklist: ID · requirement label · test type · sample input · an expected result that clearly passes or fails",
+        "Typical owners: developers for unit tests, QA analysts for integration, system and regression tests, product owners or end users for UAT",
+        "Expected result = an observable output, message or state change, never \"works correctly\"",
+        "Turn the bug's reproduction steps into the first test case: it should fail before the fix and pass after it"
+      ]
+    },
+    {
+      "title": "Test sequence, environments and tools",
+      "eli5": "You check the bricks before the wall and the wall before the house, and you rehearse in practice rooms before anything reaches the real stage.",
+      "detail": "Order the tests and justify the order. The usual order follows dependencies: unit tests first (fast, cheap and close to the code), then integration tests on the interfaces the fix touches, then system and non-functional tests in a production-like environment, then regression tests across the affected areas, and finally user acceptance testing before release. Each stage has entry criteria (what must be true to start, such as a build that passed its unit tests) and exit criteria (what must be true to finish, such as no open critical defects), and justifying the order means pointing to those dependencies and to the rising cost of finding problems late. Environments progress from local to development, test or QA, and staging or UAT, and the Jan 2025 passer kept production out of the test plan. A competency asks you to recommend tools and services for functional and non-functional testing: unit frameworks (JUnit for Java, pytest for Python, Jest for JavaScript), UI automation (Selenium, Playwright or Cypress), API testing (Postman), performance testing (Apache JMeter or k6), web audits (Lighthouse for performance and accessibility, axe for accessibility), security scanning (ZAP), static analysis (SonarQube), CI services (GitHub Actions or Jenkins) and defect tracking (Jira). Recommend each one for a stated testing outcome, not just by name.",
+      "points": [
+        "Sequence: unit → integration → system and non-functional → regression → UAT → release",
+        "Entry criteria start a stage and exit criteria end it; both make the order defensible",
+        "Run the unit and regression suites automatically in CI on every pull request",
+        "Pick tools that fit the stack: JUnit for a Spring app, Jest for a React front end, k6 or JMeter for load"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Assessment", "value": "2 written tasks (reported): Task 1 software design plan · Task 2 quality assurance plan · one bug-ticket scenario", "note": "A Jan 2025 passer: about 8 hours of work, 10 days including grading" },
+    { "label": "Catalog status", "value": "3 CU, term 8, in both BSCS 202412 and BSCS 202611; also in B.S. Software Engineering (202610)", "note": "The 2025 student posts predate the 202611 catalog, so check your task page" },
+    { "label": "Problem statement checklist", "value": "who is affected · what should happen · what happens instead · how often · why it matters" },
+    { "label": "Statement vs branch coverage", "value": "Statement coverage counts executed statements · branch coverage counts exercised decision outcomes, true and false", "note": "100% statement coverage doesn't guarantee 100% branch coverage" },
+    { "label": "Traceability chain", "value": "BR1 → action item → FR1 / NFR1 → TC1", "note": "Reuse the same labels in both tasks" },
+    { "label": "QA vs QC vs testing", "value": "QA = prevent defects through process · QC = detect defects in the product · testing = dynamic (run it) or static (review it)" },
+    { "label": "Error, defect, failure (ISTQB)", "value": "error = human mistake · defect = fault in the work product · failure = the visible wrong behavior" },
+    { "label": "Verification vs validation", "value": "Verification: built it right (meets the spec) · validation: built the right thing (meets user needs)" },
+    { "label": "Given-When-Then", "value": "Given = starting context · When = action or event · Then = observable outcome", "note": "A testable format for functional requirements and acceptance criteria" },
+    { "label": "Measurable NFR formula", "value": "metric + target + condition, such as p95 response ≤ 2 s at 500 concurrent users" },
+    { "label": "Core Web Vitals (good)", "value": "LCP ≤ 2.5 s · INP ≤ 200 ms · CLS ≤ 0.1", "note": "Measured at the 75th percentile of page loads" },
+    { "label": "ISO/IEC 25010:2023 characteristics", "value": "functional suitability · performance efficiency · compatibility · interaction capability · reliability · security · maintainability · flexibility · safety", "note": "The 2011 edition had eight: interaction capability was called usability, flexibility replaced portability, and safety is new" },
+    { "label": "UML views", "value": "Behavior: use case, activity, sequence, state machine · structure: class, component, package, deployment" },
+    { "label": "Gang of Four patterns", "value": "23 total: 5 creational · 7 structural · 11 behavioral", "note": "Refactoring.Guru's catalog lists 22, leaving out Interpreter" },
+    { "label": "MVC", "value": "Model = data and business rules · view = presentation · controller = handles input and coordinates the two" },
+    { "label": "Design quality", "value": "High cohesion inside modules · low coupling between them · single responsibility per module" },
+    { "label": "CI and CD", "value": "Continuous integration: merge at least daily, self-testing build on every push · continuous delivery: always releasable · continuous deployment: every passing change goes live automatically" },
+    { "label": "Methodology one-liners", "value": "Waterfall: one sequential pass · incremental: planned working slices · RAD: prototypes and user feedback · Agile: short feedback loops (Scrum sprints or Kanban flow) · continuous: CI plus delivery (always releasable, people decide when to release) or deployment (every passing change goes live automatically)" },
+    { "label": "Environments", "value": "local → development → test or QA → staging or UAT → production", "note": "Keep testing out of production" },
+    { "label": "Test levels (ISTQB CTFL v4.0)", "value": "component (unit) → component integration → system → system integration → acceptance (UAT is one kind)", "note": "Often shortened to unit → integration → system → acceptance" },
+    { "label": "After a fix", "value": "Confirmation (re-test): the original failure is gone · regression: nothing else broke · smoke: the build is stable enough to test" },
+    { "label": "Performance tests", "value": "load = expected peak · stress = beyond peak until failure · spike = sudden jumps · endurance (soak) = sustained load over time" },
+    { "label": "Test case row", "value": "ID · requirement label · test type · sample input · an expected result that clearly passes or fails", "note": "An observable output, message or state change, never \"works correctly\"" },
+    { "label": "Test design techniques", "value": "equivalence partitioning · boundary value analysis · decision tables · state transition testing" },
+    { "label": "Test metrics", "value": "requirements coverage = covered ÷ total · pass rate = passed ÷ executed · defect density = defects ÷ KLOC · DRE = pre-release ÷ (pre-release + post-release) × 100%" },
+    { "label": "Product metrics", "value": "p95 response time · error rate = failed ÷ total requests · availability = uptime ÷ total time · MTBF · MTTR" },
+    { "label": "System Usability Scale", "value": "10 statements rated 1–5, converted to a 0–100 score; about 68 is average", "note": "Not a percentage" },
+    { "label": "Tools by outcome", "value": "unit: JUnit, pytest, Jest · UI: Selenium, Playwright, Cypress · API: Postman · load: JMeter, k6 · web audits: Lighthouse, axe · security: ZAP · static analysis: SonarQube · CI: GitHub Actions, Jenkins · defects: Jira" },
+    { "label": "Entry and exit criteria", "value": "Entry: what must be true to start a test stage · exit: what must be true to finish it, such as no open critical defects" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Orientation and outline",
+      "tasks": [
+        "Discuss your course planning tool report with your instructor and confirm you have the current task directions.",
+        "Read both tasks, both rubrics and the bug-ticket scenario, then build an outline using the rubric's letters as headings.",
+        "Choose a labeling scheme (BR, FR, NFR, TC) that you'll use in both tasks."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Concepts: quality, requirements and measurable targets",
+      "tasks": [
+        "Review QA versus QC, error versus defect versus failure, and verification versus validation.",
+        "Practice rewriting vague requirements as Given-When-Then statements and measurable non-functional requirements.",
+        "Skim ISO/IEC 25010's characteristics and the Core Web Vitals thresholds as sources for targets."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Task 1: problem and scope",
+      "tasks": [
+        "Write a short problem statement: who is affected, what should happen and what happens instead.",
+        "Write the business requirements as outcomes, noting where the app falls short of each.",
+        "Map in-scope action items to them, and list related out-of-scope items."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Task 1: requirements, behavior and structure",
+      "tasks": [
+        "Write functional requirements as acceptance criteria for each action item, and non-functional requirements with numbers and conditions.",
+        "Describe behavior as trigger, response and constraints, and structure as module, purpose, components and responsibilities.",
+        "Check that the modules named in the structure section are the ones the behavior steps pass through."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Task 1: the work plan, then submit Task 1",
+      "tasks": [
+        "List the deliverables with their steps, then order them in a sequence table with a justification for each position.",
+        "Describe and justify the development environment, and explain why your methodology fits this fix better than the alternatives.",
+        "Add references if you used sources, fix Grammarly's correctness issues, walk the rubric once more and submit."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Concepts: test levels, types, techniques and metrics",
+      "tasks": [
+        "Learn the test levels and types, plus confirmation, regression and smoke testing.",
+        "Practice equivalence partitioning and boundary values on a field from your scenario.",
+        "List quality metrics for the functional and the non-functional requirements, with formulas and targets."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Task 2: summary, objectives, metrics and test scope",
+      "tasks": [
+        "Summarize the design plan, including the deliverables, tools, languages and methodology.",
+        "Set quality metrics for the functional and non-functional requirements, with targets and why each one matters.",
+        "Decide which requirements you'll test and which functionality is out of scope, with reasons."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Task 2: test cases and sequence",
+      "tasks": [
+        "Build the test case table, giving every row an ID, a requirement label, sample input and an expected result that clearly passes or fails.",
+        "Write the test sequence from unit to UAT and justify each step with its dependencies and entry or exit criteria."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Review and submit Task 2",
+      "tasks": [
+        "Trace every test case back to a requirement label and every metric back to a requirement.",
+        "Check that no test runs in production and that every tool you name has a stated purpose.",
+        "Fix Grammarly's correctness issues and submit."
+      ]
+    },
+    {
+      "day": "Days 10-14",
+      "focus": "Grading buffer and revisions",
+      "tasks": [
+        "Start your next course while the tasks are graded; a Jan 2025 passer finished in 10 days including grading.",
+        "If a task comes back, fix exactly the cited items; if the feedback is unclear, book an instructor appointment before resubmitting."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which activity is quality assurance rather than quality control?",
+      "choices": [
+        "Running the full regression suite on the release candidate before it ships",
+        "Defining a code review checklist and a branching policy for every change",
+        "Logging a defect found during system testing, with the steps to reproduce it",
+        "Measuring the page's load time in the staging environment against its target"
+      ],
+      "answer": "Defining a code review checklist and a branching policy for every change",
+      "why": "Quality assurance is process-oriented and preventive: it sets up standards and practices, such as a code review checklist and a branching policy that every change must follow, so defects are less likely. Running the regression suite, logging a defect and measuring load time all examine the product to detect problems, which is quality control, and testing is one form of it."
+    },
+    {
+      "q": "A developer misreads a requirement and writes a wrong comparison, and customers then see the wrong total at checkout. In ISTQB terms, which part of this story is the failure?",
+      "choices": [
+        "The developer misreading the requirement",
+        "The wrong comparison in the code",
+        "The bug ticket that reports the problem",
+        "The wrong total that customers see"
+      ],
+      "answer": "The wrong total that customers see",
+      "why": "A failure is the visible deviation from expected behavior when the software runs, here the wrong total customers see at checkout. The misreading is the error (a human mistake), and the wrong comparison is the defect it left in the code. The ticket is a defect report that describes the failure; it isn't the failure itself."
+    },
+    {
+      "q": "Which is the best-written non-functional requirement?",
+      "choices": [
+        "Product search shall return results within 2 seconds for 95% of queries with 500 concurrent users.",
+        "Product search should be fast and reliable for every customer, even during busy sale periods.",
+        "Users shall be able to search products by name and category from the search bar on every page.",
+        "Product search shall use a database index on the product name and category columns."
+      ],
+      "answer": "Product search shall return results within 2 seconds for 95% of queries with 500 concurrent users.",
+      "why": "It names a metric (response time), a target (2 seconds at the 95th percentile) and a condition (500 concurrent users), so a performance test can pass or fail it. \"Fast and reliable\" can't be measured, searching by name and category is functional behavior, and requiring an index prescribes a design choice instead of stating the quality the business needs."
+    },
+    {
+      "q": "In a Given-When-Then acceptance criterion, what belongs in the Then step?",
+      "choices": [
+        "The starting state of the system",
+        "The user's action or triggering event",
+        "An observable outcome the test can check",
+        "The database tables the code updates"
+      ],
+      "answer": "An observable outcome the test can check",
+      "why": "Given sets the context, When describes the action or event, and Then states the expected result, which should be observable from outside the system, such as a message, a changed total or a new list entry. Internal details like database tables belong in the implementation and its unit tests, not in an acceptance criterion."
+    },
+    {
+      "q": "Which statement belongs in the software structure section rather than the software behavior section?",
+      "choices": [
+        "When a user submits an empty required field, the form shows an inline error and doesn't submit.",
+        "If the payment service doesn't answer within 10 seconds, the order is saved as pending and the user is told.",
+        "After three failed sign-in attempts, the account locks for 15 minutes.",
+        "The CartService module calculates totals and reads prices through the PricingRepository."
+      ],
+      "answer": "The CartService module calculates totals and reads prices through the PricingRepository.",
+      "why": "Structure describes the parts of the system, their responsibilities and their dependencies, which is what the CartService statement does: it names a module, what it's responsible for and the PricingRepository it depends on for current prices. The other three describe behavior: an input or event, the system's response and the constraints around it (validation, a timeout, a lockout rule)."
+    },
+    {
+      "q": "The business requires checkout to support several payment providers, with more added later, without changing the checkout code each time. Which design pattern fits best?",
+      "choices": [
+        "Singleton",
+        "Strategy",
+        "Observer",
+        "Memento"
+      ],
+      "answer": "Strategy",
+      "why": "Strategy puts interchangeable algorithms behind one interface, so checkout calls a payment strategy and new providers plug in as new implementations; an Adapter often wraps each provider's own API to fit that interface. Singleton guarantees a single instance, Observer notifies subscribers when something changes, and Memento saves and restores an object's state, and none of these addresses swappable providers."
+    },
+    {
+      "q": "For a single, well-understood bug fix that must ship quickly and be checked with the product owner, which approach is the best fit?",
+      "choices": [
+        "Waterfall, with requirements, design and test documents signed off at the end of each phase",
+        "The spiral model, with a formal risk analysis and a new prototype in every loop",
+        "RAD, with several rounds of throwaway prototypes reviewed in user workshops",
+        "Agile, with a short sprint or Kanban flow backed by continuous integration"
+      ],
+      "answer": "Agile, with a short sprint or Kanban flow backed by continuous integration",
+      "why": "A small fix benefits from short feedback loops, quick review with the product owner and independent testing and release, which is what Agile and CI provide. Waterfall's phase sign-offs slow a small change down, the spiral model's risk loops are meant for large, high-risk projects, and RAD's prototyping helps when the user interface is uncertain, not when the bug is well understood."
+    },
+    {
+      "q": "What distinguishes continuous deployment from continuous delivery?",
+      "choices": [
+        "Continuous deployment releases every passing change automatically; continuous delivery keeps the product releasable, and people decide when to release.",
+        "Continuous deployment means merging code into the shared mainline at least daily; continuous delivery means a scheduled release to production once a month.",
+        "Continuous delivery releases every passing change automatically; continuous deployment keeps the product releasable, and people decide when to release.",
+        "There's no difference; the two names mean the same thing."
+      ],
+      "answer": "Continuous deployment releases every passing change automatically; continuous delivery keeps the product releasable, and people decide when to release.",
+      "why": "Merging into a shared mainline at least daily, with an automated, self-testing build, is continuous integration, and neither delivery nor deployment means a fixed monthly release. Continuous delivery extends that automation so the product is always ready to release, leaving the release itself as a business decision, and continuous deployment goes one step further by sending every change that passes the automated pipeline to production automatically. The reversed option swaps the two definitions: delivery stops at always releasable, and deployment is the one that releases automatically."
+    },
+    {
+      "q": "Testing finds 45 defects before release, and users report 5 more after release. What is the defect removal efficiency?",
+      "choices": [
+        "10%",
+        "11%",
+        "90%",
+        "45%"
+      ],
+      "answer": "90%",
+      "why": "Defect removal efficiency is the defects removed before release divided by all defects found before and after release: 45 ÷ (45 + 5) = 45 ÷ 50 = 90%. 10% is the share that escaped (5 ÷ 50), and 11% divides the escaped defects by the pre-release count (5 ÷ 45)."
+    },
+    {
+      "q": "A function contains one <code>if</code> statement with no <code>else</code>, and your only test makes the condition true. Which statement is correct?",
+      "choices": [
+        "Statement coverage can reach 100%, but branch coverage can't",
+        "Branch coverage is 100% because every line ran",
+        "Statement coverage is 50% and branch coverage is 100%",
+        "Coverage can't be measured for a statement without an <code>else</code>"
+      ],
+      "answer": "Statement coverage can reach 100%, but branch coverage can't",
+      "why": "With the condition true, every statement runs, including the body of the <code>if</code>, so statement coverage can reach 100%. But every line running isn't the same as every branch: the decision has a true and a false outcome, and only the true one was exercised, so branch coverage stays below 100%. Most coverage tools count the two decision outcomes and report 50%; ISTQB CTFL v4.0 also counts unconditional branches, which gives a higher figure. A second test that makes the condition false would cover the implicit else and bring branch coverage to 100%."
+    },
+    {
+      "q": "Which test checks that the fixed checkout module and the payment service exchange data correctly through their interface?",
+      "choices": [
+        "A unit test",
+        "An integration test",
+        "A usability test",
+        "A user acceptance test"
+      ],
+      "answer": "An integration test",
+      "why": "Integration testing targets the interfaces and interactions between components or systems. A unit test checks one component in isolation, usually with the payment service replaced by a test double; a usability test watches real users attempt tasks; and user acceptance testing confirms the whole system meets users' needs before release."
+    },
+    {
+      "q": "After the fix is merged, you rerun the steps from the original ticket and they now pass. Then you run the existing test suites for checkout, cart and sign-in. What are these two activities?",
+      "choices": [
+        "Confirmation testing, then regression testing",
+        "Regression testing, then smoke testing",
+        "Unit testing, then acceptance testing",
+        "Exploratory testing, then confirmation testing"
+      ],
+      "answer": "Confirmation testing, then regression testing",
+      "why": "Rerunning the failing scenario to prove the defect is gone is confirmation testing (re-testing). Running the existing suites for nearby features to check that the change broke nothing that used to work is regression testing. Smoke testing is a quick stability check of a build, and exploratory testing is unscripted investigation."
+    },
+    {
+      "q": "Where should user acceptance testing of the fix normally run?",
+      "choices": [
+        "On the developer's own machine, with local test data",
+        "In a staging environment that mirrors production",
+        "In production, during business hours, with real customers",
+        "In the unit-test stage of the CI pipeline, on every commit"
+      ],
+      "answer": "In a staging environment that mirrors production",
+      "why": "UAT needs a production-like environment, often called staging or the UAT environment, with the same versions, configuration and realistic data, so users judge the real experience without risking live customers. A developer's machine isn't representative, testing in production exposes users to unverified changes (and the Jan 2025 passer kept production out of the test plan), and the unit-test stage checks components, not user acceptance."
+    },
+    {
+      "q": "Which test sequence is easiest to justify for the fix?",
+      "choices": [
+        "UAT → regression → system → integration → unit",
+        "Regression → unit → UAT → integration → system",
+        "System → UAT → unit → integration → regression",
+        "Unit → integration → system → regression → UAT"
+      ],
+      "answer": "Unit → integration → system → regression → UAT",
+      "why": "Each stage depends on the one before it: components should work alone before you test how they connect, the connected system before you check it end to end and for regressions, and the whole system before users spend time on acceptance. Starting with UAT, system tests or regression, before the fix is unit tested, finds defects late, when they cost the most to fix."
+    },
+    {
+      "q": "Which tool best matches the testing outcome \"confirm the page stays under a 2-second response time with 500 simultaneous users\"?",
+      "choices": [
+        "JMeter or k6",
+        "JUnit or pytest",
+        "axe or WAVE",
+        "Git or Subversion"
+      ],
+      "answer": "JMeter or k6",
+      "why": "Apache JMeter and k6 generate simulated concurrent users and report response-time percentiles, which is exactly a load-testing outcome. JUnit and pytest run unit tests for Java and Python code, axe and WAVE check web pages for accessibility problems, and Git and Subversion are version control systems, not testing tools."
+    }
+  ],
+  "pitfalls": [
+    "<b>Untraceable items.</b> Requirements without labels, or labels that change between tasks, make it hard to show that each test covers a requirement. Label everything (BR1, FR1, NFR1, TC1) and reuse the labels in Task 2.",
+    "<b>Non-functional requirements without numbers.</b> \"The page should load quickly\" can't become a quality metric or a test. Give each one a metric, a target and a condition.",
+    "<b>A problem statement that wanders or jumps to the solution.</b> Keep it to who is affected, what should happen and what happens instead; the Jul 2025 passer needed about 140 words.",
+    "<b>Scope items that don't connect.</b> In-scope action items should map to business requirements, and out-of-scope items should relate to the ticket without being part of the fix. Unrelated filler weakens both lists.",
+    "<b>Mixing behavior and structure.</b> Events and responses belong in behavior, while modules and responsibilities belong in structure. Listing components under behavior, or rules under structure, misses both items.",
+    "<b>Describing Agile without comparing.</b> Naming a methodology isn't a justification. Compare it with the alternatives on the same criteria and tie the choice to the fix's size, urgency and risk.",
+    "<b>A thin Task 2 summary.</b> One returned summary lacked detail on deliverables, tools, languages and methodology. Restate them from Task 1.",
+    "<b>Incomplete test case rows.</b> Every row needs a requirement label, a test type, concrete sample input and an expected result that clearly passes or fails. An expected result of \"it works\" isn't checkable.",
+    "<b>Testing in production, or a sequence with no reasons.</b> Put tests in local, development, test and UAT environments, and justify the order with its dependencies and entry or exit criteria."
+  ],
+  "resources": [
+    {
+      "label": "Task 1 and Task 2 directions and rubrics (course page)",
+      "kind": "official",
+      "note": "The source of truth for every requirement. Use the rubric's wording as headings and answer each item in its own labeled section."
+    },
+    {
+      "label": "Course instructors (course page → instructor appointments)",
+      "kind": "official",
+      "note": "A 2025 student met with an instructor after a return and learned exactly what the Task 2 summary lacked; book a session if feedback is unclear."
+    },
+    {
+      "label": "D480 Passed Quickly, Here is How (r/WGU, Jan 2025)",
+      "url": "https://www.reddit.com/r/WGU/comments/1hwsctq/d480_passed_quickly_here_is_how/",
+      "kind": "community",
+      "note": "Traceability labels, the rubric's own words, Agile for a bug fix and test environments short of production."
+    },
+    {
+      "label": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
+      "url": "https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/",
+      "kind": "official",
+      "note": "The standard vocabulary for test levels, test types, test design techniques and test management; the syllabus is downloadable from this page."
+    },
+    {
+      "label": "ISO/IEC 25010 product quality model (iso25000.com overview)",
+      "url": "https://iso25000.com/index.php/en/iso-25000-standards/iso-25010",
+      "kind": "tool",
+      "note": "Nine quality characteristics and their subcharacteristics to draw non-functional requirements and metrics from."
+    },
+    {
+      "label": "web.dev: Web Vitals",
+      "url": "https://web.dev/articles/vitals",
+      "kind": "official",
+      "note": "Google's thresholds for LCP, INP and CLS, a ready source of measurable performance targets for a web app."
+    },
+    {
+      "label": "OWASP Application Security Verification Standard (ASVS)",
+      "url": "https://asvs.owasp.org/",
+      "kind": "official",
+      "note": "A catalog of testable security requirements (version 5.0, May 2025) for security-related non-functional requirements."
+    },
+    {
+      "label": "Refactoring.Guru: design patterns catalog",
+      "url": "https://refactoring.guru/design-patterns/catalog",
+      "kind": "tool",
+      "note": "Plain-language explanations and diagrams of the classic creational, structural and behavioral patterns."
+    },
+    {
+      "label": "Martin Fowler's site: The Practical Test Pyramid",
+      "url": "https://martinfowler.com/articles/practical-test-pyramid.html",
+      "kind": "tool",
+      "note": "How unit, integration and end-to-end tests fit together, and why most tests should be small and fast."
+    },
+    {
+      "label": "Martin Fowler: Continuous Integration",
+      "url": "https://martinfowler.com/articles/continuousIntegration.html",
+      "kind": "tool",
+      "note": "The core CI practices and the difference between continuous integration, delivery and deployment, useful when you describe your environment and methodology."
+    },
+    {
+      "label": "Cucumber: Gherkin reference",
+      "url": "https://cucumber.io/docs/gherkin/reference/",
+      "kind": "tool",
+      "note": "The Given-When-Then format for writing functional requirements as testable acceptance criteria."
+    },
+    {
+      "label": "OpenStax: Introduction to Computer Science, 9.2 Software Engineering Process",
+      "url": "https://openstax.org/books/introduction-computer-science/pages/9-2-software-engineering-process",
+      "kind": "tool",
+      "note": "A free textbook refresher on waterfall, incremental, prototyping and RAD, spiral, agile and DevOps for the methodology comparison."
+    }
+  ],
+  "community": {
+    "summary": "Both 2025 posts describe passing both tasks on the first try, the Jan 2025 one in about 8 hours of work and 10 days including grading, and both chose Agile for a bug fix. Their other tips each come from one post. The Jul 2025 passer kept the problem statement short (about 140 words), gave non-functional requirements measurable targets and compared Agile with other methodologies. The Jan 2025 post labels requirements for traceability (BR1, FR1, NFR1) and reuses the labels later, answers in the rubric's own words and keeps test environments short of production; it adds that Task 2 overlaps heavily with Task 1, that commenters passed by rewording their Task 1 requirements, and that one returned Task 2 summary needed more detail on deliverables, tools, languages and methodology.",
+    "coverage": "2 posts, Jan 2025 – Jul 2025, r/WGU and r/WGU_CompSci (the Jul 2025 one isn't linked)",
+    "posts": [
+      {
+        "title": "D480 Passed Quickly, Here is How",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1hwsctq/d480_passed_quickly_here_is_how/",
+        "date": "Jan 2025",
+        "takeaway": "About 8 hours of work and 10 days including grading, both tasks first try. Label items for traceability, use the rubric's words, pick Agile for a bug fix, and test in local, dev, test and UAT environments rather than production. Task 2 overlaps heavily with Task 1; one student's returned summary needed more on deliverables, tools, languages and methodology."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Institutional Catalog, November 2026 (D480 description; BSCS 202611 lists D480 in term 8)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, January 2026 (BSCS 202412 lists D480 in term 8)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-january-2026.pdf" },
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (D480 description and competencies)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU: B.S. Software Engineering Program Guidebook, catalog 202610 (D480 in the program)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSSWE.pdf" },
+    { "label": "ISTQB: Certified Tester Foundation Level v4.0", "url": "https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/" },
+    { "label": "ISO 25000 portal: ISO/IEC 25010 product quality model", "url": "https://iso25000.com/index.php/en/iso-25000-standards/iso-25010" },
+    { "label": "web.dev: Web Vitals (LCP, INP, CLS thresholds)", "url": "https://web.dev/articles/vitals" },
+    { "label": "OWASP ASVS (version 5.0.0, May 2025)", "url": "https://asvs.owasp.org/" },
+    { "label": "Refactoring.Guru: design patterns catalog", "url": "https://refactoring.guru/design-patterns/catalog" },
+    { "label": "Ham Vocke on martinfowler.com: The Practical Test Pyramid (2018)", "url": "https://martinfowler.com/articles/practical-test-pyramid.html" },
+    { "label": "Martin Fowler: Continuous Integration (updated Jan 2024)", "url": "https://martinfowler.com/articles/continuousIntegration.html" },
+    { "label": "Cucumber: Gherkin reference", "url": "https://cucumber.io/docs/gherkin/reference/" },
+    { "label": "OMG: Unified Modeling Language 2.5.1", "url": "https://www.omg.org/spec/UML/2.5.1/About-UML" },
+    { "label": "Bentley University User Experience Center: What every client should know about SUS scores", "url": "https://www.bentley.edu/centers/user-experience-center/what-every-client-should-know-about-sus-scores" }
+  ],
+  "caveats": [
+    "The task outline here is a general summary from two 2025 posts, not from WGU, whose task directions and rubrics are behind the login. Details may have changed since, so follow your rubric wherever it differs from this guide.",
+    "This guide deliberately doesn't describe the scenario's application or its bug; it teaches the concepts each section needs. Your scenario's details decide what your requirements, modules and test cases contain.",
+    "Reddit couldn't be opened directly for this research, so post details come from condensed notes, and dates are approximate (converted from Reddit's relative timestamps).",
+    "The tools, metrics and targets named here are common industry examples, not WGU requirements. Choose what fits your scenario's stack and justify it.",
+    "The practice questions are original concept checks written for this guide. The PA has no multiple-choice items; the questions test the ideas the two plans rely on."
+  ]
+}

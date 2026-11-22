@@ -1,0 +1,711 @@
+{
+  "code": "D287",
+  "summary": "D287 has no exam: you pass one performance assessment by customizing a provided Spring Boot MVC inventory web app (Thymeleaf pages over an H2 database) for a shop of your choice and adding features step by step, from new pages and sample data to new fields with validation messages. You work in a WGU GitLab repository, commit and push after each task, and note your changes in the README. It's 3 CUs in term 5 of the BSCS standard path; the instructors' webinar videos cover most steps, but 2026 reports say the project changed and some walkthroughs no longer match every requirement.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment: customize a Spring Boot inventory web app in GitLab",
+    "format": "One project · a series of code tasks in a WGU GitLab repository · commit and push after each · evaluator-graded against a rubric, no exam",
+    "details": [
+      "<b>The app:</b> a provided Spring Boot MVC project that tracks a shop's parts and the products built from them. It has JPA entities, Spring Data repositories, services, validators with custom annotations, controllers and Thymeleaf templates over an H2 database, plus a startup class for sample data (BootStrapData), application.properties, tests, pom.xml and a README. You pick the kind of shop.",
+      "<b>The task in general terms</b> (your task page has the exact requirements): you customize the app for your shop and extend it in small steps, such as unit tests, new pages, sample data loaded at startup, a purchase action and new fields with validation messages. Each step touches a few of the MVC pieces: controllers, Thymeleaf templates, entities, repositories, validators or tests.",
+      "<b>Workflow:</b> clone the WGU GitLab repository into your IDE and work on a branch. After each task, commit with a message and push, and note the change in README.md the way your task page asks.",
+      "<b>Grading:</b> evaluators grade the project against the task's rubric, and your commits and their messages are part of what they see. Your task page lists exactly what to submit.",
+      "<b>Version change (reported):</b> a Feb 2026 student found that the walkthrough videos skip some tasks, that one demo shows only part of its task, and that the completed-project demo and user guide show features that don't match the current tasks. An Apr 2026 commenter heard the project had changed. Follow your current task page and rubric over any guide, this one included.",
+      "<b>Course facts:</b> 3 CUs (course number ITSW 3173) in term 5 of the BSCS standard path, catalog 202611, alongside D286 Java Fundamentals, and WGU expects OOP and Java basics first. D288 Back-End Programming (term 6 in the November 2026 catalog; the June 2026 program guidebook lists it in term 8) and D387 Advanced Java come later, and Version Control (D197) in term 3 practices the same Git and GitLab basics."
+    ],
+    "tips": [
+      "Turn every bullet on the task page into a checklist line and test each one in the running app before you submit; a single task can list several separate requirements.",
+      "Commit and push right after each task with a message that names it, so your history shows one step per requirement.",
+      "Write each README entry as soon as you make the change, while the details are fresh; your task page says what each entry needs.",
+      "Watch the instructors' webinar walkthroughs (course page → Course Community → Join WGU Connect → Resources). Students report they skip some tasks, and a Feb 2026 student found a demo that shows only part of its task, so check each video against your current task page.",
+      "Extend the provided design instead of rewriting it: keep the Part class abstract (commenters stress this), keep its inheritance mapping, and add new fields alongside the existing ones.",
+      "Pointing application.properties at a new database file starts a fresh, empty database, so your sample-data code runs again; use that to test your seeding guard.",
+      "Test each new action for side effects. Commenters point out that adding or updating a product can lower part inventory, so check that a purchase changes only what your task page says it should.",
+      "When the app won't start or a page shows a Whitelabel error, scroll the console to the last 'Caused by' line; it usually names a mapping, template or property mistake."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and create your personalized course plan together (listed first in the program guide).",
+    "The learner implements object-oriented programming frameworks.",
+    "The learner implements user interfaces."
+  ],
+  "topics": [
+    {
+      "title": "The project at a glance",
+      "eli5": "You're handed a working inventory app and asked to remodel it for your own shop, one small, checkable change at a time.",
+      "detail": "The provided project is a Spring Boot web app that tracks parts and the products assembled from them: users list, add, update and delete parts and products through Thymeleaf forms, and the data lives in an H2 database file. The code follows model-view-controller (MVC): entity classes describe the data, repository interfaces read and write it, service classes hold the logic, controllers map URLs to methods, templates render the pages, validators enforce rules through custom annotations, and a startup class (BootStrapData) can load sample data. Parts come in more than one concrete type, which is why the base Part class is abstract. Before you change anything, run the app, click through every page, and trace one request, such as adding a part, from the form through the controller, service and repository and back to a template, so you know where each requirement's change belongs.",
+      "points": [
+        "Typical layout: domain (entities), repositories, service, controllers, validators, bootstrap, <code>resources/templates</code> (HTML), <code>resources/static</code> (CSS), <code>application.properties</code>, the test folder, <code>pom.xml</code> and <code>README.md</code>",
+        "Start the app from the main class annotated <code>@SpringBootApplication</code>, then open <code>localhost:8080</code>",
+        "Plan your shop's sample parts and products on paper first, including which parts go into which products",
+        "Change only what a requirement asks for; unrelated refactoring makes your README and commits harder to follow"
+      ]
+    },
+    {
+      "title": "Spring Boot essentials",
+      "eli5": "Spring Boot is a kit that wires an app together for you: it starts a web server, connects the database and finds your classes by their labels (annotations), so you mostly write the parts that are unique to your app.",
+      "detail": "<code>@SpringBootApplication</code> on the main class combines <code>@SpringBootConfiguration</code>, <code>@EnableAutoConfiguration</code> (configure beans based on what's on the classpath) and <code>@ComponentScan</code> (find classes marked <code>@Component</code>, <code>@Service</code>, <code>@Repository</code> or <code>@Controller</code> in the main class's package and below). Spring creates one managed object, a bean, for each of those classes and hands them to the classes that need them through a constructor or <code>@Autowired</code>, which is called dependency injection. Starters in pom.xml bring in groups of libraries (web, Thymeleaf, data JPA, validation, test), and Maven downloads them, builds the project and runs the tests, either from the IDE or with <code>./mvnw spring-boot:run</code> and <code>./mvnw test</code> when the project includes the Maven wrapper. Settings live in <code>src/main/resources/application.properties</code>, and the embedded web server listens on port 8080 unless <code>server.port</code> says otherwise.",
+      "points": [
+        "A class outside the main class's package tree isn't scanned, so its <code>@Controller</code> never answers",
+        "Prefer constructor injection; a class with a single constructor needs no <code>@Autowired</code>",
+        "Never create a service or other Spring-managed class with <code>new</code>: Spring doesn't inject its dependencies, which stay null",
+        "Spring Boot 3 and later use <code>jakarta.*</code> imports and need Java 17 or newer, while Spring Boot 2 used <code>javax.*</code>; match what your pom.xml and existing imports use"
+      ]
+    },
+    {
+      "title": "Controllers and request mapping",
+      "eli5": "A controller is the app's receptionist: when the browser asks for a web address, it decides which method handles the request and which page to send back.",
+      "detail": "A class annotated <code>@Controller</code> holds handler methods. <code>@GetMapping(\"/about\")</code> maps GET requests for /about to a method and <code>@PostMapping</code> maps form submissions; both are shortcuts for <code>@RequestMapping</code> with an HTTP method. A handler in a <code>@Controller</code> usually returns a view name such as <code>\"about\"</code>, which Thymeleaf renders from <code>templates/about.html</code>, while a <code>@RestController</code> returns data such as JSON instead of a page. Handler parameters supply what you need: a <code>Model</code> to pass data to the template (<code>model.addAttribute(\"products\", list)</code>), <code>@RequestParam</code> for a query-string or form parameter, <code>@PathVariable</code> for a value inside the URL path, and <code>@ModelAttribute</code> to bind a whole form to an object. Returning <code>\"redirect:/path\"</code> sends the browser to another URL, and redirecting after a successful POST (Post/Redirect/Get) keeps a page refresh from repeating the action.",
+      "points": [
+        "GET for pages and reads; POST for anything that changes data, such as a purchase, a save or a delete",
+        "A new page needs a route, a template and links in both directions",
+        "<code>@RequestParam(\"id\") Long id</code> reads <code>?id=3</code> or a form field named id",
+        "Pass a result message through the <code>Model</code> when you render a page, or through <code>RedirectAttributes</code> flash attributes when you redirect",
+        "A Whitelabel page with status 404 means no handler matched the URL; 500 means a handler or template threw an exception"
+      ]
+    },
+    {
+      "title": "Thymeleaf templates and static files",
+      "eli5": "A Thymeleaf template is an HTML page with fill-in-the-blank spots: the controller hands over the data, and Thymeleaf fills the blanks before the browser sees the page.",
+      "detail": "Templates live in <code>src/main/resources/templates</code> and CSS, images and scripts in <code>src/main/resources/static</code>. Thymeleaf attributes start with <code>th:</code>: <code>th:text=\"${product.name}\"</code> replaces an element's text, <code>th:each=\"p : ${products}\"</code> repeats an element for every item in a list, <code>th:if</code> and <code>th:unless</code> show or hide an element, and <code>th:href=\"@{/about}\"</code> and <code>th:action=\"@{/save}\"</code> build context-relative links and form targets, with parameters written as <code>@{/edit(id=${p.id})}</code>. In a form, <code>th:object=\"${part}\"</code> names the object being edited and each <code>th:field=\"*{name}\"</code> writes the input's id, name and current value, so the submitted value binds back to the same property. <code>${#fields.hasErrors('price')}</code> tests a field for validation errors and <code>th:errors=\"*{price}\"</code> prints its messages. A template mistake shows up only when that page renders, so open every page you touch after each change.",
+      "points": [
+        "<code>${...}</code> reads model attributes, and <code>*{...}</code> reads properties of the form's <code>th:object</code>",
+        "<code>th:each=\"p, stat : ${list}\"</code> adds a status variable: <code>stat.index</code> counts from 0 and <code>stat.count</code> from 1, plus <code>first</code> and <code>last</code> (unnamed, it's called <code>pStat</code>)",
+        "Fixed text such as your shop's name can go straight into the HTML; data should come from the model",
+        "A button that changes data belongs in a form that submits with POST, not in a plain link"
+      ]
+    },
+    {
+      "title": "JPA entities, inheritance and relationships",
+      "eli5": "An entity is a Java class whose objects are saved as rows in a database table, and its annotations are sticky labels telling the database layer which field is the ID and how the classes connect.",
+      "detail": "<code>@Entity</code> marks a class whose objects persist as table rows, <code>@Id</code> marks the primary key and <code>@GeneratedValue</code> lets the database assign it. An entity needs a public or protected no-argument constructor and can't be final, and an abstract class can still be an entity: it's never instantiated itself, but a query on it returns all of its subclasses. <code>@Inheritance</code> on the root class chooses how a hierarchy maps to tables: SINGLE_TABLE, the default, stores every subclass in one table with a discriminator column (<code>@DiscriminatorColumn</code>, <code>@DiscriminatorValue</code>), JOINED gives each subclass its own table joined by key, and TABLE_PER_CLASS gives each concrete class a complete table. Relationships use <code>@ManyToMany</code>, <code>@OneToMany</code> and <code>@ManyToOne</code>. In a bidirectional relationship the side without <code>mappedBy</code> is the owner, whose changes are written to the database (for many-to-many, to the join table), and the side with <code>mappedBy</code> is the inverse. A new field on an entity becomes a new column, which Hibernate adds for you when the schema setting allows it.",
+      "points": [
+        "Adding a field means the field, its getter and setter, any constructor that should set it, and the sample data that uses it",
+        "Keep Part abstract, as commenters stress; the app creates and saves its subclasses",
+        "A <code>Set</code> relies on <code>equals</code> and <code>hashCode</code>, so two objects that compare equal count once; check how the provided classes define equality before adding look-alike items",
+        "Update a bidirectional relationship on the owning side, and keep both sides in sync in memory"
+      ]
+    },
+    {
+      "title": "Repositories, services and Optional",
+      "eli5": "A repository is a librarian for one kind of record: ask it to save, find, count or delete, and it writes the database queries for you.",
+      "detail": "Declaring <code>interface PartRepository extends CrudRepository&lt;Part, Long&gt;</code> is enough for Spring Data to generate an implementation at startup. CrudRepository gives you <code>save</code> (insert or update; keep using the object it returns), <code>saveAll</code>, <code>findById</code> (which returns an <code>Optional</code>), <code>existsById</code>, <code>findAll</code> (an Iterable), <code>count</code>, <code>delete</code>, <code>deleteById</code> and <code>deleteAll</code>, and method names such as <code>findByName(String name)</code> turn into queries automatically. A <code>@Service</code> class wraps repositories with business rules so controllers stay thin, and Spring injects repositories into services and services into controllers. Because <code>findById</code> returns an Optional, decide what absence means with <code>isPresent()</code>, <code>orElse(...)</code> or <code>orElseThrow()</code> instead of assuming the record exists.",
+      "points": [
+        "<code>repository.count() == 0</code> is the simplest test for an empty table",
+        "Calling <code>save</code> on an object that already has an ID updates that row instead of inserting a new one",
+        "Keep each business rule in one place, usually a service or a validator, instead of copying it into several controllers",
+        "<code>ListCrudRepository</code> (Spring Data 3.0 and later, so Spring Boot 3+ projects only) offers the same methods but returns <code>List</code> where CrudRepository returns <code>Iterable</code>"
+      ]
+    },
+    {
+      "title": "Seeding sample data at startup",
+      "eli5": "Seeding is stocking the shelves before the store opens: a startup helper checks whether the shelves are empty and only then puts out the starter stock.",
+      "detail": "A <code>@Component</code> class that implements <code>CommandLineRunner</code> has its <code>run(String... args)</code> method called once the application context has started, just before startup finishes, which makes it the usual place for sample data. Inject the repositories, build entity objects with constructors or setters, and save them; when samples refer to each other, save the referenced objects first. Guard the whole block with a check that both tables are empty, so restarting the app neither duplicates the samples nor overwrites a user's edits. With a file-based H2 database the data survives restarts (unless <code>ddl-auto</code> is <code>create</code> or <code>create-drop</code>), so test the guard by restarting twice and by pointing the app at a new database file, which should seed exactly once.",
+      "points": [
+        "Check both repositories, not just one, before inserting anything",
+        "Give the samples realistic names, prices and inventory values for your shop, and fill in any fields you add later",
+        "Log a short line when seeding runs so the console shows whether it ran",
+        "Restart the app twice: the second start should add nothing"
+      ]
+    },
+    {
+      "title": "Bean Validation and custom constraints",
+      "eli5": "Validation is a bouncer for your data: each rule is a check at the door, and when a check fails the bouncer hands back a note saying why.",
+      "detail": "Jakarta Bean Validation puts rules on fields as annotations such as <code>@NotNull</code>, <code>@Size(min = 2, max = 30)</code>, <code>@Min(0)</code> and <code>@Max(100)</code>. In a controller, mark the form object <code>@Valid</code> and put a <code>BindingResult</code> parameter immediately after it; if <code>bindingResult.hasErrors()</code> is true, return the form view so Thymeleaf can show the messages, and otherwise save and redirect. Without a BindingResult right after the validated parameter, a failed validation becomes an exception (a 400 error by default) instead of messages on the form. A custom constraint is an annotation marked <code>@Constraint(validatedBy = MyValidator.class)</code> with <code>@Target</code>, <code>@Retention(RUNTIME)</code> and the required <code>message</code>, <code>groups</code> and <code>payload</code> elements, paired with a class implementing <code>ConstraintValidator&lt;MyAnnotation, T&gt;</code> whose <code>isValid</code> returns false to reject a value. A rule that compares several fields of one object, such as stock that must sit between a minimum and a maximum, belongs in a class-level constraint (<code>@Target(ElementType.TYPE)</code>) whose validator receives the whole object, and its <code>ConstraintValidatorContext</code> can swap the default message for a more specific one.",
+      "points": [
+        "By convention a validator treats null as valid and leaves null checks to <code>@NotNull</code>",
+        "<code>bindingResult.rejectValue(\"field\", \"code\", \"message\")</code> adds an error yourself when a rule is checked in a controller or service",
+        "Good messages name the problem and the limit, such as \"Quantity must be at least 1\"",
+        "A class-level constraint's message is a global error, not a field error, so <code>th:errors=\"*{stock}\"</code> won't show it; display it with <code>th:errors=\"*{global}\"</code> (or list every error with <code>${#fields.allErrors()}</code>), or attach it to a field in the validator by calling <code>context.disableDefaultConstraintViolation()</code> and then <code>context.buildConstraintViolationWithTemplate(msg).addPropertyNode(\"stock\").addConstraintViolation()</code>",
+        "Test every path: below the minimum, above the maximum, and exactly at each limit, which should pass",
+        "Before deleting a validator class, search the project for its annotation so nothing still refers to it"
+      ]
+    },
+    {
+      "title": "H2 and application.properties",
+      "eli5": "H2 is a small database that can live in a single file next to your project, and application.properties is the settings card that tells Spring Boot where that file is.",
+      "detail": "Spring Boot reads <code>src/main/resources/application.properties</code> at startup. <code>spring.datasource.url=jdbc:h2:file:./shopdb</code> (or <code>jdbc:h2:~/shopdb</code> for your home folder) points the app at an H2 database that runs inside the app and is stored in a file with the <code>.mv.db</code> extension, while <code>jdbc:h2:mem:shopdb</code> keeps an in-memory database that disappears when the app stops. Connecting to a file that doesn't exist yet creates a new, empty database, so changing the file name in the URL gives you a clean slate and runs your seeding code again. <code>spring.jpa.hibernate.ddl-auto</code> controls the schema: <code>update</code> adds missing tables and columns, <code>create</code> rebuilds them at startup, <code>create-drop</code> also drops them at shutdown, and <code>validate</code> and <code>none</code> leave the schema alone. If the property isn't set, Spring Boot 2.4 and later use create-drop only for an in-memory URL (<code>jdbc:h2:mem:</code>) when no migration tool such as Flyway is present, and none for everything else, including a file-based H2 URL, so make sure your project sets it (<code>update</code> keeps your rows and adds new columns). If the project enables it (<code>spring.h2.console.enabled=true</code>), the H2 console at /h2-console lets you browse the tables during development.",
+      "points": [
+        "Changing the URL's file name creates a new file; the old database file stays on disk",
+        "Stop the app before deleting or renaming a database file by hand",
+        "Property keys must be spelled exactly; Spring Boot ignores keys it doesn't recognize, so a typo silently keeps the default",
+        "One <code>key=value</code> setting per line, and <code>#</code> starts a comment"
+      ]
+    },
+    {
+      "title": "Unit testing with JUnit",
+      "eli5": "A unit test is a tiny robot that checks one promise your code makes, such as 'after setting the minimum to 5, the getter returns 5', and raises an alarm when the promise breaks.",
+      "detail": "JUnit Jupiter tests are methods annotated <code>@Test</code> in classes under <code>src/test/java</code>, and <code>@BeforeEach</code> methods run before every test to build fresh objects so tests don't affect each other. Assertions come from <code>org.junit.jupiter.api.Assertions</code>: <code>assertEquals(expected, actual)</code> (expected first, with a third delta argument for doubles), <code>assertTrue</code>, <code>assertFalse</code>, <code>assertNotNull</code> and <code>assertThrows</code>. A good unit test arranges an object, acts once and asserts the result; for a new field, check that the setter stores a value and the getter returns it, using a value other than the field's default so the test can tell 'stored' from 'never set'. Run tests from the IDE's gutter icons or Maven's test phase, and note that <code>@SpringBootTest</code> starts the whole application, which plain getter and setter tests don't need.",
+      "points": [
+        "Follow the style of the tests already in the test class you're adding to",
+        "Swapping expected and actual still passes or fails the same way, but the failure message becomes misleading",
+        "A test with no assertion passes as long as nothing throws",
+        "Run the whole test class before committing; a test that doesn't compile breaks the build"
+      ]
+    },
+    {
+      "title": "Git and GitLab workflow",
+      "eli5": "Git is a save-game history for your code: each commit is a labeled save point, a branch is a separate save slot, and pushing uploads your saves to GitLab, where the evaluator can see them.",
+      "detail": "Clone the WGU-provided repository (<code>git clone</code> with its URL, or the IDE's Get from VCS), then create and switch to a working branch with <code>git switch -c working-branch</code> (the older form is <code>git checkout -b working-branch</code>). For each task, stage the changed files (<code>git add</code>), commit with a message naming the task (<code>git commit -m \"Add About page\"</code>) and push; the first push of a new branch uses <code>git push -u origin working-branch</code> to set its upstream, after which a plain <code>git push</code> works. <code>git status</code> shows what's staged, <code>git log --oneline --graph --all</code> draws the history in the terminal, and in GitLab, Code → Repository graph shows the branch history. Commit source files rather than build output or IDE settings, and push after every task so the history shows one step per requirement.",
+      "points": [
+        "One task, one commit (or a few), each pushed, so the history shows your work step by step",
+        "Write messages a stranger could match to the rubric: name the task and what changed",
+        "If a push is rejected, run <code>git pull</code> first, resolve any conflict, then push again",
+        "Version Control (D197), earlier in the path, practices the same Git and GitLab basics"
+      ]
+    },
+    {
+      "title": "Exceptions and error pages",
+      "eli5": "An exception is the program raising its hand to say something went wrong, and you can answer politely with a message on the page instead of letting the whole page crash.",
+      "detail": "Java exceptions are objects thrown with <code>throw</code> and handled with <code>try</code>/<code>catch</code>, with <code>finally</code> for cleanup that must always run. Checked exceptions such as IOException must be caught or declared with <code>throws</code>, while unchecked ones (RuntimeException and subclasses such as IllegalArgumentException, NullPointerException and NoSuchElementException) needn't be. Catch the most specific type you can handle, and never swallow an exception with an empty catch block. In Spring MVC, an exception that escapes a handler produces an error page (Spring Boot's Whitelabel page with status 500 by default), so for expected problems, such as a purchase when stock is zero, check the condition and show a message rather than letting something throw; an <code>@ExceptionHandler</code> method can also turn a specific exception into a friendlier page. When the app fails to start, read the console's last 'Caused by' line first, since it names the real problem, such as a missing bean, a bad mapping or an invalid property value, like a malformed datasource URL (a misspelled property key is silently ignored instead).",
+      "points": [
+        "<code>Optional.orElseThrow()</code> throws NoSuchElementException when the value is missing",
+        "Validation failures aren't exceptions when a <code>BindingResult</code> follows <code>@Valid</code>; without one they become a 400 error",
+        "<code>TemplateInputException</code> usually means a misspelled view name or a Thymeleaf syntax error in that page",
+        "Read a stack trace from the top for what failed and from the 'Caused by' lines for why"
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Course facts",
+      "value": "3 CUs · term 5 of the BSCS standard path (catalog 202611) · course number ITSW 3173 · one performance assessment"
+    },
+    {
+      "label": "MVC pieces",
+      "value": "Entities describe the data · repositories read and write it · services hold the logic · controllers map URLs to methods · templates render pages · validators enforce rules",
+      "note": "Trace one request through them before you change anything"
+    },
+    {
+      "label": "@SpringBootApplication",
+      "value": "<code>@SpringBootConfiguration</code> + <code>@EnableAutoConfiguration</code> + <code>@ComponentScan</code>",
+      "note": "Scans the main class's package and everything below it"
+    },
+    {
+      "label": "Stereotype annotations",
+      "value": "<code>@Controller</code> (pages) · <code>@RestController</code> (data) · <code>@Service</code> · <code>@Repository</code> · <code>@Component</code>"
+    },
+    {
+      "label": "Request mappings",
+      "value": "<code>@GetMapping</code> · <code>@PostMapping</code> · <code>@RequestMapping(path, method)</code>"
+    },
+    {
+      "label": "Handler parameters",
+      "value": "<code>Model</code> · <code>@RequestParam</code> · <code>@PathVariable</code> · <code>@ModelAttribute</code> · <code>@Valid</code> + <code>BindingResult</code> · <code>RedirectAttributes</code>",
+      "note": "BindingResult must come immediately after the validated parameter"
+    },
+    {
+      "label": "View names",
+      "value": "Return <code>\"about\"</code> → <code>templates/about.html</code> · <code>\"redirect:/path\"</code> → the browser makes a new GET"
+    },
+    {
+      "label": "Folders",
+      "value": "<code>src/main/java</code> · <code>src/main/resources/templates</code> · <code>src/main/resources/static</code> · <code>src/main/resources/application.properties</code> · <code>src/test/java</code>"
+    },
+    {
+      "label": "Thymeleaf output",
+      "value": "<code>th:text=\"${x}\"</code> · <code>th:each=\"p : ${list}\"</code> · <code>th:if</code> and <code>th:unless</code>"
+    },
+    {
+      "label": "Thymeleaf links and forms",
+      "value": "<code>th:href=\"@{/about}\"</code> · <code>th:action=\"@{/save}\"</code> · <code>th:object=\"${obj}\"</code> · <code>th:field=\"*{prop}\"</code> · <code>@{/edit(id=${p.id})}</code>"
+    },
+    {
+      "label": "Thymeleaf errors",
+      "value": "<code>${#fields.hasErrors('prop')}</code> · <code>th:errors=\"*{prop}\"</code>"
+    },
+    {
+      "label": "Entity rules",
+      "value": "<code>@Entity</code> · <code>@Id</code> · <code>@GeneratedValue</code> · a public or protected no-arg constructor · not final",
+      "note": "An abstract class can be an entity"
+    },
+    {
+      "label": "Inheritance strategies",
+      "value": "SINGLE_TABLE (the default: one table plus a discriminator column) · JOINED · TABLE_PER_CLASS",
+      "note": "<code>@DiscriminatorColumn</code> on the root, <code>@DiscriminatorValue</code> on each subclass"
+    },
+    {
+      "label": "Relationships",
+      "value": "<code>@ManyToMany</code> · <code>@OneToMany</code> · <code>@ManyToOne</code> · <code>mappedBy</code> marks the inverse side",
+      "note": "Only changes on the owning side reach the database"
+    },
+    {
+      "label": "CrudRepository&lt;T, ID&gt;",
+      "value": "<code>save</code> · <code>saveAll</code> · <code>findById</code> (an Optional) · <code>existsById</code> · <code>findAll</code> · <code>count</code> · <code>delete</code> · <code>deleteById</code> · <code>deleteAll</code>"
+    },
+    {
+      "label": "Startup hook",
+      "value": "<code>CommandLineRunner.run(String... args)</code> runs once the application context has started"
+    },
+    {
+      "label": "Validation annotations",
+      "value": "<code>@NotNull</code> · <code>@Size</code> · <code>@Min</code> · <code>@Max</code>, triggered by <code>@Valid</code>"
+    },
+    {
+      "label": "Custom constraint",
+      "value": "<code>@Constraint(validatedBy = X.class)</code> · <code>@Target</code> (<code>TYPE</code> for class-level) · <code>@Retention(RUNTIME)</code> · <code>message</code> · <code>groups</code> · <code>payload</code>",
+      "note": "The validator implements <code>ConstraintValidator&lt;A, T&gt;</code> and its <code>isValid</code> method"
+    },
+    {
+      "label": "H2 URLs",
+      "value": "<code>jdbc:h2:file:./name</code> · <code>jdbc:h2:~/name</code> · <code>jdbc:h2:mem:name</code>",
+      "note": "The file is name.mv.db, and a missing file is created empty"
+    },
+    {
+      "label": "ddl-auto values",
+      "value": "<code>none</code> · <code>validate</code> · <code>update</code> · <code>create</code> · <code>create-drop</code>",
+      "note": "Unset, Spring Boot 2.4+ uses create-drop only for an in-memory URL (<code>jdbc:h2:mem:</code>) with no migration tool, and none otherwise, including a file-based H2 URL"
+    },
+    {
+      "label": "JUnit Jupiter",
+      "value": "<code>@Test</code> · <code>@BeforeEach</code> · <code>assertEquals(expected, actual)</code> · <code>assertTrue</code> · <code>assertThrows</code>"
+    },
+    {
+      "label": "Maven",
+      "value": "<code>./mvnw spring-boot:run</code> · <code>./mvnw test</code> · <code>./mvnw clean package</code>",
+      "note": "Use <code>mvn</code> if the project has no wrapper, or the IDE's Maven panel"
+    },
+    {
+      "label": "Git",
+      "value": "<code>git switch -c branch</code> · <code>git add</code> · <code>git commit -m \"...\"</code> · <code>git push -u origin branch</code> · <code>git log --oneline --graph --all</code>"
+    },
+    {
+      "label": "GitLab",
+      "value": "Code → Repository graph (branch history) · Code → Commits"
+    },
+    {
+      "label": "javax vs jakarta",
+      "value": "Spring Boot 2: <code>javax.persistence</code>, <code>javax.validation</code> · Spring Boot 3 and later: <code>jakarta.*</code> and Java 17+"
+    },
+    {
+      "label": "Default port",
+      "value": "8080, so open <code>localhost:8080</code>",
+      "note": "Change it with <code>server.port</code>"
+    },
+    {
+      "label": "HTTP methods",
+      "value": "GET reads · POST changes data · redirect after a successful POST (Post/Redirect/Get)"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup and a requirements checklist",
+      "tasks": [
+        "Review your course planning tool report with your instructor, then turn every bullet on the task page into a checklist line.",
+        "Install the JDK version the project's pom.xml expects and IntelliJ IDEA, clone the WGU GitLab repository, create your working branch and run the app.",
+        "Click through every page and note which classes and templates each page uses.",
+        "Budget about 1.5–2 hours a day; the two weeks here are a planning estimate, not a WGU number."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Spring Boot and MVC crash course",
+      "tasks": [
+        "In a scratch project from Spring Initializr (not your graded repository), work through the Spring guides Serving Web Content and Validating Form Input.",
+        "Read the provided project package by package: entities, repositories, services, controllers, validators, bootstrap and templates.",
+        "Trace one request, such as adding a part, from the form through the controller, service and repository and back."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Pages and navigation",
+      "tasks": [
+        "Customize the main screen for your shop, then commit, push and write the README entry.",
+        "Add the new page, its controller and links in both directions; commit, push and update the README."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Sample inventory",
+      "tasks": [
+        "Plan sample parts and products that fit your shop.",
+        "Load them at startup behind an empty-table guard, restart twice to prove nothing duplicates, then commit, push and update the README."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Purchase action",
+      "tasks": [
+        "Review POST forms, <code>@RequestParam</code>, <code>findById</code> and Optional, redirects and passing a message to the page.",
+        "Build the button, test a successful and a failed purchase, and check for side effects on related records; commit, push and update the README."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "New fields and their limits",
+      "tasks": [
+        "Add the fields with getters and setters, inputs on every part form, and values in your sample data.",
+        "Point application.properties at a new database file, restart, and confirm the new columns and a fresh seed.",
+        "Enforce the range, then commit, push and update the README."
+      ]
+    },
+    {
+      "day": "Days 8-9",
+      "focus": "Validation and error messages",
+      "tasks": [
+        "Study Bean Validation, BindingResult and custom and class-level constraints.",
+        "Build and test each error case on its own, plus values exactly at each limit, which should be accepted.",
+        "Commit, push and update the README."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Unit tests and cleanup",
+      "tasks": [
+        "Add unit tests for your new fields, following the style of the existing tests, and run the whole test class.",
+        "Before you remove code that looks unused, search for references to it (for a validator, its annotation); commit, push and update the README."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Final check and submission",
+      "tasks": [
+        "Clone your repository into a fresh folder, run it, and walk the checklist one more time.",
+        "Check that the README covers every task, then submit what your task page lists."
+      ]
+    },
+    {
+      "day": "Days 12-14",
+      "focus": "Buffer for a revision",
+      "tasks": [
+        "If the submission comes back, fix only what the evaluator flagged, commit and push with a clear message, update the README and resubmit.",
+        "Ask your instructor to go over any return comment you don't understand before you change code."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A handler in a class annotated <code>@Controller</code> is mapped with <code>@GetMapping(\"/about\")</code> and returns the string <code>\"about\"</code>. In a Spring Boot project that uses Thymeleaf, what does the browser receive?",
+      "choices": [
+        "The word about, sent as the whole response body",
+        "The page rendered from <code>src/main/resources/templates/about.html</code>",
+        "A redirect to /about.html",
+        "The file <code>src/main/resources/static/about</code>, served as is"
+      ],
+      "answer": "The page rendered from <code>src/main/resources/templates/about.html</code>",
+      "why": "In a <code>@Controller</code>, a returned String is a view name. Thymeleaf resolves it to <code>templates/about.html</code>, renders it with the model and sends the HTML. Sending the word itself as the body is what a <code>@RestController</code> (or <code>@ResponseBody</code>) does. A redirect needs the <code>redirect:</code> prefix, and files in <code>static/</code> are served directly by URL without any controller."
+    },
+    {
+      "q": "A button on a list page should change data on the server, for example by recording a purchase. Which design fits Spring MVC conventions?",
+      "choices": [
+        "A plain link to a <code>@GetMapping</code> handler, because links are simpler",
+        "A <code>@RestController</code> that returns the updated list as JSON",
+        "A form that submits with GET to a <code>@PostMapping</code> handler",
+        "A form that submits with POST to a <code>@PostMapping</code> handler"
+      ],
+      "answer": "A form that submits with POST to a <code>@PostMapping</code> handler",
+      "why": "Requests that change data belong in POST, because browsers, crawlers and link prefetchers treat GET as safe to repeat, and a refresh can resend it. <code>@PostMapping</code> maps the submission, and <code>@RequestParam</code> reads a submitted field such as a hidden id. A GET form can't reach a POST-only mapping (Spring answers 405 Method Not Allowed), and JSON from a <code>@RestController</code> wouldn't render your Thymeleaf page."
+    },
+    {
+      "q": "After saving a form successfully, a handler returns <code>\"redirect:/products\"</code>. What happens next?",
+      "choices": [
+        "Spring renders a template named redirect.html",
+        "The server forwards internally, so the browser's address bar keeps the POST URL",
+        "The browser gets a redirect and sends a new GET request for /products",
+        "Spring returns a 404, because redirect: isn't the name of any template"
+      ],
+      "answer": "The browser gets a redirect and sends a new GET request for /products",
+      "why": "The <code>redirect:</code> prefix tells Spring to send an HTTP redirect instead of rendering a view, with the path taken relative to the application's context. The browser then requests /products with GET, which is the Post/Redirect/Get pattern, so a refresh repeats that GET instead of resubmitting the form. <code>forward:</code> is the server-side version that keeps the URL, and no template named redirect is involved."
+    },
+    {
+      "q": "The controller runs <code>model.addAttribute(\"parts\", parts);</code>. Which template markup shows one table row per part with its name?",
+      "choices": [
+        "<code>&lt;tr th:each=\"p : ${parts}\"&gt;&lt;td th:text=\"${p.name}\"&gt;&lt;/td&gt;&lt;/tr&gt;</code>",
+        "<code>&lt;tr th:for=\"p in parts\"&gt;&lt;td&gt;${p.name}&lt;/td&gt;&lt;/tr&gt;</code>",
+        "<code>&lt;tr th:each=\"${parts}\"&gt;&lt;td th:text=\"name\"&gt;&lt;/td&gt;&lt;/tr&gt;</code>",
+        "<code>&lt;tr th:object=\"${parts}\"&gt;&lt;td th:field=\"*{name}\"&gt;&lt;/td&gt;&lt;/tr&gt;</code>"
+      ],
+      "answer": "<code>&lt;tr th:each=\"p : ${parts}\"&gt;&lt;td th:text=\"${p.name}\"&gt;&lt;/td&gt;&lt;/tr&gt;</code>",
+      "why": "<code>th:each</code> takes item : ${collection} and repeats its element for each item, and <code>th:text</code> replaces the cell's text with the expression's value. <code>th:for</code> only sets the HTML <code>for</code> attribute (as on a label) and can't loop, and a bare <code>${p.name}</code> in HTML text isn't evaluated without <code>th:text</code> or inlining. <code>th:each</code> needs a loop variable, and <code>th:text=\"name\"</code> would print the literal word name. <code>th:object</code> and <code>th:field</code> bind one form object to inputs; they don't loop."
+    },
+    {
+      "q": "Inside a form with <code>th:object=\"${part}\"</code>, what does <code>&lt;input type=\"text\" th:field=\"*{price}\"/&gt;</code> do?",
+      "choices": [
+        "It prints the price as plain text instead of an input box",
+        "It checks in the browser that price is a number before the form submits",
+        "It reads a request parameter named price from the URL",
+        "It sets the input's id, name and value and binds it to part.price"
+      ],
+      "answer": "It sets the input's id, name and value and binds it to part.price",
+      "why": "<code>th:field</code> works with the form's <code>th:object</code>: <code>*{price}</code> means part.price, so Thymeleaf writes the input's id and name and fills its value from the current object, and on submit Spring binds the field back to the same property. Showing text is <code>th:text</code>'s job, Bean Validation checks values on the server after the form is submitted, and reading URL parameters is what <code>@RequestParam</code> does in a controller."
+    },
+    {
+      "q": "<code>ProductRepository extends CrudRepository&lt;Product, Long&gt;</code>. What does <code>productRepository.findById(7L)</code> return?",
+      "choices": [
+        "A Product, or null when no row has id 7",
+        "An <code>Optional&lt;Product&gt;</code>, which is empty when no row has id 7",
+        "A <code>List&lt;Product&gt;</code> of every match",
+        "Nothing; it throws an exception right away when no row has id 7"
+      ],
+      "answer": "An <code>Optional&lt;Product&gt;</code>, which is empty when no row has id 7",
+      "why": "CrudRepository's <code>findById</code> returns <code>Optional&lt;T&gt;</code>, empty when nothing matches, so you decide what absence means with <code>isPresent()</code>, <code>orElse(...)</code> or <code>orElseThrow()</code>. It doesn't return null, <code>findAll</code> is the method that returns many rows, and nothing is thrown until you call <code>get()</code> or <code>orElseThrow()</code> on an empty Optional."
+    },
+    {
+      "q": "A library app's <code>CommandLineRunner</code> should add sample authors and books only when both tables are empty. Which guard matches that rule?",
+      "choices": [
+        "<code>if (authorRepo.count() == 0 || bookRepo.count() == 0)</code>",
+        "<code>if (authorRepo.findAll() == null)</code>",
+        "<code>if (authorRepo.count() == 0 &amp;&amp; bookRepo.count() == 0)</code>",
+        "No guard, because <code>save()</code> skips rows that already exist"
+      ],
+      "answer": "<code>if (authorRepo.count() == 0 &amp;&amp; bookRepo.count() == 0)</code>",
+      "why": "Both conditions must hold, so the guard needs <code>&amp;&amp;</code>. With <code>||</code>, the runner seeds whenever either table is empty and duplicates the rows in the other one. <code>findAll()</code> returns an empty Iterable, never null, so that check is never true. <code>save()</code> inserts a new row for any entity without an id, so with no guard every restart adds the samples again."
+    },
+    {
+      "q": "Your app seeds sample data only when its tables are empty, and <code>spring.jpa.hibernate.ddl-auto=update</code> is set. You change <code>spring.datasource.url</code> from <code>jdbc:h2:file:./shopdb</code> to <code>jdbc:h2:file:./shopdb2</code> and restart. What happens?",
+      "choices": [
+        "H2 creates a new, empty shopdb2.mv.db, so the seeding runs again",
+        "H2 renames shopdb.mv.db to shopdb2.mv.db and keeps every row",
+        "Startup fails with a database-not-found error, because shopdb2.mv.db doesn't exist yet",
+        "H2 copies every row from shopdb.mv.db into the new shopdb2.mv.db file"
+      ],
+      "answer": "H2 creates a new, empty shopdb2.mv.db, so the seeding runs again",
+      "why": "By default H2 creates a new database when the file named in the URL doesn't exist (adding <code>;IFEXISTS=TRUE</code> to the URL would make the connection fail instead), and with <code>ddl-auto=update</code> Hibernate creates the tables in it, so the empty-table check passes and the samples load again. The old shopdb.mv.db stays on disk untouched, since nothing is renamed or copied. That's why renaming the file is a handy way to watch your seeding run on a clean database."
+    },
+    {
+      "q": "You're writing a custom Bean Validation annotation. Which elements must it declare?",
+      "choices": [
+        "<code>value</code>, <code>min</code> and <code>max</code>",
+        "<code>name</code>, <code>type</code> and <code>validator</code>",
+        "Only <code>validatedBy</code>, which names the validator class",
+        "<code>message</code>, <code>groups</code> and <code>payload</code>"
+      ],
+      "answer": "<code>message</code>, <code>groups</code> and <code>payload</code>",
+      "why": "The Jakarta Validation spec requires every constraint annotation to declare <code>message</code> (the default error text or a key for it), <code>groups</code> and <code>payload</code>, the last two defaulting to empty. The validator class goes in the <code>@Constraint(validatedBy = ...)</code> meta-annotation rather than in an element of your annotation, and elements such as min or max are optional settings you add for your own rule."
+    },
+    {
+      "q": "A rule says an item's <code>stock</code> must stay between its own <code>minStock</code> and <code>maxStock</code> fields. Where does a custom constraint for this rule belong?",
+      "choices": [
+        "On the stock field, because a field validator can read the object's other fields",
+        "On the class (<code>@Target(ElementType.TYPE)</code>), so it can see all three fields",
+        "On the controller method, in place of <code>@Valid</code>",
+        "In application.properties, as a validation property"
+      ],
+      "answer": "On the class (<code>@Target(ElementType.TYPE)</code>), so it can see all three fields",
+      "why": "A field-level validator receives only that field's value, so it can't see minStock or maxStock. A class-level constraint is placed on the type, and its <code>isValid</code> gets the entire object, which is how the Hibernate Validator guide checks one property against another. <code>@Valid</code> triggers validation but defines no rules, and properties files don't hold validation rules."
+    },
+    {
+      "q": "Which handler signature lets the controller show the form again with validation messages when <code>@Valid</code> fails?",
+      "choices": [
+        "<code>save(BindingResult result, @Valid @ModelAttribute Item item)</code>",
+        "<code>save(@Valid @ModelAttribute Item item, Model model, BindingResult result)</code>",
+        "<code>save(@Valid @ModelAttribute Item item, BindingResult result, Model model)</code>",
+        "<code>save(@ModelAttribute Item item)</code>, with a try/catch block around the save call"
+      ],
+      "answer": "<code>save(@Valid @ModelAttribute Item item, BindingResult result, Model model)</code>",
+      "why": "Spring requires the <code>BindingResult</code> (or <code>Errors</code>) parameter immediately after the validated argument. Then a failed validation fills the BindingResult, and the method can check <code>hasErrors()</code> and return the form view. With BindingResult first, Spring reaches it before any form object is bound and throws an IllegalStateException on every request (a 500 error), even with valid input. With Model between the two, a failed validation isn't captured and becomes a bind exception instead (a 400 by default). Without <code>@Valid</code>, no validation runs at all, so there's nothing to catch."
+    },
+    {
+      "q": "An abstract entity <code>Vehicle</code> has two concrete entity subclasses and uses <code>@Inheritance(strategy = InheritanceType.SINGLE_TABLE)</code>. Which statement is true?",
+      "choices": [
+        "One table holds both subclasses' rows, plus a discriminator column",
+        "Vehicle needs its own table plus one table per subclass",
+        "Vehicle can't be an entity, because abstract classes can't be mapped",
+        "A query on Vehicle returns only rows saved as plain Vehicle objects"
+      ],
+      "answer": "One table holds both subclasses' rows, plus a discriminator column",
+      "why": "SINGLE_TABLE, the default strategy, stores the whole hierarchy in one table and uses a discriminator column (DTYPE unless <code>@DiscriminatorColumn</code> names it) to tell the rows apart, so subclass-only columns must allow nulls. A root table plus one table per subclass is what JOINED does (TABLE_PER_CLASS gives a table only to each concrete class). An abstract class can be an entity: you never instantiate it, and a query on it returns rows of all its concrete subclasses, since no plain Vehicle can exist."
+    },
+    {
+      "q": "<code>Course</code> has <code>@ManyToMany Set&lt;Student&gt; students</code> with a <code>@JoinTable</code>, and <code>Student</code> has <code>@ManyToMany(mappedBy = \"students\") Set&lt;Course&gt; courses</code>. Code adds a course only to <code>student.getCourses()</code> and saves the student. What happens to the join table?",
+      "choices": [
+        "A new join-table row is inserted, because either side can update a many-to-many link",
+        "Nothing changes: Student is the inverse side, so add the link on Course",
+        "Hibernate throws an exception, because mappedBy makes the collection read-only",
+        "Hibernate creates a second join table for the Student side"
+      ],
+      "answer": "Nothing changes: Student is the inverse side, so add the link on Course",
+      "why": "In a bidirectional relationship, the side without <code>mappedBy</code> owns it, and only changes on the owning side are written to the join table. Adding to the inverse collection changes the object in memory but not the database, so add the student to <code>course.getStudents()</code> too (keeping both sides in sync). <code>mappedBy</code> doesn't make anything read-only or throw; it marks the inverse side, and there's still one join table."
+    },
+    {
+      "q": "A <code>Thermostat</code> class has <code>setTarget(int)</code> and <code>getTarget()</code>, and <code>t</code> is created with <code>new Thermostat()</code> in a <code>@BeforeEach</code> method, so its target starts at 0. Which JUnit test would fail if <code>setTarget</code> ignored its argument?",
+      "choices": [
+        "<code>@Test void target() { t.setTarget(68); }</code>",
+        "<code>@Test void target() { t.setTarget(68); assertNotNull(t); }</code>",
+        "<code>@Test void target() { t.setTarget(68); assertEquals(68, t.getTarget()); }</code>",
+        "<code>@Test void target() { assertEquals(t.getTarget(), t.getTarget()); }</code>"
+      ],
+      "answer": "<code>@Test void target() { t.setTarget(68); assertEquals(68, t.getTarget()); }</code>",
+      "why": "Only the third test checks behavior: it sets a value and asserts that the getter returns it, with the expected value first. A test without an assertion passes as long as nothing throws, <code>assertNotNull(t)</code> is true for any created object, and comparing the getter with itself can never fail. Using 68 rather than the starting value of 0 also lets the test tell 'stored' from 'never set'."
+    },
+    {
+      "q": "You've finished a task locally and want it in the branch history that GitLab's repository graph shows. Which sequence does that?",
+      "choices": [
+        "<code>git commit -m \"Add About page\"</code>, then <code>git add .</code>, then <code>git pull</code>",
+        "<code>git push</code>, then <code>git add .</code>, then <code>git commit -m \"Add About page\"</code>",
+        "<code>git add .</code>, then <code>git commit -m \"Add About page\"</code>, then <code>git log --graph</code>",
+        "<code>git add .</code>, then <code>git commit -m \"Add About page\"</code>, then <code>git push</code>"
+      ],
+      "answer": "<code>git add .</code>, then <code>git commit -m \"Add About page\"</code>, then <code>git push</code>",
+      "why": "<code>git add</code> stages the changed files, <code>git commit</code> records them locally with a message, and <code>git push</code> uploads the new commit to the remote branch, where Code → Repository graph shows it. Committing before staging records nothing new, pushing before committing has nothing new to send, <code>git pull</code> only downloads, and <code>git log --graph</code> only draws your local history in the terminal, so a commit you don't push never reaches GitLab."
+    }
+  ],
+  "pitfalls": [
+    "<b>Missing one requirement inside a task.</b> A single task can list several separate requirements, and a Feb 2026 student found a webinar demo that shows only one of them. Check every bullet in the running app.",
+    "<b>Side effects you didn't test.</b> Commenters point out that adding or updating a product can reduce part inventory. When an action should change only one record, check that nothing else moved.",
+    "<b>Seeding on every restart.</b> Without a guard that checks both repositories, each restart duplicates the samples, and a guard that checks only one table can still duplicate the other.",
+    "<b>A thin commit history.</b> One giant commit at the end, or commits that were never pushed, can't show a commit per task. Commit and push after each task with a message that names it.",
+    "<b>A README that doesn't point anywhere.</b> A vague note such as \"updated controller\" makes the evaluator hunt. Say where and what you changed, in the form your task page asks for.",
+    "<b>Rewriting the provided design.</b> Making Part concrete, deleting the inheritance annotations or renaming existing fields breaks forms and stored data. Add to the design instead.",
+    "<b>Following an outdated walkthrough.</b> Videos, the completed-project demo and older student guides may describe an earlier version of the task. When they disagree with your task page, the task page wins.",
+    "<b>Mixing javax and jakarta.</b> Code pasted from a Spring Boot 3 tutorial into a Spring Boot 2 project, or the reverse, fails on its imports. Match the package names your project already uses.",
+    "<b>Validation messages that never appear.</b> A BindingResult that doesn't come right after the <code>@Valid</code> parameter, a template without <code>th:errors</code> for that field, or a class-level message that the template never shows as a global error leaves the user with an error page or nothing at all instead of your message.",
+    "<b>Deleting a class that's still used.</b> Before you remove code that looks unused, such as a validator, search for references to it; an annotation left on a class breaks the build."
+  ],
+  "resources": [
+    {
+      "label": "Instructor webinar walkthroughs (WGU Connect)",
+      "kind": "video",
+      "note": "From the course page → Course Community → Join WGU Connect → Resources. Commenters say they walk through most steps, but a Feb 2026 student found that they skip some tasks and that one demo covers only part of its task."
+    },
+    {
+      "label": "Your course instructors",
+      "kind": "official",
+      "note": "Reach them from the course page. They can look at a stuck error or a returned submission with you and share extra material on request."
+    },
+    {
+      "label": "Spring guide: Serving Web Content with Spring MVC (source on GitHub)",
+      "url": "https://github.com/spring-guides/gs-serving-web-content",
+      "kind": "official",
+      "note": "A short build of a <code>@Controller</code> with <code>@GetMapping</code>, a Model attribute and a Thymeleaf template; do it in a scratch project first. Its spring.io page wasn't loading in Nov 2026, so this links the guide's official repository, whose README is the same guide."
+    },
+    {
+      "label": "Spring guide: Validating Form Input",
+      "url": "https://spring.io/guides/gs/validating-form-input",
+      "kind": "official",
+      "note": "The <code>@Valid</code>, BindingResult and <code>th:errors</code> pattern behind form validation messages."
+    },
+    {
+      "label": "Spring guide: Accessing Data with JPA",
+      "url": "https://spring.io/guides/gs/accessing-data-jpa/",
+      "kind": "official",
+      "note": "An entity, a CrudRepository with a derived query and a CommandLineRunner that saves sample data, the same building blocks as the project's data layer."
+    },
+    {
+      "label": "Thymeleaf: Tutorial: Thymeleaf + Spring",
+      "url": "https://www.thymeleaf.org/doc/tutorials/3.1/thymeleafspring.html",
+      "kind": "official",
+      "note": "How <code>th:object</code>, <code>th:field</code>, <code>th:each</code> and the error helpers work with Spring forms (Thymeleaf 3.1)."
+    },
+    {
+      "label": "Thymeleaf: Using Thymeleaf",
+      "url": "https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html",
+      "kind": "official",
+      "note": "The core tutorial: link expressions with parameters such as <code>@{/edit(id=${p.id})}</code>, what <code>th:if</code> treats as true, and <code>th:each</code> status variables."
+    },
+    {
+      "label": "Hibernate Validator reference guide",
+      "url": "https://docs.hibernate.org/validator/9.2/reference/en-US/html_single/",
+      "kind": "official",
+      "note": "Chapter 6, Creating custom constraints, walks through the annotation, the ConstraintValidator, custom messages and class-level constraints."
+    },
+    {
+      "label": "JUnit User Guide",
+      "url": "https://docs.junit.org/current/user-guide/",
+      "kind": "official",
+      "note": "Annotations and assertions for the unit tests; the basics used here work the same in JUnit 5 and 6."
+    },
+    {
+      "label": "Pro Git (free book)",
+      "url": "https://git-scm.com/book/en/v2",
+      "kind": "official",
+      "note": "Chapters 2 and 3 cover committing, branching and pushing."
+    },
+    {
+      "label": "GitLab docs: Repository (repository history graph)",
+      "url": "https://docs.gitlab.com/user/project/repository/",
+      "kind": "official",
+      "note": "Where to find Code → Repository graph, the branch history you submit."
+    },
+    {
+      "label": "IntelliJ IDEA through the JetBrains student pack",
+      "url": "https://www.jetbrains.com/academy/student-pack/",
+      "kind": "tool",
+      "note": "Free for students. Its Maven, Git and test runners (the gutter icons) smooth out setup, and it can open the GitLab project directly."
+    },
+    {
+      "label": "Spring Initializr",
+      "url": "https://start.spring.io",
+      "kind": "tool",
+      "note": "Generate a throwaway project with Spring Web, Thymeleaf, Spring Data JPA, H2 and Validation to try an idea before touching your graded repository."
+    }
+  ],
+  "community": {
+    "summary": "Students recommend working on a branch, logging your changes in the README, and committing and pushing after each task. Commenters on a 2023 student guide add that the instructors' webinar videos walk through most steps, that the Part class should stay abstract, and that adding or updating products may reduce part inventory. The newest report, a Feb 2026 thread whose link wasn't available, says the walkthrough videos and demo no longer match every current requirement, and an Apr 2026 commenter heard the project changed, so treat older guides as background and follow your current task page.",
+    "coverage": "An Aug 2023 r/WGU_CompSci guide with its comments and a Feb 2026 thread, neither linked here",
+    "posts": []
+  },
+  "sources": [
+    {
+      "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (D287 description, competencies, CUs, term)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU: Institutional Catalog, November 2026 (course number ITSW 3173, standard path)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf"
+    },
+    {
+      "label": "Credly: WGU Java Frameworks badge (one performance assessment; Spring Framework, exception handling, user interface)",
+      "url": "https://credly.com/org/wgu/badge/java-frameworks"
+    },
+    {
+      "label": "Spring guide: Serving Web Content with Spring MVC (source on GitHub)",
+      "url": "https://github.com/spring-guides/gs-serving-web-content"
+    },
+    {
+      "label": "Spring guide: Validating Form Input",
+      "url": "https://spring.io/guides/gs/validating-form-input"
+    },
+    {
+      "label": "Spring Framework reference: handler method arguments (BindingResult placement, @RequestParam, RedirectAttributes)",
+      "url": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/arguments.html"
+    },
+    {
+      "label": "Spring Framework reference: view resolution (redirect: and forward: prefixes)",
+      "url": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-servlet/viewresolver.html"
+    },
+    {
+      "label": "Spring Boot reference: using the @SpringBootApplication annotation",
+      "url": "https://docs.spring.io/spring-boot/reference/using/using-the-springbootapplication-annotation.html"
+    },
+    {
+      "label": "Spring Boot reference: SpringApplication (CommandLineRunner and ApplicationRunner)",
+      "url": "https://docs.spring.io/spring-boot/reference/features/spring-application.html"
+    },
+    {
+      "label": "Spring Boot how-to: database initialization (ddl-auto values and defaults)",
+      "url": "https://docs.spring.io/spring-boot/how-to/data-initialization.html"
+    },
+    {
+      "label": "Spring Boot reference: SQL databases (embedded H2, H2 console)",
+      "url": "https://docs.spring.io/spring-boot/reference/data/sql.html"
+    },
+    {
+      "label": "Spring Data Commons reference: core concepts (CrudRepository)",
+      "url": "https://docs.spring.io/spring-data/commons/reference/repositories/core-concepts.html"
+    },
+    {
+      "label": "Jakarta EE Tutorial: Introduction to Jakarta Persistence (entities, inheritance, mappedBy)",
+      "url": "https://jakarta.ee/learn/docs/jakartaee-tutorial/current/persist/persistence-intro/persistence-intro.html"
+    },
+    {
+      "label": "H2 Database Engine: features (database URLs, file naming)",
+      "url": "https://www.h2database.com/html/features.html"
+    },
+    {
+      "label": "Spring Boot 3.0 migration guide (jakarta namespace, Java 17 baseline)",
+      "url": "https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide"
+    }
+  ],
+  "caveats": [
+    "WGU's task page and rubric are behind the student login, so this guide describes the project only in general terms, based on student posts and comments from 2023 to 2026. 2026 reports say the project changed, so your version may differ. Your task page is the authority.",
+    "The Feb 2026 thread about the walkthroughs no longer matching is known only from a condensed summary; its link couldn't be found, so it isn't listed under community posts.",
+    "The Spring documentation cited here is for current releases (Spring Boot and Spring Data 4.2, Thymeleaf 3.1, Hibernate Validator 9.2, JUnit 6). The provided project pins its own versions in pom.xml, which may be older; if it uses Spring Boot 2, its imports are <code>javax.*</code>, and Spring Boot 3 or later uses <code>jakarta.*</code>. Follow the versions and imports already in the project.",
+    "Grading turnaround, return reasons beyond those listed and typical time to finish aren't published, and no 2026 passer's write-up was available; the plan's two weeks are a planning estimate.",
+    "Community coverage is thin: an Aug 2023 student guide with its comments and a Feb 2026 thread, neither linked here.",
+    "The practice questions are original concept checks. Where a question would otherwise hand over part of the project, it uses another domain (authors and books, a thermostat, courses and students), and none reproduces the rubric or a solution."
+  ]
+}

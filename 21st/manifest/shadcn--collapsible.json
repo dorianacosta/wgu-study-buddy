@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/collapsible",
+  "title": "Collapsible | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-collapsible, lucide-react",
+  "promptFile": "21st/prompts/shadcn--collapsible.md",
+  "chars": 4256,
+  "sha256": "2abd540e87d35661cbd46c32243fec16263571e5a869c72ec073a8283046ed9c",
+  "sha256Of": "file bytes",
+  "capturedSha256": "906e9e9743d23c2de6040e9eddf3728d1e77046c6df1cc87a57d6e49f53930fd",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Collector tab viewport was emulated at 1440x900 so the desktop 'Change copy action' menu was visible. Verified on first attempt. Prompt also bundles the shadcn/button dependency file; its npm line lists @radix-ui/react-collapsible, lucide-react, @radix-ui/react-slot, class-variance-authority.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (4256) is the text's length in UTF-16 code units and equals the file's."
+}

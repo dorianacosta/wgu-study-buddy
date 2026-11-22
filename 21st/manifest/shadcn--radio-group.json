@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/radio-group",
+  "title": "Radio Group | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "lucide-react, @radix-ui/react-radio-group",
+  "promptFile": "21st/prompts/shadcn--radio-group.md",
+  "chars": 3666,
+  "sha256": "8e808d1351e80264c09d66ab35a410b2b0ce7bade6e70ac9a08bbe047d83b7f4",
+  "sha256Of": "file bytes",
+  "capturedSha256": "1472c9bc5306f6a5e8bfb4a06e7dfca5d1f7ae2cbeec7c667fe7ffc1f50f9e54",
+  "verified": true,
+  "notes": "Copied via Change copy action > Claude Code (tab viewport emulated at 1440x900 so the desktop copy menu was visible). The prompt also bundles shadcn/label and its NPM list adds @radix-ui/react-label and class-variance-authority. Verified on first write.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (3666) is the text's length in UTF-16 code units and equals the file's."
+}

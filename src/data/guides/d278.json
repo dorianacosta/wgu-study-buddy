@@ -1,0 +1,563 @@
+{
+  "code": "D278",
+  "summary": "D278 is WGU's first programming course: a language-agnostic tour of variables, data types, branches, loops, arrays, functions and simple algorithms, taught in a zyBook that uses Coral, a small teaching language with a matching flowchart view, plus a survey of language types and the software design process (SDLC, Waterfall vs Agile, UML). One proctored multiple-choice objective assessment decides the course, and you read pseudocode and flowcharts rather than write code; recent posters call it a gentle intro course with a definitions-heavy opening and a lot of careful arithmetic.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple choice)",
+    "format": "Multiple choice · proctored online · question count and time limit not published · you read code, you don't write it",
+    "details": [
+      "There's no project: one proctored OA decides the course, and the in-course pre-assessment (PA) is its practice version. WGU doesn't publish the length, time limit or cut score on its public pages, and no student post in this research states them, so check your course's assessment details or ask your instructor.",
+      "Coverage, from WGU's course description and its D278A syllabus: variables and data types, expressions, branches, loops, arrays, user-defined functions, simple algorithms (efficiency, linear vs binary search), the design process (SDLC, Agile vs Waterfall, objects, UML), a language survey (compiled vs interpreted, static vs dynamic typing, object-oriented and markup languages, libraries), and troubleshooting and debugging.",
+      "Question style: commenters say much of the exam is basic math and logic (order of operations, averages, greatest common divisor) and reading pseudocode and flowcharts, and Jan–Feb 2026 commenters add that the opening section is memorization of language types, SDLC phases and UML design diagrams. Tracing code by hand also depends on getting integer division and remainders right.",
+      "The teaching language is Coral, which reads like pseudocode (<code>x = Get next input</code>, <code>Put x to output</code>), so you don't need Python, Java or C++ to pass. Its free simulator runs code step by step beside a matching flowchart.",
+      "Proctoring: WGU's online OAs run through Meazure Learning in the Guardian browser and need an external webcam, one monitor, and Windows 10 or later or macOS 13 or later. Windows in S mode, Windows on Arm, ChromeOS, Linux, Android, iOS/iPadOS and virtual machines are prohibited during proctored OAs. Nothing is allowed unless approved in advance. 2025 commenters say a calculator was available, so confirm what your exam permits.",
+      "Course facts: BSCS 202412 (May 2025 catalog) lists D278 at 3 CUs in term 1. B.S. Data Analytics (catalog 202309) also lists it, and WGU Academy has a standalone version, D278A."
+    ],
+    "tips": [
+      "Use the pre-assessment as your gate: take it closed-book, study the coaching report by topic, and book the OA once you pass it with a cushion. A 2025 passer found the PA similar to the OA.",
+      "Trace code with a variable table on your whiteboard: one column per variable, one row per loop pass. WGU's online proctoring allows one blank dry-erase whiteboard but no scratch paper, so practice on a whiteboard too. Most tracing misses come from skipping a pass or keeping a fraction that integer division throws away.",
+      "Memorize the definitions cold: compiled vs interpreted, static vs dynamic typing, object-oriented vs procedural vs functional, markup vs programming languages, the SDLC phases, Waterfall vs Agile, and what each UML diagram shows. Jan–Feb 2026 commenters say the PA and OA open with memorization of kinds of programming languages, SDLC phases and UML design diagrams.",
+      "Work the zyBook's participation and challenge activities rather than only reading. The 2025 passer did modules 2–6, 7.1–7.2 and 8–9, skipped module 1, the rest of module 7 and module 10, and treated the labs as optional.",
+      "Check any trace you're unsure about in the free Coral simulator; seeing the variables change pass by pass fixes most loop confusion in minutes.",
+      "Read stems for <b>final value</b>, <b>after the loop</b>, <b>how many times</b> and <b>NOT</b>. Off-by-one items hinge on <code>&lt;</code> versus <code>&lt;=</code> and on whether a counter starts at 0 or 1.",
+      "Ask your instructor about live cohort sessions and the course's supplemental resources; a 2025 student credits a game-show-style cohort with a first-try pass."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your Course Planning Tool report with your instructor and create your personalized course plan together.",
+    "The learner explains the logic and outcome of simple algorithms.",
+    "The learner identifies scripts for computer program requirements.",
+    "The learner uses fundamental programming elements as part of common computer programming tasks."
+  ],
+  "topics": [
+    {
+      "title": "Programs, algorithms, pseudocode and flowcharts",
+      "eli5": "A program is a recipe a computer follows exactly; pseudocode is that recipe in plain words, and a flowchart is the same recipe drawn as boxes and arrows.",
+      "detail": "A program takes input, processes it and produces output, and an algorithm is a finite sequence of clear, unambiguous steps that solves a problem. Pseudocode states those steps in structured plain language without a real language's punctuation, and a flowchart draws them. Most textbooks use an oval for start and end, a parallelogram for input or output, a rectangle for a processing step such as an assignment, a diamond for a decision with a true exit and a false exit, and arrows for the flow between them. In D278, a Coral program and its flowchart are two views of the same logic, and the Coral simulator draws the flowchart from the code, top to bottom, following the indentation. Underneath, computers store everything as bits (0s and 1s): numbers, text and images are all encoded in binary.",
+      "points": [
+        "Flowchart shapes: oval start/end · parallelogram input/output · rectangle process · diamond decision · arrows flow",
+        "An algorithm must end and must be unambiguous: every step says exactly what to do next",
+        "Bits: 1 byte = 8 bits; binary 1011 = 8 + 0 + 2 + 1 = 11; 8 bits hold 256 values (0–255); text is stored as numeric character codes such as ASCII or Unicode",
+        "Pseudocode has no strict syntax, but Coral does: it looks like pseudocode and still has exact rules",
+        "Coral comments start with <code>//</code> on their own line, and nested statements are indented three spaces per level"
+      ]
+    },
+    {
+      "title": "Coral, the course's teaching language",
+      "eli5": "Coral is a training-wheels language: it keeps only a few building blocks and writes each one in near-English, so you can think about logic instead of punctuation.",
+      "detail": "Coral was created by computer scientists at zyBooks, UC Riverside and the University of Arizona for beginners, and the free simulator at corallanguage.org runs a program step by step while showing variables, input, output and a matching flowchart. Its only data types are <code>integer</code> and <code>float</code> (text appears only as output), and every variable is declared at the top of its function, one per line, such as <code>integer numCoins</code>. Input is <code>x = Get next input</code>; output is <code>Put x to output</code> or <code>Put \"Total:\" to output</code>, one item per statement, and <code>Put avg to output with 3 decimal places</code> formats a float. Branches use <code>if</code>, <code>elseif</code> and <code>else</code>; the loops are <code>while x &gt; 0</code> and <code>for i = 0; i &lt; 4; i = i + 1</code>; arrays are declared as <code>integer array(5) nums</code>, indexed from 0 and measured with <code>nums.size</code>. A function names its return variable in the header instead of using a return statement, as in <code>Function Square(integer x) returns integer y</code>, and hands back whatever <code>y</code> holds when it ends.",
+      "points": [
+        "Logic is spelled out: <code>and</code>, <code>or</code>, <code>not</code>; there's no <code>++</code>, so write <code>i = i + 1</code>",
+        "Built-ins: <code>SquareRoot(9.0)</code> is 3.0, <code>RaiseToPower(2.0, 4.0)</code> is 16.0, <code>AbsoluteValue(-15.2)</code> is 15.2; <code>RandomNumber</code> returns a random value, and <code>SeedRandomNumbers(n)</code> only sets its starting seed (optional; the default seed is 0)",
+        "Mixed math: if either operand is a float, the math is done in floating point; assigning a float to an integer variable drops the fraction (4.9 becomes 4)",
+        "If a program declares any function, every statement must live inside a function, including <code>Function Main() returns nothing</code>",
+        "Unknown array size: declare <code>integer array(?) nums</code>, then set <code>nums.size = 5</code> before using any element"
+      ]
+    },
+    {
+      "title": "Variables, identifiers, data types and constants",
+      "eli5": "A variable is a labeled box that holds one value at a time, and its type says what kind of thing fits in the box.",
+      "detail": "An assignment such as <code>x = x + 1</code> evaluates the right side first and then stores the result in the variable on the left, replacing the old value, so <code>=</code> means \"gets,\" not \"equals.\" Identifiers (names) start with a letter, contain only letters, digits and underscores (most languages also accept a leading underscore), are case sensitive, and can't be reserved words such as <code>if</code> or <code>while</code>. Choose a type by what the value is: integers for counts and other whole numbers, floats (floating-point numbers) for values with fractions such as measurements and averages, strings for text, characters for single symbols and Booleans for true or false. A constant is a named value that doesn't change while the program runs, conventionally written in capitals (<code>MAX_SEATS</code>), which beats scattering unexplained \"magic numbers\" through the code.",
+      "points": [
+        "<code>x = x + 1</code> is legal: read it as \"x gets x plus 1\"",
+        "Valid names: <code>numItems</code>, <code>total_2</code> · invalid: <code>2total</code> (starts with a digit), <code>num items</code> (space), <code>while</code> (reserved word)",
+        "<code>totalCost</code> and <code>totalcost</code> are two different variables",
+        "Naming styles: camelCase (<code>userAge</code>) or underscores (<code>user_age</code>); either way, the name should say what the value means",
+        "Swapping two variables needs a temporary: <code>temp = a</code>, <code>a = b</code>, <code>b = temp</code>; writing <code>a = b</code> then <code>b = a</code> loses a's original value"
+      ]
+    },
+    {
+      "title": "Expressions: precedence, integer division, modulo and type conversion",
+      "eli5": "The computer does math in a fixed order, and when it divides two whole numbers it throws away the leftover, which the modulo operator hands back to you.",
+      "detail": "Precedence runs parentheses first, then unary minus, then <code>*</code>, <code>/</code> and <code>%</code> from left to right, then <code>+</code> and <code>-</code> from left to right, so <code>2 + 3 * 4</code> is 14 and <code>(2 + 3) * 4</code> is 20. With two integers, <code>/</code> performs integer division and discards the fraction, so <code>7 / 2</code> is 3 in Coral, C++ and Java, and <code>%</code> (modulo) gives the remainder, so <code>7 % 2</code> is 1; Python's <code>/</code> always returns a float, and its <code>//</code> operator does floor division. If either operand is a float, the math is done in floating point (<code>7.0 / 2</code> is 3.5). In Coral and C++, storing a float in an integer variable truncates it (4.9 becomes 4), while Java requires a cast such as <code>(int) 4.9</code>, which also truncates. Modulo is the tool for even and odd tests (<code>n % 2 == 0</code>), peeling off digits (<code>n % 10</code> is the last digit and <code>n / 10</code> removes it) and wrapping counters around. Integer division by zero is a runtime error in most languages (C and C++ leave it undefined), while floating-point division by zero gives Infinity in Java and JavaScript instead of stopping the program.",
+      "points": [
+        "<code>17 / 5</code> = 3 and <code>17 % 5</code> = 2, because 17 = 3 × 5 + 2",
+        "Average trap: with integers, <code>(4 + 5) / 2</code> is 4, not 4.5; make one operand a float (<code>/ 2.0</code>) to keep the fraction",
+        "Same level, left to right: <code>20 / 5 * 2</code> is 8, not 2",
+        "Even test: <code>n % 2 == 0</code> · last digit: <code>n % 10</code> · drop last digit: <code>n / 10</code> (integers)",
+        "Math functions cover square roots, powers and absolute values; in Coral, <code>RaiseToPower(2.0, 4.0)</code> is 16.0"
+      ]
+    },
+    {
+      "title": "Branches: if, elseif, else and Boolean logic",
+      "eli5": "A branch is a fork in the road: the program asks a yes-or-no question and takes exactly one path.",
+      "detail": "An if-elseif-else chain tests its conditions from the top and runs only the first branch whose condition is true, and <code>else</code> catches everything left over; separate <code>if</code> statements, by contrast, are each tested on their own, so several can run. Relational operators (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>) and equality operators (<code>==</code>, <code>!=</code>) produce true or false, and <code>==</code> (compare) is not <code>=</code> (assign). Logical operators combine conditions: <i>and</i> is true only when both sides are true, <i>or</i> is true when at least one side is, and <i>not</i> flips a value; Coral and Python spell them as words, while C++ and Java use <code>&amp;&amp;</code>, <code>||</code> and <code>!</code>. A range check needs both ends (<code>x &gt;= 10 and x &lt;= 20</code>), and in an ordered chain each later test can assume the earlier ones failed, as in <code>if score &gt;= 90</code> … <code>elseif score &gt;= 80</code>. Floats are stored approximately, so compare them with a tolerance, such as <code>AbsoluteValue(a - b) &lt; 0.0001</code>, rather than with <code>==</code>.",
+      "points": [
+        "Coral's order for conditions: parentheses, <code>not</code>, arithmetic, relational, equality, <code>and</code>, then <code>or</code>",
+        "Truth table: true and false = false · true or false = true · not true = false",
+        "In a flowchart, a decision is a diamond with one exit for true and one for false",
+        "Nested branches put an if inside another; the inner test runs only when the outer one passed",
+        "Range chains: test from one end (highest first or lowest first); because only the first true branch runs, each later test needs just one boundary, as in <code>elseif score &gt;= 80</code>"
+      ]
+    },
+    {
+      "title": "Loops: while, for, do-while and nested loops",
+      "eli5": "A loop repeats a set of steps while a condition stays true, like running laps until the whistle blows.",
+      "detail": "A while loop checks its condition before every pass and may run zero times. A for loop packs the start, the condition and the update into one line and suits counting: <code>for i = 0; i &lt; 5; i = i + 1</code> runs 5 times with i from 0 to 4. A do-while loop (in C++ and Java and named in the course outline, but not part of Coral) runs its body once before testing, so it always runs at least once. Something in the body must eventually make the condition false, or you get an infinite loop, and loops that read input often stop at a sentinel value such as -1 or 0. A nested loop runs its inner loop completely on every pass of the outer loop, so 3 outer passes with 4 inner passes each make 12 inner runs. Trace loops with a table that records every variable after each pass.",
+      "points": [
+        "Pass counts: <code>i = 0; i &lt; N</code> and <code>i = 1; i &lt;= N</code> both run N times; <code>i = 0; i &lt;= N</code> runs N + 1",
+        "After <code>for i = 0; i &lt; 5; i = i + 1</code> ends, i holds 5, the first value that failed the test",
+        "Accumulator pattern: set <code>sum = 0</code> before the loop, add inside it, use the total after it",
+        "Use while when you don't know the number of passes ahead of time (read until a sentinel), and for when you do",
+        "If an inner loop's start depends on the outer variable (<code>j = i</code>), count each outer pass separately"
+      ]
+    },
+    {
+      "title": "Arrays",
+      "eli5": "An array is a row of numbered mailboxes under one name, and you reach a box by its number, starting from 0.",
+      "detail": "An array stores an ordered list of values of the same type under one name, and each element is reached by an index in brackets. Indexes start at 0, so an array of size N has valid indexes 0 to N − 1, and using index N or higher is an out-of-range error (Java throws an exception; C++ doesn't check, and the result is undefined). Loops and arrays go together: <code>for i = 0; i &lt; nums.size; i = i + 1</code> visits each element once, which is how you sum, average, count matches or find the largest value. To find a maximum, start with the first element rather than 0, so a list of all-negative numbers still works. Swapping two elements needs a temporary variable, and in Coral an array's size is fixed once it's set.",
+      "points": [
+        "<code>integer array(5) scores</code> → valid indexes 0–4; the last element is <code>scores[4]</code>, and <code>scores[5]</code> is out of range",
+        "Average: sum in a loop, then divide by the size, watching for integer division",
+        "Maximum: <code>maxVal = nums[0]</code>, then compare each later element and keep the larger",
+        "Parallel arrays: index i in each array describes the same item, as in <code>names[i]</code> and <code>ages[i]</code>",
+        "Iterating with <code>&lt;=</code> instead of <code>&lt;</code> reads one element past the end"
+      ]
+    },
+    {
+      "title": "User-defined functions",
+      "eli5": "A function is a mini-program with a name: you hand it inputs, it does one job, and it hands back an answer.",
+      "detail": "A function definition has a name, parameters (the variables listed in its header) and a body. A call passes arguments (the actual values), which are matched to the parameters by position; the body runs, and if the function returns a value, that value replaces the call inside the expression. In Coral the header names the return variable, as in <code>Function CelsiusToF(float c) returns float f</code>, and the function returns whatever <code>f</code> holds when it ends, or the header says <code>returns nothing</code>; most other languages use a <code>return</code> statement instead. Variables declared inside a function are local to it, so two functions can each have their own <code>i</code>. Functions make modular development possible (build and test one piece at a time) and support incremental development (write a little, test it, repeat), and a stub, a placeholder function that returns a fixed value, lets you test the rest of a program before every piece is finished.",
+      "points": [
+        "Parameter = variable in the definition · argument = value in the call",
+        "A function that returns nothing is called as a statement; one that returns a value is used inside an expression, as in <code>y = Square(4) + 1</code>",
+        "Arguments are evaluated before the call: <code>Square(a + 1)</code> with a = 2 receives 3",
+        "Reasons to write functions: no repeated code, easier reading, and pieces you can test on their own",
+        "Trace a call by writing each argument beside its parameter, then following the body to the return value"
+      ]
+    },
+    {
+      "title": "Algorithms: searching, sorting and efficiency",
+      "eli5": "Linear search checks every item in order, while binary search keeps cutting a sorted list in half, like guessing a number when someone tells you higher or lower.",
+      "detail": "Linear search compares the target with each element in turn and needs up to N comparisons, but it works on lists in any order. Binary search needs a sorted list: it checks the middle element, discards the half that can't hold the target and repeats, so it needs at most ⌊log₂ N⌋ + 1 comparisons, which is 10 for 1,000 items and 20 for a million. Efficiency describes how an algorithm's work grows with the input size, often written in Big-O notation: linear search is O(N) and binary search is O(log N). Sorting puts items in order (selection sort and insertion sort are the simple classics), and a heuristic is a shortcut that finds a good-enough answer quickly without guaranteeing the best one, such as a greedy rule. Small algorithms also appear as pseudocode to trace: maximum and minimum, sum and average, counting matches, and the Euclidean algorithm for the greatest common divisor (GCD).",
+      "points": [
+        "Binary search in 3, 8, 12, 19, 25, 31, 40 for 31: check index 3 (19), then index 5 (31): found in 2 comparisons",
+        "Worst cases: linear N comparisons · binary ⌊log₂ N⌋ + 1, and only on sorted data",
+        "Euclid's GCD: replace (a, b) with (b, a % b) until b is 0; (48, 18) → (18, 12) → (12, 6) → (6, 0), so the GCD is 6",
+        "Heuristic = fast rule of thumb, not guaranteed optimal",
+        "Doubling N doubles linear search's worst case but adds only one comparison to binary search"
+      ]
+    },
+    {
+      "title": "Programming languages: compiled vs interpreted, typing, paradigms, markup and libraries",
+      "eli5": "A compiled language is translated into machine code ahead of time, like printing a translated book, while an interpreted language is translated as it runs, like a live interpreter at a meeting.",
+      "detail": "A compiler translates a whole program before it runs, reporting syntax and type errors up front and producing code that usually runs fast: C and C++ compile to native machine code, and Java compiles to bytecode that the Java Virtual Machine runs. An interpreter reads and executes a program statement by statement, which makes trying things quick but running slower; Python and JavaScript are the usual examples, and scripting languages generally run this way, though real engines add bytecode or just-in-time compilation behind the scenes. Typing is a separate question. Statically typed languages (C, C++, Java) fix each variable's type at compile time and require declarations, while dynamically typed languages (Python, JavaScript) attach types to values at run time, so one variable can hold a number and later a string. Object-oriented languages (C++, Java, Python, C#) organize code into classes and objects that bundle data with behavior, procedural code such as C is organized around functions, and functional languages such as Haskell build programs from functions that avoid changing state. Markup languages such as HTML and XML describe a document's structure rather than computing anything, and libraries are collections of prewritten, tested code you call instead of writing it yourself.",
+      "points": [
+        "Compiled: C, C++ (native code), Java (bytecode for the JVM) · interpreted: Python, JavaScript",
+        "Static typing: <code>int count = 0;</code> keeps its type · dynamic typing: in Python, <code>x = 5</code> then <code>x = \"five\"</code> is legal",
+        "When code is translated (compiled or interpreted) and when types are checked (static or dynamic) are two different questions",
+        "Markup describes structure (HTML, XML), and CSS describes presentation; neither is a programming language in the course's sense",
+        "Libraries save time and cut bugs: math functions, string handling and Python's standard library are examples"
+      ]
+    },
+    {
+      "title": "The design process: SDLC, Waterfall vs Agile, objects and UML",
+      "eli5": "To build a house you decide what it needs, draw plans, build it and inspect it; the SDLC is that order of work for software, and UML is the standard way to draw the plans.",
+      "detail": "The system development life cycle (SDLC) breaks building software into phases. The common four-phase version is analysis (gather the requirements: what must the program do?), design (decide how: structure, algorithms and diagrams), implementation (write the code) and testing (check that the program meets the requirements); fuller models add planning, deployment and maintenance. The Waterfall approach runs each phase once, in order, finishing one before the next starts, which fits stable, well-understood requirements. Agile repeats short cycles of all the phases, delivering working pieces early and adjusting to feedback, and the 2001 Agile Manifesto values individuals and interactions over processes and tools, working software over comprehensive documentation, customer collaboration over contract negotiation, and responding to change over following a plan. Object-oriented design models a program as objects, each combining data (attributes) with operations (methods), and a class is the blueprint for a kind of object. UML (Unified Modeling Language), maintained by the Object Management Group, standardizes the drawings: a class diagram shows classes with their attributes, methods and relationships, a use case diagram shows actors and what they can do with the system, an activity diagram shows a flowchart-like sequence of actions and decisions, and a sequence diagram shows objects exchanging messages over time, read top to bottom.",
+      "points": [
+        "Waterfall: sequential, one pass, heavy up-front planning · Agile: short iterations, working software early, change expected",
+        "Which phase? \"List what the program must do\" = analysis · \"draw the class diagram\" = design · \"write the loops\" = implementation · \"compare output with expected values\" = testing",
+        "Class diagram box: name on top, attributes in the middle, methods at the bottom; <code>+</code> marks public and <code>-</code> private",
+        "Use case = who does what with the system · activity = steps and decisions · sequence = messages between objects over time · class = structure",
+        "OMG's overview sorts UML diagrams into structure diagrams (such as class), behavior diagrams (such as use case and activity) and interaction diagrams (such as sequence), which are a kind of behavior diagram"
+      ]
+    },
+    {
+      "title": "Troubleshooting and debugging",
+      "eli5": "Debugging is detective work: guess a cause, design a test that checks the guess, and narrow it down until only the real culprit is left.",
+      "detail": "Troubleshooting is a systematic process: describe the symptom, list hypotheses (possible causes), then run tests that confirm or rule them out, starting with the likeliest or cheapest to check. Organizing hypotheses hierarchically lets one test eliminate a whole group at once: first decide whether the problem is in the input, the calculation or the output, and only then look at single lines. Debugging applies the same method to code. Syntax errors break the language's rules and stop a program from compiling or starting; runtime errors happen while it runs, such as dividing by zero or using an index out of range; and logic errors let the program run but produce wrong results, such as <code>&lt;</code> where <code>&lt;=</code> was needed or an average computed with integer division. Debug output statements that print variables at key points, and tools that step through statements one at a time, such as the Coral simulator, show you where the actual values first differ from the expected ones.",
+      "points": [
+        "Syntax: misspelled keyword or missing parenthesis · runtime: division by zero · logic: wrong formula, wrong comparison, off-by-one",
+        "Change one thing at a time and retest, or you won't know which change fixed the problem",
+        "Print debugging: add <code>Put x to output</code> before and after the step you suspect, then remove it",
+        "Hierarchical debugging: confirm each function returns the right value before drilling into individual lines",
+        "The zyBook defines its own troubleshooting terms, such as asymmetric tests and hierarchical hypotheses; learn its exact definitions"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Exam format", "value": "Multiple choice · proctored online · you read code, you don't write it", "note": "WGU doesn't publish the question count, time limit or cut score on its public pages; check your course's assessment details or ask your instructor" },
+    { "label": "Course", "value": "3 CUs · catalog number ITSW 2113 · one OA plus a pre-assessment", "note": "Term 1 in BSCS 202412; also part of B.S. Data Analytics (catalog 202309)" },
+    { "label": "Precedence", "value": "<code>( )</code> → unary <code>-</code> → <code>* / %</code> (left to right) → <code>+ -</code> (left to right)", "note": "<code>10 - 4 / 2 * 3 + 1</code> = 5" },
+    { "label": "Integer division and modulo", "value": "<code>7 / 2</code> = 3 · <code>7 % 2</code> = 1 · <code>17 / 5</code> = 3 · <code>17 % 5</code> = 2 · <code>7.0 / 2</code> = 3.5", "note": "Python: <code>7 / 2</code> = 3.5 and <code>7 // 2</code> = 3" },
+    { "label": "Type conversion (Coral)", "value": "integer with float → float math · float stored in an integer → fraction dropped (4.9 → 4) · 25 stored in a float → 25.0" },
+    { "label": "Coral input and output", "value": "<code>x = Get next input</code> · <code>Put x to output</code> · <code>Put \"Hi\" to output</code> · <code>Put avg to output with 3 decimal places</code>", "note": "One item per Put statement" },
+    { "label": "Coral declarations", "value": "<code>integer count</code> · <code>float price</code> · <code>integer array(5) nums</code> · <code>integer array(?) nums</code> then <code>nums.size = 5</code>", "note": "Declare every variable at the top of its function" },
+    { "label": "Coral loops", "value": "<code>while x &gt; 0</code> · <code>for i = 0; i &lt; 5; i = i + 1</code>", "note": "Coral has no do-while; C++ and Java do" },
+    { "label": "Coral functions", "value": "<code>Function Name(integer a, float b) returns float result</code> · <code>returns nothing</code>", "note": "No return statement: the return variable's final value comes back" },
+    { "label": "Coral built-ins", "value": "<code>SquareRoot(x)</code> · <code>RaiseToPower(x, y)</code> · <code>AbsoluteValue(x)</code> · <code>RandomNumber</code> · <code>SeedRandomNumbers(n)</code>" },
+    { "label": "Relational and equality", "value": "<code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> · <code>==</code> equal · <code>!=</code> not equal", "note": "<code>=</code> assigns; <code>==</code> compares" },
+    { "label": "Logical operators", "value": "and: both true · or: at least one true · not: flips the value", "note": "Coral and Python use words; C++ and Java use <code>&amp;&amp;</code> <code>||</code> <code>!</code>. Precedence: not, then and, then or" },
+    { "label": "Loop pass counts", "value": "<code>i = 0; i &lt; N</code> → N · <code>i = 1; i &lt;= N</code> → N · <code>i = 0; i &lt;= N</code> → N + 1", "note": "Nested: outer passes × inner passes when the inner range is fixed" },
+    { "label": "Array indexes", "value": "Size N → indexes 0 to N − 1; last element <code>a[N - 1]</code>", "note": "Coral size: <code>nums.size</code>" },
+    { "label": "Flowchart shapes", "value": "oval start/end · parallelogram input/output · rectangle process · diamond decision · arrows flow" },
+    { "label": "Search worst cases", "value": "Linear: N comparisons, any order · binary: ⌊log₂ N⌋ + 1, sorted data only", "note": "1,000 items → 10 · 1,000,000 → 20" },
+    { "label": "Euclid's GCD", "value": "Replace (a, b) with (b, a % b) until b = 0; the last nonzero value is the GCD", "note": "GCD(48, 18) = 6" },
+    { "label": "Compiled vs interpreted", "value": "Compiled: C, C++ (machine code), Java (bytecode run by the JVM) · interpreted: Python, JavaScript" },
+    { "label": "Static vs dynamic typing", "value": "Static, checked at compile time: C, C++, Java · dynamic, checked at run time: Python, JavaScript" },
+    { "label": "Paradigms and markup", "value": "Object-oriented: C++, Java, Python, C# · procedural: C · functional: Haskell, Lisp · markup, not programming: HTML, XML" },
+    { "label": "SDLC (four-phase version)", "value": "Analysis (what) → design (how) → implementation (code) → testing (verify)", "note": "Fuller models add planning, deployment and maintenance" },
+    { "label": "Waterfall vs Agile", "value": "Waterfall: each phase once, in order · Agile: short repeated cycles through all phases, working software early", "note": "Agile Manifesto (2001): four values" },
+    { "label": "UML diagrams", "value": "Class: classes, attributes, methods · use case: actors and goals · activity: workflow · sequence: messages over time" },
+    { "label": "Error types", "value": "Syntax: breaks language rules · runtime: fails while running · logic: runs but gives the wrong answer" },
+    { "label": "Identifiers", "value": "Start with a letter; letters, digits and underscores only; case sensitive; no reserved words" },
+    { "label": "Parameter vs argument", "value": "Parameter: the variable in the function's header · argument: the value passed in the call" },
+    { "label": "Bits and bytes", "value": "1 byte = 8 bits · binary 1011 = 11 · 8 bits hold 256 values (0–255)" },
+    { "label": "Online proctoring", "value": "Meazure Learning in the Guardian browser · external webcam · one monitor · Windows 10+ (not S mode or Windows on Arm) or macOS 13+", "note": "No ChromeOS, Linux, Android, iOS/iPadOS or virtual machines (WGU catalog, Nov 2026)" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup and orientation",
+      "tasks": [
+        "Open your course's assessment details and note the OA's length and time limit, which WGU doesn't publish on its public pages. If they're missing, ask your instructor.",
+        "Review the Course Planning Tool report with your instructor and ask about live cohort sessions and the course's supplemental resources.",
+        "Open the Coral simulator, run a two-line program, and start an error log (missed item, topic, fix).",
+        "Skim the zyBook's first module for flowcharts, pseudocode and how data is stored as bits."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Variables, identifiers and data types",
+      "tasks": [
+        "Do the zyBook activities on variables, assignments, identifiers, data types and constants.",
+        "Write five valid and five invalid identifiers, and say why each invalid one fails.",
+        "In the simulator, swap two variables with a temporary, then try it without one and watch the value disappear."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Expressions, integer division and modulo",
+      "tasks": [
+        "Work 20 expressions by hand covering precedence, <code>/</code> and <code>%</code> with integers, mixed integer and float math, and truncation on assignment.",
+        "Check every answer in the simulator and log any you missed.",
+        "Practice digit tricks: last digit with <code>% 10</code>, drop a digit with <code>/ 10</code>, even and odd with <code>% 2</code>."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Branches and Boolean logic",
+      "tasks": [
+        "Do the branches activities: if, elseif, else, relational and equality operators, and, or, not, range checks and float comparison.",
+        "Trace three if-elseif-else chains with several inputs each, including boundary values such as 79, 80 and 81.",
+        "Rewrite one chain as separate ifs and note how the output changes."
+      ]
+    },
+    {
+      "day": "Days 5-6",
+      "focus": "Loops and tracing tables",
+      "tasks": [
+        "Do the loops activities: while, for, nested loops and loops that stop at a sentinel value.",
+        "Trace ten loops on paper with a table of every variable after each pass, then confirm them in the simulator.",
+        "Drill pass counts for every combination of starting at 0 or 1 with <code>&lt;</code> or <code>&lt;=</code>.",
+        "Write a loop that counts the digits of a number and one that computes a GCD with <code>%</code>."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Arrays",
+      "tasks": [
+        "Do the arrays activities: declaration, indexing from 0, <code>.size</code>, iteration and swapping elements.",
+        "Write loops for sum, average, maximum and count-matches over one array, and trace each by hand first.",
+        "List the off-by-one mistakes you made and add them to the error log."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "User-defined functions",
+      "tasks": [
+        "Do the functions activities: parameters vs arguments, return variables, <code>returns nothing</code>, and functions with branches, loops and arrays.",
+        "Trace three programs where <code>Main</code> calls functions with expressions as arguments.",
+        "Explain modular and incremental development and function stubs in a sentence each."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Algorithms",
+      "tasks": [
+        "Study algorithm efficiency and linear vs binary search; trace binary search on a nine-element sorted array, writing low, high and mid at each step.",
+        "Memorize the worst cases (N vs ⌊log₂ N⌋ + 1) and binary search's sorted-data requirement.",
+        "Know what sorting and heuristics are in a sentence each."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Design process: SDLC, Waterfall vs Agile, objects and UML",
+      "tasks": [
+        "Learn the four SDLC phases and match ten sample activities to the right phase.",
+        "Write a two-column comparison of Waterfall and Agile, and read the Agile Manifesto's four values.",
+        "Sketch one use case, class, activity and sequence diagram for a simple app, such as ordering coffee."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Language survey, troubleshooting and debugging",
+      "tasks": [
+        "Make flashcards for compiled vs interpreted, static vs dynamic typing, object-oriented, procedural and functional languages, markup languages and libraries, with two example languages each.",
+        "Classify ten bugs as syntax, runtime or logic errors.",
+        "Skim the troubleshooting and debugging modules for their terms (hypotheses, tests, debug output, hierarchical debugging)."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Pre-assessment under exam conditions",
+      "tasks": [
+        "Take the pre-assessment in one sitting with only a small whiteboard and a timer, since the proctored OA allows a whiteboard but no scratch paper.",
+        "Read the coaching report and log every miss by topic.",
+        "Retrace every missed code question until your table matches the right answer."
+      ]
+    },
+    {
+      "day": "Days 13-14",
+      "focus": "Weak spots and definitions",
+      "tasks": [
+        "Rework the two weakest topics from the coaching report in the zyBook.",
+        "Drill the definition flashcards daily until you can answer each in a few seconds; Jan–Feb 2026 commenters say the exam opens with definitions like these.",
+        "Retake the pre-assessment and schedule the OA once you pass with a cushion."
+      ]
+    },
+    {
+      "day": "Day 15",
+      "focus": "Exam day",
+      "tasks": [
+        "Run WGU's system check, install or update the Guardian browser, connect the external webcam, clear your desk and have one blank whiteboard ready.",
+        "Trace code questions with a quick variable table instead of in your head, and flag long ones to revisit.",
+        "Reread every stem for words like NOT, final and after the loop before you submit."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "What does this Coral program output?<br><code>integer a</code><br><code>integer b</code><br><code>integer c</code><br><code>a = 23</code><br><code>b = 4</code><br><code>c = a / b + a % b</code><br><code>Put c to output</code>",
+      "choices": ["3", "5.75", "8", "8.75"],
+      "answer": "8",
+      "why": "All three variables are integers, so <code>23 / 4</code> is integer division: 4 goes into 23 five times and the fraction is dropped, giving 5. <code>23 % 4</code> is the remainder, 3, because 23 = 5 × 4 + 3. Then 5 + 3 = 8. Choosing 5.75 or 8.75 means doing real division, which only happens when an operand is a float, and 3 is the remainder by itself."
+    },
+    {
+      "q": "With integer variables, what value does <code>x</code> hold after <code>x = 12 - 6 / 3 * 2 + 1</code>?",
+      "choices": ["5", "7", "9", "12"],
+      "answer": "9",
+      "why": "Division and multiplication come before addition and subtraction, and operators at the same level run left to right. So <code>6 / 3</code> = 2 first, then <code>2 * 2</code> = 4, then <code>12 - 4 + 1</code> = 9. Working strictly left to right, ((12 − 6) / 3) × 2 + 1, gives 5; multiplying before dividing, 6 / (3 × 2) = 1, gives 12; and adding before subtracting, 12 − (4 + 1), gives 7."
+    },
+    {
+      "q": "What does this Coral program output?<br><code>integer i</code><br><code>integer j</code><br><code>integer count</code><br><code>count = 0</code><br><code>for i = 0; i &lt; 3; i = i + 1</code><br><code>   for j = i; j &lt; 4; j = j + 1</code><br><code>      count = count + 1</code><br><code>Put count to output</code>",
+      "choices": ["12", "10", "6", "9"],
+      "answer": "9",
+      "why": "The inner loop starts at the current value of i, so it runs fewer times on each outer pass: 4 times when i = 0 (j = 0 to 3), 3 times when i = 1 and 2 times when i = 2, for 4 + 3 + 2 = 9. 12 is what you'd get if j always started at 0 (3 × 4). 6 assumes the inner test is <code>j &lt; 3</code>. 10 adds a fourth outer pass for i = 3, which <code>i &lt; 3</code> doesn't allow."
+    },
+    {
+      "q": "What does this Coral program output?<br><code>integer n</code><br><code>integer count</code><br><code>n = 4096</code><br><code>count = 0</code><br><code>while n &gt; 0</code><br><code>   n = n / 10</code><br><code>   count = count + 1</code><br><code>Put count to output</code>",
+      "choices": ["4", "3", "5", "0"],
+      "answer": "4",
+      "why": "Integer division by 10 drops the last digit on each pass: 4096 → 409 → 40 → 4 → 0. That's four passes, and the loop stops once n is 0, so the program counts the digits and prints 4. Answering 3 misses the pass that turns 4 into 0, 5 adds a pass that never happens, and 0 would mean the body never ran, which happens only if n starts at 0 or below."
+    },
+    {
+      "q": "The integer array <code>nums</code> holds 4, 7, 2, 9 (indexes 0 to 3), and <code>result</code> and <code>i</code> are integers. What does this code output?<br><code>result = 0</code><br><code>for i = 0; i &lt; nums.size; i = i + 1</code><br><code>   if nums[i] % 2 == 1</code><br><code>      result = result + nums[i]</code><br><code>Put result to output</code>",
+      "choices": ["22", "6", "16", "2"],
+      "answer": "16",
+      "why": "<code>nums[i] % 2 == 1</code> is true only for odd values, so the loop adds 7 and 9 for a result of 16. 22 is the sum of all four elements, as if the condition weren't there; 6 is the sum of the even values 4 and 2; and 2 is how many odd values there are, which would need <code>result = result + 1</code>. The loop runs for i = 0 to 3 because <code>nums.size</code> is 4 and the test is <code>&lt;</code>."
+    },
+    {
+      "q": "What does this Coral code output when <code>x</code> is 15?<br><code>if x &gt; 10 and x &lt; 15</code><br><code>   Put \"low\" to output</code><br><code>elseif x &gt; 10 or x == 0</code><br><code>   Put \"mid\" to output</code><br><code>else</code><br><code>   Put \"high\" to output</code>",
+      "choices": ["low", "mid", "high", "low, then mid"],
+      "answer": "mid",
+      "why": "The first condition needs both parts to be true: 15 &gt; 10 is true, but 15 &lt; 15 is false, so the <i>and</i> is false. The elseif needs only one part: 15 &gt; 10 is true, so it prints mid, and the chain ends there. \"low, then mid\" can't happen because an if-elseif-else chain runs at most one branch, and high would need both earlier conditions to be false."
+    },
+    {
+      "q": "What does this Coral program output?<br><code>Function Triple(integer n) returns integer result</code><br><code>   result = n * 3</code><br><br><code>Function Main() returns nothing</code><br><code>   integer a</code><br><code>   integer b</code><br><code>   a = 4</code><br><code>   b = Triple(a + 1) - Triple(2)</code><br><code>   Put b to output</code>",
+      "choices": ["9", "7", "15", "21"],
+      "answer": "9",
+      "why": "The argument <code>a + 1</code> is evaluated before the call, so the first call receives 5 and returns 15; the second receives 2 and returns 6; and 15 − 6 = 9. A Coral function returns whatever its return variable (<code>result</code>) holds when it ends. 7 treats the first call as Triple(a) + 1, which is 13 − 6; 15 ignores the second call; and 21 adds the two calls instead of subtracting."
+    },
+    {
+      "q": "Binary search looks for 42 in the sorted array 5, 11, 18, 27, 33, 42, 56, 61, 70 (indexes 0 to 8), using <code>mid = (low + high) / 2</code> with integer division. Which elements does it compare with 42, in order?",
+      "choices": ["33, 42", "61, 42", "5, 11, 18, 27, 33, 42", "33, 56, 42"],
+      "answer": "33, 56, 42",
+      "why": "It starts with low = 0 and high = 8, so mid = 4 and the element is 33; 42 is larger, so low becomes 5. Next, mid = (5 + 8) / 2 = 6 after truncation, the element is 56, and 42 is smaller, so high becomes 5. Then mid = 5 and the element is 42: found after three comparisons. \"33, 42\" skips the second midpoint, \"61, 42\" doesn't start in the middle, and the six-element list is what linear search would check."
+    },
+    {
+      "q": "A list of 500 customer IDs is stored in no particular order, and you need to find one ID once. Which statement is true?",
+      "choices": [
+        "Binary search will find it in at most 9 comparisons",
+        "Binary search works on unsorted data as long as you start in the middle",
+        "Linear search works here and may need up to 500 comparisons; binary search would need the list sorted first",
+        "Linear search needs at most about log₂ 500 comparisons"
+      ],
+      "answer": "Linear search works here and may need up to 500 comparisons; binary search would need the list sorted first",
+      "why": "Linear search checks items one at a time, so it works on any order, and its worst case is all 500. Binary search depends on sorted data, because it throws away the half that can't contain the target; on unsorted data it can discard the half that actually holds the ID. Nine comparisons (⌊log₂ 500⌋ + 1) is binary search's worst case only after sorting, and log₂ N describes binary search, not linear search."
+    },
+    {
+      "q": "A team wants its source code translated ahead of time into a native executable, with type mismatches reported before the program ever runs. Which language fits best?",
+      "choices": ["Python", "C++", "JavaScript", "HTML"],
+      "answer": "C++",
+      "why": "C++ is compiled: a compiler translates the whole program into machine code before it runs, and because C++ is statically typed, type mismatches are reported at compile time. Python and JavaScript are usually described as interpreted, dynamically typed languages that check types while running, even though modern engines compile to bytecode or use just-in-time compilation behind the scenes. HTML is a markup language that describes a page's structure; it doesn't compute anything."
+    },
+    {
+      "q": "In which language can you write <code>x = 42</code> and later <code>x = \"forty-two\"</code> without ever declaring a type for <code>x</code>?",
+      "choices": ["Python", "Java", "C++", "C"],
+      "answer": "Python",
+      "why": "Python is dynamically typed: the type belongs to the value, so <code>x = 42</code> followed by <code>x = \"forty-two\"</code> is legal. Java, C++ and C are statically typed: every variable gets a fixed type when it's declared, so a variable declared <code>int x</code> can't later hold text. When types are checked (static or dynamic) is a separate question from when code is translated (compiled or interpreted)."
+    },
+    {
+      "q": "A diagram shows a stick figure labeled Customer, with lines to ovals labeled Place order, Track shipment and Cancel order, all inside a box labeled Online Store. Which UML diagram is this?",
+      "choices": ["Class diagram", "Sequence diagram", "Use case diagram", "Activity diagram"],
+      "answer": "Use case diagram",
+      "why": "Use case diagrams show actors (stick figures for people or outside systems) and the goals they can accomplish with the system (ovals inside the system boundary). A class diagram draws classes as three-part boxes with attributes and methods, a sequence diagram shows objects exchanging messages over time from top to bottom, and an activity diagram shows a workflow of actions and decisions, much like a flowchart."
+    },
+    {
+      "q": "In which SDLC phase does a developer turn the approved class diagram and pseudocode into working code?",
+      "choices": ["Analysis", "Design", "Testing", "Implementation"],
+      "answer": "Implementation",
+      "why": "Implementation is writing the program. Analysis comes first and decides what the program must do (the requirements), design decides how (structure, algorithms and diagrams such as the class diagram), and testing checks that the finished code meets the requirements. A memory hook: analysis = what, design = how, implementation = build, testing = check."
+    },
+    {
+      "q": "Which statement describes the Waterfall approach to the SDLC?",
+      "choices": [
+        "The team repeats short cycles of every phase and releases working pieces often",
+        "Each phase is done once, in order, and finishes before the next begins",
+        "Testing comes first, before any requirements are gathered",
+        "Design is skipped so coding can start immediately"
+      ],
+      "answer": "Each phase is done once, in order, and finishes before the next begins",
+      "why": "Waterfall runs analysis, design, implementation and testing as one sequence, like water flowing down steps, and works best when the requirements are clear and stable from the start. Repeating short cycles and releasing often describes Agile, whose 2001 manifesto values working software over comprehensive documentation and responding to change over following a plan. Neither approach starts with testing or skips design; Agile simply does a little of every phase in each cycle."
+    },
+    {
+      "q": "A program should print the average of three test scores, 80, 85 and 86. It runs without crashing but prints 83 instead of about 83.67. What kind of error is this, and what's the likely cause?",
+      "choices": [
+        "A logic error: dividing an integer sum by the integer 3 dropped the fraction",
+        "A syntax error: a keyword is misspelled",
+        "A runtime error: the program divided by zero",
+        "No error: averages are always rounded down"
+      ],
+      "answer": "A logic error: dividing an integer sum by the integer 3 dropped the fraction",
+      "why": "The program runs and produces output, so it isn't a syntax error (which stops a program from compiling or starting) or a runtime error (which halts it partway). The result is simply wrong, which makes it a logic error: 251 / 3 with integers is 83. Storing the sum in a float or dividing by 3.0 keeps 83.67. Averages aren't rounded automatically; integer division truncates them."
+    }
+  ],
+  "pitfalls": [
+    "<b>Keeping the fraction.</b> With integers, <code>7 / 2</code> is 3, and in Coral storing 3.9 in an integer variable gives 3. Many wrong answers on tracing items come from doing real division in your head.",
+    "<b>Off-by-one loop counts.</b> Starting at 0 or 1 and using <code>&lt;</code> or <code>&lt;=</code> changes the number of passes, and after a loop ends its counter holds the first value that failed the test.",
+    "<b>Index N on an array of size N.</b> Valid indexes stop at N − 1, so the last element of a five-element array is index 4.",
+    "<b>Running every branch.</b> Only the first true branch of an if-elseif-else chain runs; separate if statements can each run. Read the structure before you trace.",
+    "<b><code>=</code> vs <code>==</code>.</b> One assigns and the other compares; a condition written with <code>=</code> is a classic wrong option.",
+    "<b>Skipping the definitions.</b> Jan–Feb 2026 commenters say the exam opens with memorization of language types, SDLC phases and UML diagrams, and students who only practice tracing give away those points.",
+    "<b>Mixing up the UML diagrams.</b> Activity = workflow of steps and decisions, sequence = messages over time, use case = actors and their goals, class = structure. Learn one picture of each.",
+    "<b>Blending two language questions.</b> Compiled vs interpreted is about when code is translated; static vs dynamic is about when types are checked. Answer the one the item asks.",
+    "<b>Forgetting binary search's precondition.</b> It only works on sorted data; on an unsorted list, linear search is the one that works.",
+    "<b>Working straight left to right.</b> <code>*</code>, <code>/</code> and <code>%</code> come before <code>+</code> and <code>-</code>, so <code>10 - 4 / 2 * 3 + 1</code> is 5, not 10. Commenters say much of the exam is basic math, including order of operations."
+  ],
+  "resources": [
+    {
+      "label": "Coral simulator",
+      "url": "https://corallanguage.org/simulator/",
+      "kind": "tool",
+      "note": "Free and in the browser: type a Coral program, step through it line by line, and watch variables, input and output change beside the matching flowchart. Use it to check every trace you're unsure about."
+    },
+    {
+      "label": "Coral language spec",
+      "url": "https://corallanguage.org/spec/",
+      "kind": "official",
+      "note": "Every Coral rule on one page: declarations, Get and Put, operators and precedence, branches, loops, arrays, functions, built-in math and type conversion. A 2025 commenter recommends it along with the simulator."
+    },
+    {
+      "label": "Course zyBook: participation and challenge activities",
+      "kind": "official",
+      "note": "The course text, written in Coral. Commenters say it covers everything; a 2025 passer did the activities in modules 2–6, 7.1–7.2 and 8–9 and treated the labs as optional."
+    },
+    {
+      "label": "Pre-assessment and coaching report",
+      "kind": "practice",
+      "note": "Take it closed-book as a dress rehearsal; the coaching report breaks your results down by topic. A 2025 passer found it similar to the OA, but pass it with a cushion rather than scraping by."
+    },
+    {
+      "label": "Live cohort sessions and instructor help",
+      "kind": "official",
+      "note": "A 2025 student credits a cohort run like a game show with a first-try pass. Ask your instructor for the schedule or recordings; instructors also share extra practice material on request."
+    },
+    {
+      "label": "WGU Academy: Scripting and Programming Foundations (D278A) syllabus",
+      "url": "https://academyproduct.s3.us-east-2.amazonaws.com/ScriptProg_D278A/PDF/ScriptingProgramming_syllabus.pdf",
+      "kind": "official",
+      "note": "WGU's public syllabus for the standalone version of this course: the same three competencies and an 11-module list of learning objectives you can use as a checklist."
+    },
+    {
+      "label": "Manifesto for Agile Software Development",
+      "url": "https://agilemanifesto.org/",
+      "kind": "official",
+      "note": "The four Agile values on one screen; enough to explain Waterfall vs Agile in your own words."
+    },
+    {
+      "label": "OMG: What is UML",
+      "url": "https://www.omg.org/uml/what-is-uml.htm",
+      "kind": "official",
+      "note": "The standards body's overview of UML and its diagram families; pair it with the zyBook's examples of use case, class, activity and sequence diagrams."
+    },
+    {
+      "label": "Python Tutor",
+      "url": "https://pythontutor.com/",
+      "kind": "tool",
+      "note": "Free visualizer that steps through Python, Java, C, C++ and JavaScript and draws every variable. Useful for seeing the same loops and functions in a real language once Coral makes sense."
+    },
+    {
+      "label": "CS50x: Harvard's introduction to computer science",
+      "url": "https://cs50.harvard.edu/x/",
+      "kind": "video",
+      "note": "Optional and free, for more depth: lectures on algorithms, searching and sorting, C and Python. Much more than D278 needs, but a strong warm-up for the C++ course that follows."
+    },
+    {
+      "label": "WGU Connect course group",
+      "kind": "community",
+      "note": "Course page → Course Community → Join WGU Connect → Resources, for instructor posts, cohort announcements and student questions."
+    },
+    {
+      "label": "I passed D278 - Scripting and Programming Foundations in 17 days (r/WGU, Apr 2025)",
+      "url": "https://www.reddit.com/r/WGU/comments/1k718gx/i_passed_d278_scripting_and_programming/",
+      "kind": "community",
+      "note": "The most detailed recent write-up: which zyBook activities to do, how the PA compared with the OA, and early-2026 comments on the definitions-heavy opening."
+    }
+  ],
+  "community": {
+    "summary": "Posts agree D278 is a gentle intro course: the zyBook takes you through the material in small steps, and a 2025 passer finished in 17 days by doing the participation and challenge activities in modules 2–6, 7.1–7.2 and 8–9, reading the material three times and taking the pre-assessment, which they found similar to the OA. Commenters describe the exam as mostly basic math and logic read from pseudocode and flowcharts (order of operations, averages, greatest common divisor), with a calculator available, and Jan–Feb 2026 comments add that the first part is memorization: kinds of programming languages, SDLC phases and UML design diagrams. One of those commenters passed with Exemplary in every area. Students recommend the official Coral site's spec and simulator, and one credits a live cohort run like a game show.",
+    "coverage": "2 posts, Apr 2025 – Jul 2025, r/WGU (comments through Feb 2026)",
+    "posts": [
+      {
+        "title": "D278 Scripting and Programming Foundations-New to this",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1lu2tlq/d278_scripting_and_programming_foundationsnew_to/",
+        "date": "Jul 2025",
+        "takeaway": "Replies say the zyBooks material covers everything, point to the official Coral site for its spec and simulator, credit a game-show-style live cohort with a first-try pass, and call it an intro class that eases you in."
+      },
+      {
+        "title": "I passed D278 - Scripting and Programming Foundations in 17 days. Here's how I did it.",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1k718gx/i_passed_d278_scripting_and_programming/",
+        "date": "Apr 2025",
+        "takeaway": "Did the participation and challenge activities in modules 2–6, 7.1–7.2 and 8–9 (skipping module 1, the rest of 7 and module 10; labs optional), read everything three times, and found the PA similar to the OA. Commenters describe basic math, logic, pseudocode and flowcharts with a calculator allowed; Jan–Feb 2026 comments say the first part is memorizing language types, SDLC phases and UML diagrams."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Institutional Catalog, November 2026: D278 description; BSCS 202611 course list; D278 in B.S. Data Analytics; online proctoring rules", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, May 2025: BSCS 202412 with D278 at 3 CUs in term 1", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2025/catalog-may-2025.pdf" },
+    { "label": "WGU Program Guidebook, B.S. Data Analytics (catalog 202309, published Apr 2026): D278 description and competencies", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSDA.pdf" },
+    { "label": "WGU B.S. Computer Science degree page: current course list", "url": "https://www.wgu.edu/online-it-degrees/computer-science.html" },
+    { "label": "WGU Academy: Scripting and Programming Foundations (D278A) syllabus: module outline and competencies", "url": "https://academyproduct.s3.us-east-2.amazonaws.com/ScriptProg_D278A/PDF/ScriptingProgramming_syllabus.pdf" },
+    { "label": "Coral language home: creators, simulator and flowcharts", "url": "https://corallanguage.org/" },
+    { "label": "Coral language spec", "url": "https://corallanguage.org/spec/" },
+    { "label": "zyBooks catalog page: Fundamental Programming Concepts in Coral (public description and table of contents)", "url": "https://www.zybooks.com/catalog/fundamental-programming-concepts/" },
+    { "label": "Python FAQ: What is Python? (interpreted, object-oriented, dynamic typing)", "url": "https://docs.python.org/3/faq/general.html" },
+    { "label": "MDN: JavaScript (interpreted or just-in-time compiled, dynamic)", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
+    { "label": "Oracle Java Tutorials: About the Java technology (javac, bytecode, JVM)", "url": "https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html" },
+    { "label": "Manifesto for Agile Software Development (2001)", "url": "https://agilemanifesto.org/" },
+    { "label": "Object Management Group: What is UML (diagram categories)", "url": "https://www.omg.org/uml/what-is-uml.htm" },
+    { "label": "r/WGU: I passed D278 - Scripting and Programming Foundations in 17 days (Apr 2025)", "url": "https://www.reddit.com/r/WGU/comments/1k718gx/i_passed_d278_scripting_and_programming/" }
+  ],
+  "caveats": [
+    "Students who start on WGU's newest BSCS version (202611, from the Nov 2026 catalog) see E010 Foundations of Programming (Python) in this slot instead; this guide covers D278.",
+    "WGU doesn't publish D278's question count, time limit or cut score on its public pages, and no student post in this research states them. The calculator detail comes from 2025 Reddit comments, and the whiteboard rule comes from the search-indexed text of WGU Knowledge Center pages that couldn't be opened directly, so confirm both before exam day.",
+    "The degree course's zyBook wasn't accessible for this guide. Topics come from WGU's course description, the public D278A syllabus and the table of contents on zyBooks' public catalog page for its Coral book, and the module numbers in the tips come from one 2025 passer. The four SDLC phases and the troubleshooting terms are the common textbook versions, so check the zyBook's exact wording.",
+    "Community coverage is thin: two r/WGU posts from Apr and Jul 2025 with comments into Feb 2026, taken from pasted notes because Reddit couldn't be opened directly. Post dates are approximate, converted from Reddit's relative timestamps.",
+    "The practice questions are original and use Coral-style code. The real exam's wording and difficulty may differ, though a 2025 passer found the pre-assessment similar to the OA."
+  ]
+}

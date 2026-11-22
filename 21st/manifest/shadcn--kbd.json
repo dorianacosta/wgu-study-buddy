@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/kbd",
+  "title": "Kbd | Community Components | 21st",
+  "license": "",
+  "published": "10/10/2025",
+  "dependencies": "",
+  "promptFile": "21st/prompts/shadcn--kbd.md",
+  "chars": 24287,
+  "sha256": "c6b8dc2b154aca345a2bfb725e1d8200e11dc7319e8a3217e28571ab0368d4d5",
+  "sha256Of": "file bytes",
+  "capturedSha256": "03437f18a41cecd288cb72b407945512c8aff1fd82b509a577a9872ae5fbdb71",
+  "verified": true,
+  "notes": "Copied via Change copy action > Claude Code (tab viewport emulated at 1440x900 so the desktop copy menu was visible). Info tab shows no License and no Dependencies section; it lists Source: ui.shadcn.com/docs/components/kbd. The prompt itself bundles registry files (button-group, button, dropdown-menu, separator, tooltip, label, input-group, input, textarea, popover) and lists NPM deps: @radix-ui/react-slot, class-variance-authority, lucide-react, @radix-ui/react-dropdown-menu, @radix-ui/react-separator, @radix-ui/react-tooltip, @radix-ui/react-label, @radix-ui/react-popover. Verified on first write.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (24287) is the text's length in UTF-16 code units and equals the file's."
+}

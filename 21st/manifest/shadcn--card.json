@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/card",
+  "title": "Card | Community Components | 21st",
+  "license": "MIT License",
+  "published": "12/21/2024",
+  "dependencies": "lucide-react",
+  "promptFile": "21st/prompts/shadcn--card.md",
+  "chars": 16895,
+  "sha256": "4dcac5fefcef666a804edc91b8671a8b97ded2bfaf460557b59085de3fb91e36",
+  "sha256Of": "file bytes",
+  "capturedSha256": "cdeb4f1e986ac89ca2d7f408ee9a9789f5d7cb6ae83787bc7d45ac2bc5f9ba7b",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Info tab lists only lucide-react; the prompt itself also bundles shadcn button, input, label, select and switch and asks to install @radix-ui/react-slot, class-variance-authority, @radix-ui/react-label, @radix-ui/react-select, @radix-ui/react-switch.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (16895) is the text's length in UTF-16 code units and equals the file's."
+}

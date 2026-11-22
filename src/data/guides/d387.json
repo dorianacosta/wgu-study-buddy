@@ -1,0 +1,578 @@
+{
+  "code": "D387",
+  "summary": "D387 is a performance assessment built on WGU's Landon Hotel reservation app, a Spring Boot back end with an Angular front end. In general terms, you add localized welcome messages read on separate threads, format prices in other currencies and convert a time between time zones. Then you package the app in a Docker container and describe how you'd deploy it to the cloud. A Jul 2025 poster passed on the first try (a comment on that thread reports about 9 hours over 3 days), and most of the friction students report is environmental: file encodings, Docker base images and version disagreements.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (Landon Hotel Spring Boot and Angular app: localization, threads, currency, time zones, Docker and a cloud write-up)",
+    "format": "1 project in several parts · code pushed to WGU's GitLab, screenshots and a short written description · evaluator-graded against a rubric, no exam",
+    "details": [
+      "<b>The app and tools:</b> WGU gives you the Landon Hotel reservation app, a Spring Boot back end with an Angular front end, in a GitLab repository. You clone it, work on a branch, and commit and push as you finish each part. Students install IntelliJ, JDK 17, Maven, Node.js with the Angular CLI (<code>npm install -g @angular/cli</code>) and Docker Desktop.",
+      "<b>The task in general terms</b> (your task page has the exact requirements): the back end reads localized welcome messages from resource bundles on separate threads, and the Angular page shows them. The page also shows prices formatted for other currencies and a time converted between time zones. Then you write a Dockerfile, run the app in a container, and describe how you'd deploy that container to a cloud provider.",
+      "<b>Submission and grading:</b> you submit your code with screenshots and the written description, and your task page lists exactly what to include. Evaluators grade against the rubric and send work back with feedback when something is missing (WGU guidebook).",
+      "<b>Course facts:</b> WGU's July 2026 catalog lists D387 (ITSW 3024, 3 CUs) in BSCS 202412. The competencies in this guide come from WGU's Java-track B.S. Software Engineering guidebook."
+    ],
+    "tips": [
+      "Commit and push after each part of the task with a message that names it, so your repository history shows the work one step at a time.",
+      "Save every <code>.properties</code> file as UTF-8 so the French accents survive, and add a base <code>welcome.properties</code> as a fallback; a commenter on the Jul 2025 post recommends it when the container doesn't show the English message, because file names are case-sensitive on Linux.",
+      "Read each bundle in its own <code>Callable</code>, submit both to an <code>ExecutorService</code>, and collect the messages with <code>Future.get()</code>, as the Jul 2025 passer did.",
+      "Reuse what the page already renders: the Jul 2025 passer added the presentation-time message to the same welcome-message list, so the existing loop showed it without extra front-end work.",
+      "Convert time zones with region IDs (<code>America/New_York</code>, <code>America/Denver</code>, <code>UTC</code>) and format with a pattern such as <code>HH:mm</code>; never hard-code offsets, which break when daylight saving time changes.",
+      "Start the Spring Boot app before <code>ng serve</code>, and put <code>@CrossOrigin</code> for the front end's origin (localhost on port 4200) on your controller.",
+      "Build on a maintained JDK 17 image such as <code>eclipse-temurin:17-jre</code>, <code>amazoncorretto:17</code> or Microsoft's <code>mcr.microsoft.com/openjdk/jdk:17-distroless</code>; the openjdk tags in older walkthroughs are deprecated, and on Apple Silicon pick one with an arm64 variant (amd64-only images run only under slower emulation).",
+      "Run <code>mvn clean package</code> first and point <code>COPY</code> at the jar Maven prints, written relative to the build context (for example <code>target/&lt;artifactId&gt;-&lt;version&gt;.jar</code>), then <code>docker build</code> and <code>docker run --name &lt;name&gt; -p 8080:8080 ...</code>, and check the running container and the page it serves before you take screenshots."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your Course Planning Tool report with your instructor and build a personalized course plan together.",
+    "The learner determines how to deploy software applications using cloud services.",
+    "The learner writes multithreaded, object-oriented code using Java frameworks."
+  ],
+  "topics": [
+    {
+      "title": "The Landon Hotel project and how to work on it",
+      "eli5": "WGU hands you a working hotel website, and you teach it French, money symbols and time zones, then pack it into a shipping box that any cloud can run.",
+      "detail": "The app is a Spring Boot back end (Java, port 8080) plus an Angular front end (the dev server runs on port 4200), stored in a GitLab repository you clone. In development, start the Spring Boot app first, then run <code>ng serve</code>, and browse to the Angular page; because the page and the API sit on different ports (different origins), the browser lets the page read the API's responses only when the API allows the page's origin with CORS (<code>@CrossOrigin</code>). Each code part touches both layers: Java does the work (bundles, threads, time conversion), a REST endpoint exposes the result as JSON, and the Angular component fetches it with HttpClient and displays it, typically by looping over a list with <code>*ngFor</code> (newer Angular also offers <code>@for</code>). Work on a branch, and commit and push after each part, so your repository history shows the work step by step.",
+      "points": [
+        "Each feature has three pieces: Java code that does the work, a REST endpoint that returns the result as JSON, and an Angular component that displays it.",
+        "<code>mvn</code> needs JDK 17 and Maven on your PATH; <code>mvn -v</code> shows which Java Maven is really using.",
+        "Most front-end changes are small: an HttpClient call, a field in the component and a few lines in its template.",
+        "Instructors and evaluators sometimes disagree about versions (Jul 2025); stay on JDK 17 unless your instructor says otherwise."
+      ]
+    },
+    {
+      "title": "Internationalization, localization and Locale",
+      "eli5": "Internationalization is building the app so it can speak any language later; localization is actually teaching it French, and a Locale is the name tag that says which language and country to use.",
+      "detail": "Internationalization (i18n) means keeping user-facing text and formats out of the code so the app can adapt; localization (l10n) is supplying the text and formats for one place. In Java, a <code>Locale</code> names a language and optionally a country (or region), written with an underscore in Java's toString (<code>fr_CA</code>) and with a hyphen in standard language tags (<code>fr-CA</code>). Constants cover common cases: <code>Locale.US</code> (en_US), <code>Locale.CANADA</code> (en_CA), <code>Locale.CANADA_FRENCH</code> (fr_CA) and <code>Locale.FRANCE</code> (fr_FR). On JDK 17 you create others with <code>new Locale(\"fr\", \"CA\")</code>; Java 19 deprecated those constructors in favor of <code>Locale.of(\"fr\", \"CA\")</code>, and <code>Locale.forLanguageTag(\"fr-CA\")</code> works in both. The JVM also has a default locale taken from the operating system, which can differ between your laptop and a container, so pass a Locale explicitly whenever the result must be predictable.",
+      "points": [
+        "Locale-sensitive APIs: <code>ResourceBundle</code>, <code>NumberFormat</code>, <code>DateTimeFormatter</code>",
+        "<code>Locale.getDefault()</code> shows the JVM's default; Microsoft's OpenJDK images default to en_US.UTF-8, but other images may not.",
+        "Language codes are lowercase (en, fr) and country codes uppercase (US, CA).",
+        "Translation text belongs in bundles, not in <code>if (french)</code> branches in the code."
+      ]
+    },
+    {
+      "title": "Resource bundles: names, lookup, fallback and encoding",
+      "eli5": "A resource bundle is a phrasebook: one small file per language with the same keys, and Java opens the phrasebook that best matches the Locale you ask for.",
+      "detail": "A property resource bundle is a <code>.properties</code> file of key=value lines on the class path, normally under <code>src/main/resources</code>. Files share a base name plus locale suffixes: <code>welcome.properties</code> (the base), <code>welcome_en_US.properties</code>, <code>welcome_fr_CA.properties</code>, each with the same keys. <code>ResourceBundle.getBundle(\"welcome\", locale)</code> tries the requested locale from most to least specific (welcome_fr_CA, then welcome_fr), then the same candidates for the JVM's default locale, then the base file, and throws <code>MissingResourceException</code> if nothing matches; <code>getString(key)</code> also searches parent bundles and throws the same exception for a missing key. Since Java 9, property bundles are read as UTF-8 by default, with a fallback to ISO-8859-1 if a file isn't valid UTF-8, but <code>Properties.load(InputStream)</code> always reads ISO-8859-1, so UTF-8 accents come out as Ã©. Names are case-sensitive inside a JAR and on Linux even when your Mac or Windows IDE forgives a mismatch, so a base name of Welcome can find welcome_en_US.properties in IntelliJ and fail in the container.",
+      "points": [
+        "Lookup order: requested locale → default locale → base bundle → <code>MissingResourceException</code>",
+        "A base bundle (no suffix) makes the lookup succeed whatever the default locale is.",
+        "Keep the base name and every file name in identical case, and the same keys in every file.",
+        "IntelliJ: set the default encoding for properties files to UTF-8 (Settings → Editor → File Encodings); saving a curly apostrophe as ISO-8859-1 turns it into ?.",
+        "<code>getBundle</code> caches bundles, and the standard <code>PropertyResourceBundle</code> is thread-safe, so two threads can read bundles at the same time."
+      ]
+    },
+    {
+      "title": "Threads, Runnable and Callable",
+      "eli5": "A thread is an extra pair of hands; Runnable is a chore with nothing to hand back, while Callable is an errand that comes back with something.",
+      "detail": "Every Java program starts on a main thread, and a web server like Spring Boot's embedded Tomcat runs each request on a worker thread. You can start your own threads, but the work is usually described as a task: <code>Runnable</code> has <code>void run()</code>, which returns nothing and can't throw checked exceptions, while <code>Callable&lt;V&gt;</code> has <code>V call() throws Exception</code>, which returns a value. Both fit in lambdas, for example <code>Callable&lt;String&gt; english = () -&gt; bundle.getString(\"welcome\");</code>. Calling <code>run()</code> or <code>call()</code> yourself runs the task on the current thread; only <code>Thread.start()</code> or submitting to an executor runs it on another one. <code>Thread.currentThread().getName()</code> returns names such as pool-1-thread-2, a simple way to log that two tasks really ran on different threads.",
+      "points": [
+        "<code>new Thread(runnable).start()</code> runs concurrently; <code>runnable.run()</code> doesn't.",
+        "<code>thread.join()</code> waits for a raw thread to finish; with executors you wait on a <code>Future</code> instead.",
+        "Threads share the heap: fields and collections they both touch need thread-safe handling.",
+        "Java 21 adds virtual threads (<code>Executors.newVirtualThreadPerTaskExecutor()</code>), which aren't available on JDK 17."
+      ]
+    },
+    {
+      "title": "ExecutorService and Future",
+      "eli5": "An ExecutorService is a team of workers waiting for errands, and a Future is the claim ticket you trade in later for the errand's result.",
+      "detail": "<code>Executors.newFixedThreadPool(2)</code> creates a pool of two reusable threads. <code>submit(callable)</code> returns a <code>Future&lt;V&gt;</code> immediately, while the task runs on a pool thread; <code>future.get()</code> blocks until the result is ready and returns it, and <code>get(timeout, unit)</code> gives up waiting after a limit. If the task threw, <code>get()</code> throws <code>ExecutionException</code>, and <code>getCause()</code> holds the original exception. <code>invokeAll(tasks)</code> runs a whole collection and returns the futures in the same order as the tasks, all already finished. When you're done, <code>shutdown()</code> stops new submissions but lets queued and running tasks finish, <code>awaitTermination(timeout, unit)</code> waits for that, and <code>shutdownNow()</code> interrupts running tasks and returns the queued ones; Java 19 added <code>close()</code>, so an executor can sit in try-with-resources. Everything a task does happens-before another thread's successful <code>get()</code> returns, so results passed through futures are safely visible without extra locking.",
+      "points": [
+        "<code>execute(Runnable)</code> returns nothing; <code>submit(Callable&lt;T&gt;)</code> returns <code>Future&lt;T&gt;</code>.",
+        "<code>get()</code> can throw <code>InterruptedException</code>, <code>ExecutionException</code> or <code>CancellationException</code>; the timed version adds <code>TimeoutException</code>.",
+        "Shut down pools you create; a new pool per request that's never shut down leaks threads.",
+        "Two futures read back into one list give you the English and French messages in a known order.",
+        "Java 19+ also adds <code>Future.state()</code> and <code>resultNow()</code>; on JDK 17 use <code>get()</code>."
+      ]
+    },
+    {
+      "title": "Thread safety in a Spring application",
+      "eli5": "If two people write on the same whiteboard at once, words get jumbled, so either give each person their own paper or take turns with the marker.",
+      "detail": "A race condition happens when threads read and write shared mutable state without coordination, so the result depends on timing; <code>count++</code> and <code>ArrayList.add</code> are classic examples because each is several steps that can interleave. Fixes, from simplest: don't share (give each task its own data and return results through futures); share only immutable objects; use thread-safe types such as <code>AtomicInteger</code>, <code>ConcurrentHashMap</code> or <code>CopyOnWriteArrayList</code>; or guard a critical section with <code>synchronized</code>. Spring beans such as controllers and services are singletons by default, and the embedded server calls them from many request threads at once, so keep per-request data in local variables, not in fields. Deadlock is the opposite failure: two threads each holding a lock the other needs, both waiting forever; keep locks few, short and acquired in a consistent order.",
+      "points": [
+        "<code>ArrayList</code> and <code>HashMap</code> aren't thread-safe; <code>Collections.synchronizedList</code>, <code>CopyOnWriteArrayList</code> and <code>ConcurrentHashMap</code> are.",
+        "<code>volatile</code> makes writes visible to other threads but doesn't make <code>count++</code> atomic; <code>AtomicInteger.incrementAndGet()</code> does.",
+        "Immutable values (Strings, records with final fields) can be shared freely.",
+        "Explain your design in a sentence: what runs on which thread, and how results get back."
+      ]
+    },
+    {
+      "title": "Exposing the messages: a REST endpoint and the Angular page",
+      "eli5": "The Java side puts the messages in a labeled box at a web address, and the Angular page walks over, picks up the box and puts each message on the screen.",
+      "detail": "A <code>@RestController</code> method mapped with <code>@GetMapping(\"/welcome\")</code> (any path you choose) can return a <code>List&lt;String&gt;</code>, and Spring serializes it as a JSON array such as <code>[\"Welcome ...\", \"Bienvenue ...\"]</code>. Add <code>@CrossOrigin</code> naming the front end's origin, because localhost:4200 and localhost:8080 are different origins and the browser otherwise blocks the page from reading the response. On the Angular side, a component injects <code>HttpClient</code>, calls <code>get&lt;string[]&gt;(url)</code>, subscribes, and stores the array in a field that the template loops over with <code>*ngFor</code> and shows with interpolation (<code>{{ message }}</code>). Because the Java code does the localization and threading, the front end only needs to fetch and display, which is why reusing an array the page already renders saves work.",
+      "points": [
+        "Test the endpoint first by opening it directly at localhost:8080 in the browser, then wire up the page.",
+        "Empty page plus a CORS error in the console: the API is up but missing <code>@CrossOrigin</code>.",
+        "Empty page with no request at all in the Network tab: the component never called the service.",
+        "In the container, browse to the host port you published with <code>-p</code>."
+      ]
+    },
+    {
+      "title": "Showing prices in different currencies",
+      "eli5": "Writing $100, C$100 and €100 is like translating a price tag's label; changing what the number is worth would be a currency exchange, which is a separate job.",
+      "detail": "Formatting decides the symbol, separators and symbol position for an amount; conversion changes the amount. In Angular, the CurrencyPipe does the formatting in the template: <code>{{ price | currency:'USD' }}</code> shows $, <code>currency:'CAD'</code> shows CA$ in the default en-US locale, <code>'symbol-narrow'</code> shows a plain $, <code>'code'</code> shows CAD, any other display string (such as <code>'C$'</code>) replaces the symbol, and <code>currency:'EUR'</code> shows €. In Java, <code>NumberFormat.getCurrencyInstance(locale)</code> formats by locale: Locale.US gives $1,234.50, Locale.CANADA also gives $1,234.50 (in Canada a Canadian dollar is just $), Locale.CANADA_FRENCH gives 1 234,50 $ and Locale.FRANCE gives 1 234,50 €. Calling <code>setCurrency(Currency.getInstance(\"CAD\"))</code> on a US formatter gives CA$1,234.50. Use <code>BigDecimal</code> rather than double for money you calculate with.",
+      "points": [
+        "Angular in en-US: USD → $ · CAD → CA$ (symbol), $ (symbol-narrow), CAD (code) · EUR → €",
+        "Locale.CANADA's plain $ looks identical to USD on the same page, so label the line or pick a distinct symbol.",
+        "Check your task page for whether amounts must be converted or only formatted.",
+        "Formatting never converts: the number stays the same unless you multiply by a rate yourself."
+      ]
+    },
+    {
+      "title": "Time zones with java.time",
+      "eli5": "A moment happens once for everyone, but each time zone reads a different number off its own clock; converting means asking what another clock says at that same moment.",
+      "detail": "<code>LocalTime</code> and <code>LocalDateTime</code> have no zone, so they can't be converted on their own. <code>ZonedDateTime</code> pairs a local date-time with a <code>ZoneId</code>, and <code>Instant</code> is a point on the UTC timeline. Build the presentation time in its own zone, for example <code>ZonedDateTime.of(date, LocalTime.of(14, 0), ZoneId.of(\"America/New_York\"))</code>, then call <code>withZoneSameInstant(ZoneId.of(\"America/Denver\"))</code> and <code>withZoneSameInstant(ZoneId.of(\"UTC\"))</code>, which keep the instant and change the clock reading; <code>withZoneSameLocal</code> keeps the clock reading and changes the instant, which is not a conversion. Format with <code>DateTimeFormatter.ofPattern(\"HH:mm\")</code>. Use region IDs: they apply daylight saving rules automatically (Eastern is UTC−5 in winter and UTC−4 in summer, Mountain UTC−7 and UTC−6). Avoid abbreviations: <code>ET</code> and <code>MT</code> aren't valid zone IDs, and the three-letter EST or MST either aren't accepted by <code>ZoneId.of</code> or, through <code>ZoneId.SHORT_IDS</code>, become fixed offsets that ignore daylight saving time.",
+      "points": [
+        "14:00 ET on Jul 15, 2026 = 12:00 MT = 18:00 UTC; on Dec 15, 2026 = 12:00 MT = 19:00 UTC.",
+        "Eastern is 2 hours ahead of Mountain except for 2 hours on each switch day: both follow the same U.S. daylight saving schedule (second Sunday in March to first Sunday in November), but each zone changes at 2:00 local time, so for the 2 hours between the switches the gap is 3 hours in March and 1 hour in November.",
+        "<code>America/Phoenix</code> stays on MST all year, so it isn't a stand-in for Mountain Time.",
+        "Containers usually run in UTC, so <code>LocalDateTime.now()</code> or <code>ZoneId.systemDefault()</code> can shift results there; name every zone explicitly.",
+        "Pattern letters: <code>H</code> hour 0–23, <code>h</code> hour 1–12 (with <code>a</code> for AM/PM), <code>m</code> minute, <code>M</code> month."
+      ]
+    },
+    {
+      "title": "Packaging the app: Maven and the executable JAR",
+      "eli5": "Maven bakes all your code and its libraries into one jar, a single file you can run anywhere Java is installed, including inside a container.",
+      "detail": "<code>mvn clean package</code> deletes the old <code>target</code> folder, compiles, runs the tests and builds a jar; the Spring Boot Maven plugin repackages it into an executable fat jar that includes the dependencies, so <code>java -jar target/&lt;artifactId&gt;-&lt;version&gt;.jar</code> starts the whole app on port 8080. Maven prints the jar's full path near the end of the build (a \"Building jar\" line); your Dockerfile's <code>COPY</code> must name that same file by its path relative to the build context, such as <code>target/&lt;artifactId&gt;-&lt;version&gt;.jar</code>, not the absolute path. Maven runs on whatever JDK <code>JAVA_HOME</code> or your PATH points at, which <code>mvn -v</code> shows, so an unexpected JDK can break the build; and if the project's Java version is set higher than the JDK in your base image, the container fails at startup with an UnsupportedClassVersionError. Rebuild the jar after every code change and before every <code>docker build</code>, or the image will contain old code.",
+      "points": [
+        "Build order: <code>mvn clean package</code> → <code>docker build</code> → <code>docker run</code>",
+        "Check the jar first with <code>java -jar</code> outside Docker; if it fails there, Docker won't fix it.",
+        "<code>-DskipTests</code> skips tests during packaging, but fix failing tests rather than hiding them.",
+        "Resources such as your bundles end up inside the jar; the case-sensitivity rules apply from then on."
+      ]
+    },
+    {
+      "title": "Docker: images, containers and the Dockerfile",
+      "eli5": "A Dockerfile is the recipe, an image is the frozen meal it produces, and a container is that meal heated up and running.",
+      "detail": "An image is a read-only template built from a Dockerfile; a container is a running instance of an image with its own filesystem, process space and network ports. A typical Java Dockerfile starts <code>FROM</code> a JDK or JRE base image, sets <code>WORKDIR</code>, <code>COPY</code>s the jar from the build context, documents the port with <code>EXPOSE 8080</code>, and starts the app with <code>ENTRYPOINT</code> or <code>CMD</code> in exec form, such as <code>[\"java\", \"-jar\", \"app.jar\"]</code>; only the last CMD counts. <code>docker build -t landon-app .</code> builds from the current directory (the build context), and <code>docker run -d --name landon_web -p 8080:8080 landon-app</code> starts a named container and publishes the port, because EXPOSE alone publishes nothing. Docker Hub's openjdk image is deprecated (only early-access tags were updated after July 2022), so use eclipse-temurin, amazoncorretto or Microsoft's OpenJDK images. Microsoft's distroless images have no shell and already set <code>ENTRYPOINT</code> to java, so their Dockerfiles pass only arguments, as in <code>CMD [\"-jar\", \"/app.jar\"]</code>. On Apple Silicon, prefer a base image that offers linux/arm64; a no matching manifest for linux/arm64/v8 error means it doesn't, and building and running with <code>--platform linux/amd64</code> uses the Intel image under slower emulation instead.",
+      "points": [
+        "<code>docker ps</code> lists running containers (<code>-a</code> includes stopped ones) · <code>docker logs &lt;name&gt;</code> shows the app's output · <code>docker stop</code> and <code>docker rm</code> clean up",
+        "A container name can only be used once; remove the old container before you reuse its name.",
+        "Image names must be lowercase; container names allow letters, digits, underscores, periods and hyphens.",
+        "Inside a Linux container, file and resource names are case-sensitive, and the default time zone is usually UTC.",
+        "Before you take screenshots, check <code>docker ps</code> (or Docker Desktop) for the running container, and open the app's page served from it."
+      ]
+    },
+    {
+      "title": "Deploying a container to the cloud",
+      "eli5": "You put the packed box in a public locker (a registry), then rent a robot (a container service) that takes it out, runs it, and gives the world an address to visit.",
+      "detail": "Most cloud container deployments follow the same steps. Build and tag the image, then push it to a container registry such as Azure Container Registry, Amazon ECR or Docker Hub. Create a managed service that pulls the image and runs it, with ingress on the app's port (8080), environment variables for any settings, and a scaling rule. Then check the logs, open the public URL, and clean up so you aren't billed. On Azure, Azure Container Apps runs containers from any registry, with HTTPS ingress, revisions and scaling that can drop to zero; App Service for containers is the other common choice. On AWS, Amazon ECS on Fargate is the standard route, and ECS Express Mode creates the service, load balancer and scaling from one call. AWS closed App Runner to new customers in 2026 and points newcomers to ECS Express Mode, so don't build a 2026 plan around it. Students report the task asks for a description rather than a live deployment; name the provider and services, and walk through the steps in order.",
+      "points": [
+        "Registry → service → ingress port → configuration → scaling → monitoring → URL → clean-up",
+        "Name concrete services (for example Azure Container Registry with Azure Container Apps) rather than \"the cloud\".",
+        "A 2023 student calls the instructor's Azure route simpler than AWS.",
+        "Mention how you'd update it: push a new image tag and roll out a new revision or task definition.",
+        "The competency is about deploying with cloud services, so connect each step to what the service does for you."
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "i18n vs l10n", "value": "Internationalization (i18n) keeps text and formats out of the code so the app can adapt · localization (l10n) supplies the text and formats for one place", "note": "A <code>Locale</code> names a language and, optionally, a country" },
+    { "label": "Course", "value": "3 CUs · catalog number ITSW 3024 · one performance assessment on the Landon Hotel app", "note": "CUs and catalog number from WGU's July 2026 catalog" },
+    { "label": "Ports", "value": "8080 Spring Boot · 4200 <code>ng serve</code>", "note": "Different origins, so the controller needs <code>@CrossOrigin</code>" },
+    { "label": "Bundle files", "value": "<code>welcome.properties</code> (base) · <code>welcome_en_US.properties</code> · <code>welcome_fr_CA.properties</code>, all with the same keys", "note": "Under <code>src/main/resources</code>; names are case-sensitive in the jar" },
+    { "label": "Bundle lookup", "value": "Requested locale (fr_CA → fr) → default locale → base bundle → <code>MissingResourceException</code>" },
+    { "label": "Bundle encoding", "value": "<code>PropertyResourceBundle</code> reads UTF-8 by default (Java 9+), falling back to ISO-8859-1 · <code>Properties.load(InputStream)</code> always reads ISO-8859-1" },
+    { "label": "Locales", "value": "<code>Locale.US</code> en_US · <code>Locale.CANADA</code> en_CA · <code>Locale.CANADA_FRENCH</code> fr_CA · <code>Locale.FRANCE</code> fr_FR", "note": "JDK 17: <code>new Locale(\"fr\", \"CA\")</code>; Java 19+: <code>Locale.of(\"fr\", \"CA\")</code>" },
+    { "label": "Runnable vs Callable", "value": "<code>Runnable.run()</code>: void, no checked exceptions · <code>Callable&lt;V&gt;.call()</code>: returns V, may throw Exception" },
+    { "label": "Executors", "value": "<code>Executors.newFixedThreadPool(n)</code> · <code>newSingleThreadExecutor()</code> · <code>newCachedThreadPool()</code> · <code>newVirtualThreadPerTaskExecutor()</code> (Java 21+)" },
+    { "label": "Submitting work", "value": "<code>execute(Runnable)</code> → no Future · <code>submit(Callable&lt;T&gt;)</code> → <code>Future&lt;T&gt;</code> · <code>invokeAll(tasks)</code> → futures in task order, all done" },
+    { "label": "Future", "value": "<code>get()</code> blocks · <code>get(timeout, unit)</code> · <code>ExecutionException</code> wraps the task's exception (<code>getCause()</code>) · <code>cancel(true)</code> · <code>isDone()</code>" },
+    { "label": "Shutting down", "value": "<code>shutdown()</code> stops intake, queued tasks still run · <code>shutdownNow()</code> interrupts and returns queued tasks · <code>awaitTermination(t, unit)</code> waits · <code>close()</code> (Java 19+) shuts down and waits" },
+    { "label": "Thread-safe tools", "value": "<code>synchronized</code> · <code>AtomicInteger</code> · <code>ConcurrentHashMap</code> · <code>CopyOnWriteArrayList</code> · <code>Collections.synchronizedList</code> · immutable objects", "note": "<code>volatile</code> gives visibility, not atomicity" },
+    { "label": "Thread names", "value": "<code>Thread.currentThread().getName()</code> → pool-1-thread-1, pool-1-thread-2 …", "note": "Log it to show the bundles were read on different threads" },
+    { "label": "Zone IDs", "value": "ET <code>America/New_York</code> · MT <code>America/Denver</code> · UTC <code>ZoneId.of(\"UTC\")</code> or <code>ZoneOffset.UTC</code>", "note": "<code>America/Phoenix</code> stays on MST all year" },
+    { "label": "UTC offsets", "value": "EST −5, EDT −4 · MST −7, MDT −6 · Eastern is 2 hours ahead of Mountain (except for 2 hours at each DST switch)", "note": "U.S. DST runs from the second Sunday in March to the first Sunday in November" },
+    { "label": "Converting", "value": "<code>withZoneSameInstant(zone)</code> keeps the moment and changes the clock reading · <code>withZoneSameLocal(zone)</code> keeps the clock reading and changes the moment" },
+    { "label": "Worked example", "value": "14:00 ET on Jul 15, 2026 = 12:00 MT = 18:00 UTC · on Dec 15, 2026 = 12:00 MT = 19:00 UTC" },
+    { "label": "Time patterns", "value": "<code>HH:mm</code> → 14:05 · <code>hh:mm a</code> → 02:05 PM · <code>H:m</code> → 14:5", "note": "M is month and m is minute" },
+    { "label": "Angular currency pipe (en-US)", "value": "<code>currency:'USD'</code> → $ · <code>'CAD'</code> → CA$ · <code>'CAD':'symbol-narrow'</code> → $ · <code>'CAD':'code'</code> → CAD · <code>'CAD':'C$'</code> → C$ · <code>'EUR'</code> → €", "note": "Formatting only; the amount isn't converted" },
+    { "label": "Java currency formats", "value": "<code>NumberFormat.getCurrencyInstance</code>: Locale.US $1,234.50 · Locale.CANADA $1,234.50 · Locale.CANADA_FRENCH 1 234,50 $ · Locale.FRANCE 1 234,50 €", "note": "A US formatter with CAD set prints CA$1,234.50" },
+    { "label": "Maven", "value": "<code>mvn clean package</code> → <code>target/&lt;artifactId&gt;-&lt;version&gt;.jar</code> · <code>java -jar</code> that file · <code>mvn -v</code> shows the JDK Maven uses" },
+    { "label": "Dockerfile instructions", "value": "<code>FROM</code> · <code>WORKDIR</code> · <code>COPY</code> · <code>EXPOSE</code> · <code>ENTRYPOINT</code> · <code>CMD</code>", "note": "Exec form (a JSON array) preferred; only the last CMD takes effect" },
+    { "label": "Docker commands", "value": "<code>docker build -t name .</code> · <code>docker run -d --name &lt;container&gt; -p 8080:8080 name</code> · <code>docker ps -a</code> · <code>docker logs</code> · <code>docker stop</code> · <code>docker rm</code> · <code>docker images</code>" },
+    { "label": "EXPOSE vs -p", "value": "<code>EXPOSE</code> documents a port · <code>-p host:container</code> publishes it" },
+    { "label": "JDK 17 base images", "value": "<code>eclipse-temurin:17-jre</code> · <code>amazoncorretto:17</code> · <code>mcr.microsoft.com/openjdk/jdk:17-distroless</code>", "note": "Docker Hub's openjdk image is deprecated" },
+    { "label": "Distroless", "value": "No shell, and ENTRYPOINT is already java, so pass arguments: <code>CMD [\"-jar\", \"/app.jar\"]</code>" },
+    { "label": "Architectures", "value": "Apple Silicon = linux/arm64 · \"no matching manifest for linux/arm64/v8\" = the image has no arm64 build", "note": "Microsoft's and Temurin's images publish arm64" },
+    { "label": "Cloud building blocks", "value": "Registry (Azure Container Registry, Amazon ECR, Docker Hub) → service (Azure Container Apps or App Service; Amazon ECS on Fargate or ECS Express Mode) → ingress on 8080", "note": "AWS closed App Runner to new customers in 2026" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Course plan, task and set-up",
+      "tasks": [
+        "Review your Course Planning Tool report with your instructor, then read the task directions and rubric.",
+        "Install JDK 17, Maven, IntelliJ, Node.js with the Angular CLI and Docker Desktop, then run <code>mvn -v</code> and <code>java -version</code> to confirm JDK 17.",
+        "Clone the GitLab repository, create your working branch, start the Spring Boot app, then <code>ng serve</code>, and click through the page.",
+        "Budget 2–3 focused sessions of a few hours each; a comment on the Jul 2025 post reports about 9 hours over 3 days."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Locales and resource bundles",
+      "tasks": [
+        "Learn Locale, <code>getBundle</code> lookup and fallback, and the UTF-8 rules.",
+        "Create a bundle for each language plus a base bundle, saved as UTF-8 with identical keys.",
+        "Load each bundle in a scratch main method or test, and once with a different default locale (<code>-Duser.language=fr</code>), to see the fallback in action."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Threads and the endpoint",
+      "tasks": [
+        "Wrap each bundle read in a <code>Callable&lt;String&gt;</code>, submit both to a small pool, collect them with <code>get()</code>, shut the pool down, and log the thread names.",
+        "Expose the messages from a <code>@RestController</code> with <code>@CrossOrigin</code> and check the JSON in the browser.",
+        "Fetch and display them in the Angular component, then commit and push."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Currency display",
+      "tasks": [
+        "Decide between Angular's currency pipe and Java formatting, and show the price in each currency your task page names.",
+        "Check that currencies that share a symbol stay distinguishable (Canadian dollars as CA$ or C$, not a bare $).",
+        "Commit and push."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Time zones",
+      "tasks": [
+        "Write the conversion method with <code>ZonedDateTime</code>, region IDs and <code>withZoneSameInstant</code>, and format the result with a pattern such as <code>HH:mm</code>.",
+        "Test it with a July date and a December date and confirm UTC moves by an hour while MT stays two hours behind ET.",
+        "Show the converted times on the page, then commit and push."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Dockerfile, image and container",
+      "tasks": [
+        "Run <code>mvn clean package</code>, note the jar path Maven prints, and test it with <code>java -jar</code>.",
+        "Write the Dockerfile on a maintained JDK 17 image (with arm64 support if you're on Apple Silicon), then commit and push.",
+        "Build the image, run the container with <code>--name</code> and <code>-p 8080:8080</code>, check the messages, prices and times on the page, and take your screenshots."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Cloud deployment description",
+      "tasks": [
+        "Pick a provider (a 2023 student calls the instructor's Azure route the simpler one) and name the registry and container service you'd use.",
+        "Write the steps in order: tag and push the image, create the service with ingress on 8080, configure and scale it, check logs and the URL, and clean up.",
+        "Check service names against the provider's current docs; AWS App Runner no longer takes new customers."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Submission",
+      "tasks": [
+        "Gather everything your task page lists for submission, and confirm that every commit is pushed.",
+        "Walk the rubric line by line against your screenshots, write-up and code, then submit."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Buffer for a revision",
+      "tasks": [
+        "If the task comes back, fix exactly what the evaluator flagged and recheck the related rubric lines.",
+        "If feedback conflicts with versions your instructor approved, ask the instructor before changing them."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "The default locale is en_US, and the class path holds <code>messages.properties</code>, <code>messages_en.properties</code> and <code>messages_fr.properties</code>. Which file does <code>ResourceBundle.getBundle(\"messages\", Locale.CANADA_FRENCH)</code> return?",
+      "choices": [
+        "<code>messages.properties</code>, because there's no exact fr_CA file",
+        "<code>messages_fr.properties</code>",
+        "<code>messages_en.properties</code>, from the default locale",
+        "None: it throws <code>MissingResourceException</code>"
+      ],
+      "answer": "<code>messages_fr.properties</code>",
+      "why": "For fr_CA, getBundle tries messages_fr_CA first, then messages_fr, which exists, so that's the result (with messages.properties as its parent for any missing keys). The default locale's candidates are tried only when nothing for the requested locale matches, and the base file is the last resort. An exception happens only when no candidate at all is found."
+    },
+    {
+      "q": "Your code calls <code>getBundle(\"welcome\", new Locale(\"en\"))</code>, and the only English file is <code>welcome_en_US.properties</code>; there's no base file. It works in IntelliJ but throws <code>MissingResourceException</code> inside the Docker container. What's the most likely reason?",
+      "choices": [
+        "Docker containers can't read files from inside a jar",
+        "The French bundle overwrote the English one when the jar was built",
+        "On your laptop the lookup fell back to the default locale, en_US, and found the file; the container's default locale is different, so nothing matched",
+        "ResourceBundle isn't thread-safe, so the second thread lost the bundle"
+      ],
+      "answer": "On your laptop the lookup fell back to the default locale, en_US, and found the file; the container's default locale is different, so nothing matched",
+      "why": "Candidates for plain en are welcome_en and then the base welcome, and neither exists. On a laptop whose default locale is en_US, the default-locale pass finds welcome_en_US, which hides the gap. In a container whose default is en (no country) or something else, every pass fails. Request <code>Locale.US</code> explicitly, name the file to match, or add a base <code>welcome.properties</code>. A case mismatch between the base name and the file name causes the same symptom, because lookups are case-sensitive inside a jar. Property bundles are thread-safe, and jars are read normally in containers."
+    },
+    {
+      "q": "The French message appears as \"Bienvenue Ã  l'hÃ´tel\". The file is saved as UTF-8, and your code reads it with <code>new Properties()</code> and <code>load(inputStream)</code>. Which change fixes it?",
+      "choices": [
+        "Load it through <code>ResourceBundle.getBundle</code>, or pass <code>load</code> a <code>Reader</code> that decodes UTF-8",
+        "Rename the file to <code>welcome_FR_ca.properties</code>",
+        "Start the JVM with <code>-Dfile.encoding=UTF-8</code>",
+        "Add <code>@CrossOrigin</code> to the controller"
+      ],
+      "answer": "Load it through <code>ResourceBundle.getBundle</code>, or pass <code>load</code> a <code>Reader</code> that decodes UTF-8",
+      "why": "<code>Properties.load(InputStream)</code> always decodes ISO-8859-1, so the two UTF-8 bytes of à or ô come out as two characters, such as Ã and a space or Ã´. Property resource bundles read UTF-8 by default since Java 9, and <code>load(Reader)</code> uses the reader's charset. <code>-Dfile.encoding</code> changes the JVM's default charset, but <code>Properties.load(InputStream)</code> reads ISO-8859-1 whatever that default is. The file name has nothing to do with decoding, and CORS controls who can read a response, not how text is decoded."
+    },
+    {
+      "q": "Each worker thread must hand back the message it read, and reading a bundle can fail with an exception the caller should see. Which task type fits?",
+      "choices": [
+        "<code>Runnable</code>",
+        "A <code>Thread</code> subclass that overrides <code>run()</code>",
+        "<code>Comparator&lt;String&gt;</code>",
+        "<code>Callable&lt;String&gt;</code>"
+      ],
+      "answer": "<code>Callable&lt;String&gt;</code>",
+      "why": "<code>Callable&lt;V&gt;</code> declares <code>V call() throws Exception</code>, so it returns the message, and an exception it throws comes back to the caller through the Future. <code>Runnable.run()</code> returns void and can't throw checked exceptions, and a Thread subclass's <code>run()</code> has the same signature. A Comparator orders values; it isn't a task type."
+    },
+    {
+      "q": "You submit a <code>Callable</code> that throws <code>MissingResourceException</code> on a pool thread. What happens when the main thread calls <code>future.get()</code>?",
+      "choices": [
+        "<code>get()</code> returns null",
+        "<code>get()</code> throws <code>ExecutionException</code>, and <code>getCause()</code> returns the <code>MissingResourceException</code>",
+        "The JVM stops as soon as the pool thread throws",
+        "The executor retries the task until it succeeds"
+      ],
+      "answer": "<code>get()</code> throws <code>ExecutionException</code>, and <code>getCause()</code> returns the <code>MissingResourceException</code>",
+      "why": "The executor catches the task's exception and stores it in the Future. <code>get()</code> then throws <code>ExecutionException</code> wrapping the original, which <code>getCause()</code> returns. The pool thread and the JVM keep running, and executors never retry on their own. <code>get()</code> returns null only when a task finishes normally with a null result, such as a Runnable passed to <code>submit</code> or a Callable that returns null; a task that throws never produces a value."
+    },
+    {
+      "q": "Both tasks are submitted to the pool. Which call stops it from accepting new tasks but lets the queued and running ones finish?",
+      "choices": [
+        "<code>shutdown()</code>",
+        "<code>shutdownNow()</code>",
+        "<code>awaitTermination(5, TimeUnit.SECONDS)</code> on its own",
+        "<code>Thread.sleep(5000)</code>"
+      ],
+      "answer": "<code>shutdown()</code>",
+      "why": "<code>shutdown()</code> starts an orderly shutdown: new submissions are rejected, already-submitted tasks still run, and the call doesn't wait. <code>shutdownNow()</code> tries to interrupt running tasks and returns the ones that never started. <code>awaitTermination</code> only waits, and without a prior shutdown it just times out. Sleeping guesses at timing instead of coordinating. On Java 19 and later, <code>close()</code> combines shutdown and waiting, but that method doesn't exist on JDK 17."
+    },
+    {
+      "q": "Two pool threads each call <code>results.add(message)</code> on one shared <code>ArrayList</code>. Which statement is accurate?",
+      "choices": [
+        "It's safe, because <code>ArrayList.add</code> is synchronized",
+        "It won't compile, because lambdas can't touch outer variables",
+        "It's a race: additions can be lost or the list corrupted, so return the messages from Callables and collect them from the Futures, or use a thread-safe list",
+        "The JVM runs pool threads one at a time, so they never overlap"
+      ],
+      "answer": "It's a race: additions can be lost or the list corrupted, so return the messages from Callables and collect them from the Futures, or use a thread-safe list",
+      "why": "<code>ArrayList</code> isn't thread-safe: <code>add</code> reads the size, stores the element and updates the size in separate steps that can interleave. Returning values through Futures avoids shared state entirely, and <code>get()</code> guarantees you see the task's result. Otherwise use <code>Collections.synchronizedList</code> or <code>CopyOnWriteArrayList</code>. Lambdas can call methods on an effectively final reference such as <code>results</code>, and a pool of two threads really does run both at once."
+    },
+    {
+      "q": "A presentation starts at 14:00 Eastern Time on July 15, 2026. What does it show in Mountain Time and UTC, as HH:mm?",
+      "choices": [
+        "12:00 MT and 19:00 UTC",
+        "11:00 MT and 18:00 UTC",
+        "16:00 MT and 18:00 UTC",
+        "12:00 MT and 18:00 UTC"
+      ],
+      "answer": "12:00 MT and 18:00 UTC",
+      "why": "In July, Eastern is on daylight time (UTC−4) and Mountain on daylight time (UTC−6). 14:00 EDT is 18:00 UTC, and 18:00 UTC is 12:00 MDT. 19:00 UTC would be right in December, when Eastern is UTC−5. 11:00 is what Phoenix shows in summer, because Arizona stays on MST (UTC−7). Mountain is behind Eastern, never ahead. <code>withZoneSameInstant</code> on region IDs gets all of this right automatically."
+    },
+    {
+      "q": "Which <code>ZoneId</code> represents U.S. Mountain Time correctly all year, including daylight saving time?",
+      "choices": [
+        "<code>ZoneId.of(\"MT\")</code>",
+        "<code>ZoneId.of(\"America/Denver\")</code>",
+        "<code>ZoneId.of(\"MST\", ZoneId.SHORT_IDS)</code>",
+        "<code>ZoneOffset.ofHours(-7)</code>"
+      ],
+      "answer": "<code>ZoneId.of(\"America/Denver\")</code>",
+      "why": "Region IDs carry the full rule history, so America/Denver switches between UTC−7 and UTC−6 on the right dates. MT isn't a valid zone ID, so <code>ZoneId.of(\"MT\")</code> throws <code>ZoneRulesException</code>. <code>ZoneId.SHORT_IDS</code> maps MST to a fixed −07:00, and <code>ZoneOffset.ofHours(-7)</code> is fixed too, so both would be an hour off all summer."
+    },
+    {
+      "q": "A presentation at 2:05 in the afternoon on July 15 shows up on your page as <code>14:07</code>. Which <code>DateTimeFormatter</code> pattern produced that?",
+      "choices": [
+        "<code>hh:mm a</code>",
+        "<code>H:m</code>",
+        "<code>HH:MM</code>",
+        "<code>HH:ss</code>"
+      ],
+      "answer": "<code>HH:MM</code>",
+      "why": "Pattern letters are case-sensitive: <code>MM</code> is the month of year, so in July it prints 07. The intended pattern is <code>HH:mm</code>, the hour of day from 00 to 23 followed by the two-digit minute, which prints 14:05. <code>hh:mm a</code> uses the 12-hour clock and prints 02:05 PM, <code>H:m</code> prints 14:5 because single letters don't pad, and <code>HH:ss</code> prints the seconds, giving 14:00."
+    },
+    {
+      "q": "In an Angular template running in the default en-US locale, what does <code>{{ 125 | currency:'CAD' }}</code> render?",
+      "choices": [
+        "CA$125.00",
+        "$125.00",
+        "CAD125.00",
+        "125,00 $"
+      ],
+      "answer": "CA$125.00",
+      "why": "The CurrencyPipe's default display is 'symbol', and in en-US the symbol for Canadian dollars is CA$, which keeps it distinct from the plain $ that en-US uses for U.S. dollars. 'symbol-narrow' would show a bare $, 'code' would show CAD125.00, and 125,00 $ is the fr-CA format. Any other display string replaces the symbol, so <code>currency:'CAD':'C$'</code> prints C$125.00. None of these options converts the amount."
+    },
+    {
+      "q": "What does <code>NumberFormat.getCurrencyInstance(Locale.CANADA).format(1234.5)</code> return?",
+      "choices": [
+        "CA$1,234.50",
+        "C$1,234.50",
+        "1 234,50 $",
+        "$1,234.50"
+      ],
+      "answer": "$1,234.50",
+      "why": "In Canada's own English locale, the Canadian dollar's symbol is a plain $, so the result looks exactly like the US-dollar line. CA$ appears when Canadian dollars are formatted for another locale, for example a <code>Locale.US</code> formatter after <code>setCurrency(Currency.getInstance(\"CAD\"))</code>. 1 234,50 $ is what <code>Locale.CANADA_FRENCH</code> produces. On a page that shows both currencies, label the line or choose a distinct symbol."
+    },
+    {
+      "q": "Your Dockerfile ends with <code>EXPOSE 8080</code>, and you start the container with <code>docker run -d --name landon_web landon-app</code>. <code>docker ps</code> shows it running, but localhost:8080 doesn't respond. Why?",
+      "choices": [
+        "Container names can't contain an underscore",
+        "<code>EXPOSE</code> only documents the port; you must publish it with <code>-p 8080:8080</code>",
+        "<code>EXPOSE</code> needs a matching <code>PUBLISH</code> instruction",
+        "Spring Boot can't use port 8080 inside a container"
+      ],
+      "answer": "<code>EXPOSE</code> only documents the port; you must publish it with <code>-p 8080:8080</code>",
+      "why": "Docker's reference says EXPOSE doesn't actually publish the port. <code>-p host:container</code> maps a host port to the container's port at run time (and <code>-P</code> publishes every exposed port to random high ports). Container names may contain underscores, there's no PUBLISH instruction, and Spring Boot listens on 8080 inside a container as anywhere else. To reuse the name, remove the old container first with <code>docker rm</code>."
+    },
+    {
+      "q": "Your Dockerfile starts <code>FROM mcr.microsoft.com/openjdk/jdk:17-distroless</code> and copies the jar to <code>/app.jar</code>. Which line starts the app correctly?",
+      "choices": [
+        "<code>CMD java -jar /app.jar</code>",
+        "<code>RUN java -jar /app.jar</code>",
+        "<code>CMD [\"-jar\", \"/app.jar\"]</code>",
+        "<code>ENTRYPOINT [\"sh\", \"-c\", \"java -jar /app.jar\"]</code>"
+      ],
+      "answer": "<code>CMD [\"-jar\", \"/app.jar\"]</code>",
+      "why": "Microsoft's distroless images already set ENTRYPOINT to the java launcher, so CMD supplies only its arguments, in exec (JSON array) form. Shell-form CMD is stored as <code>/bin/sh -c java -jar /app.jar</code>, so with the image's java ENTRYPOINT those words become arguments to java, which then looks for a main class named /bin/sh. An <code>sh -c</code> ENTRYPOINT replaces java but needs a shell, which distroless images don't include. RUN executes while the image is being built, not when the container starts."
+    },
+    {
+      "q": "Which outline is a sound cloud deployment plan for this container in November 2026?",
+      "choices": [
+        "Push the image to a registry (Azure Container Registry, Amazon ECR or Docker Hub), run it on a managed container service such as Azure Container Apps or Amazon ECS on Fargate with ingress on port 8080, then check the logs and the public URL",
+        "Create a new AWS App Runner service, AWS's recommended choice for new customers",
+        "Run the container on your laptop with <code>-p 80:8080</code> and share your home IP address",
+        "Upload only the Dockerfile to cloud storage, and the provider builds and scales it automatically"
+      ],
+      "answer": "Push the image to a registry (Azure Container Registry, Amazon ECR or Docker Hub), run it on a managed container service such as Azure Container Apps or Amazon ECS on Fargate with ingress on port 8080, then check the logs and the public URL",
+      "why": "A cloud deployment needs the image somewhere the provider can pull it from (a registry) and a service that runs it with networking, scaling and logs. AWS has closed App Runner to new customers and points them to Amazon ECS Express Mode instead, so the second option is out of date. A laptop with a published port isn't a cloud deployment, and storage services don't build or run containers by themselves."
+    }
+  ],
+  "pitfalls": [
+    "<b>Saving every commit for the end.</b> One big commit at the end, or commits you never pushed, leave a history that doesn't show your work part by part. Commit and push each part as you finish it.",
+    "<b>Encoding trouble.</b> Bundles saved in a non-UTF-8 encoding, or loaded with <code>Properties.load(InputStream)</code>, garble the French accents or turn curly apostrophes into ?. Save as UTF-8 and load through <code>ResourceBundle</code>.",
+    "<b>Bundles that only work on your laptop.</b> A missing base bundle plus a different default locale, or a file name whose case doesn't match the base name, works in IntelliJ on a Mac or PC and fails in the jar or the Linux container. A commenter on the Jul 2025 post recommends a default <code>welcome.properties</code> when the English message is missing in the container.",
+    "<b>Threads that aren't separate.</b> Calling <code>run()</code> or <code>call()</code> directly runs the task on the current thread. Submit to an executor (or call <code>start()</code>), and log thread names to prove it.",
+    "<b>Leaky or racy thread code.</b> Creating a new pool per request without shutting it down leaks threads, and adding to a shared ArrayList from two threads can lose data. Return results through Futures and shut the pool down.",
+    "<b>Time-zone shortcuts.</b> Hard-coded offsets, three-letter IDs such as EST or MST, or <code>LocalTime</code> arithmetic break when daylight saving time changes, and relying on the system default zone gives different answers in a container, which usually runs in UTC.",
+    "<b>Formatting confused with conversion.</b> Formatting changes the symbol and separators, not the amount, so check your task page for whether you also need to convert. Also, Locale.CANADA's plain $ is indistinguishable from USD on the same page.",
+    "<b>Stale or unavailable base images.</b> The openjdk alpine tags in older walkthroughs are deprecated or gone, and Apple Silicon works best with an arm64 image. Use eclipse-temurin, amazoncorretto or Microsoft's OpenJDK images.",
+    "<b>Docker run mistakes.</b> Forgetting <code>-p</code> (EXPOSE publishes nothing), copying a jar path that doesn't match what <code>mvn clean package</code> printed, building the image before rebuilding the jar, or reusing a container name without removing the old container.",
+    "<b>Startup order and CORS in development.</b> Start Spring Boot before <code>ng serve</code>, and add <code>@CrossOrigin</code> for the front end's origin; an empty page with a CORS error in the console means the API answered but the browser blocked it."
+  ],
+  "resources": [
+    {
+      "label": "Task directions and rubric (course page)",
+      "kind": "official",
+      "note": "The source of truth for every part. Check your work against them before you submit."
+    },
+    {
+      "label": "WGU Connect and the course instructors",
+      "kind": "official",
+      "note": "Course page → Course Community → Join WGU Connect → Resources. A 2023 student calls the instructor's Azure deployment route simpler than AWS, and instructors may share extra material on request."
+    },
+    {
+      "label": "WGU Program Guidebook, B.S. Software Engineering, Java track",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSSWE_Java.pdf",
+      "kind": "official",
+      "note": "The D387 description and its two competencies, in a public guidebook for a program that also uses D387."
+    },
+    {
+      "label": "Oracle Java API: ResourceBundle",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ResourceBundle.html",
+      "kind": "tool",
+      "note": "The exact lookup and fallback order, caching and MissingResourceException; the behavior is the same on JDK 17."
+    },
+    {
+      "label": "Oracle Java API: ExecutorService",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html",
+      "kind": "tool",
+      "note": "submit, invokeAll, shutdown and the two-phase shutdown example; <code>close()</code> is Java 19+."
+    },
+    {
+      "label": "Oracle Java API: ZonedDateTime",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/ZonedDateTime.html",
+      "kind": "tool",
+      "note": "withZoneSameInstant versus withZoneSameLocal, and how daylight saving gaps and overlaps are handled."
+    },
+    {
+      "label": "Angular API: CurrencyPipe",
+      "url": "https://angular.dev/api/common/CurrencyPipe",
+      "kind": "tool",
+      "note": "Currency codes, the symbol, symbol-narrow and code display options, and locale formatting."
+    },
+    {
+      "label": "Docker docs: Dockerfile reference",
+      "url": "https://docs.docker.com/reference/dockerfile/",
+      "kind": "tool",
+      "note": "FROM, COPY, EXPOSE, CMD and ENTRYPOINT, and why exec form matters."
+    },
+    {
+      "label": "Microsoft Learn: Container images for the Microsoft Build of OpenJDK",
+      "url": "https://learn.microsoft.com/en-us/java/openjdk/containers",
+      "kind": "tool",
+      "note": "The distroless image the Jul 2025 passer used: JDK 17 tags, arm64 support and the CMD-only Dockerfile pattern."
+    },
+    {
+      "label": "Microsoft Learn: Azure Container Apps overview",
+      "url": "https://learn.microsoft.com/en-us/azure/container-apps/overview",
+      "kind": "tool",
+      "note": "A serverless container service that pulls from any registry; good vocabulary for the cloud description."
+    },
+    {
+      "label": "AWS: App Runner availability change",
+      "url": "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html",
+      "kind": "tool",
+      "note": "Why an AWS write-up in 2026 should describe Amazon ECS (Express Mode or Fargate) rather than App Runner."
+    },
+    {
+      "label": "Docker Desktop",
+      "url": "https://docs.docker.com/desktop/",
+      "kind": "tool",
+      "note": "Builds and runs the image locally, and its dashboard lists your running containers, which makes a clear screenshot."
+    },
+    {
+      "label": "D387 Advanced Java Tips+ Suggestions (r/WGU_CompSci, Jul 2025)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1m1dt17/d387_advanced_java_tips_suggestions/",
+      "kind": "community",
+      "note": "The newest first-try pass: UTF-8 bundles, Callable with Futures, the distroless Dockerfile and the base-bundle fix."
+    }
+  ],
+  "community": {
+    "summary": "The Jul 2025 poster passed on the first try; a comment on that post reports about 9 hours over 3 days. The work that trips people up is environmental rather than conceptual: save bundles as UTF-8, add a default welcome.properties because Linux file names are case-sensitive, replace the old openjdk alpine base images with a maintained JDK 17 image (amazoncorretto:17 or Microsoft's distroless image, arm64 on Apple Silicon), add @CrossOrigin for localhost:4200, and start the Java app before Angular. Callable with Futures is the threading approach the newest post recommends, and a 2023 student calls the instructor's Azure route the easier one for the cloud write-up. Instructors and evaluators sometimes disagree about versions, so confirm yours with your instructor.",
+    "coverage": "2 posts with their comment threads, Oct 2023 – Jul 2025, r/WGU_CompSci (the Oct 2023 one isn't linked)",
+    "posts": [
+      {
+        "title": "D387 Advanced Java Tips+ Suggestions",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1m1dt17/d387_advanced_java_tips_suggestions/",
+        "date": "Jul 2025",
+        "takeaway": "Passed on the first try following an older walkthrough plus a few tips: save the properties files as UTF-8, use Callable with Futures for the threads, add the presentation message to the existing welcome-message array so the page shows it unchanged, and use Microsoft's distroless Java Dockerfile with COPY pointed at the jar mvn clean package prints. Comments report about 9 hours over 3 days and version disagreements between instructors and evaluators, and advise a default welcome.properties when the container doesn't show the English message."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Program Guidebook, B.S. Software Engineering, Java track (D387 description and competencies)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSSWE_Java.pdf" },
+    { "label": "WGU Institutional Catalog, July 2026 (D387 Advanced Java, ITSW 3024, 3 CUs, in BSCS 202412)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-july-2026.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026 (BSCS 202611 course list)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Program Guidebook, B.S. Computer Science, catalog 202611 (how evaluators grade)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "Oracle Java SE 21 API: ResourceBundle (lookup, fallback, caching)", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ResourceBundle.html" },
+    { "label": "Oracle Java SE 21 API: PropertyResourceBundle (UTF-8 default, ISO-8859-1 fallback)", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/PropertyResourceBundle.html" },
+    { "label": "Oracle Java SE 21 API: ExecutorService", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html" },
+    { "label": "Oracle Java SE 21 API: Future", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Future.html" },
+    { "label": "Oracle Java SE 21 API: ZoneId (region IDs, SHORT_IDS)", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/ZoneId.html" },
+    { "label": "Oracle Java SE 21 API: ZonedDateTime", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/ZonedDateTime.html" },
+    { "label": "Angular API: CurrencyPipe", "url": "https://angular.dev/api/common/CurrencyPipe" },
+    { "label": "Docker docs: Dockerfile reference (EXPOSE, CMD and ENTRYPOINT)", "url": "https://docs.docker.com/reference/dockerfile/" },
+    { "label": "Docker Hub: openjdk image deprecation notice", "url": "https://hub.docker.com/_/openjdk" },
+    { "label": "Microsoft Learn: Container images for the Microsoft Build of OpenJDK", "url": "https://learn.microsoft.com/en-us/java/openjdk/containers" },
+    { "label": "AWS: App Runner availability change (closed to new customers; ECS Express Mode recommended)", "url": "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html" }
+  ],
+  "caveats": [
+    "Students who start on WGU's newest BSCS version (202611, from the Nov 2026 catalog) see E155 Advanced Java in this slot instead; this guide covers D387.",
+    "WGU's task directions and rubric are behind the student login, so this guide describes the task only in general terms, based on two Reddit posts (2023 and 2025). Check every requirement and deliverable against your own task page, especially whether the cloud part asks only for a description.",
+    "Community coverage is thin: the notes behind this guide condense two Reddit posts and their comments, with dates estimated from Reddit's relative timestamps, and Reddit couldn't be opened directly during this research.",
+    "The Java examples were checked on a current JDK. Currency symbols come from CLDR locale data, which can change slightly between JDK versions, so confirm the exact output on your JDK 17.",
+    "The practice questions are original and test the concepts with neutral examples; they aren't drawn from the task or any rubric."
+  ]
+}

@@ -1,0 +1,729 @@
+{
+  "code": "D459",
+  "summary": "D459 is a 3-CU general education course in systems thinking: studying a problem as a whole system of interacting parts, feedback loops and delays instead of a chain of isolated events. There's no exam: students report a three-task performance assessment that asks for behavior-over-time graphs, a causal loop diagram with a matching systems archetype, and a systemic analysis that ends in a proposed solution. Students find the course modules confusing but the tasks manageable, and the newest passer read the rubrics and went straight to the tasks, using WGU's templates and samples and the short Systems Thinker articles the tasks build on.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (three tasks applying systems thinking tools to a scenario)",
+    "format": "3 tasks (students report) · behavior-over-time graphs · causal loop diagram + archetype · systemic analysis with a solution · rubric-graded by evaluators, no exam",
+    "details": [
+      "Official scope (BSCS guidebook, catalog 202611): 3 CU, no prerequisites (general education math, C955 or C957, preferred), and about 30–40 hours for someone new to the material. The course introduces the foundations of systems thinking, applies them to real-world case studies and ends with using systems thinking to develop a solution to an authentic complex problem.",
+      "<b>Task 1</b> (students report): behavior-over-time graphs for a scenario. The Aug 2026 passer pairs it with Daniel Kim's Systems Thinker article on behavior-over-time diagrams and says to check the Task 1 sample.",
+      "<b>Task 2</b> (students report): a causal loop diagram plus the systems archetype that fits the scenario, built on the provided archetype template. The Aug 2026 passer pairs it with Kim's <i>Guidelines for Drawing Causal Loop Diagrams</i> and Kim and Lannon's <i>Applying Systems Archetypes</i>.",
+      "<b>Task 3</b> (students report): a systemic analysis that ends in a solution. The Aug 2026 passer pairs it with Goodman and Karash's <i>Six Steps to Thinking Systemically</i> and WGU's Four-Step Tool template, and says the template makes returns less likely. WGU's public version of the tool walks through an iceberg analysis (events, patterns, structure), behavior-over-time diagrams, choosing the best-fitting of eight archetypes, and a solution with its strengths, challenges, alternatives and projected impact.",
+      "Course supports (students report): each task has a video, a sample and a template, and WGU Connect has a <i>System Thinking Tips</i> resource and a <i>7-Day Pacing Guide for Systems Thinking</i> (course page → Course Community → Join WGU Connect → Resources).",
+      "Grading: WGU's guidebook says separate faculty evaluators review performance assessments anonymously and return work that needs more with instructional feedback. Expect each rubric aspect to be checked on its own, so cover every one explicitly."
+    ],
+    "tips": [
+      "Read all three task rubrics on the first day and turn every rubric aspect into a heading or checklist item in your draft.",
+      "Open each task's template and sample and watch its video before you start; the newest passer says using the Four-Step Tool template makes returns less likely.",
+      "Read the short article behind each task first: Kim on behavior-over-time diagrams (Task 1), Kim's causal loop guidelines and Kim and Lannon on archetypes (Task 2), Goodman and Karash's Six Steps (Task 3).",
+      "Graph patterns, not exact data: label both axes, use the scenario's time span, put one measurable variable on each line, and mark key events on the time axis.",
+      "In causal loop diagrams, name variables as nouns that can rise or fall, label every arrow s or o (or + and −), label each loop R or B, mark important delays, then read each loop aloud as a story.",
+      "Choose the archetype by matching its loop structure and storyline to specific facts in the case, and say why it fits better than the closest alternative.",
+      "Make the solution target structure (a loop, a delay, a goal, a rule or an information flow) rather than a symptom, and name its side effects, delays and how you'd check it worked.",
+      "If a task comes back, fix exactly what the evaluator's comments tie to each rubric aspect before resubmitting."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and build your personalized course plan together.",
+    "The learner analyzes complex problems and solutions using a systems thinking methodology.",
+    "The learner applies the basic principles and foundational theory of systems thinking to a scenario.",
+    "The learner designs a solution to a complex problem using systems thinking."
+  ],
+  "topics": [
+    {
+      "title": "What a system is, and why think in systems",
+      "eli5": "A system is a group of parts that affect each other to do something, like players on a team: change one player and the whole game changes.",
+      "detail": "Donella Meadows described a system as a set of parts, connected and organized so that together they achieve something, so every system has <b>elements</b>, <b>interconnections</b> and a <b>function or purpose</b>, and its real purpose shows in what it does rather than what it claims. Systems thinking studies the whole and how its parts interact over time, instead of splitting a problem into pieces and fixing each one separately or tracing a single straight line from cause to effect. Its core ideas are that a system's structure (its stocks, flows, feedback loops, delays and the thinking behind its rules) produces its behavior, that cause and effect are often circular and separated in time and place, and that today's problems often grow out of yesterday's solutions. Michael Goodman's Systems Thinker overview suggests using it on problems that matter, that keep recurring, that have a known history, and that earlier fixes haven't solved. Drawing a <b>boundary</b> decides what's inside the system you study; set it by the problem, not by the org chart.",
+      "points": [
+        "Elements · interconnections · purpose (Meadows)",
+        "Linear thinking: A causes B · systems thinking: A affects B, which feeds back on A, often after a delay",
+        "Emergence: the whole shows behavior no single part has, such as a traffic jam that no driver intended",
+        "Good candidates: important, recurring, familiar problems where past fixes failed (Goodman)",
+        "Boundary test from Kim: if even a large change in a variable wouldn't noticeably affect the issue, leave it out"
+      ]
+    },
+    {
+      "title": "Habits of a systems thinker and mental models",
+      "eli5": "Systems thinkers look at the big picture, ask how things change over time, and question their own assumptions before jumping to an answer.",
+      "detail": "The Waters Center for Systems Thinking teaches the approach as a set of habits: see the big picture; observe how elements change over time and form patterns; see how a system's structure drives its behavior; trace the circular nature of cause and effect; link ideas within and across systems; change perspectives to understand more; bring assumptions into the open and test them; consider an issue fully instead of rushing to a conclusion; consider how mental models shape current reality and the future; use your understanding of structure to find leverage; weigh both short- and long-term consequences; pay attention to accumulations and how fast they change; recognize the effect of time delays; and check results and adjust as you go. <b>Mental models</b> are the beliefs and assumptions people hold about how things work, such as <i>more overtime means more output</i> or <i>customers only care about price</i>. They drive the rules and decisions that build a system's structure, which is why they sit at the bottom of the iceberg. Peter Senge's <i>The Fifth Discipline</i> treats mental models as one of five learning disciplines, alongside personal mastery, shared vision, team learning and systems thinking, the fifth discipline that ties the others together.",
+      "points": [
+        "Big picture · change over time · structure drives behavior · circular causality · multiple perspectives · surface assumptions",
+        "Weigh short- and long-term effects, accumulations and delays; check results and adjust",
+        "Mental model = an assumption about how things work that shapes decisions",
+        "Senge's five disciplines: personal mastery · mental models · shared vision · team learning · systems thinking",
+        "Perspective-taking comes first: the Six Steps begin by having each stakeholder tell the story from where they stand"
+      ]
+    },
+    {
+      "title": "The iceberg: events, patterns, structure and mental models",
+      "eli5": "What you notice is the tip of the iceberg, a single event. The patterns, structures and beliefs that cause it are hidden underwater.",
+      "detail": "The <b>iceberg model</b> sorts what you know about a problem into levels. <b>Events</b> are what happened (the server crashed Tuesday) and invite reacting. <b>Patterns and trends</b> are what's been happening over time (crashes have doubled every quarter) and let you anticipate and plan. <b>Systemic structure</b> explains the patterns: the feedback loops, delays, policies, incentives and physical setup that produce them, and redesigning it is where lasting change happens. <b>Mental models</b>, the beliefs that created and sustain the structure, sit at the bottom; WGU's version folds them into the structure level, where the action is to design, create and transform. WGU's Four-Step Tool for this course starts with an Iceberg Tool that asks three questions of the case: what the key events are, what patterns you notice in them, and what structure explains those patterns. Moving down the iceberg is how you get from blaming someone for an event to explaining why the event keeps happening.",
+      "points": [
+        "Events: what happened? → react, respond · patterns: what's been happening, what's changing? → anticipate, plan, prepare · structure (with mental models): what explains the patterns? → design, create, transform",
+        "The water line sits between events and patterns; most people only see the events",
+        "Leverage grows as you go deeper: changing structure or thinking outlasts reacting to events",
+        "Example: event = a missed deadline · pattern = deadlines slip every release · structure = scope is added without adding time · mental model = saying no to a client loses the account"
+      ]
+    },
+    {
+      "title": "Stocks, flows and delays",
+      "eli5": "A stock is how much water is in the bathtub, flows are the faucet and the drain, and a delay is how long the water takes to change after you turn the handle.",
+      "detail": "A <b>stock</b> is an accumulation you could count at a moment in time: water in a tub, money in an account, employees, inventory, trust, knowledge or a backlog of tickets. A <b>flow</b> is a rate that changes a stock over time: inflows (hires, deposits, new tickets) raise it and outflows (resignations, withdrawals, closed tickets) lower it. A stock keeps rising as long as inflow exceeds outflow, even while the inflow is shrinking, which is why stocks change slowly and act as buffers. <b>Delays</b> are gaps between an action and its effect, such as hiring and training time, shipping time or the time it takes a reputation to change. Delays tempt people to overcorrect: nothing seems to happen, so they push harder, then overshoot, which produces oscillation. In causal loop diagrams a significant delay is marked on its arrow: Kim's pocket guides write the word <i>Delay</i> along it, and many other sources draw two short parallel lines.",
+      "points": [
+        "Stock = a level (how much right now) · flow = a rate (how much per unit of time)",
+        "A stock rises while inflow exceeds outflow, falls while outflow exceeds inflow, and holds steady when they're equal",
+        "Delays plus aggressive correction produce overshoot and oscillation, like a shower that swings between too hot and too cold",
+        "Accumulations and delays explain most 'why didn't our fix work yet?' surprises"
+      ]
+    },
+    {
+      "title": "Behavior-over-time graphs (Task 1)",
+      "eli5": "A behavior-over-time graph is a quick sketch of how something went up, down or wiggled over time, so you see the pattern instead of a single moment.",
+      "detail": "A <b>behavior-over-time graph</b> (BOTG, also called a BOT diagram or <b>reference mode</b>) plots one or more related variables against time to show their pattern: time runs along the horizontal axis, and each variable's level runs up the vertical axis as its own line. It captures shape (rising, falling, leveling off, oscillating) rather than precise data, so you can sketch it from a story before you have numbers; Kim's point is that BOT graphs guide the use of data without being limited by it. His Systems Thinker article suggests five steps: select a time horizon long enough for the dynamics to show, define the problem dynamically by graphing the key variables, run thought experiments about how related variables would move, build causal theories with causal loop diagrams, and validate them with data. Choose variables that are quantities able to rise and fall (backlog, morale, complaints per week, budget), name the units and time span, and stack related graphs on the same time scale so readers can see what changed first. WGU's Four-Step Tool suggests grouping similar items in one diagram, for example people's actions in one graph and money in another.",
+      "points": [
+        "Axes: time across, covering the scenario's time span · each variable up, with units or a clear scale",
+        "Graph a quantity that varies (complaints per week), not an event (the March outage); mark events on the time axis instead",
+        "Common shapes: steady rise or decline · exponential growth or collapse · S-shaped growth · goal-seeking · oscillation · overshoot and collapse",
+        "Kim's steps: time horizon → define the problem dynamically → thought experiments → causal theories → validate with data",
+        "Draw the graph from the case's facts and note where the trend comes from, so an evaluator can follow your reasoning"
+      ]
+    },
+    {
+      "title": "Feedback loops: reinforcing and balancing",
+      "eli5": "A reinforcing loop is a snowball rolling downhill, getting bigger and faster. A balancing loop is a thermostat, pushing things back toward a target.",
+      "detail": "A <b>feedback loop</b> is a closed chain of cause and effect in which a change eventually comes back around to affect itself. A <b>reinforcing loop</b> (R) amplifies change in the same direction each time around, producing exponential growth or collapse: more customers → more word of mouth → more customers. It's a virtuous cycle when the change is wanted and a vicious cycle when it isn't. A <b>balancing loop</b> (B) is goal-seeking: it counteracts change and pushes the system toward a target or limit, as when a gap between desired and actual inventory triggers orders until the gap closes. Real systems combine both, and structure and behavior pair up predictably: a reinforcing loop alone gives exponential growth or decline, a balancing loop gives goal-seeking behavior, a balancing loop with a significant delay gives oscillation, and a reinforcing loop that runs into a balancing limit gives S-shaped growth. To label a loop, count its opposite links: an odd number of <code>o</code> (or <code>−</code>) links makes it balancing, and an even number or none makes it reinforcing. Then read the story around the loop to confirm the label.",
+      "points": [
+        "R = amplifies (snowball) · B = goal-seeking (thermostat)",
+        "Odd number of o links → B · even number or zero → R",
+        "Exponential growth or collapse → R · leveling off at a target → B · oscillation → B with a delay · S-curve → R running into a B limit",
+        "Reinforcing doesn't mean good and balancing doesn't mean bad: a vicious cycle is reinforcing too",
+        "Every balancing loop has a goal; Kim advises making it explicit (desired quality, target inventory)"
+      ]
+    },
+    {
+      "title": "Drawing causal loop diagrams (Task 2)",
+      "eli5": "A causal loop diagram is a map of arrows showing what pushes what, with small labels saying whether each push goes the same way or the opposite way.",
+      "detail": "A <b>causal loop diagram</b> (CLD) links variables with arrows that show causal influence. Each arrow is labeled <code>s</code> (same direction: when A rises B rises, and when A falls B falls) or <code>o</code> (opposite direction), and many sources write <code>+</code> and <code>−</code> instead; each loop is labeled R or B. Daniel Kim's ten guidelines: use nouns for variables, not verbs or actions (<i>Costs</i>, not <i>Increasing Costs</i>); use quantities that can vary over time; prefer the positive sense of a name (<i>Growth</i> rather than <i>Contraction</i>); think through unintended consequences as well as intended ones; make the goals of balancing loops explicit; separate perceived from actual states (<i>Perceived Quality</i> vs <i>Quality</i>); lump many similar consequences into one variable at first; draw short-term effects as smaller loops and long-term effects as larger ones; add an intermediate variable when a link needs a lot of explaining; and use the o-count shortcut, then reread the loop to confirm the label. Before drawing, the Systems Thinker's guidelines add: pick a specific theme, a time horizon long enough for the dynamics, a boundary, a sensible level of detail, and mark significant delays.",
+      "points": [
+        "s = same direction · o = opposite direction (or + and −)",
+        "Variables: nouns, measurable, able to rise and fall, positive sense, such as <i>Customer Satisfaction</i> rather than <i>Unhappy Customers Leaving</i>",
+        "Mark significant delays on the arrow and number your loops (R1, B1 …)",
+        "Read each loop aloud as a story: as price rises, demand falls, so revenue …",
+        "Keep it lean: a CLD exists to share understanding, and it isn't the goal in itself"
+      ]
+    },
+    {
+      "title": "Systems archetypes I: fixes that fail, shifting the burden, limits to success, drifting goals",
+      "eli5": "Archetypes are plot lines that systems fall into again and again, like 'the quick fix that backfires' or 'the success that hits a wall'.",
+      "detail": "<b>Systems archetypes</b> are recurring combinations of reinforcing and balancing loops that tell familiar stories, and each comes with known ways to intervene. <b>Fixes that fail</b>: a quick fix relieves a problem symptom (a balancing loop), but an unintended consequence makes the problem worse after a delay (a reinforcing loop); intervene by mapping the side effects and addressing the fundamental cause. <b>Shifting the burden</b>: a symptomatic solution works fast, so it's used again and again while the fundamental solution is neglected, and a side effect, such as lost skills or dependence, weakens the ability to use the fundamental solution; focus on the fundamental solution and use the quick fix only to buy time. <b>Limits to success</b>: a reinforcing growth engine runs into a balancing limit (capacity, staff, market size, expertise), so growth slows or stops; find and address the limit early rather than pushing harder on growth. <b>Drifting goals</b>: when a gap opens between a goal and actual performance, people close it by lowering the goal instead of improving performance, so standards slide; anchor the goal to an external reference and look at the goal's history.",
+      "points": [
+        "Fixes that fail: quick fix → relief now → side effect after a delay → problem returns worse",
+        "Shifting the burden: the symptomatic fix crowds out the fundamental solution and breeds dependence",
+        "Limits to success: growth engine (R) + limiting factor (B); plan for the limit instead of pushing growth harder",
+        "Drifting goals: the target quietly drops, as when a 24-hour response goal becomes 48 hours, then 72",
+        "Fixes that fail vs shifting the burden: ask whether there's a neglected fundamental solution (shifting the burden) or mainly a backfiring side effect (fixes that fail)"
+      ]
+    },
+    {
+      "title": "Systems archetypes II: escalation, success to the successful, tragedy of the commons, growth and underinvestment",
+      "eli5": "More plot lines: two rivals one-upping each other, the winner getting all the resources, everyone overusing something shared, and not building capacity until it's too late.",
+      "detail": "<b>Escalation</b>: two parties each see the other's actions as a threat and respond in kind, so their two balancing loops form one reinforcing spiral (price wars, arms races); look for a larger goal they share, change what they compete on, or have one side step back. <b>Success to the successful</b>: two activities compete for limited resources, and whichever does better early gets more resources and pulls further ahead, often regardless of merit; question the allocation rules and measures. <b>Tragedy of the commons</b>: individuals each gain from using a shared resource, but their combined use depletes it and everyone loses after a delay; make the long-term collective effect visible and manage access to the shared resource. <b>Growth and underinvestment</b>: growing demand needs more capacity, but investment lags, performance falls, demand drops, and the drop is taken as proof that investment wasn't needed; base investment on external signals, not on standards lowered by past performance. Kim and Lannon describe four ways to use archetypes: as <b>lenses</b> for seeing an issue from a new angle, as <b>structural pattern templates</b> to match against a situation, as <b>dynamic theories</b> that explain how behavior unfolds, and as <b>tools for predicting</b> what will happen next.",
+      "points": [
+        "Escalation: A's action → threat to B → B's action → threat to A …",
+        "Success to the successful: the early winner gets more resources, the other gets fewer, and the gap widens",
+        "Tragedy of the commons: individual gain now, shared loss later",
+        "Growth and underinvestment: capacity lags demand, quality falls, demand falls, so investment looks unnecessary",
+        "The eight archetypes in Kim and Lannon's pocket guide: the four here plus fixes that fail, shifting the burden, limits to success and drifting goals"
+      ]
+    },
+    {
+      "title": "Leverage points and designing interventions",
+      "eli5": "A leverage point is the spot where a small push moves a big system, like a small rudder steering a huge ship.",
+      "detail": "Donella Meadows ranked twelve places to intervene in a system, from least to most effective: numbers and parameters such as taxes and standards; the size of buffers relative to their flows; the physical structure of stocks and flows; the length of delays relative to how fast the system changes; the strength of balancing loops relative to the impacts they correct; the gain of reinforcing loops; the structure of information flows (who has access to what information); the rules, such as incentives, punishments and constraints; the power to add, change or self-organize structure; the system's goals; the mindset or paradigm the system grows out of; and the power to transcend paradigms. She also warns that people often push leverage points in the wrong direction. In archetype language, a <b>symptomatic solution</b> relieves the symptom quickly but leaves the structure unchanged, while a <b>fundamental solution</b> changes the structure that produces the problem, usually more slowly. A strong intervention targets structure (a loop, a delay, a goal, an information flow or a rule), anticipates side effects and delays, weighs short- and long-term effects, and says how you'll check whether it worked.",
+      "points": [
+        "Lowest leverage: parameters, buffers, stock-and-flow structure · middle: delays, loop strength, information flows, rules · highest: self-organization, goals, paradigms, transcending paradigms",
+        "Symptomatic fix = fast relief, structure unchanged · fundamental solution = changes the structure, slower to show results",
+        "Ask of every intervention: which loop does it change, what could backfire, and how long until results show?",
+        "Information flow is a cheap, powerful lever: let the people making decisions see their consequences"
+      ]
+    },
+    {
+      "title": "Six Steps to Thinking Systemically",
+      "eli5": "A recipe for using the tools in order: hear everyone's story, graph what changed, ask a focused question, draw the loops, dig deeper, then plan a fix.",
+      "detail": "Michael Goodman and Richard Karash's Systems Thinker article lays out a six-step process, illustrated with a fictional bottling company whose late deliveries keep recurring. <b>1. Tell the story</b>: gather the people involved and have each describe the situation from their own vantage point. <b>2. Draw behavior-over-time graphs</b> of the key variables to move from events to patterns. <b>3. Create a focusing statement</b>: a short statement that directs the rest of the work, either a vision of the outcome you want or a question about why the problem keeps recurring. <b>4. Identify the structure</b>: describe the feedback loops producing the patterns, often starting from an archetype; the bottler's heroic last-minute fixes fit shifting the burden. <b>5. Go deeper</b> into the system's purpose, the mental models behind key decisions, the larger system and your own part in it. <b>6. Plan an intervention</b> that changes the structure, such as adding or removing links and loops; the authors note that the most powerful interventions often change how people in the system think. The process is a cycle, so you revisit it as you learn.",
+      "points": [
+        "Tell the story → BOT graphs → focusing statement → identify the structure → go deeper → plan an intervention",
+        "A focusing statement can be a vision or a question, such as why the problems are recurring more often despite everyone's effort",
+        "Going deeper covers purpose, mental models, the larger system and your own role in it",
+        "Interventions change structure: links, loops, rules, information and the thinking behind them"
+      ]
+    },
+    {
+      "title": "WGU's Four-Step Tool and the systemic analysis (Task 3)",
+      "eli5": "WGU boils the six steps down to a four-part worksheet: look under the iceberg, graph what changed, name the plot line, and propose a fix.",
+      "detail": "WGU's Four-Step Tool, a public handout based on the Six Steps, structures the analysis of a case. <b>Step 1</b> is an Iceberg Tool: list the key events, the patterns you notice in them, and the structure that explains those patterns. <b>Step 2</b> is behavior-over-time diagrams for the period the case covers, grouping similar items in each graph. <b>Step 3</b> is selecting the archetype that best fits by comparing each one's causal loop diagram and description with the case, explaining why it fits best, and stating the main problem to address. <b>Step 4</b> is generating a solution: propose one, describe its strengths and challenges, explain why it beats the alternatives you considered, and project its impact on the whole system. The tools from the earlier tasks feed this one, so keep your graphs, loops and archetype consistent with each other and with the evidence in the case.",
+      "points": [
+        "Step 1 iceberg: events · patterns · structure (including mental models)",
+        "Step 2 BOT graphs over the case's time period",
+        "Step 3 the best-fitting archetype, why it fits and the main problem",
+        "Step 4 the solution: strengths · challenges · alternatives and why yours is better · projected impact on the system",
+        "Tie every claim to facts from the case; a solution that only treats a symptom reads as a quick fix"
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Course facts",
+      "value": "3 CU · no prerequisites (C955 or C957 preferred) · about 30–40 hours if the material is new · performance assessment in three tasks (students report)",
+      "note": "CU, prerequisites and hours from the BSCS guidebook, catalog 202611; the three-task format from student reports"
+    },
+    {
+      "label": "System (Meadows)",
+      "value": "Elements · interconnections · function or purpose",
+      "note": "The real purpose shows in what the system does"
+    },
+    {
+      "label": "Iceberg levels",
+      "value": "Events → patterns and trends → structure → mental models",
+      "note": "React · anticipate and plan · design · transform"
+    },
+    {
+      "label": "Stock vs flow",
+      "value": "Stock = an accumulation at a moment (inventory, staff, trust) · flow = a rate that changes it (orders per week, hires per month)"
+    },
+    {
+      "label": "Delay",
+      "value": "A gap between an action and its effect; marked on a CLD arrow with the word Delay (Kim's pocket guides) or with two short lines",
+      "note": "Delays plus overcorrection cause oscillation"
+    },
+    {
+      "label": "Reinforcing loop (R)",
+      "value": "Amplifies change in one direction: exponential growth or collapse; a virtuous cycle when the change is wanted, a vicious cycle when it isn't"
+    },
+    {
+      "label": "Balancing loop (B)",
+      "value": "Goal-seeking: counteracts change and moves the system toward a target or limit"
+    },
+    {
+      "label": "Loop-label shortcut",
+      "value": "Odd number of <code>o</code> links = balancing · even number or none = reinforcing",
+      "note": "Then read the loop as a story to check (Kim)"
+    },
+    {
+      "label": "Link polarity",
+      "value": "<code>s</code> = same direction · <code>o</code> = opposite direction",
+      "note": "Many sources use + and −"
+    },
+    {
+      "label": "Structure → behavior",
+      "value": "R → exponential growth or collapse · B → goal-seeking · B + delay → oscillation · R + B limit → S-shaped growth"
+    },
+    {
+      "label": "Behavior-over-time graph",
+      "value": "Time on the horizontal axis; one or more related variables on the vertical, one line each; shows the pattern, not precise data",
+      "note": "Also called a reference mode"
+    },
+    {
+      "label": "Kim's BOT steps",
+      "value": "Select a time horizon → define the problem dynamically → thought experiments → build causal theories (CLDs) → validate with data"
+    },
+    {
+      "label": "CLD variable rules",
+      "value": "Nouns, not actions · quantities that can rise and fall · the positive sense of the name",
+      "note": "<i>Costs</i>, not <i>Increasing Costs</i>; <i>Growth</i>, not <i>Contraction</i>"
+    },
+    {
+      "label": "More CLD guidelines (Kim)",
+      "value": "Map unintended consequences · make balancing goals explicit · separate perceived from actual · short-term vs long-term loops · insert intermediate variables when a link needs explaining"
+    },
+    {
+      "label": "The eight archetypes",
+      "value": "Fixes that fail · shifting the burden · limits to success · drifting goals · escalation · success to the successful · tragedy of the commons · growth and underinvestment",
+      "note": "The set in Kim and Lannon's pocket guide"
+    },
+    {
+      "label": "Fixes that fail",
+      "value": "A quick fix relieves the symptom, but its side effect worsens the problem after a delay"
+    },
+    {
+      "label": "Shifting the burden",
+      "value": "A symptomatic fix is used repeatedly while the fundamental solution is neglected and weakened"
+    },
+    {
+      "label": "Limits to success",
+      "value": "A reinforcing growth engine hits a balancing limit; growth stalls"
+    },
+    {
+      "label": "Drifting goals",
+      "value": "A performance gap is closed by lowering the goal instead of improving performance"
+    },
+    {
+      "label": "Escalation",
+      "value": "Two parties respond to each other's perceived threats, spiraling (price wars, arms races)"
+    },
+    {
+      "label": "Success to the successful",
+      "value": "The early winner gets more resources and pulls further ahead; the other is starved"
+    },
+    {
+      "label": "Tragedy of the commons",
+      "value": "Individual use of a shared resource pays off for each user, but the total depletes it for everyone"
+    },
+    {
+      "label": "Growth and underinvestment",
+      "value": "Capacity investment lags demand, performance drops, demand falls, and investment then looks unnecessary"
+    },
+    {
+      "label": "Four uses of archetypes",
+      "value": "Lenses · structural pattern templates · dynamic theories · tools for predicting behavior",
+      "note": "Kim and Lannon, Applying Systems Archetypes"
+    },
+    {
+      "label": "Leverage points (Meadows)",
+      "value": "Least effective: parameters, buffers, stock-and-flow structure · middle: delays, loop strength, information flows, rules · most effective: self-organization, goals, paradigms, transcending paradigms"
+    },
+    {
+      "label": "Symptomatic vs fundamental",
+      "value": "Symptomatic = fast relief, structure unchanged · fundamental = changes the structure that causes the problem"
+    },
+    {
+      "label": "Six Steps (Goodman and Karash)",
+      "value": "Tell the story · draw BOT graphs · create a focusing statement · identify the structure · go deeper · plan an intervention"
+    },
+    {
+      "label": "WGU Four-Step Tool",
+      "value": "1 iceberg (events, patterns, structure) · 2 BOT diagrams · 3 best-fitting archetype · 4 solution with strengths, challenges, alternatives and projected impact"
+    },
+    {
+      "label": "Senge's five disciplines",
+      "value": "Personal mastery · mental models · shared vision · team learning · systems thinking (the fifth)"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Rubrics, templates and the big picture",
+      "tasks": [
+        "Review your course planning tool report with your instructor, then read all three task rubrics and turn each aspect into a checklist.",
+        "Download each task's template and sample and watch the task videos; find <i>System Thinking Tips</i> and the <i>7-Day Pacing Guide</i> under WGU Connect resources.",
+        "Watch the TEDx talk <i>Systems Thinking 101</i> for the big picture."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Systems, the iceberg, stocks and flows",
+      "tasks": [
+        "Read Goodman's Systems Thinker overview and learn Meadows' elements, interconnections and purpose.",
+        "Run the iceberg (events, patterns, structure, mental models) on a recurring problem from your own work or a news story.",
+        "Name three stocks and their inflows and outflows in that problem, and one delay."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Behavior-over-time graphs",
+      "tasks": [
+        "Read Kim's article on behavior-over-time diagrams and watch a short BOTG explainer.",
+        "Sketch three BOT graphs for your Day 2 problem with labeled axes, a time span and the events marked.",
+        "Compare your format with the Task 1 sample."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Task 1",
+      "tasks": [
+        "Draft the Task 1 graphs in the template, one measurable variable per line, using only facts from the scenario.",
+        "Walk the rubric aspect by aspect, then submit."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Feedback loops and causal loop diagrams",
+      "tasks": [
+        "Read Kim's causal loop guidelines and watch a short causal loops explainer.",
+        "Draw one reinforcing and one balancing loop for your Day 2 problem; label every arrow s or o, each loop R or B, and the delays.",
+        "Check each label with the o-count shortcut and by reading the loop aloud."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Systems archetypes",
+      "tasks": [
+        "Read Kim and Lannon's pocket guide to the archetypes and Applying Systems Archetypes.",
+        "Match each of the eight archetypes to a news story or work situation, and write the one fact that decides each match.",
+        "Practice telling fixes that fail from shifting the burden, and limits to success from growth and underinvestment."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Task 2",
+      "tasks": [
+        "Build the causal loop diagram for the scenario, then fill in the archetype template with the best-fitting archetype.",
+        "Explain the fit with specific facts from the scenario and say why the closest alternative fits worse.",
+        "Walk the rubric aspect by aspect, then submit."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Six Steps, leverage and solution design",
+      "tasks": [
+        "Read Six Steps to Thinking Systemically and Meadows' Leverage Points essay.",
+        "List one symptomatic and one fundamental solution for your Day 2 problem, with side effects and delays for each.",
+        "Open WGU's Four-Step Tool and map each step to the Task 3 rubric."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Task 3",
+      "tasks": [
+        "Work the Four-Step Tool on the case: iceberg, BOT diagrams, best-fitting archetype and the main problem.",
+        "Write the solution with its strengths, challenges, alternatives (and why yours is better) and projected impact on the whole system.",
+        "Check that your graphs, loops, archetype and solution tell one consistent story, walk the rubric, then submit."
+      ]
+    },
+    {
+      "day": "Day 11 onward",
+      "focus": "Revisions, if needed",
+      "tasks": [
+        "Read the evaluator's comments against each rubric aspect they cite and fix those parts first.",
+        "Ask your instructor to review a returned task before you resubmit if the feedback isn't clear."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A causal loop has three links: <i>Workload</i> →s <i>Stress</i>, <i>Stress</i> →o <i>Productivity</i>, and <i>Productivity</i> →o <i>Workload</i> (more productivity clears work, so less remains). What kind of loop is it?",
+      "choices": [
+        "Reinforcing, because it has an even number of o links",
+        "Balancing, because it has an even number of o links",
+        "Balancing, because stress always settles toward a goal",
+        "It can't be labeled without numerical data"
+      ],
+      "answer": "Reinforcing, because it has an even number of o links",
+      "why": "Count the opposite (o) links: there are two, an even number, so the loop is reinforcing. Reading the story confirms it: more workload raises stress, which lowers productivity, which leaves more work undone, which raises workload further, a vicious cycle. An odd number of o links would make it balancing. You don't need numbers to label a loop, because its type comes from the direction of each link."
+    },
+    {
+      "q": "In a causal loop diagram, which link should be labeled <code>o</code> (opposite)?",
+      "choices": [
+        "Hours of practice → Skill",
+        "Price → Quantity demanded",
+        "Customer satisfaction → Repeat purchases",
+        "Population → Births"
+      ],
+      "answer": "Price → Quantity demanded",
+      "why": "An o link means the two variables move in opposite directions: when price rises, quantity demanded falls, and when price falls, demand rises. The other three are s (same-direction) links: more practice builds more skill, higher satisfaction brings more repeat purchases, and a larger population produces more births. Polarity describes the direction of change, not whether the effect is good or bad."
+    },
+    {
+      "q": "Following Daniel Kim's guidelines, which is the best name for a variable in a causal loop diagram?",
+      "choices": [
+        "Increasing employee turnover",
+        "Fixing the hiring process",
+        "Employee morale",
+        "State of the team"
+      ],
+      "answer": "Employee morale",
+      "why": "Kim advises nouns that name a quantity able to rise or fall, stated in its positive sense where possible, and <i>Employee morale</i> fits. <i>Increasing employee turnover</i> builds a direction into the name, so a decrease in it becomes confusing; the arrow's s or o should carry the direction. <i>Fixing the hiring process</i> is an action, and <i>State of the team</i> isn't something that clearly goes up or down."
+    },
+    {
+      "q": "You're drawing a behavior-over-time graph for a case about a clinic's long wait times. Which is the best variable for the vertical axis?",
+      "choices": [
+        "The day the clinic's scheduling system crashed",
+        "The manager's decision to hire two nurses",
+        "Whether patients are happy",
+        "Average patient wait time per week"
+      ],
+      "answer": "Average patient wait time per week",
+      "why": "A BOT graph plots a quantity that changes over time, so its shape (rising, falling, oscillating) shows a pattern, and average weekly wait time is measurable and varies. A crash and a hiring decision are events; mark them on the time axis to show when the pattern changed, but they aren't variables. <i>Whether patients are happy</i> is a yes-or-no state, though a measure such as a monthly satisfaction score would work."
+    },
+    {
+      "q": "A behavior-over-time graph shows a new app's active users rising slowly, then very fast, then leveling off near a ceiling. Which structure best explains this shape?",
+      "choices": [
+        "A single balancing loop",
+        "A reinforcing loop that runs into a balancing limit",
+        "A balancing loop with a long delay",
+        "Two reinforcing loops competing for the same resources"
+      ],
+      "answer": "A reinforcing loop that runs into a balancing limit",
+      "why": "S-shaped growth starts with a reinforcing engine (more users → more word of mouth → more users) that weakens as a limit, such as market size or server capacity, takes over through a balancing loop: the structure of limits to success. A single balancing loop gives goal-seeking behavior without the early acceleration, a balancing loop with a long delay produces oscillation, and two reinforcing loops competing for resources suggest success to the successful."
+    },
+    {
+      "q": "A warehouse orders stock whenever inventory falls below target, but deliveries take three weeks. Inventory keeps swinging between shortages and overstock. What structure explains the swings?",
+      "choices": [
+        "A reinforcing loop with no limit",
+        "Escalation between two warehouses",
+        "A balancing loop with a significant delay",
+        "Success to the successful"
+      ],
+      "answer": "A balancing loop with a significant delay",
+      "why": "Ordering to close the gap between target and actual inventory is a balancing, goal-seeking loop. Because deliveries take three weeks, managers keep ordering while earlier orders are still in transit, overshoot the target, then cut orders and undershoot: classic oscillation. A reinforcing loop would push steadily in one direction, and escalation and success to the successful both need two competing parties, which this case doesn't have."
+    },
+    {
+      "q": "A team asks: <i>Why do our releases slip every quarter, and which policies and incentives keep producing that?</i> Which level of the iceberg is it working at?",
+      "choices": [
+        "Structure",
+        "Events",
+        "Patterns and trends",
+        "The water line"
+      ],
+      "answer": "Structure",
+      "why": "Asking what produces a recurring pattern, here the policies and incentives, is the structure level, where you design changes. A single slipped release would be an event, and noticing that releases slip every quarter would be the pattern level. The water line only separates visible events from what lies beneath. Asking about the beliefs behind those policies would take the team one level deeper, to mental models."
+    },
+    {
+      "q": "A city patches potholes with a cheap mix that crumbles after a few heavy rains. The broken patches let water under the road, creating more potholes, so the city patches even more. Which archetype is this?",
+      "choices": [
+        "Tragedy of the commons",
+        "Escalation",
+        "Success to the successful",
+        "Fixes that fail"
+      ],
+      "answer": "Fixes that fail",
+      "why": "A quick fix relieves the symptom now (a balancing loop), but its unintended consequence, water seeping under weak patches, makes the problem worse after a delay (a reinforcing loop). That's fixes that fail. Tragedy of the commons needs many users depleting a shared resource, escalation needs two parties reacting to each other, and success to the successful needs two activities competing for resources."
+    },
+    {
+      "q": "A manager personally handles every escalated customer complaint because it's faster than coaching the team. The team never builds the skill, so even more complaints get escalated to the manager. Which archetype fits best?",
+      "choices": [
+        "Limits to success",
+        "Fixes that fail",
+        "Shifting the burden",
+        "Growth and underinvestment"
+      ],
+      "answer": "Shifting the burden",
+      "why": "The manager's personal fix is a symptomatic solution that works quickly, and each use reduces the pressure to pursue the fundamental solution, coaching the team, while a side effect (the team's skills never develop) makes the organization more dependent on the quick fix. That's shifting the burden. Fixes that fail is close, but its defining feature is a side effect that directly worsens the original problem, with no neglected fundamental solution. Limits to success and growth and underinvestment are about growth meeting a constraint."
+    },
+    {
+      "q": "Every department in a company runs heavy jobs on a shared server cluster because doing so speeds up its own work. As each department adds jobs, the cluster slows down for everyone. Which archetype is this?",
+      "choices": [
+        "Escalation",
+        "Tragedy of the commons",
+        "Drifting goals",
+        "Fixes that fail"
+      ],
+      "answer": "Tragedy of the commons",
+      "why": "Each user gains individually from using a shared resource, but total use exceeds what the resource can support, so after a delay everyone's results get worse. Interventions focus on making the collective effect visible and managing access to the commons, such as quotas or a shared scheduling rule. Escalation is two parties reacting to each other's threats, drifting goals is a lowered target, and fixes that fail is a quick fix with a backfiring side effect."
+    },
+    {
+      "q": "A help desk keeps missing its 24-hour response target. Instead of adding staff or changing its processes, leadership changes the target to 48 hours, and later to 72. Which archetype is this?",
+      "choices": [
+        "Limits to success",
+        "Shifting the burden",
+        "Success to the successful",
+        "Drifting goals"
+      ],
+      "answer": "Drifting goals",
+      "why": "When a gap between goal and performance can be closed either by improving performance or by lowering the goal, drifting goals is the pattern of repeatedly lowering the goal, so standards slide over time. Kim and Lannon's interventions include anchoring the goal to an external reference, such as what customers expect, and checking the goal's history. Shifting the burden can look similar, but the defining move here is the target itself changing."
+    },
+    {
+      "q": "Two coffee shops on the same street each cut prices whenever the other runs a discount. After months of back-and-forth, both are losing money. Which archetype is this, and what intervention does it suggest?",
+      "choices": [
+        "Success to the successful: give more resources to whichever shop is winning",
+        "Escalation: find a larger goal both share, or change what they compete on, such as quality or service instead of price",
+        "Tragedy of the commons: limit customer access to the street",
+        "Limits to success: open a third location to grow past the limit"
+      ],
+      "answer": "Escalation: find a larger goal both share, or change what they compete on, such as quality or service instead of price",
+      "why": "Each shop sees the other's discount as a threat and responds in kind, so their two balancing loops lock into one reinforcing spiral: escalation. Interventions include finding a larger goal both share, changing the variable they compete on, or one side choosing to step back. Success to the successful involves two activities drawing on one pool of resources, the tragedy of the commons involves overuse of a shared resource, and limits to success involves growth meeting a constraint."
+    },
+    {
+      "q": "According to Donella Meadows' list of leverage points, which intervention is likely to have the most leverage?",
+      "choices": [
+        "Changing the goal the system is organized around",
+        "Adjusting a parameter, such as raising a fee by 5%",
+        "Enlarging a buffer stock, such as holding more inventory",
+        "Shortening a delivery delay by a day"
+      ],
+      "answer": "Changing the goal the system is organized around",
+      "why": "Meadows ranks a system's goals third from the top, behind only the paradigm the system grows out of and the power to transcend paradigms. Numbers and parameters are the least effective place to intervene, buffer sizes are only slightly better, and delays sit in the middle of her list. Parameters get the most attention because they're easy to change, but they rarely change how a system behaves on their own."
+    },
+    {
+      "q": "In Goodman and Karash's <i>Six Steps to Thinking Systemically</i>, what do you do right after drawing behavior-over-time graphs?",
+      "choices": [
+        "Tell the story",
+        "Identify the structure with causal loops",
+        "Plan an intervention",
+        "Create a focusing statement"
+      ],
+      "answer": "Create a focusing statement",
+      "why": "The order is: tell the story, draw behavior-over-time graphs, create a focusing statement, identify the structure, go deeper into the issues, and plan an intervention. The focusing statement, either a vision of the desired outcome or a question such as why the problem keeps recurring, directs the structural work that follows. Telling the story comes first, identifying the structure comes after the focusing statement, and planning the intervention comes last."
+    },
+    {
+      "q": "A case describes a support team's growing ticket backlog. Managers keep approving overtime, which clears tickets briefly, but exhausted staff quit and the backlog grows again. Which proposed solution best reflects systems thinking?",
+      "choices": [
+        "Reduce incoming tickets by fixing their most common causes, staff for a sustainable workload, and track backlog and turnover over time to check the results",
+        "Approve more overtime, since it reduced the backlog every time it was used",
+        "Replace the staff with the slowest ticket times",
+        "Change the backlog report so it shows only tickets older than a week"
+      ],
+      "answer": "Reduce incoming tickets by fixing their most common causes, staff for a sustainable workload, and track backlog and turnover over time to check the results",
+      "why": "The structure is a quick fix with a backfiring side effect: overtime relieves the symptom, but burnout and turnover shrink capacity and bring the backlog back. A systemic solution targets the structure (the inflow of tickets and sustainable capacity), allows for delays and side effects, and checks results over time. More overtime repeats the quick fix, replacing staff removes even more capacity while new hires get up to speed, and changing the report hides the pattern instead of changing it."
+    }
+  ],
+  "pitfalls": [
+    "<b>Skipping the rubric, template and sample.</b> The newest passer went straight to the tasks after reading the rubrics and says the Four-Step Tool template makes returns less likely. Build each task inside its template and cover every rubric aspect explicitly.",
+    "<b>Graphing events instead of variables.</b> A behavior-over-time graph needs a quantity that rises and falls over time (wait time per week), not a one-time event (the day the system crashed). Mark events on the time axis instead.",
+    "<b>Unlabeled or mismatched graphs.</b> Label both axes, use the case's time span, keep one variable per line and put related graphs on the same time scale so the reader can see what changed first.",
+    "<b>Direction words in CLD variable names.</b> <i>Increasing Costs</i> or <i>Losing Customers</i> make the arrow labels confusing. Use nouns that can go up or down (<i>Costs</i>, <i>Customers</i>) and let s or o carry the direction.",
+    "<b>Labeling loops by mood.</b> Reinforcing doesn't mean good, and balancing doesn't mean bad. Count the o links (odd = balancing), then read the loop aloud to confirm.",
+    "<b>Choosing an archetype by its name.</b> Match the archetype's loop structure and storyline to specific facts in the case. Fixes that fail and shifting the burden look alike; the difference is whether a fundamental solution is being neglected.",
+    "<b>Solving the symptom.</b> More overtime, more hires or 'work harder' without a structural change reads as a quick fix. Target a loop, delay, goal, rule or information flow, and name the side effects and how long results will take.",
+    "<b>Ignoring delays.</b> Many cases hinge on a lag (training time, shipping time, reputation). Mark significant delays on the diagram and account for them in your solution's projected impact.",
+    "<b>Parts that tell different stories.</b> Within a task, your iceberg, graphs, loops, archetype and solution should all describe the same system and rest on the same facts from that task's case. If your tasks share a scenario, keep them consistent across tasks too.",
+    "<b>Getting lost in the modules.</b> Students in the Mar 2025 thread say the course modules confuse many people; commenters there shared short explainer videos, and several found a TEDx talk more helpful than the first module. The Aug 2026 passer relied on the task resources and the short Systems Thinker articles, so start with those if the modules aren't clicking."
+  ],
+  "resources": [
+    {
+      "label": "Task rubrics, videos, samples and templates (in the course)",
+      "kind": "official",
+      "note": "Each task has its own video, sample and template (Aug 2026 report). Read the rubric first, then build inside the template."
+    },
+    {
+      "label": "WGU Connect: System Thinking Tips and the 7-Day Pacing Guide for Systems Thinking",
+      "kind": "official",
+      "note": "Course page → Course Community → Join WGU Connect → Resources. The newest passer used both before going straight to the tasks."
+    },
+    {
+      "label": "WGU: Four-Step Tool for Introduction to Systems Thinking (public handout)",
+      "url": "https://assets.wgu.edu/b793e9423ebfaebc4c8bb000336dd7fe",
+      "kind": "official",
+      "note": "WGU's blank worksheet based on the Six Steps: iceberg, BOT diagrams, archetype choice and solution. The Aug 2026 passer says using the Four-Step Tool template makes returns less likely."
+    },
+    {
+      "label": "Daniel H. Kim: Behavior Over Time Diagrams: Seeing Dynamic Interrelationships (The Systems Thinker)",
+      "url": "https://thesystemsthinker.com/wp-content/uploads/pdfs/210511pk.pdf",
+      "kind": "tool",
+      "note": "Two-page article behind Task 1: what BOT graphs are, why they come before data, and five steps for using them."
+    },
+    {
+      "label": "Daniel H. Kim: Guidelines for Drawing Causal Loop Diagrams (pocket guide)",
+      "url": "https://thesystemsthinker.com/wp-content/uploads/2016/01/PG03E-Guidelines-for-Drawing-Causal-Loop-Diagrams.pdf",
+      "kind": "tool",
+      "note": "One page, ten rules: noun variables, positive sense, unintended consequences, explicit goals, perceived vs actual, and the o-count shortcut. The core reference for Task 2."
+    },
+    {
+      "label": "Kim and Lannon: A Pocket Guide to Using the Archetypes",
+      "url": "https://thesystemsthinker.com/wp-content/uploads/2016/01/PG02E-A-Pocket-Guide-to-Using-the-Archetypes.pdf",
+      "kind": "tool",
+      "note": "All eight archetypes on one page with a loop diagram and seven intervention guidelines each. WGU's Four-Step Tool points to this guide."
+    },
+    {
+      "label": "Kim and Lannon: Applying Systems Archetypes (The Systems Thinker)",
+      "url": "https://thesystemsthinker.com/applying-systems-archetypes",
+      "kind": "tool",
+      "note": "Four ways to use archetypes (lenses, templates, dynamic theories, prediction). Cited by the Aug 2026 passer for Task 2."
+    },
+    {
+      "label": "Goodman and Karash: Six Steps to Thinking Systemically (The Systems Thinker)",
+      "url": "https://thesystemsthinker.com/six-steps-to-thinking-systemically/",
+      "kind": "tool",
+      "note": "The process behind WGU's Four-Step Tool, with a worked case. Cited by the Aug 2026 passer for Task 3."
+    },
+    {
+      "label": "Donella Meadows: Leverage Points: Places to Intervene in a System",
+      "url": "https://donellameadows.org/archives/leverage-points-places-to-intervene-in-a-system/",
+      "kind": "tool",
+      "note": "The classic ranking of where interventions have the most effect; useful for justifying the solution in Task 3."
+    },
+    {
+      "label": "TEDx: Systems Thinking 101 | Anna Justice | TEDxFurmanU",
+      "url": "https://www.youtube.com/watch?v=bNASybOzruM",
+      "kind": "video",
+      "note": "Several students in the Mar 2025 thread found this talk clearer than the first module."
+    },
+    {
+      "label": "Creative Learning Exchange: Introduction to Behavior-over-time Graphs (BOTGs)",
+      "url": "https://www.youtube.com/watch?v=1lo5XOe2iZ8",
+      "kind": "video",
+      "note": "Short explainer shared in the Mar 2025 thread; good before Task 1."
+    },
+    {
+      "label": "Creative Learning Exchange: Introduction to Causal Loops",
+      "url": "https://www.youtube.com/watch?v=tTo06jbSZ4M",
+      "kind": "video",
+      "note": "Short explainer shared in the Mar 2025 thread; good before Task 2."
+    },
+    {
+      "label": "More short explainers students shared (YouTube)",
+      "kind": "video",
+      "note": "From the Mar 2025 thread, reportedly including some from a course instructor (unverified): <a href=\"https://www.youtube.com/watch?v=jvf0N025sV0\">Systems Thinking / An Elementary Guide</a>, <a href=\"https://www.youtube.com/watch?v=GPW0j2Bo_eY\">Systems Thinking!</a>, <a href=\"https://www.youtube.com/watch?v=VTEQqVdoWOs\">Systems Thinking Behavior Over Time Graphs (BOTG)</a> and <a href=\"https://www.youtube.com/watch?v=mZ7wAka3hLc\">Systems Thinking and Archetypes</a>."
+    }
+  ],
+  "community": {
+    "summary": "Two threads, from Mar 2025 and Aug 2026, suggest the performance assessment is manageable. In the older thread, students say the course modules confuse many people, and one called the course \"basically a critical thinking class\". The newest passer (Aug 2026) read the rubric and went straight to the tasks, using the WGU Connect resources (System Thinking Tips and a 7-Day Pacing Guide), the task samples and templates, and the Systems Thinker article behind each task, and says the Four-Step Tool template makes returns less likely. Commenters in the older thread also shared short YouTube explainers and a TEDx talk that several students found more helpful than the first module.",
+    "coverage": "2 posts, Mar 2025 – Aug 2026, r/WGU_CompSci and r/WGUTeachersCollege",
+    "posts": [
+      {
+        "title": "Passed D459 - Introduction to Systems Thinking and Applications",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1w7qvqf/passed_d459_introduction_to_systems_thinking_and/",
+        "date": "Aug 2026",
+        "takeaway": "Used the WGU Connect resources System Thinking Tips and the 7-Day Pacing Guide, then went straight to the PA after reading the rubric; each task has a video, a sample and a template. Task 1 (behavior-over-time graphs) pairs with Kim's BOT article and the Task 1 sample, Task 2 (causal loop diagram and archetype) with the CLD guidelines, Applying Systems Archetypes and the archetype template, and Task 3 with Six Steps to Thinking Systemically and the Four Step Tool template, which makes returns less likely."
+      },
+      {
+        "title": "D459 Intro to Systems Thinking and Applications",
+        "subreddit": "r/WGUTeachersCollege",
+        "url": "https://www.reddit.com/r/WGUTeachersCollege/comments/1j59w4h/d459_intro_to_systems_thinking_and_applications/",
+        "date": "Mar 2025",
+        "takeaway": "Many students find the modules confusing; the course is a PA that one student called basically a critical thinking class. Commenters shared short YouTube explainers on behavior-over-time graphs, causal loops and archetypes (reportedly some from the instructor), and several found a TEDx talk on systems thinking more helpful than the first module."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611, published Jun 30, 2026 (D459 description, competencies, 3 CU, 30–40 hours; how evaluators grade performance assessments)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU: B.S. Computer Science program page (D459 in the general education courses)",
+      "url": "https://www.wgu.edu/online-it-degrees/computer-science.html"
+    },
+    {
+      "label": "WGU: Four-Step Tool for Introduction to Systems Thinking (public handout)",
+      "url": "https://assets.wgu.edu/b793e9423ebfaebc4c8bb000336dd7fe"
+    },
+    {
+      "label": "Daniel H. Kim, Behavior Over Time Diagrams: Seeing Dynamic Interrelationships, The Systems Thinker Vol. 21 No. 5 (2010 reprint of a 1994 article)",
+      "url": "https://thesystemsthinker.com/wp-content/uploads/pdfs/210511pk.pdf"
+    },
+    {
+      "label": "Daniel H. Kim, Guidelines for Drawing Causal Loop Diagrams (Pegasus pocket guide PG03)",
+      "url": "https://thesystemsthinker.com/wp-content/uploads/2016/01/PG03E-Guidelines-for-Drawing-Causal-Loop-Diagrams.pdf"
+    },
+    {
+      "label": "The Systems Thinker: Guidelines for Drawing Causal Loop Diagrams (theme, time horizon, boundary, aggregation, delays)",
+      "url": "https://thesystemsthinker.com/guidelines-for-drawing-causal-loop-diagrams/"
+    },
+    {
+      "label": "Daniel H. Kim and Colleen P. Lannon, A Pocket Guide to Using the Archetypes (Pegasus pocket guide PG02)",
+      "url": "https://thesystemsthinker.com/wp-content/uploads/2016/01/PG02E-A-Pocket-Guide-to-Using-the-Archetypes.pdf"
+    },
+    {
+      "label": "Daniel Kim and Colleen Lannon, Applying Systems Archetypes (The Systems Thinker)",
+      "url": "https://thesystemsthinker.com/applying-systems-archetypes"
+    },
+    {
+      "label": "Michael Goodman and Richard Karash, Six Steps to Thinking Systemically (The Systems Thinker)",
+      "url": "https://thesystemsthinker.com/six-steps-to-thinking-systemically/"
+    },
+    {
+      "label": "Michael Goodman, Systems Thinking: What, Why, When, Where, and How? (The Systems Thinker)",
+      "url": "https://thesystemsthinker.com/systems-thinking-what-why-when-where-and-how/"
+    },
+    {
+      "label": "Donella Meadows, Leverage Points: Places to Intervene in a System (Donella Meadows Project)",
+      "url": "https://donellameadows.org/archives/leverage-points-places-to-intervene-in-a-system/"
+    },
+    {
+      "label": "Waters Center for Systems Thinking: Our Approach (the 14 Habits of a Systems Thinker)",
+      "url": "https://waterscenterst.org/our-approach"
+    }
+  ],
+  "caveats": [
+    "Task details come from student posts and WGU's public Four-Step Tool handout. WGU doesn't publish the task prompts or rubrics, and they may have changed, so follow your course's current instructions, templates and samples where they differ from this guide.",
+    "The guidebook says the final assessment covers five competencies but lists three learner competencies plus course planning, and how the three tasks map to them isn't public.",
+    "Archetype sets vary by source. WGU's tool refers to eight archetypes, matching Kim and Lannon's pocket guide, but other sources add more, such as accidental adversaries. Use the set your course and its archetype template provide.",
+    "Notation varies: Kim labels links s and o, while many sources use + and −, and delay marks differ slightly. Use the convention shown in your task's template or sample.",
+    "Community coverage is thin: two threads with readable content, dated approximately from Reddit's relative timestamps. The YouTube videos were checked by title only, and the claim that some come from a course instructor is unverified.",
+    "The Waters Center's habits are paraphrased here, and their wording differs a little between editions. The practice questions are original concept checks, not task content."
+  ]
+}

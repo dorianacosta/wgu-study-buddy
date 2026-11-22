@@ -1,0 +1,779 @@
+{
+  "code": "D687",
+  "summary": "D687 has no live coding team: each student writes their own make-believe AI/ML project proposal paper, reviews three anonymous classmates' papers in Peerceptiv, and receives three reviews back. Students report three tasks: the proposal paper (Task 1), the reviews you received (Task 2), and a short quantitative and qualitative analysis of that feedback with three justified improvements (Task 3). The writing is moderate; the evaluation and peer-review waits mean even the fastest finish takes about a week.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (three written tasks with Peerceptiv peer review)",
+    "format": "3 written tasks, no exam or coding (reported) · Peerceptiv peer review between Tasks 1 and 2",
+    "details": [
+      "<b>Official description:</b> you prepare a project for a mock technical and executive leadership team and submit three artifacts: a business proposal that persuades stakeholders, an executive summary of product requirements for IT professionals, and a technical report on a fully functional data product. WGU says peer team members evaluate the artifacts before submission.",
+      "<b>Task 1, proposal paper:</b> students describe one large, make-believe AI/ML project proposal with no coding. One commenter's main headings (Project Proposal Overview, Project Plan, Technical Report, Proposal Summary) suggest the official artifacts are sections of this paper.",
+      "<b>Peer review:</b> opens only after Task 1 passes. You upload a copy with your name removed to Peerceptiv and review three anonymous classmates' papers; your own three reviews arrive about 2-3 days after you finish yours (reported).",
+      "<b>Task 2:</b> once all three reviews of your paper are in, export them from Peerceptiv and submit them (reported, Mar 2026).",
+      "<b>Task 3:</b> analyze that feedback quantitatively and qualitatively in a short write-up. A course instructor reportedly said three well-justified improvements are enough, and feedback you don't adopt can be answered in groups (May 2026).",
+      "<b>Evaluation time:</b> about 72 hours per evaluation, sometimes longer: a Nov 2025 student said every one used the full 72-hour window, and a Jun 2026 student's Task 1 took about 4 days. That Jun 2026 author put the fastest realistic finish at about a week.",
+      "<b>Sources and style:</b> cite real peer-reviewed journal articles, not the peer reviews you receive, with APA in-text citations and a reference list. Students say the APA requirements are listed at the bottom of the rubric."
+    ],
+    "tips": [
+      "Save a PDF of every task prompt and rubric on day 1 and turn each rubric bullet into a checklist line.",
+      "Answer every bullet in 1-2 clear sentences; the papers one student reviewed ranged from two sentences per point to many pages, and the middle is safest.",
+      "Use plain main headings, not the prompt's numbering: one Task 1 was returned for sub-headings like “3A.1 Importance,” though another student used them without a return.",
+      "Do your three peer reviews the day Task 1 passes, because your own reviews only start after you finish.",
+      "If your reviews haven't arrived after a couple of days, message your instructor; an instructor can leave a review so you can move on.",
+      "Build the paper from the project you're already planning for D683 or D682; it's a hypothetical proposal, so either works.",
+      "If an evaluator asks for something not on the rubric, make the change or appeal; appeals reportedly work with a good case but take 3-4 days."
+    ]
+  },
+  "competencies": [
+    "Create a project proposal that persuades stakeholders to implement the system.",
+    "Create a technical report for a fully functional data product that addresses real-world scenarios.",
+    "Create an executive summary of product requirements written for IT professionals.",
+    "Review the course planning tool report with the instructor and build a personalized course plan (the kickoff item WGU lists for every course)."
+  ],
+  "topics": [
+    {
+      "title": "How D687 works: one paper, three tasks, Peerceptiv",
+      "eli5": "Think of a writing workshop: you pitch a pretend AI project on paper, three anonymous classmates comment on it while you comment on three others, and then you explain what you'd change.",
+      "detail": "There is no shared codebase and no live team meetings; the team part is anonymous peer review in Peerceptiv. Students report that Task 1 is your proposal paper, and only after it passes do you upload a copy without your name and review three classmates' papers. Three reviews of your paper arrive about 2-3 days after you finish your own reviews; you export them and submit them as Task 2. Task 3 is a short write-up that analyzes that feedback and justifies three improvements. WGU frames the whole course as preparing a project for a mock technical and executive leadership team.",
+      "points": [
+        "Task 1: the proposal paper, no coding (reported).",
+        "Peer review: you give three reviews and get three back, anonymously.",
+        "Task 2: the three reviews you received, exported from Peerceptiv (reported).",
+        "Task 3: quantitative and qualitative analysis plus three justified improvements (reported).",
+        "Students report submitting Tasks 2 and 3 on the same day once the reviews arrive."
+      ]
+    },
+    {
+      "title": "Proposal basics: problem, goals, scope, stakeholders, deliverables",
+      "eli5": "Before anyone spends money, a proposal answers five questions: what's broken, what will change, what's included, who cares, and what they'll get.",
+      "detail": "Open with the business problem and why it matters in business terms such as cost, time, risk or lost revenue. A goal is the broad outcome you want; objectives are the specific, measurable steps that show you reached it, and SMART wording makes them testable. Scope states what the project will and won't do; an explicit out-of-scope list prevents scope creep and lets you skip systems that already exist. Stakeholders are everyone who affects or is affected by the project, such as executives, end users, IT operations and compliance staff. Deliverables are the concrete things handed over, such as a trained model, an API or dashboard, documentation and user training.",
+      "points": [
+        "<b>SMART</b>: Specific, Measurable, Achievable, Relevant, Time-bound.",
+        "Goal = broad outcome; objective = a measurable step toward it.",
+        "Scope creep: scope grows without matching changes to time, budget or resources.",
+        "An idea that augments an existing process lets you declare much of the tech stack out of scope (Jun 2026 tip).",
+        "For each stakeholder group, say what it needs and how the project helps it."
+      ]
+    },
+    {
+      "title": "Project planning: methodology, timeline, milestones, roles",
+      "eli5": "The plan is the recipe plus the calendar: which steps happen in what order, who does each one, and how you'll know you're on track.",
+      "detail": "Name a methodology and say why it fits. Scrum delivers work in short Sprints and adapts to feedback, waterfall runs fixed phases in sequence so late changes are costly, and CRISP-DM is a six-phase, iterative process built for data-mining and ML work. Break the work into a work breakdown structure (WBS), order the pieces by their dependencies, and mark milestones, which are zero-duration checkpoints such as “model approved.” The critical path is the longest chain of dependent tasks; it sets the shortest possible schedule, so any slip on it delays the whole project. Assign roles such as product owner, data scientist, data engineer, ML engineer and security lead, and show who is responsible for what, for example with a RACI chart.",
+      "points": [
+        "Scrum accountabilities: Product Owner, Scrum Master, Developers.",
+        "CRISP-DM: Business Understanding → Data Understanding → Data Preparation → Modeling → Evaluation → Deployment.",
+        "Milestones have zero duration; tasks have duration.",
+        "RACI: Responsible, Accountable, Consulted, Informed.",
+        "A proposal's timeline should use future dates."
+      ]
+    },
+    {
+      "title": "Technical design at proposal level",
+      "eli5": "It's an architect's sketch, not the finished building: show what data goes in, what the model does, and where its answers end up.",
+      "detail": "Describe the data: where it comes from, its key features and the target you predict, known quality problems, and how it will be cleaned and stored. Describe the model at a high level: the problem type (classification, regression or clustering), a candidate algorithm family, and why it fits the data and the need for explanations. Explain integration, meaning how predictions reach people or systems, for example a nightly batch report, an API an existing app calls, or a simple form. Cover infrastructure briefly: where it runs (cloud or on-premises), compute and storage needs, and how the model will be monitored and retrained when the data drifts. A Jun 2026 passer said the rubric focuses on what the model does, how it fits the business idea, resources, risks and security, and that no code is involved.",
+      "points": [
+        "Data: source, features, target, quality, storage.",
+        "Model: problem type, algorithm family, why it fits.",
+        "Integration: how predictions reach users or systems.",
+        "Infrastructure: hosting, compute, monitoring, retraining.",
+        "Reuse the dataset and model idea from D683 or D682."
+      ]
+    },
+    {
+      "title": "Security, privacy, ethics and bias",
+      "eli5": "If you use people's data, you must show you'll lock it up, use only what you need, and check that the model treats different groups fairly.",
+      "detail": "Security protects the data and the system: least-privilege access, encryption in transit and at rest, logging, and protected model endpoints. Privacy is about what personal data you collect and why: collect the minimum, de-identify or aggregate where you can, set retention limits, and name the laws that apply to the data, such as HIPAA for US health records or GDPR for data about people in the EU. Bias work checks whether the training data represents the people the model affects and whether error rates differ across groups. Ethics also covers being open about what the model can't do and keeping a human able to review or override high-impact decisions.",
+      "points": [
+        "Least privilege: each user or service gets only the access it needs.",
+        "Encrypt data in transit and at rest.",
+        "Data minimization and de-identification shrink privacy risk.",
+        "Check model performance for each group, not just overall.",
+        "Keep a human in the loop for high-impact decisions."
+      ]
+    },
+    {
+      "title": "Risk management",
+      "eli5": "A risk is a storm that might come; an issue is the storm that's already here. You list the possible storms, rank them, and plan an umbrella for the worst ones.",
+      "detail": "A risk is an uncertain future event that would affect the project if it happened; an issue is a problem that is already happening and needs action now. A risk register lists each risk with its likelihood, impact, a score for ranking (often likelihood × impact), an owner, a trigger that says when to act, and a response. Common responses to threats are avoid (change the plan so the risk can't occur), transfer (shift it to a vendor or insurer), mitigate (lower its likelihood or impact) and accept (live with it, usually with a contingency plan). Typical AI/ML project risks include poor or biased data, model drift, integration delays, cost overruns, security breaches and low user adoption.",
+      "points": [
+        "Risk = might happen; issue = is happening now.",
+        "<code>score = likelihood × impact</code>; work the highest scores first.",
+        "Threat responses: avoid, transfer, mitigate, accept.",
+        "Every risk needs an owner and a trigger.",
+        "When a risk occurs it becomes an issue, and its contingency plan kicks in."
+      ]
+    },
+    {
+      "title": "Resources and budget",
+      "eli5": "List everything the project needs, from people to cloud servers to software, and put a price on each so leaders can say yes or no.",
+      "detail": "Resources include people (each role's estimated hours), hardware or cloud compute and storage, software licenses and services, data acquisition, and training for users. Separate one-time costs, like building and launching, from recurring costs, like hosting, monitoring, retraining and support. A contingency reserve covers known risks, and a simple return on investment ties the spending back to the business goal. Because the project is hypothetical, reasonable estimates with stated assumptions matter more than precise numbers, but naming specific tools and services makes them believable.",
+      "points": [
+        "<code>labor cost = hours × hourly rate</code>, for each role.",
+        "Separate one-time costs from recurring costs.",
+        "<code>ROI = (benefit - cost) / cost × 100%</code>",
+        "State the assumption behind every estimate.",
+        "Include cloud compute and storage, not just salaries."
+      ]
+    },
+    {
+      "title": "Success metrics and evaluation",
+      "eli5": "Agree on the finish line before the race: decide how you'll score the project and what score counts as a win.",
+      "detail": "Tie each business KPI, such as fewer stockouts or faster claim handling, to a model metric that fits the problem type: accuracy, precision, recall and F1 for classification, or MAE and RMSE for regression. Compare against a baseline, such as the current manual process or a simple model, and set a target, so the improvement can be measured. Verification asks whether the system was built right, meaning it meets its specification through tests and reviews; validation asks whether the right system was built, meaning it actually solves the users' problem, for example in a pilot. Add operational measures such as response time, uptime and adoption, and say how you'll monitor them after launch.",
+      "points": [
+        "<code>precision = TP / (TP + FP)</code>; <code>recall = TP / (TP + FN)</code>.",
+        "<code>F1 = 2 × precision × recall / (precision + recall)</code>.",
+        "Regression: MAE averages the absolute errors; RMSE is the square root of the mean squared error.",
+        "Every metric needs a baseline and a target.",
+        "Verification = built right; validation = right thing built."
+      ]
+    },
+    {
+      "title": "Writing for executives and IT professionals",
+      "eli5": "Executives want the headline and the price; engineers want the blueprint. You tell the same story at two zoom levels.",
+      "detail": "WGU frames the course as presenting a project to a mock technical and executive leadership team, so the paper has to work for both audiences. Executive-facing parts lead with the problem, the proposed solution, benefits, cost, timeline and the decision you need, in plain language. IT-facing parts can use technical terms and cover requirements, data, architecture, integration, security and testing. Functional requirements say what the system does; non-functional requirements say how well it does it, such as speed, availability and security. Write each section so it stands on its own, since a reader may jump straight to it (a Jan 2025 tip).",
+      "points": [
+        "Executives: problem, solution, benefit, cost, timeline, the ask.",
+        "IT readers: requirements, data, architecture, security, testing.",
+        "Functional = what it does; non-functional = how well it does it.",
+        "1-2 clear sentences per rubric bullet is the reported sweet spot.",
+        "Keep the tone professional and plain; use jargon only where the IT audience needs it."
+      ]
+    },
+    {
+      "title": "Giving useful peer reviews",
+      "eli5": "A good review works like a GPS: it says exactly where the driver went off course and which turn to take, not just “you're lost.”",
+      "detail": "Review against the rubric, not your own taste: for each section, say whether it meets the requirement, point to the exact spot, explain why, and suggest a concrete fix. Name what works as well as what's missing, and keep the tone respectful, since a real classmate reads it. Separate must-fix gaps from optional polish; code reviewers label the latter “Nit:”. Google's code-review standard is a useful mindset: approve work that clearly improves things even if it isn't perfect. Do your three reviews promptly, because your own reviews only start arriving after you finish yours.",
+      "points": [
+        "Specific, rubric-linked and actionable beats “looks good.”",
+        "Give a strength and a gap for each major section.",
+        "Mark optional suggestions as optional.",
+        "Do all three reviews the day Task 1 passes.",
+        "Keep your name off the Peerceptiv copy of your paper."
+      ]
+    },
+    {
+      "title": "Analyzing feedback: quantitative vs qualitative",
+      "eli5": "Counting tells you how many reviewers flagged something; reading for themes tells you what they meant.",
+      "detail": "Quantitative analysis works with numbers: any ratings your reviewers gave, averages per section, and counts of how many reviewers raised the same point. Qualitative analysis reads the written comments and groups them into themes, such as “budget detail” or “privacy gaps,” to explain the reasons behind the numbers. Combine the two to choose improvements: a low-scoring section that several reviewers commented on is a strong candidate. A course instructor reportedly said three well-justified improvements are enough for Task 3, and feedback you decide not to adopt can be answered in groups with a short reason. The reviews you receive may be low quality; analyze them honestly and stay on the rubric.",
+      "points": [
+        "Quantitative: ratings, averages, counts, percentages.",
+        "Qualitative: themes, patterns, the meaning behind comments.",
+        "Justify each improvement with evidence: score, number of reviewers, rubric link.",
+        "Group the feedback you won't adopt and give one reason per group.",
+        "One Jun 2026 student finished Tasks 2 and 3 in about 4 hours."
+      ]
+    },
+    {
+      "title": "APA style and peer-reviewed sources",
+      "eli5": "Every borrowed idea wears a name tag in your sentence and has a full address in the reference list.",
+      "detail": "Students report the paper must cite real peer-reviewed journal articles; the Peerceptiv reviews you receive don't count as sources. APA 7 uses author and year, either parenthetical, (Rivera, 2024), or narrative, Rivera (2024). Two authors are both named every time, with &amp; inside parentheses and “and” in a sentence; three or more shorten to the first author plus et al., even the first time. Every in-text citation needs a matching reference entry, and every reference needs a citation. The reference list starts on a new page under a bold, centered “References” label, double-spaced with 0.5-inch hanging indents, in alphabetical order.",
+      "points": [
+        "Parenthetical <code>(Rivera, 2024)</code>; narrative <code>Rivera (2024)</code>.",
+        "Two authors: <code>(Okafor &amp; Lin, 2022)</code> or <code>Okafor and Lin (2022)</code>.",
+        "Three or more: <code>(Haddad et al., 2021)</code>, including the first citation.",
+        "Direct quotes add a page: <code>(Rivera, 2024, p. 7)</code>.",
+        "Journal entry: authors, (year), title in sentence case, <i>journal name</i>, <i>volume</i>(issue), pages, then the DOI as a link."
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Task flow (reported)",
+      "value": "Task 1 proposal paper → review 3 classmates in Peerceptiv → receive 3 reviews → Task 2: submit the reviews you received → Task 3: analysis plus three justified improvements"
+    },
+    {
+      "label": "Evaluation time (reported)",
+      "value": "About 72 hours per task, sometimes longer; one Jun 2026 Task 1 took about 4 days"
+    },
+    {
+      "label": "Peer-review wait (reported)",
+      "value": "About 2-3 days, counted from when you finish your own three reviews",
+      "note": "No reviews after a couple of days? Ask your instructor; an instructor can leave a review."
+    },
+    {
+      "label": "Fastest realistic finish (reported)",
+      "value": "About a week at the very least, mostly waiting (Jun 2026)"
+    },
+    {
+      "label": "Logged hours (reported)",
+      "value": "18 h (2025 graduate) and 32 h (Aug 2026 graduate); Tasks 2 and 3 took one Jun 2026 student about 4 h"
+    },
+    {
+      "label": "Length (reported)",
+      "value": "1-2 sentences per rubric bullet (Jun 2026); a Jan 2025 passer wrote 2-5 sentences per section, about 8 pages, with 3 sources"
+    },
+    {
+      "label": "Two copies of your paper",
+      "value": "The WGU submission keeps your name; the Peerceptiv upload has it removed (reported)"
+    },
+    {
+      "label": "SMART",
+      "value": "Specific, Measurable, Achievable, Relevant, Time-bound"
+    },
+    {
+      "label": "Risk vs issue",
+      "value": "Risk: an uncertain future event · Issue: a problem happening now"
+    },
+    {
+      "label": "Risk score",
+      "value": "<code>score = likelihood × impact</code>",
+      "note": "On 1-5 scales, likelihood 3 and impact 5 give 15."
+    },
+    {
+      "label": "Threat responses",
+      "value": "Avoid, transfer, mitigate, accept"
+    },
+    {
+      "label": "Scrum accountabilities",
+      "value": "Product Owner: product value and the Product Backlog · Scrum Master: the team's effectiveness · Developers: the Sprint plan and a Done Increment"
+    },
+    {
+      "label": "Scrum timeboxes (one-month Sprint)",
+      "value": "Sprint ≤ 1 month · Sprint Planning ≤ 8 h · Daily Scrum 15 min · Sprint Review ≤ 4 h · Sprint Retrospective ≤ 3 h",
+      "note": "Shorter Sprints usually get shorter events, except the Daily Scrum."
+    },
+    {
+      "label": "Scrum artifacts and commitments",
+      "value": "Product Backlog → Product Goal · Sprint Backlog → Sprint Goal · Increment → Definition of Done"
+    },
+    {
+      "label": "CRISP-DM",
+      "value": "Business Understanding → Data Understanding → Data Preparation → Modeling → Evaluation → Deployment",
+      "note": "Iterative: teams loop back between phases."
+    },
+    {
+      "label": "Waterfall",
+      "value": "Requirements → design → build → test → deploy → maintain, each phase finishing before the next; late changes are costly"
+    },
+    {
+      "label": "Critical path",
+      "value": "The longest chain of dependent tasks; its length is the shortest possible project duration"
+    },
+    {
+      "label": "Milestone",
+      "value": "A zero-duration checkpoint, such as “model approved”"
+    },
+    {
+      "label": "RACI",
+      "value": "Responsible, Accountable, Consulted, Informed"
+    },
+    {
+      "label": "Verification vs validation",
+      "value": "Verification: built right (meets the spec) · Validation: right thing built (meets the users' need)"
+    },
+    {
+      "label": "Precision and recall",
+      "value": "<code>precision = TP / (TP + FP)</code> · <code>recall = TP / (TP + FN)</code>"
+    },
+    {
+      "label": "F1 score",
+      "value": "<code>F1 = 2 × precision × recall / (precision + recall)</code>",
+      "note": "The harmonic mean of precision and recall."
+    },
+    {
+      "label": "MAE and RMSE",
+      "value": "<code>MAE = mean(|y - ŷ|)</code> · <code>RMSE = sqrt(mean((y - ŷ)²))</code>",
+      "note": "RMSE is in the same units as the target."
+    },
+    {
+      "label": "ROI",
+      "value": "<code>ROI = (benefit - cost) / cost × 100%</code>",
+      "note": "A $150,000 benefit on a $100,000 cost gives 50%."
+    },
+    {
+      "label": "APA in-text citations",
+      "value": "<code>(Rivera, 2024)</code> · <code>(Okafor &amp; Lin, 2022)</code> · <code>(Haddad et al., 2021)</code> · narrative: <code>Okafor and Lin (2022)</code>"
+    },
+    {
+      "label": "APA journal reference",
+      "value": "Author, A. A., &amp; Author, B. B. (Year). Title in sentence case. <i>Journal Name</i>, <i>volume</i>(issue), first–last page. DOI as a doi.org link"
+    },
+    {
+      "label": "Quantitative vs qualitative feedback",
+      "value": "Quantitative: ratings, averages, counts · Qualitative: themes and meaning in the written comments"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Set up and read every rubric",
+      "tasks": [
+        "Open D687 and save each task prompt and rubric as a PDF; a 2025 passer warns the portal can be down when you need it.",
+        "Turn every rubric bullet into a checklist line, and note the APA requirements at the bottom.",
+        "Meet or email your instructor for the course kickoff and ask any questions about the Peerceptiv steps.",
+        "If you're also in D683, send its Task 1 proposal to your instructor first and plan to reuse it as the D687 skeleton (Jun 2026 tip)."
+      ]
+    },
+    {
+      "day": "Days 2-3",
+      "focus": "Frame the project and find sources",
+      "tasks": [
+        "Draft the business problem, goal, SMART objectives, scope (in and out), stakeholders and deliverables as short notes.",
+        "Pick an idea that augments an existing process so most of the tech stack can be out of scope.",
+        "Find peer-reviewed journal articles in the WGU Library that support the problem or approach (a Jan 2025 passer used three).",
+        "Start the APA reference list as you go."
+      ]
+    },
+    {
+      "day": "Days 4-5",
+      "focus": "Plan, resources and risks",
+      "tasks": [
+        "Choose a methodology (Scrum, waterfall or CRISP-DM) and justify it in a sentence or two.",
+        "Build a milestone timeline with future dates, dependencies and roles.",
+        "Estimate one-time and recurring costs, stating your assumptions.",
+        "Write a risk register with likelihood, impact, owner and response for the top risks."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Technical design and success metrics",
+      "tasks": [
+        "Describe the data, model, integration and infrastructure at proposal level.",
+        "Cover security, privacy, ethics and bias.",
+        "Define business KPIs and model metrics, each with a baseline and target, plus your verification and validation plan.",
+        "Write the summary section that ties the proposal together."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Polish and submit Task 1",
+      "tasks": [
+        "Walk the checklist: 1-2 clear sentences per bullet, nothing skipped.",
+        "Use plain main headings instead of prompt codes like “3A.1.”",
+        "Match every in-text citation to a reference entry and every reference to a citation.",
+        "Rewrite anything carried over from your D682 or D683 documents in fresh words to keep the similarity score low.",
+        "Submit with your name on it, and save a second copy with your name removed for Peerceptiv."
+      ]
+    },
+    {
+      "day": "Days 9-11",
+      "focus": "Wait for the Task 1 evaluation",
+      "tasks": [
+        "Expect about 72 hours, possibly about 4 days (reported); work on D682 or D683 meanwhile.",
+        "Reread the Task 2 and Task 3 prompts and set up a table for analyzing the feedback.",
+        "If Task 1 comes back, fix exactly what the evaluator listed; appeal an off-rubric request only if a 3-4 day wait is worth it."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Task 1 passes: do your three peer reviews",
+      "tasks": [
+        "Upload the copy without your name to Peerceptiv as the course directs.",
+        "Complete all three reviews the same day; your own reviews only start after you finish.",
+        "Make each review rubric-based, specific and actionable."
+      ]
+    },
+    {
+      "day": "Days 13-15",
+      "focus": "Wait for your three reviews",
+      "tasks": [
+        "Reviews reportedly arrive about 2-3 days after you finish yours.",
+        "If nothing arrives after a couple of days, message your instructor; an instructor can leave a review.",
+        "Keep moving on D682, D683 or your other courses."
+      ]
+    },
+    {
+      "day": "Day 16",
+      "focus": "Tasks 2 and 3",
+      "tasks": [
+        "Export the three reviews from Peerceptiv and submit them as Task 2.",
+        "Tally ratings and repeated points (quantitative), then group the comments into themes (qualitative).",
+        "Choose three improvements, justify each with evidence, and group the feedback you won't adopt with a reason.",
+        "Submit Task 3; one Jun 2026 student did both tasks in about 4 hours."
+      ]
+    },
+    {
+      "day": "Days 17-19",
+      "focus": "Final evaluations and buffer",
+      "tasks": [
+        "Expect about 72 hours per evaluation, sometimes longer (reported).",
+        "Fix any return quickly and resubmit.",
+        "Keep a few spare days in your term plan for a slow evaluation or a missing review."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which objective is written in SMART form?",
+      "choices": [
+        "Use AI to make inventory management much more efficient across every store and warehouse in the chain.",
+        "Build the most accurate demand-forecasting model possible.",
+        "Cut stockouts at the 40 pilot stores by 15% from last year's rate within six months of launch.",
+        "Improve customer satisfaction with better data."
+      ],
+      "answer": "Cut stockouts at the 40 pilot stores by 15% from last year's rate within six months of launch.",
+      "why": "It is Specific (stockouts at named stores), Measurable (15% against last year's monthly stockout rate), Achievable (a pilot, not the whole chain), Relevant (stock is the business problem) and Time-bound (within six months of launch). The other three have no number, baseline or deadline. Covering every store adds scope but no measure, and “most accurate possible” has no finish line."
+    },
+    {
+      "q": "Two weeks into the project, the data vendor confirms the historical sales feed is delayed and will arrive a month late. What is this now?",
+      "choices": [
+        "A risk, because it might affect the timeline",
+        "A constraint, because it limits the budget",
+        "An assumption, because the team expected the data on time",
+        "An issue, because it is already happening"
+      ],
+      "answer": "An issue, because it is already happening",
+      "why": "A risk is uncertain and in the future. Once the event has happened, it is an issue that needs a response: an owner and an action. If late data was in your risk register, its contingency plan triggers now. Expecting the data on time was an assumption, but the delay itself is an issue."
+    },
+    {
+      "q": "In Scrum, who is accountable for ordering the Product Backlog to maximize the product's value?",
+      "choices": [
+        "The Product Owner",
+        "The Scrum Master",
+        "The Developers",
+        "A product steering committee"
+      ],
+      "answer": "The Product Owner",
+      "why": "The 2020 Scrum Guide makes the Product Owner, one person rather than a committee, accountable for maximizing value and managing the Product Backlog. The Scrum Master is accountable for the team's effectiveness, and the Developers create the Sprint plan and meet the Definition of Done."
+    },
+    {
+      "q": "Which step is a qualitative analysis of the three peer reviews you received?",
+      "choices": [
+        "Averaging the reviewers' ratings for each section",
+        "Grouping the written comments into common themes",
+        "Counting how many reviewers flagged the budget",
+        "Ranking the sections from lowest to highest average score"
+      ],
+      "answer": "Grouping the written comments into common themes",
+      "why": "Qualitative analysis interprets meaning in text, for example by coding comments into themes such as “unclear scope” and “thin security plan.” Averages, counts and rankings are numbers, so they are quantitative. Students report Task 3 asks for both kinds."
+    },
+    {
+      "q": "In APA 7, how do you cite a journal article by Haddad, Brooks and Ito (2021) in parentheses?",
+      "choices": [
+        "(Haddad, Brooks, &amp; Ito, 2021)",
+        "(Haddad et al. 2021)",
+        "(Haddad, 2021, et al.)",
+        "(Haddad et al., 2021)"
+      ],
+      "answer": "(Haddad et al., 2021)",
+      "why": "APA 7 shortens works with three or more authors to the first author plus “et al.” in every citation, including the first, with a comma before the year. Listing all three names on the first citation was the APA 6 rule."
+    },
+    {
+      "q": "Students report that D687 requires peer-reviewed sources. Which of these qualifies?",
+      "choices": [
+        "A journal article reviewed by experts",
+        "The three Peerceptiv reviews of your paper",
+        "A cloud vendor's blog post about AI",
+        "Your own D683 proposal"
+      ],
+      "answer": "A journal article reviewed by experts",
+      "why": "Peer-reviewed means experts in the field evaluated the article before a journal published it. The classmate reviews you receive in Peerceptiv are feedback for Tasks 2 and 3, not sources; a 2026 poster stressed exactly this. Blog posts and your own earlier work are not peer-reviewed."
+    },
+    {
+      "q": "The executive-facing part of your proposal is read by company leadership. What belongs there?",
+      "choices": [
+        "The full hyperparameter search grid and library versions",
+        "A line-by-line walkthrough of the data-cleaning steps",
+        "The business problem, solution, benefits, cost and timeline",
+        "The confusion matrix for every model you considered"
+      ],
+      "answer": "The business problem, solution, benefits, cost and timeline",
+      "why": "Executives decide whether to fund the project, so they need the problem, the proposed solution, the expected payoff, the price and the schedule in plain language, without jargon. Hyperparameters, cleaning steps and confusion matrices belong in the IT-facing technical sections, if anywhere."
+    },
+    {
+      "q": "Your model plugs into the company's existing order system to suggest reorder quantities. Which item belongs on the out-of-scope list?",
+      "choices": [
+        "Training the forecasting model on three years of sales history",
+        "Rebuilding the order system's user interface",
+        "Exposing predictions through an API the order system can call",
+        "Measuring forecast error against the current manual method"
+      ],
+      "answer": "Rebuilding the order system's user interface",
+      "why": "The project augments an existing process, so the existing system's interface stays as it is and can be declared out of scope, the approach a Jun 2026 passer used. Training the model, the API and the error comparison are core deliverables."
+    },
+    {
+      "q": "Your risk register rates likelihood and impact from 1 to 5 and ranks risks by likelihood × impact. Risk A (biased training data): likelihood 3, impact 5. Risk B (cloud costs exceed budget): likelihood 4, impact 3. Risk C (key data scientist leaves): likelihood 2, impact 4. Which risk ranks highest?",
+      "choices": [
+        "Risk A, score 15",
+        "Risk B, score 12",
+        "Risk C, score 8",
+        "Risk B, score 7"
+      ],
+      "answer": "Risk A, score 15",
+      "why": "A = 3 × 5 = 15. B = 4 × 3 = 12. C = 2 × 4 = 8. A ranks highest even though B is more likely, because A's impact is severe. “Risk B, score 7” comes from adding (4 + 3) instead of multiplying."
+    },
+    {
+      "q": "Which activity is validation rather than verification?",
+      "choices": [
+        "Unit-testing the data-cleaning function against its specification",
+        "Peer-reviewing the model-training plan for errors",
+        "Piloting the forecasts to see if store managers find them useful",
+        "Checking that the API returns predictions in the documented format"
+      ],
+      "answer": "Piloting the forecasts to see if store managers find them useful",
+      "why": "Validation asks whether you built the right thing for the users' real need, which a pilot with real users tests. Here, store managers judge whether the forecasts actually help them order stock. The other three check the work against a specification or plan, which is verification (built right)."
+    },
+    {
+      "q": "Which peer-review comment is most useful to the author?",
+      "choices": [
+        "Looks good to me! The paper is clear and well organized, and I wouldn't change a thing.",
+        "This section is weak and needs a lot more work to be convincing.",
+        "I would have picked a different project idea; a chatbot would be more exciting.",
+        "The risk section lists data drift but no response, and the rubric requires one. Add monthly drift checks."
+      ],
+      "answer": "The risk section lists data drift but no response, and the rubric requires one. Add monthly drift checks.",
+      "why": "It points to an exact spot, ties the gap to the rubric, and suggests a concrete fix. A full drift response would also retrain the model when the error rises. The others are vague or are about the reviewer's taste, so the author can't act on them."
+    },
+    {
+      "q": "Free response. Suppose your three reviewers rated sections from 1 to 5. Budget: 2, 3, 2. Success metrics: 3, 2, 3. Security and privacy: 4, 3, 2. Timeline: 5, 5, 4. Two reviewers said the budget leaves out cloud costs, two said the metrics have no baseline, one said the privacy plan never explains how customer data is de-identified, and one suggested switching to deep learning. Pick three improvements for Task 3 and justify them.",
+      "answer": "Add cloud compute and storage costs to the budget, add a baseline and target to each success metric, and explain how customer data will be de-identified. Keep the timeline as it is, and decline the deep-learning switch with a short reason.",
+      "why": "Quantitative: the averages are budget (2 + 3 + 2) / 3 = 2.33, metrics (3 + 2 + 3) / 3 = 2.67, security and privacy (4 + 3 + 2) / 3 = 3.00, and timeline (5 + 5 + 4) / 3 = 4.67. The cloud-cost and baseline comments each came from 2 of 3 reviewers. Qualitative: the themes are missing cost detail, unmeasurable success and a privacy gap. The three lowest-scoring sections match those themes, so each improvement is backed by a score, a count and a rubric item; privacy has only one comment, but it is the third-lowest section and a core rubric topic. The deep-learning idea goes under feedback not adopted, with a reason such as data size, cost or explainability, and the timeline (4.67) is a strength to keep."
+    }
+  ],
+  "pitfalls": [
+    "Citing the Peerceptiv reviews you received as your “peer-reviewed” sources. Students report the paper needs real peer-reviewed journal articles.",
+    "Copying the prompt's numbering into sub-headings such as “3A. Business Problem Description.” One Task 1 was returned for it; plain main headings are safer, even though another student used numbered ones without a return.",
+    "Leaving your name on the Peerceptiv upload, or removing it from the copy you submit to WGU.",
+    "Putting off your three peer reviews. Your own reviews only start after you finish yours, so each day of delay adds a day to your finish.",
+    "Writing pages for each bullet, or one sentence for a whole section. Reviewers have seen both extremes; 1-2 solid sentences per rubric bullet is the reported target.",
+    "Designing a whole new software stack. Pitch an AI feature that augments an existing process and declare the rest out of scope.",
+    "Pasting text from your D682 or D683 documents or other sources. A Sep 2026 commenter advised keeping the similarity score under about 10%, so reuse ideas, not wording.",
+    "References without matching in-text citations, or the reverse, and skipping the APA rules listed at the bottom of the rubric.",
+    "Leaving D687 for the end of your term. The waits add about a week or more that you can't speed up, so students run it alongside D682 and D683.",
+    "Submitting a finished D687 paper bought or borrowed from someone else. It violates academic integrity, and similarity checks flag reused text."
+  ],
+  "resources": [
+    {
+      "label": "D687 task prompts, rubrics and course of study",
+      "kind": "official",
+      "note": "Inside the course only. Save a PDF of each rubric on day 1; students say the APA requirements are listed at the bottom."
+    },
+    {
+      "label": "WGU BSCS Program Guidebook (catalog 202611)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf",
+      "kind": "official",
+      "note": "The official D687 description and competencies (an image-only PDF)."
+    },
+    {
+      "label": "WGU B.S. Computer Science program page",
+      "url": "https://www.wgu.edu/online-it-degrees/computer-science.html",
+      "kind": "official",
+      "note": "Course description plus the Teamwork Project: propose a solution to peers and incorporate their feedback."
+    },
+    {
+      "label": "Peerceptiv",
+      "kind": "tool",
+      "note": "The anonymous peer-review platform students report using for D687; open it through the course."
+    },
+    {
+      "label": "WGU Library",
+      "kind": "tool",
+      "note": "Search scholarly journals for peer-reviewed articles that support your problem and approach."
+    },
+    {
+      "label": "APA Style: Student Paper Checklist (Beginner's Version)",
+      "url": "https://apastyle.apa.org/instructional-aids/beginner-student-paper-checklist.pdf",
+      "kind": "official",
+      "note": "In-text citation formats, quotations and reference-list rules in three pages, straight from APA."
+    },
+    {
+      "label": "APA Style: Journal Article Reference Checklist",
+      "url": "https://apastyle.apa.org/instructional-aids/journal-article-reference-checklist.pdf",
+      "kind": "official",
+      "note": "How to format each journal article in your reference list, with examples."
+    },
+    {
+      "label": "The 2020 Scrum Guide",
+      "url": "https://scrumguides.org/scrum-guide.html",
+      "kind": "official",
+      "note": "The official definition of Scrum roles, events and artifacts (not WGU material); useful for the methodology section."
+    },
+    {
+      "label": "scikit-learn: Metrics and scoring",
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "kind": "official",
+      "note": "scikit-learn's own definitions of precision, recall, F1, MAE, MSE and RMSE for your success-metrics section."
+    },
+    {
+      "label": "r/WGU_CompSci: D682, D683, D687 Tips for each course (Jun 2026)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u2cyb7/d682_d683_d687_tips_for_each_course/",
+      "kind": "community",
+      "note": "The newest detailed walkthrough of D687's tasks and waits, with an order for running the three AI-block courses together."
+    }
+  ],
+  "community": {
+    "summary": "The newest posts agree that D687 is a writing-and-patience course, not a coding team project: you write one hypothetical AI/ML proposal paper, review three anonymous classmates in Peerceptiv, then submit and analyze the three reviews you receive. The waits are the hard part: evaluations reportedly take about 72 hours (sometimes longer), your reviews arrive about 2-3 days after you finish your own, and about a week is the fastest realistic finish. Students advise answering each rubric bullet briefly under plain headings, citing real peer-reviewed journal articles in APA style, and building the paper from the project you're already doing in D683 or D682. Recent graduates recommend running D682, D683 and D687 together so there is always something to work on during the waits.",
+    "coverage": "16 posts, Jan 2025 - Sep 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "Help 9 weeks 6 classes…",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1wsqs5c/help_9_weeks_6_classes_i_have_trying_to_finish_in/",
+        "date": "Sep 2026",
+        "takeaway": "A commenter said D687 should follow D682 and continues D682's model, and advised answering the rubric questions concisely and keeping the similarity score under about 10%."
+      },
+      {
+        "title": "Officially a WGU CS Grad",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vcw2rh/officially_a_wgu_cs_grad/",
+        "date": "Aug 2026",
+        "takeaway": "This graduate logged 32 hours on D687 (versus 18 for D682 and 21 for D683) and suggested D682 first, then D683 Task 1, then D687 Tasks 1-2, doing D683 Task 2 during the review wait."
+      },
+      {
+        "title": "D682, D683, D687 Tips for each course",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u2cyb7/d682_d683_d687_tips_for_each_course/",
+        "date": "Jun 2026",
+        "takeaway": "The most detailed account: Task 1 is a make-believe AI/ML proposal paper, Task 2 is the three reviews you receive, and Task 3 analyzes them; cite real peer-reviewed articles, follow the APA rules at the bottom of the rubric, and expect about a week minimum. In the comments, one Task 1 was returned for prompt-numbered sub-headings, and the author recommends 1-2 sentences per rubric bullet."
+      },
+      {
+        "title": "One last term left",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u6t73u/one_last_term_left/",
+        "date": "Jun 2026",
+        "takeaway": "A commenter described the chain as D682 feeding D683, which feeds the capstone-like D687, and found it easy to stay focused through."
+      },
+      {
+        "title": "Question about D687 — Task 3",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1t7n58m/question_about_d687_task_3/",
+        "date": "May 2026",
+        "takeaway": "According to the course instructor, Task 3 needs only three well-justified improvements, and peer feedback you didn't adopt can be answered in groups rather than item by item."
+      },
+      {
+        "title": "D687 task 2 - do I need to RECEIVE 3 peer reviews before submitting?",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ri3bqd/d687_task_2_do_i_need_to_receive_3_peer_reviews/",
+        "date": "Mar 2026",
+        "takeaway": "Yes: wait until all three reviews arrive in Peerceptiv, export them, and submit them with Task 2."
+      },
+      {
+        "title": "D687 Peerceptiv",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rbagas/d687_peerceptiv/",
+        "date": "Feb 2026",
+        "takeaway": "Three reviews usually arrive within 2-3 days; once they do, Tasks 2 and 3 can be submitted the same day."
+      },
+      {
+        "title": "D687 - CS Project Dev with a Team",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1r75id8/d687_cs_project_dev_with_a_team/",
+        "date": "Feb 2026",
+        "takeaway": "Several waits stack up between peer reviews and WGU evaluations, and the journal-article step means real peer-reviewed journal articles, not your classmates' reviews."
+      },
+      {
+        "title": "Did they remove capstone from BSCS?",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ql85i7/did_they_remove_capstone_from_bscs/",
+        "date": "Jan 2026",
+        "takeaway": "Commenters say the old C964 capstone is gone: D687 replaced it with a team peer-review write-up rather than a coding project, and D683 is a smaller project than the old capstone."
+      },
+      {
+        "title": "WGU BSCS Review",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1pz1imk/wgu_bscs_review/",
+        "date": "Dec 2025",
+        "takeaway": "Called D687 an enjoyable mix of software-engineering and project-management writing that works best when modeled on your D683 project, and suggests it took about a week."
+      },
+      {
+        "title": "Now we wait. This class sucks, so much waiting, especially being my last class before graduating. D687.",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ouo3gf/now_we_wait_this_class_sucks_so_much_waiting/",
+        "date": "Nov 2025",
+        "takeaway": "A student who saved D687 for their final course vents about the stacked administrative and peer-review waits."
+      },
+      {
+        "title": "D687 Computer Science Project Development PA grading times are are crazy.",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1osnd2t/d687_computer_science_project_development_pa/",
+        "date": "Nov 2025",
+        "takeaway": "Every evaluation for this student took the full 72-hour window."
+      },
+      {
+        "title": "Finished in 1 term",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1m0lzvh/finished_in_1_term/",
+        "date": "Jul 2025",
+        "takeaway": "The poster reused their D683 project as the basis for D687; D683 itself needed three submissions because of dependency problems."
+      },
+      {
+        "title": "D682 AI optimization - any tips?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1il881u/",
+        "date": "Feb 2025",
+        "takeaway": "D687 has three tasks; after Task 1 passes you submit to Peerceptiv, and reviews can take 2+ days, so juggle D682, D683 and D687 to always have something to work on."
+      },
+      {
+        "title": "New (2025) CS Program Completion (more in comments...)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1i674zv/",
+        "date": "Jan 2025",
+        "takeaway": "Answer every rubric bullet with sections that stand alone, use APA citations, and keep your name on the WGU copy but not the Peerceptiv one; if reviews stall, ask your instructor, who can leave a review. This author's paper ran about 8 pages with 3 sources."
+      },
+      {
+        "title": "New CS Course Syllabuses (D686, D429, D682, D683, D687)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1humlsq/new_cs_course_syllabuses_d686_d429_d682_d683_d687/",
+        "date": "Jan 2025",
+        "takeaway": "An early look at the new courses: D687 centers on executive summaries and technical reports, not Python code."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU BSCS Program Guidebook, catalog 202611 (PDF)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU B.S. Computer Science program page (D687 description, Teamwork Project)",
+      "url": "https://www.wgu.edu/online-it-degrees/computer-science.html"
+    },
+    {
+      "label": "r/WGU_CompSci: D682, D683, D687 Tips for each course (Jun 2026)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u2cyb7/d682_d683_d687_tips_for_each_course/"
+    },
+    {
+      "label": "r/WGU_CompSci: Officially a WGU CS Grad (Aug 2026)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vcw2rh/officially_a_wgu_cs_grad/"
+    },
+    {
+      "label": "r/WGU_CompSci: New (2025) CS Program Completion (Jan 2025)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1i674zv/"
+    },
+    {
+      "label": "APA Style: Student Paper Checklist (Beginner's Version)",
+      "url": "https://apastyle.apa.org/instructional-aids/beginner-student-paper-checklist.pdf"
+    },
+    {
+      "label": "APA Style: Journal Article Reference Checklist",
+      "url": "https://apastyle.apa.org/instructional-aids/journal-article-reference-checklist.pdf"
+    },
+    {
+      "label": "APA Style: Guide to What's New in the 7th Edition (et al. rule)",
+      "url": "https://apastyle.apa.org/instructional-aids/whats-new-7e-guide.pdf"
+    },
+    {
+      "label": "The 2020 Scrum Guide",
+      "url": "https://scrumguides.org/scrum-guide.html"
+    },
+    {
+      "label": "scikit-learn: Metrics and scoring",
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html"
+    },
+    {
+      "label": "Google engineering practices: The Standard of Code Review",
+      "url": "https://google.github.io/eng-practices/review/reviewer/standard.html"
+    },
+    {
+      "label": "CRISP-DM overview (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining"
+    },
+    {
+      "label": "Risk register overview (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Risk_register"
+    },
+    {
+      "label": "stunlock.gg: My Thoughts on WGU and Online Schools (Jun 2025 graduate blog)",
+      "url": "https://stunlock.gg/posts/undergrad/"
+    }
+  ],
+  "caveats": [
+    "WGU's official description lists three artifacts (a stakeholder proposal, an IT executive summary of requirements and a technical report on a fully functional data product that extends earlier coding work) and says peers review them before submission. Students since 2025 describe one hypothetical proposal paper with no coding, with peer review opening only after Task 1 passes. The prompts and rubrics live only inside the course, so confirm the structure there on day 1.",
+    "Which project to build on is unresolved: the Jun 2026 author and posts summarized by Gemini reused the D683 project, while a Sep 2026 commenter said D687 continues D682's model. Since the paper is a hypothetical proposal, either should work; reuse whichever project you've already planned and ask your instructor if unsure.",
+    "Some posts listed here were summarized through Google Gemini and not opened directly. The Task 2 export step and the three-improvement guidance for Task 3 come from those posts, so treat them as reported, not verified.",
+    "Evaluators vary: one Task 1 was returned for prompt-numbered sub-headings while another student used them without a return, and evaluators have asked for items not on the rubric. Wait times (about 72 hours per evaluation, 2-3 days for reviews) are student reports, not official service levels.",
+    "Public information is thin: WGU publishes no D687 rubric, page limit or resubmission policy, and each hour count (18 in 2025, 32 in Aug 2026) comes from a single student."
+  ]
+}

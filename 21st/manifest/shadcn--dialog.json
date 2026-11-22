@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/dialog",
+  "title": "Dialog | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "lucide-react, @radix-ui/react-dialog",
+  "promptFile": "21st/prompts/shadcn--dialog.md",
+  "chars": 10847,
+  "sha256": "36796d3d9dbde4e7ef75e92ad7f8a44213523b45a92a5fb007bb81767c2d09ea",
+  "sha256Of": "file bytes",
+  "capturedSha256": "ef995c3b3f6c3223f5cc589e26e7f9c3783c93dc6574a8ba245f8a6a86a4eb8e",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Collector tab viewport was emulated at 1440x900 so the desktop 'Change copy action' menu was visible. Verified on first attempt. Prompt also bundles the shadcn/button, shadcn/input and shadcn/label dependency files; its npm line lists lucide-react, @radix-ui/react-dialog, @radix-ui/react-slot, class-variance-authority, @radix-ui/react-label.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (10847) is the text's length in UTF-16 code units and equals the file's."
+}

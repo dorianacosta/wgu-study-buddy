@@ -1,0 +1,652 @@
+{
+  "code": "D281",
+  "summary": "You pass D281 by passing the LPI Linux Essentials certification exam: 40 questions in 60 minutes at a Pearson VUE test center or online through OnVUE, paid for with a WGU voucher. It follows LPI's five topic areas, from open-source basics and the command line to scripting, system and network basics, and users and permissions, and recent passers call it one of the easier courses, finishing in a few days to about two weeks. LPI released version 2.0 (exam 010-200) in Oct 2026 and keeps 1.6 (010-160) only until April 2027, so confirm which version your voucher covers before you book the exam.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment: LPI Linux Essentials certification exam, proctored by Pearson VUE",
+    "format": "40 questions · 60 minutes · scored 200–800, 500 to pass · test center or OnVUE online",
+    "details": [
+      "D281's assessment is the LPI Linux Essentials exam itself. 2026 students consistently report that passing it passes the course, and WGU says the exam fee is included in tuition. Students report requesting the voucher through the course instructor, who may approve you to test first.",
+      "40 questions in 60 minutes (LPI and WGU). LPI scores every exam on a 200–800 scale with 500 to pass, and the number of correct answers needed depends on which questions you get, so 500 isn't a fixed percentage.",
+      "Question types: single-answer multiple choice, multiple-response items that tell you how many to pick (\"Choose TWO\" or \"Choose THREE\"), and fill-in-the-blank items where you type a command, file or path exactly as you would in a terminal. LPI's item-writing guide gives choice items five options. Students report only a couple of fill-in-the-blank items.",
+      "Two versions are on sale. LPI released Linux Essentials 2.0 (exam <code>010-200</code>) on Oct 15, 2026, and lists 1.6 (exam <code>010-160</code>) as available until April 2027. Both have 40 questions, five topics and the same topic weights (7, 9, 9, 8, 7), and LPI counts either version equally.",
+      "010-160 retires in April 2027, so check which version is current when you book. WGU's Linux certification page still names 010-160, every 2026 student report that names a version sat 010-160, and no WGU notice about switching vouchers was found, so ask your instructor which exam code your voucher covers.",
+      "Delivery: a Pearson VUE test center or OnVUE online proctoring. OnVUE needs a Windows or Mac computer (not Linux), a camera, a stable connection and a quiet private room, and its interface and proctors are English-only.",
+      "Results: your score report appears right after the exam (students report it breaks your score down by topic), and Pearson VUE sends results to LPI within 24 hours. Students report the course shows as passed at WGU a few days later. The certificate never expires and has no prerequisites.",
+      "Retakes: LPI requires a 7-day wait after a first attempt and 14 days after later attempts, and treats versions of the same exam as one exam for this rule. WGU's retake-voucher steps aren't public; an Oct 2026 student posted about a third attempt."
+    ],
+    "tips": [
+      "Learn the core both versions share first, then add your version's extras once your instructor confirms the exam code. 1.6 keeps <code>ifconfig</code>, <code>route</code>, <code>netstat</code>, <code>info</code>, <code>locate</code> and syslog; 2.0 adds <code>systemctl</code>, <code>journalctl</code>, <code>ssh</code>, <code>scp</code>, <code>ssh-keygen</code>, <code>resolvectl</code>, <code>find</code>, <code>grep -E</code> and <code>uniq</code>.",
+      "Practice typing answers, not just recognizing them. Fill-in-the-blank items want the exact terminal string, usually the bare command name unless the item asks for options or a full path.",
+      "On \"Choose TWO\" or \"Choose THREE\" items, mark each option true or false on its own instead of hunting for the best one.",
+      "Spend time by weight: shell scripting is the single heaviest objective (weight 4), and the two command-line topics together carry 18 of the 40 weight points.",
+      "Testing at home? Run the OnVUE system test on the exam computer days ahead and pick the online version of the exam when you book. Book a test center if your main computer runs Linux or your room or connection is unreliable.",
+      "Book once you score about 85–90% on two timed sets of original practice questions. Since 500 out of 800 isn't a fixed percentage, leave yourself a cushion."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your Course Planning Tool report with the course instructor and build a personalized course plan (listed first in the program guide).",
+    "The learner develops resources for data access and security.",
+    "The learner identifies the fundamentals of open-source software."
+  ],
+  "topics": [
+    {
+      "title": "Linux distributions and open-source software",
+      "eli5": "The Linux kernel is the engine; a distribution is the whole car built around it, with tools, apps and a way to add more software.",
+      "detail": "Linus Torvalds released the Linux kernel in 1991, and a distribution bundles that kernel with userspace tools (many from GNU), a package manager and default software. Distribution families matter on the exam: Debian-based systems (Debian, Ubuntu, Raspberry Pi OS) use .deb packages, Red Hat-based systems (RHEL, Fedora, CentOS Stream, AlmaLinux, Rocky) use .rpm packages, SUSE also uses .rpm packages but manages them with zypper, and Alpine uses its own apk tool. Release models range from long-term support (LTS) and stable to testing, unstable and rolling releases. Android runs a Linux-based kernel but isn't usually counted as a Linux distribution because it doesn't use the GNU userland. You should also know which open-source apps fill which roles and where Linux runs, from servers and the cloud to embedded devices.",
+      "points": [
+        "Package tools: <code>dpkg</code>, <code>apt</code>, <code>apt-get</code> (.deb) · <code>rpm</code>, <code>dnf</code>, or <code>yum</code> in 1.6 (.rpm) · <code>zypper</code> (SUSE) · <code>apk</code> (Alpine, 2.0)",
+        "App roles: LibreOffice office suite, Firefox and Chromium browsers, Thunderbird email, GIMP images, Apache HTTPD and NGINX web servers, MariaDB, MySQL and PostgreSQL databases, Samba for Windows-style file sharing, NFS for Unix file sharing, Nextcloud and ownCloud for self-hosted file sync",
+        "2.0 adds kernel vs userspace, rolling releases and newer apps (VS Code or VSCodium, Inkscape, VLC, Git, GitLab); 1.6 still names Linux Mint, Scientific Linux, OpenOffice.org and Perl",
+        "Linux usage (1.4 / 011.4): where Linux runs (desktops, servers, cloud and virtualization), terminals and password hygiene; 2.0 moves vi and nano here and adds containers, password managers, MFA, passkeys, HTTPS and disk encryption",
+        "Linux runs most servers and every TOP500 supercomputer since Nov 2017"
+      ]
+    },
+    {
+      "title": "Open-source licensing",
+      "eli5": "A license is the rulebook for what you may do with someone's code. Copyleft says share alike; permissive says do almost anything, just keep the author's name on it.",
+      "detail": "The Free Software Foundation (FSF) defines free software by four freedoms: run the program for any purpose, study and change it (which requires the source code), share copies, and share modified versions; \"free\" means freedom, not price. The Open Source Initiative (OSI) maintains the Open Source Definition, which requires free redistribution, available source code, permission for derived works and no discrimination against people or fields of use. Copyleft licenses such as the GPL require that distributed modified versions stay under the same license with source available, while permissive licenses such as BSD, MIT and Apache ask little more than keeping the copyright notice, so derived code can become proprietary. Creative Commons licenses are for creative content such as text, images and music rather than code. The Linux kernel itself is licensed under GPLv2.",
+      "points": [
+        "Copyleft: GPL (and AGPL, LGPL) · Permissive: BSD, MIT, Apache",
+        "FSF backs the free software movement and the GPL; OSI approves licenses that meet the Open Source Definition",
+        "Creative Commons building blocks: BY attribution, SA share-alike, NC non-commercial, ND no derivatives",
+        "1.6 also covers the terms FOSS and FLOSS and open-source business models such as paid support, services and dual licensing",
+        "2.0 also covers proprietary software, digital autonomy and digital sovereignty (control over your own software and data instead of depending on one vendor)"
+      ]
+    },
+    {
+      "title": "Command-line basics and getting help",
+      "eli5": "The shell is a translator that turns what you type into running programs, and variables are labeled sticky notes it keeps for you.",
+      "detail": "Bash reads each command line, expands variables and globs, then runs the command. Set a variable with <code>NAME=value</code> (no spaces around the equals sign) and read it with <code>$NAME</code>; <code>export NAME</code> turns it into an environment variable that child processes inherit. <code>PATH</code> is a colon-separated list of directories, such as /usr/bin and /usr/sbin, that the shell searches for commands, and <code>type</code> tells you whether a name is an alias, a builtin or a file on disk. Single quotes keep text literal, double quotes still expand <code>$VAR</code>, and a backslash escapes one character. For help, man pages come in numbered sections (1 user commands, 5 file formats, 8 admin commands), most tools accept <code>--help</code>, and <code>/usr/share/doc/</code> holds package documentation.",
+      "points": [
+        "<code>echo $PATH</code> · <code>export EDITOR=nano</code> · <code>history</code> (then <code>!n</code> reruns entry n) · <code>type ls</code>",
+        "<code>man 5 passwd</code> opens the file-format page, <code>man passwd</code> opens the command's page, and <code>man -k word</code> searches page descriptions",
+        "<code>NAME = value</code> with spaces fails: the shell tries to run a command called NAME",
+        "1.6 only: <code>info</code> pages and <code>locate</code>. 2.0 adds <code>-h</code>/<code>--help</code> and the binary directories /bin, /usr/bin, /sbin and /usr/sbin"
+      ]
+    },
+    {
+      "title": "Files, directories, paths and globbing",
+      "eli5": "The filesystem is one upside-down tree that starts at <code>/</code>. A path is directions to a file, either from the root (absolute) or from where you're standing (relative).",
+      "detail": "Absolute paths start with <code>/</code>; relative paths start from the current directory, where <code>.</code> is the current directory, <code>..</code> its parent and <code>~</code> your home. Common <code>ls</code> options: <code>-a</code> shows hidden dot files, <code>-A</code> does too but skips . and .., <code>-l</code> gives the long format, <code>-h</code> human-readable sizes, <code>-R</code> a recursive listing, <code>-d</code> the directory itself rather than its contents, and <code>-t</code> newest first. Create, copy, move and remove with <code>touch</code>, <code>mkdir -p</code>, <code>cp -r</code>, <code>mv</code> (which also renames), <code>rm -r</code> and <code>rmdir</code> (empty directories only). Names are case sensitive, and the shell expands globs before the command runs: <code>*</code> matches any string, <code>?</code> exactly one character, and <code>[abc]</code> or <code>[0-9]</code> one character from a set. 2.0 adds <code>find</code>, which searches the live tree by name, type, size, owner or age; 1.6 lists <code>locate</code>, which searches a prebuilt database instead.",
+      "points": [
+        "<code>find /etc -name \"*.conf\"</code> · <code>find ~ -type d -iname photos</code> · <code>find / -size +100M</code> · <code>find . -mtime 0</code> (modified in the last 24 hours)",
+        "<code>ls -R</code> is recursive but <code>ls -r</code> reverses the sort; <code>cp</code> and <code>rm</code> accept either <code>-r</code> or <code>-R</code>",
+        "<code>rm -i</code> asks before each delete and <code>rm -f</code> never asks; there's no recycle bin",
+        "<code>cd</code> alone goes home, <code>cd ..</code> goes up one level, and <code>pwd</code> prints where you are",
+        "<code>File.txt</code> and <code>file.txt</code> are two different files"
+      ]
+    },
+    {
+      "title": "Archiving and compression",
+      "eli5": "<code>tar</code> packs many files into one box; gzip, bzip2 and xz vacuum-seal a single file so it takes less space. A .tar.gz is a box that was sealed afterward.",
+      "detail": "<code>tar</code> has three main modes: <code>-c</code> creates, <code>-x</code> extracts and <code>-t</code> lists. <code>-f</code> names the archive file and must come right before that name, <code>-v</code> lists files as it works, and <code>-C DIR</code> switches to a directory first, for example to extract somewhere else. Compression options are <code>-z</code> for gzip (.tar.gz or .tgz), <code>-j</code> for bzip2 (.tar.bz2) and <code>-J</code> for xz (.tar.xz). On its own, <code>gzip file</code> replaces the file with file.gz (undo with <code>gunzip</code> or <code>gzip -d</code>; <code>-c</code> writes to stdout and keeps the original), and bzip2 and xz work the same way. <code>zip -r site.zip site/</code> archives and compresses in one step, and <code>unzip site.zip</code> extracts it.",
+      "points": [
+        "Create: <code>tar -czf backup.tar.gz docs/</code> · list: <code>tar -tzf backup.tar.gz</code> · extract elsewhere: <code>tar -xzf backup.tar.gz -C /tmp/restore</code>",
+        "Old-style options without a dash work too: <code>tar cvf etc.tar /etc</code>",
+        "gzip, bzip2 and xz compress files one at a time, which is why they're paired with tar for directories",
+        "Lowercase <code>-j</code> is bzip2 and uppercase <code>-J</code> is xz; mixing them up is a classic wrong answer"
+      ]
+    },
+    {
+      "title": "Pipes, redirection, grep and text filters",
+      "eli5": "Every command has one input hose and two output hoses, one for normal output and one for errors. Redirection points those hoses at files, and a pipe connects one command's output to the next command's input.",
+      "detail": "The standard streams are 0 stdin, 1 stdout and 2 stderr. <code>&gt;</code> writes stdout to a file (overwriting it), <code>&gt;&gt;</code> appends, <code>&lt;</code> reads stdin from a file, <code>2&gt;</code> redirects errors, and <code>&amp;&gt; file</code> or <code>&gt; file 2&gt;&amp;1</code> sends both streams to the file; Bash applies redirections left to right, so <code>2&gt;&amp;1 &gt; file</code> leaves errors on the screen. A pipe <code>|</code> feeds one command's stdout into the next command's stdin, and writing to <code>/dev/null</code> throws output away. <code>grep</code> prints lines that match a pattern: <code>-i</code> ignores case, <code>-v</code> inverts the match, <code>-c</code> counts matching lines, <code>-n</code> numbers them, <code>-r</code> searches directories, <code>-l</code> lists only file names, <code>-w</code> matches whole words and <code>-E</code> uses extended regex. Filters to know: <code>head</code> and <code>tail</code> (10 lines by default, <code>-n N</code> to change it, <code>tail -f</code> to follow a growing log), <code>cut -d: -f1</code>, <code>sort</code>, <code>uniq</code>, <code>wc -l</code>, <code>cat</code> and <code>less</code>.",
+      "points": [
+        "Regex: <code>.</code> any one character, <code>*</code> zero or more of the previous item, <code>[ ]</code> one character from a set, <code>^</code> line start, <code>$</code> line end; with <code>grep -E</code>, <code>?</code> means zero or one and <code>+</code> one or more",
+        "A regex <code>*</code> isn't a glob <code>*</code>: quote patterns (<code>grep 'a.*z' file</code>) so the shell leaves them alone",
+        "<code>sort names.txt | uniq -c</code> counts repeats; <code>uniq</code> alone misses duplicates that aren't next to each other",
+        "<code>cut -d: -f1,7 /etc/passwd</code> prints user names and shells; <code>tail -n +2 data.csv</code> skips a header line",
+        "A here-document (<code>&lt;&lt; EOF</code>) and a here-string (<code>&lt;&lt;&lt; text</code>) feed text to stdin",
+        "1.6 lists basic regex; 2.0 lists extended regex plus <code>grep -E</code> and <code>uniq</code>"
+      ]
+    },
+    {
+      "title": "Shell scripting basics",
+      "eli5": "A script is a recipe card of commands the shell follows from top to bottom, with blanks (<code>$1</code>, <code>$2</code>) you fill in when you run it.",
+      "detail": "Start a script with the shebang <code>#!/bin/bash</code>, make it executable with <code>chmod +x script.sh</code>, and run it as <code>./script.sh</code>. Arguments arrive as <code>$1</code> through <code>$9</code>; <code>$0</code> is the script's name, <code>$#</code> the number of arguments, <code>$@</code> all of them, and <code>$?</code> the exit status of the last command. Every command exits with a status where 0 means success and anything else means failure, and <code>exit N</code> ends a script with status N. Tests go inside <code>[ ]</code> (the same as the <code>test</code> command) with spaces inside the brackets: <code>-e</code> exists, <code>-f</code> regular file, <code>-d</code> directory, <code>-z</code> empty string, <code>=</code> and <code>!=</code> for strings, and <code>-eq</code>, <code>-ne</code>, <code>-lt</code>, <code>-le</code>, <code>-gt</code>, <code>-ge</code> for integers. A <code>for</code> loop runs over a word list or a glob, such as <code>for f in *.log; do echo \"$f\"; done</code>.",
+      "points": [
+        "<code>if [ -f \"$1\" ]; then echo found; else echo missing; fi</code>",
+        "<code>for n in 1 2 3; do echo \"$n\"; done</code>",
+        "Quote variables (<code>\"$1\"</code>) so a name with spaces stays one argument",
+        "nano: Ctrl+O saves, Ctrl+X exits · vi: <code>i</code> to insert, Esc, <code>:wq</code> to save and quit, <code>:q!</code> to quit without saving",
+        "Weight 4 in both versions, about a tenth of the exam"
+      ]
+    },
+    {
+      "title": "Hardware, the filesystem layout, processes and logs",
+      "eli5": "Linux shows almost everything as a file: disks under <code>/dev</code>, settings under <code>/etc</code>, live system facts under <code>/proc</code>, and a diary of what happened under <code>/var/log</code>.",
+      "detail": "Know the parts of a computer (motherboard, CPU, RAM, power supply, storage, network cards) and that drivers are either built into the kernel or loaded as kernel modules. Disks show up as device files: <code>/dev/sda</code> is the first SATA or SCSI-type disk and <code>/dev/sda1</code> its first partition, while NVMe drives look like <code>/dev/nvme0n1p1</code>. Key directories: <code>/etc</code> holds configuration, <code>/var/log</code> logs, <code>/proc</code> running processes and kernel data, <code>/sys</code> devices and kernel settings, <code>/boot</code> the kernel and bootloader files, and <code>/dev</code> device files. <code>ps aux</code> or <code>ps -ef</code> takes a snapshot of processes, <code>top</code> shows a live view, <code>free -h</code> shows RAM and swap, and <code>dmesg</code> prints the kernel's ring buffer of boot and driver messages. For logs, 1.6 covers syslog files in /var/log, while 2.0 covers systemd: <code>systemctl start</code>, <code>stop</code> and <code>status</code> for services and <code>journalctl</code> for the journal.",
+      "points": [
+        "2.0 special files: <code>/dev/null</code> discards whatever you write, <code>/dev/zero</code> returns an endless stream of zero-valued bytes, <code>/dev/urandom</code> returns random bytes",
+        "<code>/proc</code> and <code>/sys</code> are virtual: the kernel builds them on the fly, and <code>cat /proc/cpuinfo</code> shows the CPU",
+        "Choosing an OS: Windows, macOS and Linux, GUI vs CLI, stable vs beta releases and maintenance cycles; 2.0 adds ISO install media, dual boot, WSL and cloud instances",
+        "<code>systemctl status nginx</code> shows a service's state; <code>journalctl -u nginx</code> shows its log entries",
+        "Other directories worth knowing: <code>/home</code>, <code>/root</code>, <code>/usr/bin</code>, <code>/usr/share/doc</code>, <code>/opt</code>, <code>/media</code>, <code>/mnt</code>"
+      ]
+    },
+    {
+      "title": "Networking basics",
+      "eli5": "An IP address is a house number, the default gateway is the road out of the neighborhood, and DNS is the phone book that turns names into numbers.",
+      "detail": "<code>ip addr show</code> lists interfaces and their IPv4 and IPv6 addresses, <code>ip route show</code> prints the routing table (the <code>default via</code> line is the gateway), and <code>ip -6 route show</code> shows IPv6 routes. <code>ss</code> lists network sockets: <code>-t</code> TCP, <code>-u</code> UDP, <code>-l</code> listening, <code>-n</code> numeric and <code>-p</code> owning process, so <code>ss -tulpn</code> shows what's listening. <code>ping -c 4 host</code> checks reachability with ICMP echo requests, and <code>host example.com</code> looks a name up in DNS. <code>/etc/resolv.conf</code> lists the DNS servers (<code>nameserver</code> lines) and search domains, while <code>/etc/hosts</code> maps names to addresses locally, such as 127.0.0.1 localhost. Addresses are set by hand or automatically: DHCP for IPv4, and SLAAC or DHCPv6 for IPv6 (2.0 terms).",
+      "points": [
+        "1.6 legacy tools: <code>ifconfig</code> (addresses), <code>route</code> (routing table), <code>netstat</code> (sockets); 2.0 drops them",
+        "2.0 adds <code>resolvectl</code>, which shows the DNS servers systemd-resolved is using",
+        "IPv4 is 32 bits in dotted decimal (192.168.1.10); IPv6 is 128 bits in hex groups (2001:db8::1); loopback is 127.0.0.1 and ::1",
+        "Troubleshoot in order: address (<code>ip addr</code>), gateway (<code>ip route</code>), ping an IP, then name lookup (<code>host</code>, resolv.conf)"
+      ]
+    },
+    {
+      "title": "Users, groups and elevated privileges",
+      "eli5": "Every person and service gets an ID badge (a UID) and joins teams (groups). Root holds the master key, so you borrow its power only when you need it.",
+      "detail": "Root is UID 0; regular users get UIDs from a configured range, and system accounts run services without normal logins. <code>/etc/passwd</code> has seven fields (name:x:UID:GID:comment:home:shell), <code>/etc/shadow</code> holds password hashes and aging fields and must not be readable by regular users, and <code>/etc/group</code> has four fields (name:password:GID:members). <code>useradd -m</code> creates a user plus a home directory copied from <code>/etc/skel/</code>, <code>groupadd</code> creates a group, and <code>passwd</code> sets or changes a password. <code>su -</code> starts a full login shell as another user (root by default) with that account's password, while <code>sudo command</code> runs one command as root if <code>/etc/sudoers</code> allows it, normally asking for your own password. <code>id</code> shows your UID, GID and groups, <code>who</code> and <code>w</code> show who's logged in, and <code>last</code> lists recent logins.",
+      "points": [
+        "<code>sudo useradd -m -s /bin/bash -G devs alice</code>, then <code>sudo passwd alice</code>",
+        "<code>su</code> without the dash keeps your current environment; <code>su -</code> loads the target user's",
+        "A new account stays locked (<code>!</code> in shadow) until a password is set",
+        "2.0 adds SSH: <code>ssh user@host</code> logs in, <code>scp file user@host:/path</code> copies, <code>ssh-keygen</code> makes a key pair, and the public key goes in the server's <code>~/.ssh/authorized_keys</code>",
+        "Both versions list <code>id</code>, <code>w</code> and <code>last</code>; 1.6 also lists <code>who</code>, and 2.0 adds <code>wtmpdb last</code>"
+      ]
+    },
+    {
+      "title": "Permissions, ownership, special bits and links",
+      "eli5": "Each file has three locks (owner, group, everyone else), and each lock has three keys: read, write and execute. <code>chmod</code> changes who holds which keys.",
+      "detail": "<code>ls -l</code> shows the type (<code>-</code> file, <code>d</code> directory, <code>l</code> symlink) and then three rwx triplets for user, group and others. In octal each triplet adds r = 4, w = 2 and x = 1, so 755 is rwxr-xr-x and 640 is rw-r-----; symbolic mode uses <code>u</code>, <code>g</code>, <code>o</code>, <code>a</code> with <code>+</code>, <code>-</code> or <code>=</code>, as in <code>chmod g+w file</code> or <code>chmod u=rw,go=r file</code>. On a directory, r lets you list names, w lets you create or delete entries, and x lets you enter it. An optional leading fourth digit sets special bits: 4 SUID (the program runs as the file's owner, like <code>passwd</code>), 2 SGID (runs with the file's group; on a directory, new files inherit the group) and 1 sticky (in a shared directory such as /tmp, only a file's owner, the directory's owner or root can delete or rename it). <code>chown user:group file</code> changes ownership, <code>ln -s target link</code> makes a symbolic link, and plain <code>ln</code> makes a hard link that shares the original's inode.",
+      "points": [
+        "<code>4755</code> = rwsr-xr-x · <code>2755</code> = rwxr-sr-x · <code>1777</code> = rwxrwxrwt; a capital S or T means the special bit is set without execute",
+        "<code>=</code> clears unlisted bits: <code>chmod u=rw file</code> removes the owner's x",
+        "<code>ls -ld dir</code> shows a directory's own permissions; <code>chmod -R</code> and <code>chown -R</code> recurse",
+        "Hard links can't cross filesystems or point to directories; symlinks can, but they break if the target is deleted",
+        "/tmp may be cleared at boot, while /var/tmp keeps files longer",
+        "umask (background; not named in the LE objectives) removes bits from new files: files start at 666 and directories at 777, so umask 022 gives 644 and 755"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Exam format", "value": "40 questions · 60 minutes · scored 200–800, pass at 500", "note": "LPI; the number of correct answers needed varies by question set" },
+    { "label": "Exam codes", "value": "<code>010-200</code> = version 2.0 (since Oct 15, 2026) · <code>010-160</code> = version 1.6 (available until April 2027)", "note": "Either version counts equally" },
+    { "label": "Topic weights", "value": "7 · 9 · 9 · 8 · 7 (sum 40) in both versions", "note": "Roughly one question per weight point; scripting (weight 4) is the heaviest objective" },
+    { "label": "Version map", "value": "2.0 topics <code>011</code>–<code>015</code> = 1.6 topics 1–5; for example <code>013.3</code> = old <code>3.3</code> scripting", "note": "LPI says the outline is unchanged; most objectives were renamed" },
+    { "label": "Standard streams", "value": "<code>0</code> stdin · <code>1</code> stdout · <code>2</code> stderr" },
+    { "label": "Redirection", "value": "<code>&gt;</code> overwrite · <code>&gt;&gt;</code> append · <code>&lt;</code> input · <code>2&gt;</code> errors · <code>&amp;&gt;</code> or <code>&gt; f 2&gt;&amp;1</code> both · <code>|</code> pipe", "note": "Applied left to right: <code>2&gt;&amp;1 &gt; f</code> leaves errors on the screen" },
+    { "label": "tar options", "value": "<code>-c</code> create · <code>-x</code> extract · <code>-t</code> list · <code>-f</code> archive name · <code>-v</code> verbose · <code>-z</code> gzip · <code>-j</code> bzip2 · <code>-J</code> xz · <code>-C</code> target directory", "note": "<code>tar -czf a.tar.gz dir/</code> · <code>tar -xzf a.tar.gz -C /tmp</code>" },
+    { "label": "gzip, bzip2, xz", "value": "<code>gzip f</code> → <code>f.gz</code> (original removed); undo with <code>gunzip</code> or <code>gzip -d</code>; <code>-c</code> writes to stdout and keeps the original", "note": "bzip2 (.bz2) and xz (.xz) behave the same; zip and unzip archive and compress in one step" },
+    { "label": "Octal permissions", "value": "r = 4, w = 2, x = 1 per triplet: <code>755</code> rwxr-xr-x · <code>644</code> rw-r--r-- · <code>640</code> rw-r----- · <code>600</code> rw------- · <code>700</code> rwx------" },
+    { "label": "Special bits", "value": "<code>4</code> SUID · <code>2</code> SGID · <code>1</code> sticky: <code>4755</code> rwsr-xr-x · <code>2755</code> rwxr-sr-x · <code>1777</code> rwxrwxrwt", "note": "Capital S or T = special bit set without execute" },
+    { "label": "umask", "value": "Files start at 666, directories at 777: umask <code>022</code> → 644 / 755 · <code>027</code> → 640 / 750 · <code>077</code> → 600 / 700", "note": "Background only; not named in the LE objectives" },
+    { "label": "/etc/passwd (7 fields)", "value": "<code>name:x:UID:GID:comment:home:shell</code>", "note": "<code>x</code> = the hash lives in /etc/shadow; root is UID 0" },
+    { "label": "/etc/shadow (9 fields)", "value": "<code>name:hash:lastchange:min:max:warn:inactive:expire:reserved</code>", "note": "Not readable by regular users; <code>!</code> in the hash field = locked" },
+    { "label": "/etc/group (4 fields)", "value": "<code>name:password:GID:member1,member2</code>" },
+    { "label": "Script variables", "value": "<code>$0</code> script name · <code>$1</code>–<code>$9</code> arguments · <code>$#</code> count · <code>$@</code> all arguments · <code>$?</code> last exit status · <code>$$</code> shell PID", "note": "Exit status 0 = success, non-zero = failure; <code>exit 2</code> ends a script with status 2" },
+    { "label": "Test operators", "value": "<code>-e</code> exists · <code>-f</code> regular file · <code>-d</code> directory · <code>-r</code> <code>-w</code> <code>-x</code> · <code>-z</code> empty · <code>-n</code> non-empty · <code>=</code> <code>!=</code> strings · <code>-eq -ne -lt -le -gt -ge</code> integers", "note": "Spaces inside the brackets: <code>[ -f \"$1\" ]</code>" },
+    { "label": "man sections", "value": "1 user commands · 5 file formats (<code>man 5 passwd</code>) · 8 admin commands; <code>man -k word</code> searches descriptions" },
+    { "label": "Quoting", "value": "<code>'$X'</code> literal · <code>\"$X\"</code> expands · <code>\\$X</code> escapes one character", "note": "No spaces around <code>=</code> in <code>NAME=value</code>" },
+    { "label": "grep options", "value": "<code>-i</code> ignore case · <code>-v</code> invert · <code>-c</code> count lines · <code>-n</code> line numbers · <code>-r</code> recursive · <code>-l</code> file names · <code>-w</code> whole word · <code>-E</code> extended regex" },
+    { "label": "Regex vs glob", "value": "Regex: <code>.</code> one character, <code>*</code> zero or more of the previous item, <code>^</code> start, <code>$</code> end, <code>[ ]</code> set · Glob: <code>*</code> any string, <code>?</code> one character, <code>[ ]</code> set" },
+    { "label": "Key directories", "value": "<code>/etc</code> config · <code>/var/log</code> logs · <code>/proc</code> processes and kernel · <code>/sys</code> devices · <code>/dev</code> device files · <code>/boot</code> kernel and bootloader · <code>/etc/skel</code> new-user template · <code>/usr/share/doc</code> docs" },
+    { "label": "Processes and memory", "value": "<code>ps aux</code> or <code>ps -ef</code> snapshot · <code>top</code> live view · <code>free -h</code> RAM and swap · <code>dmesg</code> kernel messages", "note": "2.0 adds <code>systemctl status nginx</code> and <code>journalctl -u nginx</code>" },
+    { "label": "Network tools", "value": "<code>ip addr show</code> · <code>ip route show</code> (default gateway) · <code>ss -tulpn</code> · <code>ping -c 4 host</code> · <code>host name</code>", "note": "1.6 also: ifconfig, route, netstat · 2.0 also: <code>ip -6 route show</code>, resolvectl" },
+    { "label": "Name resolution files", "value": "<code>/etc/resolv.conf</code> DNS servers (<code>nameserver</code> lines) and search domains · <code>/etc/hosts</code> local name-to-address map" },
+    { "label": "Package tools", "value": "Debian and Ubuntu (.deb): dpkg, apt, apt-get · Red Hat and Fedora (.rpm): rpm, dnf (yum in 1.6) · SUSE: zypper · Alpine: apk" },
+    { "label": "Licenses", "value": "Copyleft (GPL): distributed changes keep the license and the source · Permissive (BSD, MIT, Apache): few conditions, derived code can go proprietary", "note": "FSF = the four freedoms; OSI = the Open Source Definition" },
+    { "label": "su vs sudo", "value": "<code>su -</code>: full login shell as root, using root's password · <code>sudo cmd</code>: one command as root if /etc/sudoers allows it, by default asking for your own password" },
+    { "label": "Links", "value": "<code>ln a b</code> hard link: same inode, same filesystem, no directories · <code>ln -s a b</code> symlink: points by path, can cross filesystems, breaks if the target is removed" },
+    { "label": "SSH (2.0)", "value": "<code>ssh user@host</code> · <code>scp file user@host:/path</code> · <code>ssh-keygen</code> makes a key pair · the public key goes in the server's <code>~/.ssh/authorized_keys</code>" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup and version check",
+      "tasks": [
+        "Review your Course Planning Tool report with your instructor and ask two things: which exam code your voucher covers (010-160 or 010-200) and how to request the voucher.",
+        "Set up a lab you'll use every day: an Ubuntu VM in VirtualBox, WSL on Windows, or NetAcad's browser terminal.",
+        "Open LPI's objective list for your version and start an error log (missed item, objective, fix).",
+        "Already comfortable in a terminal? Passers with Linux experience report finishing in days, so squeeze Days 2-5 into two days."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Distributions, open-source apps and licensing (weight 7)",
+      "tasks": [
+        "Learn the distribution families and their package tools, kernel vs userspace, release types (LTS, stable, rolling) and how Android relates to Linux.",
+        "Match open-source apps to roles: office suite, browser, email, graphics, web server, database, file sharing.",
+        "Four freedoms, OSI, copyleft vs permissive, Creative Commons; 1.6 adds FOSS/FLOSS and business models, 2.0 adds digital sovereignty, MFA and passkeys.",
+        "Do the guided exercises for these lessons in LPI's Learning Materials."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Shell basics and getting help",
+      "tasks": [
+        "Variables, <code>export</code>, <code>PATH</code>, quoting drills (single vs double quotes vs backslash), <code>echo</code>, <code>history</code>, <code>type</code>.",
+        "<code>man</code> sections, <code>man -k</code>, <code>--help</code> and <code>/usr/share/doc/</code>; 1.6 adds <code>info</code> and <code>locate</code>.",
+        "Lab: set and export a variable, then check it from a child shell; open <code>man 5 passwd</code>."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Files, directories and globbing",
+      "tasks": [
+        "Absolute vs relative paths, <code>.</code>, <code>..</code> and <code>~</code>, and <code>ls -a -A -l -h -R -d</code>.",
+        "<code>touch</code>, <code>mkdir -p</code>, <code>cp -r</code>, <code>mv</code>, <code>rm -r</code>, <code>rmdir</code>; globs <code>*</code>, <code>?</code> and <code>[ ]</code>; <code>find</code> by name, type, size and age.",
+        "Lab: build and tear down a directory tree using only the shell, then play the first few levels of OverTheWire Bandit."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Archives, redirection and text filters",
+      "tasks": [
+        "<code>tar</code> with <code>-c -x -t -v -f -z -j -J -C</code>; gzip, bzip2, xz, zip and unzip.",
+        "Streams 0, 1 and 2; <code>&gt;</code>, <code>&gt;&gt;</code>, <code>&lt;</code>, <code>2&gt;</code>, <code>&amp;&gt;</code>, <code>2&gt;&amp;1</code>, pipes, and why order matters.",
+        "<code>grep -i -v -c -n -r -l -w -E</code>, <code>head</code>, <code>tail</code>, <code>cut</code>, <code>sort</code>, <code>uniq</code>, <code>wc</code>, <code>less</code> and basic regex.",
+        "Lab: three pipelines on <code>/etc/passwd</code>: list the shells, count users per shell, and find accounts that use nologin."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Shell scripting (weight 4, the heaviest objective)",
+      "tasks": [
+        "Shebang, <code>chmod +x</code>, <code>$1</code>–<code>$9</code>, <code>$#</code>, <code>$@</code>, <code>$?</code>, <code>if [ ]</code> file and string tests, <code>for</code> loops over lists and globs, <code>exit</code> codes.",
+        "Write three small scripts: an argument check with a usage message, a loop over <code>*.log</code> files, and one that ends with a chosen exit status you then read with <code>echo $?</code>.",
+        "Learn enough nano and vi to open, edit and save a file.",
+        "Do the guided and explorational exercises for the scripting lesson."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Hardware, directories, processes and logs",
+      "tasks": [
+        "Hardware terms, <code>/dev/sd*</code> and <code>/dev/nvme*</code> names, kernel modules, and what lives in each main directory.",
+        "<code>ps aux</code>, <code>ps -ef</code>, <code>top</code>, <code>free -h</code>, <code>dmesg</code>, <code>/proc</code> and <code>/var/log</code>; 2.0 adds <code>systemctl</code>, <code>journalctl</code>, <code>/dev/null</code>, <code>/dev/zero</code> and <code>/dev/urandom</code>.",
+        "Choosing an OS: GUI vs CLI, stable vs beta, maintenance cycles; 2.0 adds ISO media, dual boot, WSL and cloud instances."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Networking, then a first timed practice set",
+      "tasks": [
+        "<code>ip addr show</code>, <code>ip route show</code>, <code>ss -tulpn</code>, <code>ping -c</code>, <code>host</code>, <code>/etc/resolv.conf</code>, <code>/etc/hosts</code>, IPv4 vs IPv6.",
+        "1.6 extras: <code>ifconfig</code>, <code>route</code>, <code>netstat</code>. 2.0 extras: <code>ip -6 route show</code>, <code>resolvectl</code>, DHCP, SLAAC and DHCPv6.",
+        "Take a timed set of 40 original practice questions in 60 minutes and log every miss by objective."
+      ]
+    },
+    {
+      "day": "Days 10-11",
+      "focus": "Users, groups, permissions and links (weight 7)",
+      "tasks": [
+        "passwd, shadow and group fields; UID 0 and system accounts; <code>id</code>, <code>who</code>, <code>w</code>, <code>last</code>; <code>su</code> vs <code>su -</code> vs <code>sudo</code>; <code>useradd -m</code>, <code>groupadd</code>, <code>passwd</code>.",
+        "Drill 20 permission conversions each way (octal to rwx and back), special bits 4, 2 and 1, <code>chown user:group</code>, <code>ln</code> vs <code>ln -s</code>, /tmp vs /var/tmp and <code>ls -ld</code>.",
+        "2.0 extras: <code>ssh</code>, <code>scp</code>, <code>ssh-keygen</code> and <code>~/.ssh/authorized_keys</code> (Bandit gives you free SSH practice).",
+        "Take a second timed practice set and add the misses to your error log."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Weak spots and format drills",
+      "tasks": [
+        "Rework every error-log entry until you can explain why the right answer is right.",
+        "Spend 30 minutes on fill-in-the-blank practice: type bare commands, full paths and common flag combinations from memory.",
+        "Do a round of choose-two items, judging every option on its own, then reread the objective list and explain each term out loud."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "Final practice test, voucher and booking",
+      "tasks": [
+        "Take a final timed practice test, or the course's own practice test if it has one; aim for about 85–90% before booking.",
+        "Request instructor approval and the voucher, then book through Pearson VUE, choosing the exact exam code your voucher covers.",
+        "Testing at home: run the OnVUE system test on the exam computer (Windows or Mac). Otherwise, book a test center."
+      ]
+    },
+    {
+      "day": "Day 14",
+      "focus": "Exam day",
+      "tasks": [
+        "Start check-in early with your ID ready.",
+        "Answer what you know, flag the rest and come back; reread every typed answer for typos before you submit.",
+        "Note your per-topic scores on the report. Students say the course shows as passed at WGU a few days later."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A company changes a GPL-licensed program and ships the changed version to its customers. What does the GPL require?",
+      "choices": [
+        "Nothing beyond keeping the original copyright notice",
+        "They must pay a royalty to the Free Software Foundation",
+        "They may release the changed version under a proprietary license",
+        "They must license the changed version under the GPL and provide its source code to recipients"
+      ],
+      "answer": "They must license the changed version under the GPL and provide its source code to recipients",
+      "why": "The GPL is a copyleft license: when you distribute a modified version, it has to stay under the GPL and the people who receive it must be able to get the source. Keeping only the copyright notice is roughly the deal under permissive licenses such as BSD or MIT, which is also why permissive code can end up proprietary. Free software licenses don't charge royalties; \"free\" refers to freedom, not price."
+    },
+    {
+      "q": "Which pair correctly matches Debian and Ubuntu software packages with their low-level install tool?",
+      "choices": [
+        "<code>.rpm</code> files, installed with <code>rpm</code>",
+        "<code>.deb</code> files, installed with <code>rpm</code>",
+        "<code>.deb</code> files, installed with <code>dpkg</code>",
+        "<code>.apk</code> files, installed with <code>dpkg</code>"
+      ],
+      "answer": "<code>.deb</code> files, installed with <code>dpkg</code>",
+      "why": "Debian-family systems use .deb packages. <code>dpkg</code> installs a single package file, and <code>apt</code> or <code>apt-get</code> sit on top to fetch packages and their dependencies from repositories. The .rpm format belongs to the Red Hat family (<code>rpm</code>, with <code>dnf</code> or <code>yum</code> on top), SUSE uses rpm packages through <code>zypper</code>, and Alpine uses <code>apk</code>."
+    },
+    {
+      "q": "Fill in the blank: type the command that opens the manual page for the <b>file format</b> of <code>/etc/passwd</code>, not the page for the <code>passwd</code> command.",
+      "answer": "<code>man 5 passwd</code>",
+      "why": "Man pages are grouped into numbered sections: 1 is user commands and 5 is file formats. Plain <code>man passwd</code> opens the section 1 page (the command) because it comes first, so you name section 5 explicitly. <code>man -k passwd</code> lists every page whose description mentions passwd, which helps when you don't know the section."
+    },
+    {
+      "q": "After running <code>COLOR=blue</code>, which command prints exactly <code>My color is blue</code>?",
+      "choices": [
+        "<code>echo 'My color is $COLOR'</code>",
+        "<code>echo \"My color is \\$COLOR\"</code>",
+        "<code>echo My color is COLOR</code>",
+        "<code>echo \"My color is $COLOR\"</code>"
+      ],
+      "answer": "<code>echo \"My color is $COLOR\"</code>",
+      "why": "Double quotes keep the words together but still expand <code>$COLOR</code> to blue. Single quotes make everything literal, so the single-quoted version prints <code>My color is $COLOR</code>. The backslash in <code>\\$COLOR</code> escapes the dollar sign, so that version prints the same literal text. The version without a <code>$</code> just prints the word COLOR."
+    },
+    {
+      "q": "A directory holds <code>a1.txt</code>, <code>a12.txt</code>, <code>b1.txt</code> and <code>A1.txt</code>. Which files does <code>ls a?.txt</code> list?",
+      "choices": [
+        "<code>a1.txt</code> only",
+        "<code>a1.txt</code> and <code>a12.txt</code>",
+        "<code>a1.txt</code> and <code>A1.txt</code>",
+        "<code>a1.txt</code>, <code>a12.txt</code> and <code>A1.txt</code>"
+      ],
+      "answer": "<code>a1.txt</code> only",
+      "why": "<code>?</code> matches exactly one character, so <code>a12.txt</code> (two characters between the a and .txt) doesn't match. Filenames are case sensitive, so <code>A1.txt</code> doesn't match a lowercase a, and <code>b1.txt</code> starts with the wrong letter. The shell expands the glob before <code>ls</code> runs; <code>a*.txt</code> would match both <code>a1.txt</code> and <code>a12.txt</code>."
+    },
+    {
+      "q": "Fill in the blank: type the command that creates a gzip-compressed archive named <code>backup.tar.gz</code> from the directory <code>docs/</code>.",
+      "answer": "<code>tar -czf backup.tar.gz docs/</code>",
+      "why": "<code>-c</code> creates an archive, <code>-z</code> compresses it with gzip, and <code>-f</code> names the archive file, so the file name must come right after the f. The old-style <code>tar czf backup.tar.gz docs/</code> also works, and adding <code>-v</code> only makes it list files. Check the result with <code>tar -tzf backup.tar.gz</code>; for bzip2 or xz, use <code>-j</code> or <code>-J</code> instead of <code>-z</code>."
+    },
+    {
+      "q": "Which command saves both the normal output and the error messages of <code>./backup.sh</code> to <code>run.log</code>, replacing what was in the file?",
+      "choices": [
+        "<code>./backup.sh 2&gt;&amp;1 &gt; run.log</code>",
+        "<code>./backup.sh &gt;&gt; run.log</code>",
+        "<code>./backup.sh &gt; run.log 2&gt;&amp;1</code>",
+        "<code>./backup.sh 2&gt; run.log</code>"
+      ],
+      "answer": "<code>./backup.sh &gt; run.log 2&gt;&amp;1</code>",
+      "why": "Bash applies redirections left to right. In the right answer, <code>&gt; run.log</code> first points stdout at the file, then <code>2&gt;&amp;1</code> points stderr wherever stdout now goes, which is the file. In <code>2&gt;&amp;1 &gt; run.log</code>, stderr is copied to stdout's target while stdout is still the terminal, so errors stay on the screen. <code>&gt;&gt;</code> appends and captures only stdout, and <code>2&gt;</code> captures only errors. <code>./backup.sh &amp;&gt; run.log</code> is the short form of the right answer."
+    },
+    {
+      "q": "Fill in the blank: using one <code>grep</code> option and no pipe, type the command that prints how many lines of <code>/etc/passwd</code> contain <code>nologin</code>.",
+      "answer": "<code>grep -c nologin /etc/passwd</code>",
+      "why": "<code>-c</code> prints the number of matching lines instead of the lines themselves. With a pipe you could write <code>grep nologin /etc/passwd | wc -l</code>. Accounts whose shell is nologin are usually system accounts that aren't meant for interactive logins."
+    },
+    {
+      "q": "<code>check.sh</code> contains:<br><code>#!/bin/bash</code><br><code>if [ $# -lt 1 ]; then</code><br><code>echo \"usage: $0 FILE\"</code><br><code>exit 2</code><br><code>fi</code><br><code>if [ -f \"$1\" ]; then echo found; else echo missing; fi</code><br>You run <code>./check.sh</code> with no arguments and then <code>echo $?</code>. What do you see?",
+      "choices": [
+        "<code>usage: ./check.sh FILE</code>, then <code>2</code>",
+        "<code>usage: ./check.sh FILE</code>, then <code>0</code>",
+        "<code>missing</code>, then <code>0</code>",
+        "<code>missing</code>, then <code>1</code>"
+      ],
+      "answer": "<code>usage: ./check.sh FILE</code>, then <code>2</code>",
+      "why": "With no arguments, <code>$#</code> is 0, so <code>[ 0 -lt 1 ]</code> is true. The script prints the usage line, where <code>$0</code> is the name you ran it with (<code>./check.sh</code>), and <code>exit 2</code> ends it with status 2 before the file test ever runs. <code>echo $?</code> then prints that status: 2. A status of 0 would have meant success."
+    },
+    {
+      "q": "A workstation can ping its router at <code>192.168.1.1</code>, but <code>ping example.com</code> fails because the name can't be resolved. Which file lists the DNS servers the system's resolver queries?",
+      "choices": [
+        "<code>/etc/hosts</code>",
+        "<code>/etc/resolv.conf</code>",
+        "<code>/etc/hostname</code>",
+        "<code>/etc/services</code>"
+      ],
+      "answer": "<code>/etc/resolv.conf</code>",
+      "why": "<code>/etc/resolv.conf</code> holds <code>nameserver</code> lines (the DNS servers, tried in order) and <code>search</code> domains. <code>/etc/hosts</code> is a local name-to-address list used without DNS, <code>/etc/hostname</code> stores this machine's own name, and <code>/etc/services</code> maps service names to port numbers. On systems running systemd-resolved, resolv.conf may point at a local stub (127.0.0.53), and <code>resolvectl status</code> (a 2.0 topic) shows the real upstream servers."
+    },
+    {
+      "q": "Fill in the blank: type the full <code>ip</code> command (object and action) that displays the IPv4 routing table, where the <code>default via</code> line names the gateway.",
+      "answer": "<code>ip route show</code>",
+      "why": "<code>ip route show</code> prints the routing table; <code>ip route</code> alone does the same because show is the default action. <code>ip -6 route show</code> lists IPv6 routes (a 2.0 term), and the 1.6-era equivalents are <code>route -n</code> and <code>netstat -r</code>."
+    },
+    {
+      "q": "Which command sets <code>report.txt</code> to <code>rw-r-----</code> no matter what its permissions were before?",
+      "choices": [
+        "<code>chmod u+rw,g+r report.txt</code>",
+        "<code>chmod 640 report.txt</code>",
+        "<code>chmod 460 report.txt</code>",
+        "<code>chmod u=rw,g=r report.txt</code>"
+      ],
+      "answer": "<code>chmod 640 report.txt</code>",
+      "why": "Octal sets all three triplets at once: 6 = 4 + 2 = rw-, 4 = r--, 0 = ---. <code>u+rw,g+r</code> only adds bits, so anything else already set stays. <code>u=rw,g=r</code> fixes the user and group triplets but leaves the others triplet alone, so an existing r for others would survive; <code>chmod u=rw,g=r,o= report.txt</code> would work. <code>460</code> gives r--rw----, with user and group swapped."
+    },
+    {
+      "q": "Everyone must be able to create files in the shared directory <code>/srv/drop</code>, but users must not be able to delete or rename each other's files. Which command sets this up?",
+      "choices": [
+        "<code>chmod 4777 /srv/drop</code>",
+        "<code>chmod 2777 /srv/drop</code>",
+        "<code>chmod 1777 /srv/drop</code>",
+        "<code>chmod 0777 /srv/drop</code>"
+      ],
+      "answer": "<code>chmod 1777 /srv/drop</code>",
+      "why": "The leading 1 sets the sticky (restricted deletion) bit: in a world-writable directory, only a file's owner, the directory's owner or root can delete or rename it. <code>ls -ld /srv/drop</code> then shows <code>drwxrwxrwt</code>, just like /tmp. 2 is SGID (new files inherit the directory's group), 4 is SUID (Linux ignores it on directories), and plain 0777 lets anyone who can write to the directory delete anything in it."
+    },
+    {
+      "q": "Fill in the blank: type one command that makes <code>alice</code> the owner and <code>devs</code> the group of <code>plan.txt</code>.",
+      "answer": "<code>chown alice:devs plan.txt</code>",
+      "why": "<code>chown</code> takes OWNER:GROUP. <code>chown alice plan.txt</code> changes only the owner, <code>chown :devs plan.txt</code> changes only the group (like <code>chgrp devs plan.txt</code>), and <code>chown alice: plan.txt</code> sets the group to alice's login group. Giving a file to another user needs root, so in practice you'd put <code>sudo</code> in front."
+    },
+    {
+      "q": "(Exam 010-200) Dana wants to log in to a server with an SSH key instead of a password. After she runs <code>ssh-keygen</code> on her laptop, where must her <b>public</b> key end up?",
+      "choices": [
+        "In <code>~/.ssh/known_hosts</code> in her account on the server",
+        "In <code>/etc/shadow</code> on the server",
+        "In <code>~/.ssh/id_ed25519</code> on the server",
+        "In <code>~/.ssh/authorized_keys</code> in her account on the server"
+      ],
+      "answer": "In <code>~/.ssh/authorized_keys</code> in her account on the server",
+      "why": "<code>ssh-keygen</code> creates a key pair on the client: a private key (for example <code>~/.ssh/id_ed25519</code>) that never leaves the laptop, and a public key ending in .pub. The server accepts key logins for public keys listed in that account's <code>~/.ssh/authorized_keys</code>, and <code>ssh-copy-id</code> can append it for you. <code>known_hosts</code> stores the host keys of servers you've connected to, and <code>/etc/shadow</code> holds password hashes."
+    }
+  ],
+  "pitfalls": [
+    "<b>Studying the wrong version.</b> 010-160 (1.6) and 010-200 (2.0) overlap heavily but not fully: 2.0 drops <code>ifconfig</code>, <code>route</code>, <code>netstat</code>, <code>info</code> and <code>locate</code> and adds <code>systemctl</code>, <code>journalctl</code>, SSH keys, <code>resolvectl</code> and IPv6 autoconfiguration. Confirm your voucher's exam code and select that exact exam when you book.",
+    "<b>Recognizing instead of recalling.</b> Fill-in-the-blank items show no options and want the exact string you'd type, usually the bare command unless the item asks for options or a path. 2026 passers say these few items were trickier than they looked.",
+    "<b>Skimming past \"Choose TWO\".</b> Multiple-response items tell you how many answers to pick; judge each option on its own instead of hunting for the single best one.",
+    "<b>Redirection order.</b> <code>cmd 2&gt;&amp;1 &gt; file</code> still prints errors to the screen; use <code>cmd &gt; file 2&gt;&amp;1</code> or <code>cmd &amp;&gt; file</code>. Also, <code>&gt;</code> wipes the file while <code>&gt;&gt;</code> appends.",
+    "<b>Flag lookalikes.</b> <code>ls -R</code> is recursive but <code>ls -r</code> reverses; <code>tail -n 5</code> prints the last five lines but <code>tail -n +5</code> starts at line 5; <code>uniq</code> only collapses adjacent duplicates, so sort first; <code>gzip file</code> removes the original.",
+    "<b>chmod details.</b> <code>=</code> clears bits you don't list (<code>chmod u=rw</code> removes the owner's x), a four-digit mode's first digit holds the special bits (4 SUID, 2 SGID, 1 sticky), and <code>chown alice: file</code> also changes the group to alice's login group.",
+    "<b>OnVUE trouble.</b> OnVUE runs only on Windows or macOS, and a Jul 2026 student lost over an hour to system-check errors before switching to a test center and passing. Run the system test days ahead on the exam computer, or book a test center.",
+    "<b>Decks billed as \"the exact questions\".</b> When posters say a deck has the exact questions, they often just mean it feels very close to the exam, but be careful with these sets. LPI's disciplinary standards make unauthorized possession, use or distribution of exam questions grounds for losing certification eligibility, and WGU's academic integrity policy applies too. One commenter also listed wrong answers in a popular deck, and the shared sets target the outgoing 010-160. Use flashcards to drill flags and paths, check answers against man pages or LPI's materials, and skip any set that claims to be copied from the live exam.",
+    "<b>Test-day nerves.</b> An Oct 2026 student on a third attempt says they blanked despite using Fedora personally. Do at least two timed 40-question sets so the pace and format feel routine; with only 40 questions, careless misses add up fast.",
+    "<b>Code confusion.</b> Older study sets are labeled C851, an earlier code for Linux Foundations, and some 2026 commenters mixed D281 up with CompTIA or AWS exams. D281 is LPI Linux Essentials, so check any outside resource against LPI's objective list."
+  ],
+  "resources": [
+    {
+      "label": "LPI Learning Materials: Linux Essentials 2.0 (010-200)",
+      "url": "https://learning.lpi.org/en/learning-materials/010-200/",
+      "kind": "official",
+      "note": "Free lessons for every 2.0 objective, each with guided and explorational exercises and answers; also available as a PDF. Your main text if your voucher is for 010-200."
+    },
+    {
+      "label": "LPI Learning Materials: Linux Essentials 1.6 (010-160)",
+      "url": "https://learning.lpi.org/en/learning-materials/010-160/",
+      "kind": "official",
+      "note": "Now marked deprecated, but it still matches 010-160 until that exam retires in April 2027. A Dec 2025 passer (730/800) built their prep around it."
+    },
+    {
+      "label": "LPI Linux Essentials exam 010 objectives (2.0)",
+      "url": "https://www.lpi.org/our-certifications/exam-010-objectives/",
+      "kind": "official",
+      "note": "Your checklist, with weights. LPI's wiki has the 1.6 list and a summary of what changed from 1.6 to 2.0 (see Sources)."
+    },
+    {
+      "label": "Shawn Powers' Linux Essentials videos (YouTube)",
+      "kind": "video",
+      "note": "Free series that 2026 passers credit most often; one watched it at 1.5x speed. If you sit 2.0, check it against the 2.0 objectives, since systemd, SSH keys and IPv6 autoconfiguration may need another source."
+    },
+    {
+      "label": "Jason Dion's Linux Essentials course and practice exams (Udemy)",
+      "kind": "video",
+      "note": "Popular with 2026 passers, and one commenter said WGU provides access. Reports are mixed: one student felt about 80% ready from it alone, and an instructor warned that Udemy prep by itself may not be enough."
+    },
+    {
+      "label": "OverTheWire: Bandit",
+      "url": "https://overthewire.org/wargames/bandit/",
+      "kind": "practice",
+      "note": "Free wargame played over SSH that drills navigation, file reading, find, grep and pipes. A Dec 2025 passer recommends it for hands-on practice."
+    },
+    {
+      "label": "Cisco Networking Academy's free Linux course",
+      "kind": "practice",
+      "note": "Includes an in-browser terminal; suggested in a May 2026 thread for students who don't have a Linux machine handy."
+    },
+    {
+      "label": "TryHackMe Linux Fundamentals",
+      "kind": "practice",
+      "note": "Guided hands-on rooms suggested in a Jan 2026 thread."
+    },
+    {
+      "label": "Your own Linux lab",
+      "kind": "tool",
+      "note": "Type every command in the objectives at least once. Students mention an Ubuntu Server VM in VirtualBox and WSL on Windows; one says the course's own lab is RHEL-only."
+    },
+    {
+      "label": "Pearson VUE: OnVUE online testing for LPI",
+      "url": "https://home.pearsonvue.com/lpi/onvue",
+      "kind": "tool",
+      "note": "Online-testing rules and the system test. OnVUE needs Windows or macOS, a camera and a quiet private room; run the check on the exam computer days ahead."
+    },
+    {
+      "label": "Flashcards you write from the objectives",
+      "kind": "tool",
+      "note": "Cards for flags, file fields, octal modes and directory roles. Student-made decks shared on Reddit are popular too; check their answers against man pages, since one commenter found wrong answers in a popular deck, and remember most were built for 010-160."
+    },
+    {
+      "label": "LPI blog: how a candidate scored 100% (Feb 2026)",
+      "url": "https://www.lpi.org/blog/2026/02/12/how-i-scored-100-on-the-linux-essentials-exam/",
+      "kind": "official",
+      "note": "A 010-160 candidate's method: LPI's free guide and its self-check quizzes plus a cloud VM, and an OnVUE system check a couple of hours before the exam."
+    }
+  ],
+  "community": {
+    "summary": "Recent passers call D281 one of the easier courses and report finishing in a few days to about two weeks, longer with no Linux background. Students sit the LPI Linux Essentials exam through Pearson VUE, and a Jul 2026 thread recommends a test center after OnVUE trouble. Permissions in symbolic and octal form, tar and compression options, redirection and the key directories come up often, and the few fill-in-the-blank and choose-two items catch people out. The usual stack is Shawn Powers' videos or Dion's course, LPI's free Learning Materials, hands-on time in a VM, WSL or NetAcad, and flashcards. Since Oct 2026, commenters report LPI's email that version 2.0 is live with 010-160 still selectable until about Apr 2027, but no post yet describes sitting 2.0.",
+    "coverage": "13 posts, Nov 2024 - Oct 2026, r/WGU, r/WGU_CompSci, r/WGUIT and r/WGUCyberSecurity (comments through Nov 2026)",
+    "posts": [
+      {
+        "title": "3rd attempt Linux Foundations",
+        "subreddit": "r/WGUIT",
+        "url": "https://www.reddit.com/r/WGUIT/comments/1wwaus7/3rd_attempt_linux_foundations/",
+        "date": "Oct 2026",
+        "takeaway": "A student on a third attempt says nerves made them blank despite using Fedora personally, after trying NetAcad, an academic coach, CBT Nuggets and Dion. A commenter sitting 010-160 that day stressed knowing command flags cold."
+      },
+      {
+        "title": "WGU d281",
+        "subreddit": "r/WGUIT",
+        "url": "https://www.reddit.com/r/WGUIT/comments/1vb8v38/wgu_d281/",
+        "date": "Jul 2026",
+        "takeaway": "The top reply passed with Shawn Powers' playlist at 1.5x speed plus a flashcard deck, and saw many permission questions in both symbolic and octal form."
+      },
+      {
+        "title": "D281 Testing Issues",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1v7b8pn/d281_testing_issues/",
+        "date": "Jul 2026",
+        "takeaway": "OnVUE system errors cost a BSCS student over an hour, so they took the exam at a test center and reported a perfect score. Commenters say test centers run smoothly and that you must pick the online version when booking if you test at home."
+      },
+      {
+        "title": "Passed D281 Linux",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1uupajc/",
+        "date": "Jul 2026",
+        "takeaway": "Oct 2026 comments report LPI's email that Linux Essentials 2.0 is live, with 010-160 reportedly selectable for about six more months; an instructor reportedly called 2.0 still in beta, though LPI lists it as the current version. Experienced commenters push back on memorizing answers instead of learning Linux."
+      },
+      {
+        "title": "Confetti Time!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u9jlmg/confetti_time/",
+        "date": "Jun 2026",
+        "takeaway": "A BSCS graduate who started as a beginner ranks Linux Foundations (D281) the second-easiest course in the program."
+      },
+      {
+        "title": "D281- odd proctor experience",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tpjiha/d281_odd_proctor_experience/",
+        "date": "May 2026",
+        "takeaway": "A student's Pearson VUE proctor never spoke during check-in or the exam, which left them worried about their result being revoked. Worth knowing so a quiet proctor doesn't rattle you."
+      },
+      {
+        "title": "Need help passing Linux essentials fast!",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1t67lyl/need_help_passing_linux_essentials_fast/",
+        "date": "May 2026",
+        "takeaway": "Legitimate suggestions from the comments: Cisco NetAcad's free course with a browser terminal, Shawn Powers' videos, an Ubuntu VM lab and drilling each objective in turn. One commenter warns against exam dumps."
+      },
+      {
+        "title": "Linux LPI Exam complete",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1t3zw4t/linux_lpi_exam_complete/",
+        "date": "May 2026",
+        "takeaway": "Reported through Gemini: the exam was tough on core Linux mechanics and shell details, and commenters noted questions with more than one correct answer."
+      },
+      {
+        "title": "D281 exam difficulty?",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1regcsq/d281_exam_difficulty/",
+        "date": "Feb 2026",
+        "takeaway": "The instructor approved the student to test but warned that Udemy prep alone, Dion's included, might not be enough. One reply said Dion left them about 80% ready, and the student later passed with Dion plus other materials."
+      },
+      {
+        "title": "What the L?",
+        "subreddit": "r/WGUIT",
+        "url": "https://www.reddit.com/r/WGUIT/comments/1qk2oxl/what_the_l/",
+        "date": "Jan 2026",
+        "takeaway": "Replies call the course intro-level and about 1.5 to 2 weeks of work, suggest Dion, Shawn Powers, TryHackMe, WSL and reading man pages, and note that 40 questions leave little room for error."
+      },
+      {
+        "title": "Passed Linux Essentials 750 out of 800",
+        "subreddit": "r/WGUCyberSecurity",
+        "url": "https://www.reddit.com/r/WGUCyberSecurity/comments/1qcwp5h/passed_linux_essentials_750_out_of_800/",
+        "date": "Jan 2026",
+        "takeaway": "A 010-160 passer studied about a week. Permissions (r = 4, w = 2, x = 1), tar and compression options, redirection operators and /proc, /sys, /dev and /var stood out, and the fill-in-the-blank items were trickier than expected."
+      },
+      {
+        "title": "Linux Foundations - D281 guide",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1pywyoj/linux_foundations_d281_guide/",
+        "date": "Dec 2025",
+        "takeaway": "The original guide scored 730/800 after about 1.5 months part-time with LPI's free Learning Materials, Shawn Powers' videos, OverTheWire Bandit and self-made flashcards; per-topic scores show right after the exam. A Nov 2026 comment warns the exam is changing, so older third-party material may go stale."
+      },
+      {
+        "title": "Linux Essentials review: how to pass",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1gjjiwe/linux_essentials_review_how_to_pass/",
+        "date": "Nov 2024",
+        "takeaway": "Older BSCS thread. The research only has a search summary covering it and related 2023-2025 threads: LPI's free study guide covers nearly everything, do its exercises in a VM, and use flashcards for commands."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "LPI: Linux Essentials overview (versions, 40 questions, 60 minutes, delivery)", "url": "https://www.lpi.org/our-certifications/linux-essentials-overview" },
+    { "label": "LPI: Linux Essentials exam 010 objectives, version 2.0 (010-200)", "url": "https://www.lpi.org/our-certifications/exam-010-objectives/" },
+    { "label": "LPI wiki: Linux Essentials objectives, version 1.6 (010-160)", "url": "https://wiki.lpi.org/wiki/Linux_Essentials_Objectives_V1.6" },
+    { "label": "LPI wiki: summary of changes from 1.6 to 2.0", "url": "https://wiki.lpi.org/wiki/Linux_Essentials_Summary_Version_1.6_To_2.0" },
+    { "label": "LPI FAQ (scoring scale, older versions, OnVUE requirements, results)", "url": "https://www.lpi.org/about-lpi/frequently-asked-questions/" },
+    { "label": "LPI press release: Linux Essentials 2.0 (Oct 15, 2026)", "url": "https://www.lpi.org/articles/linux-professional-institute-releases-linux-essentials-version-2-0/" },
+    { "label": "LPI blog: what changed in Linux Essentials 2.0 (Oct 22, 2026)", "url": "https://www.lpi.org/blog/2026/10/22/linux-essentials-2-0-start-with-linux-essentials-go-anywhere/" },
+    { "label": "LPI policies: retake waiting periods and disciplinary standards", "url": "https://www.lpi.org/policies/" },
+    { "label": "LPI wiki: item-writing guide (question types)", "url": "https://wiki.lpi.org/wiki/VolunteerItemWriting" },
+    { "label": "LPI blog: How I scored 100% on the Linux Essentials exam (Feb 2026)", "url": "https://www.lpi.org/blog/2026/02/12/how-i-scored-100-on-the-linux-essentials-exam/" },
+    { "label": "WGU: Linux certifications (exam fee in tuition, 010-160 named)", "url": "https://www.wgu.edu/online-it-degrees/it-certifications/linux-certifications.html" },
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (PDF)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "GNU Bash manual: Redirections", "url": "https://www.gnu.org/software/bash/manual/html_node/Redirections.html" },
+    { "label": "chmod(1) man page (octal modes and special bits)", "url": "https://man7.org/linux/man-pages/man1/chmod.1.html" },
+    { "label": "hier(7) man page (filesystem layout)", "url": "https://man7.org/linux/man-pages/man7/hier.7.html" }
+  ],
+  "caveats": [
+    "Version change: LPI released Linux Essentials 2.0 (010-200) on Oct 15, 2026, and lists 1.6 (010-160) as available until April 2027. WGU's Linux certification page and every 2026 student report still name 010-160, and no WGU notice about when vouchers switch was found. Ask your instructor which code your voucher covers when your term starts; if 010-160 is gone by then, follow the 2.0 notes in each topic.",
+    "No post in this research reports sitting 010-200 yet, so there's no community read on its difficulty. LPI says the outline is unchanged and most existing learning materials still apply, but videos, practice tests and flashcards made for 1.6 won't cover 2.0 additions such as <code>systemctl</code>, <code>journalctl</code>, SSH keys, <code>resolvectl</code> or IPv6 autoconfiguration.",
+    "Voucher requests, instructor approval, retake vouchers and how fast a pass posts at WGU come only from student reports; WGU hasn't published the steps. The course's in-portal materials (a provided book, cohort recordings, a lab, an instructor study guide, possibly a practice test) are also known only from comments, so check the course page.",
+    "Some posts were summarized through Google Gemini and not opened directly; in this list that's the May 2026 \"Linux LPI Exam complete\" thread, so treat its takeaway as unverified.",
+    "The Nov 2024 r/WGU_CompSci entry's takeaway comes from a search-engine summary of several 2023-2025 threads, not from reading that thread itself.",
+    "The practice questions are original, written from LPI's objectives. Real items usually have five options and some ask you to choose two or three, which this four-choice format can't fully copy."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/alert",
+  "title": "Alert | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "class-variance-authority, lucide-react",
+  "promptFile": "21st/prompts/shadcn--alert.md",
+  "chars": 2917,
+  "sha256": "6504f6117995a4a75502b535dcd6aae47af08b5349ab00efb56a8acec203fc92",
+  "sha256Of": "file bytes",
+  "capturedSha256": "bbd35492557e3894fb5071cf1b6abbc8ea11bc3b46e9a3f526b3b80eac0495c7",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Verified on first attempt.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2917) is the text's length in UTF-16 code units and equals the file's."
+}

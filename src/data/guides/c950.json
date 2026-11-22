@@ -1,0 +1,614 @@
+{
+  "code": "C950",
+  "summary": "C950 has no exam: you pass by building WGUPS, a Python program that plans a parcel service's delivery day. It loads the trucks, routes them so every package meets its deadline and special note, and keeps total mileage under the task's limit. The current version has two evaluator-graded tasks: a written plan (Task 1), then the working program with screenshots and a written justification (Task 2). WGU lists C949 and C960 as prerequisites, so schedule it after C949; 2026 passers report one to two weeks of focused work plus time for a revision.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (WGUPS routing program, two tasks)",
+    "format": "2 tasks · written plan, then a Python 3 program with screenshots and a write-up · evaluator-graded, no exam",
+    "details": [
+      "<b>What the task is about:</b> in general terms (your task page has the exact requirements), you write a Python program for WGUPS, a made-up parcel service with a day of packages to deliver by truck. The task gives you the package data and a distance table. Your program loads the packages into a hash table you build yourself, loads the trucks, orders each route with a heuristic, tracks every package's status through the day and reports total mileage. Every deadline, special note and limit on the task page has to hold.",
+      "<b>Task 1, the plan:</b> a written design for the program: the algorithm and data structure you'll use (passers usually pick nearest neighbor and a hash table), pseudocode, and an analysis of their efficiency and trade-offs.",
+      "<b>Task 2, the program:</b> the working program, screenshots of its output, and a written justification of the algorithm and data structure you chose, weighed against alternatives.",
+      "<b>Grading:</b> evaluators score each task against its rubric and return anything that misses a line; Nov 2026 posts describe results in minutes to a few hours. Most 2026 passers submitted Task 1 first; a 2024 commenter said either order works, and no official rule turned up. The course is 4 CUs in the current BSCS (catalog version 202611).",
+      "<b>Effort:</b> 2026 passers report one to two weeks of focused work plus time for a revision; fluent Python users report about a week. A Mar 2024 passer with no Python experience reports about 20–30 hours over six days."
+    ],
+    "tips": [
+      "Build a checklist from both rubrics before writing code. In 2026, returns came from thin written answers and a missing all-packages view, not from route length.",
+      "Build two lookups: one package by ID at a time the user enters, and every package at a time the user enters, plus total mileage. A May 2026 first submission came back because a stop-by-stop route printout isn't a substitute.",
+      "Compute each status from the query time and the package's recorded departure and delivery times; never store a single end-of-day status.",
+      "Nearest neighbor plus trucks loaded by hand around the special notes is enough. Reported totals run about 98–116 miles, so stop optimizing once every deadline is met and you're safely under the limit.",
+      "Do time math with <code>datetime</code> and <code>timedelta</code>; the May 2026 passer called time handling the biggest pain of the project.",
+      "Write the final Task 1 pseudocode from your working code (the Aug 2026 advice), even if you sketch a rough version first. A 2024 passer notes that Task 1 is a plan and doesn't lock you in.",
+      "Gather the output screenshots into one labeled PDF instead of dozens of loose files, and keep debug prints behind one switch so the final run is clean.",
+      "Write everything in your own words and cite what you use. A similarity check runs, and a 2026 commenter warned that leaning on AI-generated examples is risky."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your course planning tool report with your instructor and build a personalized course plan together.",
+    "Create software applications that use non-linear data structures so the software stays efficient and maintainable.",
+    "Write code that uses hashing techniques inside an application to perform search operations.",
+    "Use dictionaries and sets to organize data into key-value pairs.",
+    "Evaluate the space and time complexity of self-adjusting data structures with Big-O notation to improve application performance.",
+    "Write code that uses self-adjusting heuristics to improve application performance.",
+    "Evaluate computational complexity theories and apply suitable models to specific scenarios."
+  ],
+  "topics": [
+    {
+      "title": "The WGUPS problem in general terms",
+      "eli5": "You're the dispatcher for a small delivery company. Your program plans the day so every package arrives on time, every special instruction is followed and the trucks stay under their mileage limit.",
+      "detail": "WGUPS is a one-day delivery problem. You get packages with addresses, deadlines and special notes, a few trucks and drivers, and a table of distances between addresses. Your program decides which truck carries which packages, orders each truck's stops, keeps a clock and a mileage count for every truck, and records when each package leaves the hub and when it's delivered. Supervisors need to see where any package is at any time of day, so status has to be right for any time you ask about, not just at the end of the day. The exact rules and limits, such as truck capacity, speed, start time, drivers and the mileage cap, are on your task page; copy them into your own constraint table and test against that.",
+      "points": [
+        "Make a constraint table on day one: every deadline and special note from the package file, plus every rule about trucks, drivers and timing from the task page.",
+        "Handle special notes when you load the trucks; plain nearest neighbor ignores them.",
+        "Package details can change during the day, so show each one as it was known at the time asked.",
+        "Count every leg toward mileage, including a truck's drive back to the hub."
+      ]
+    },
+    {
+      "title": "Hash tables with chaining",
+      "eli5": "A hash table is like a wall of numbered mail cubbies: a quick formula turns a package ID into a cubby number, so you go straight to the right cubby instead of checking every one.",
+      "detail": "A hash table keeps an array of buckets and uses a hash function to turn each key into a bucket index, such as <code>package_id % m</code> for m buckets. When two keys land in the same bucket, chaining stores both in a short list inside that bucket; open addressing (linear or quadratic probing) instead searches for another empty slot. With n items the load factor is <code>α = n / m</code>, and the expected cost of a chaining search is O(1 + α), so lookups stay O(1) on average if the table grows when α passes a threshold. Growing means allocating more buckets and reinserting every item, which costs O(n) once but O(1) amortized per insert. In the worst case every key lands in one bucket and a lookup degrades to O(n).",
+      "points": [
+        "For C950, write it yourself from lists: Python's <code>dict</code> and <code>set</code> are already hash tables, so using them skips the skill being graded.",
+        "Core operations: an insert keyed by package ID and a lookup by package ID that returns the package's data.",
+        "Design in words: insert computes the bucket, updates the pair if the ID is already there, otherwise appends it; lookup computes the same bucket and scans it for the ID; resize makes a bucket list about twice as long and reinserts every pair.",
+        "Average insert and lookup O(1), worst case O(n), space O(n + m).",
+        "The instructor's guidance: build it with only lists, store the package data (objects preferred), map each ID to a storage location, and beat a linear search.",
+        "Resizing when the load factor passes a threshold is an easy, defensible self-adjusting element."
+      ]
+    },
+    {
+      "title": "Keys and relationships between package data",
+      "eli5": "Pick a label every package has and no two packages share, like a library card number, and hang everything about the package on that label.",
+      "detail": "Package ID is the natural key: IDs are unique and never change, while addresses, deadlines and statuses repeat or change during the day. Each bucket entry pairs the ID with a Package object holding address, city, ZIP, deadline, weight, special note, truck number, and departure and delivery times. One lookup then reaches every attribute of a package in O(1) average time, which is how the table ties each package's data together. Packages that share a stop are related through their address field, not through the key; keying by address would collide constantly because several packages go to the same building.",
+      "points": [
+        "Unique, unchanging keys mean you never re-key an entry when a status or address changes.",
+        "Storing one object per package keeps related fields together; parallel lists drift out of sync.",
+        "Relationships worth naming in Task 1: package to address (many packages, one stop), package to truck, and package to its departure and delivery times.",
+        "Say plainly which key you use and why."
+      ]
+    },
+    {
+      "title": "Nearest neighbor: a greedy, self-adjusting route",
+      "eli5": "Always drive to the closest stop you haven't visited yet. It's quick and usually decent, but it can leave you with one long drive at the end.",
+      "detail": "Nearest neighbor builds a route one stop at a time: from the truck's current location, look at every undelivered package on the truck, drive to the closest address, update the clock and mileage, and repeat until the truck is empty. It is greedy because each choice is the best one right now, with no look-ahead, and the course calls it self-adjusting because each choice depends on where the truck is and what is left. For k packages it makes k(k + 1)/2 distance checks, so it runs in O(k²) time and O(k) extra space. It is not optimal and can be much worse than the best route on unlucky inputs, but recent WGUPS runs report about 98–116 miles, comfortably under the limit.",
+      "points": [
+        "Pseudocode:<br><code>location ← hub</code><br><code>while undelivered packages remain on the truck:</code><br><code>&nbsp;&nbsp;next ← the package with the smallest distance(location, its address)</code><br><code>&nbsp;&nbsp;miles += that distance; clock += distance / speed hours</code><br><code>&nbsp;&nbsp;record next as delivered at clock; location ← its address</code>",
+        "Plain nearest neighbor ignores deadlines, so put early-deadline packages on the first truck out or route them first.",
+        "O(k²) per load and O(n²) across all trucks; O(k² · V) if every check scans the address list to find a matrix index.",
+        "Not optimal: a locally closest choice can force a long leg later (practice question 4 shows one).",
+        "Reported advice: stop improving the route once every deadline is met and you're safely under the mileage limit."
+      ]
+    },
+    {
+      "title": "Big-O for each part and the whole program",
+      "eli5": "Big-O tells you how the work grows when the input grows: double the packages and see whether the work doubles, quadruples or barely changes.",
+      "detail": "Give the time and space complexity of each major part and of the whole program, and define your variables first: n packages, V distinct addresses and k packages on one truck load. Loading packages into the hash table is O(n) on average; loading the distance matrix is O(V²) time and space; nearest neighbor is O(k²) per load and O(n²) in the worst case overall; one lookup is O(1) on average and O(n) worst; and listing every package's status at a time is O(n). Sequential steps add and nested loops multiply, so the whole program is O(n² + V²) time and O(n + V²) space, often summarized as O(n²). Space and time trade off: the matrix spends O(V²) memory so that every distance lookup is O(1).",
+      "points": [
+        "Drop constants and lower-order terms; keep the dominant term.",
+        "Never claim O(1) worst case for a chaining hash table.",
+        "Count the cost of turning an address into a matrix index: O(V) with a linear scan, O(1) on average if you hash the addresses too.",
+        "Scalability: 10 times more packages means about 100 times more nearest-neighbor checks, while hash lookups stay O(1) on average if the table resizes.",
+        "A Mar 2024 passer's Big-O section came back once; their advice is to list time and space for each major part (algorithm, hash table, interface) and for the whole program."
+      ]
+    },
+    {
+      "title": "TSP, NP-hardness and why heuristics are fine",
+      "eli5": "Finding the single shortest route through many stops is a famously hard puzzle, because the number of possible orders explodes; real programs settle for a good route found quickly.",
+      "detail": "WGUPS routing is a version of the traveling salesman problem (TSP), and with several trucks and deadlines, of the vehicle routing problem. Brute force tries every order: just 16 stops already have 16! ≈ 2.1 × 10<sup>13</sup> orders. The decision version of TSP (is there a tour no longer than L?) is NP-complete and the optimization version is NP-hard, so no polynomial-time exact algorithm is known, and finding one would prove P = NP. Even the classic exact dynamic-programming method, Held–Karp, needs O(n² · 2<sup>n</sup>) time. That is why a polynomial-time heuristic such as nearest neighbor is the expected answer.",
+      "points": [
+        "P: problems solvable in polynomial time. NP: problems whose proposed solutions can be checked in polynomial time.",
+        "NP-complete: in NP and at least as hard as every NP problem. NP-hard: at least as hard as every NP problem, but not necessarily in NP.",
+        "A heuristic gives up guaranteed optimality for speed; an approximation algorithm comes with a proven bound on how far off it can be.",
+        "Turing machines are the formal model behind these classes; the halting problem shows that some problems can't be solved by any algorithm."
+      ]
+    },
+    {
+      "title": "Other algorithms to compare with yours",
+      "eli5": "Nearest neighbor is one recipe. Knowing other recipes that would also work, and how each cooks differently, shows why you picked yours.",
+      "detail": "2-opt improves a finished route: it removes two edges, reverses the stretch between them, and keeps the change whenever <code>d(a,c) + d(b,d) &lt; d(a,b) + d(c,d)</code>, repeating until no swap helps; each check is O(1) and a full pass is O(n²). Dijkstra's algorithm finds the shortest path from one source to every vertex of a graph with non-negative weights, in O(V²) with an array or O((V + E) log V) with a binary heap; on its own it does not decide the order of a multi-stop tour. Simulated annealing and genetic algorithms explore many candidate routes at random and can escape local optima, at a much higher running time and with parameters to tune. Held–Karp dynamic programming is exact but exponential. For each alternative, explain how it differs from yours in approach, Big-O and result quality.",
+      "points": [
+        "2-opt: improves an existing route, O(n²) per pass, keeps the hub fixed as start and end.",
+        "Dijkstra: single-source shortest paths, non-negative weights only, not a tour builder by itself.",
+        "Simulated annealing or a genetic algorithm: probabilistic, can escape local optima, slower and needs tuning.",
+        "A 2024 passer drew the other algorithms from traveling-salesman approaches; the instructor's Getting Greedy and How to Dijkstra webinars cover two common choices."
+      ]
+    },
+    {
+      "title": "Other data structures to compare with yours",
+      "eli5": "A hash table is one way to file the packages. Knowing other filing systems that would work, and what each trades away, makes your choice easy to defend.",
+      "detail": "A self-balancing binary search tree (AVL or red-black) keyed by package ID gives O(log n) search, insert and delete even in the worst case and keeps IDs in sorted order, but it is harder to write and slower on average than a hash table. A sorted list with binary search gives O(log n) lookups but O(n) inserts, because later elements shift. A plain list scanned front to back is O(n) per lookup, which is what the hash table is supposed to beat. A direct-address table, a list indexed by package ID, gives O(1) access every time but only works when keys are small, dense integers. For the distances, an adjacency matrix gives O(1) edge lookups in O(V²) space, while an adjacency list uses O(V + E) space but needs a search to find one edge.",
+      "points": [
+        "Compare on lookup cost, insert cost, memory, ordering and how hard each is to write correctly.",
+        "Open addressing (linear probing) is a valid alternative design for the hash table itself.",
+        "A heap (priority queue) is good at next-earliest-deadline questions or inside Dijkstra, not at lookup by ID.",
+        "A 2024 passer pulled the other data structures from C949 material."
+      ]
+    },
+    {
+      "title": "The distance table: from triangle to symmetric matrix",
+      "eli5": "The distance sheet fills in only half the grid, because the trip from A to B is as long as the trip from B to A. Copy each number to its mirror spot and you can look up any pair without caring about order.",
+      "detail": "The distance table lists the addresses down the side and across the top, with only one triangle filled in. Load it into a 2-D list and copy each value across the diagonal, <code>d[j][i] = d[i][j]</code>, so <code>distance(a, b)</code> works whichever index is larger. Keep a parallel list of addresses to turn an address into a row index: a linear scan is O(V), while hashing the addresses makes it O(1) on average. Building the matrix is O(V²) time and space, and each distance lookup after that is O(1).",
+      "points": [
+        "A May 2026 passer converted the package data to CSV and mirrored the distance spreadsheet into a symmetric matrix.",
+        "The table lists each pair of addresses once, so a trip is the same length both ways, which is what makes mirroring valid.",
+        "Address text has to match between the package file and the distance table; trim spaces and spot-check a few lookups by hand.",
+        "Save the workbooks as CSV and read them with <code>csv.reader</code>; the standard library avoids any question about third-party packages."
+      ]
+    },
+    {
+      "title": "Time simulation and status at any time",
+      "eli5": "Think of it as a replay: record when each truck left and when each package was dropped off, then for any time someone asks about, compare that time with your records.",
+      "detail": "Travel time in hours is miles ÷ the truck's speed in mph. Keep each truck's clock as a <code>datetime</code> and add <code>timedelta(hours=miles / speed)</code> for each leg; comparisons between datetimes then work directly. Python doesn't support arithmetic on <code>datetime.time</code> objects, so use <code>datetime.combine</code> to attach a date, or store times as timedeltas since midnight, and format them only for display. A package's status at time T is then a pure function of its recorded times: at the hub before its truck departs, en route between departure and delivery, and delivered (with the time) from delivery on. Computing status this way, instead of storing one final status, is what makes screenshots at different times come out right.",
+      "points": [
+        "Minutes = miles × 60 ÷ speed, so at 30 mph each mile takes 2 minutes.",
+        "When a package's details change during the day, show the old value before the change and the new one after; a 2024 return was reportedly for showing a corrected address too early.",
+        "Derive any departure that waits on a returning driver from the actual return time instead of hard-coding it."
+      ]
+    },
+    {
+      "title": "Program structure, interface and self-checks",
+      "eli5": "Split the program into a few small classes that each do one job, then put a simple text menu on top so a grader can ask questions without reading your code.",
+      "detail": "The structure 2026 passers describe is a Package class, a Truck class (number, capacity, speed, package IDs, location, clock, mileage, departure time), a HashTable class (hashing, insert, lookup), a distance helper and a thin <code>main.py</code> with a text menu. The menu should offer one package by ID at a time the user enters, all packages at a time the user enters, total mileage, and exit, and it should handle bad input without crashing. Startup checks that every deadline is met, the mileage stays under the limit, no truck is over capacity or leaves too early, every special note holds and no truck goes out without a driver make bugs obvious. The same checks give you evidence when you write up how you verified the program.",
+      "points": [
+        "Load trucks by hand around the special notes, pulling packages through hash-table lookups, then let nearest neighbor order each truck's stops.",
+        "Put debug prints behind one boolean switch so the final run is clean.",
+        "Comment what each block does and how control moves through the program.",
+        "Stick to the standard library (<code>csv</code>, <code>datetime</code>), and note your exact Python and IDE versions as you go.",
+        "Run often and use the debugger; the instructor's warning is not to discover a logic error hundreds of lines later."
+      ]
+    },
+    {
+      "title": "Self-adjusting structures and heuristics",
+      "eli5": "Something is self-adjusting when it reshapes itself based on how it's used, like a playlist that keeps moving your most-played songs to the top.",
+      "detail": "In the strict sense, a self-adjusting data structure reorganizes itself on every access: a splay tree rotates each accessed node to the root, and a move-to-front list moves each found item to the front, so frequently used items get cheaper to reach. Self-balancing trees such as AVL and red-black trees restructure on insert and delete to keep their height O(log n), and older course notes use them as examples too. The C950 tasks use the term more loosely: a hash table that grows as its load factor rises and a routing heuristic whose next choice depends on the current state both count. Whatever you choose, say exactly what adjusts and in response to what.",
+      "points": [
+        "Splay tree: O(log n) amortized per operation.",
+        "AVL tree: the two subtrees of every node differ in height by at most 1, so search, insert and delete are O(log n).",
+        "Resizing hash table: adjusts to its load. Nearest neighbor: adjusts to the truck's location and the packages still on board.",
+        "The instructor page asks for one self-adjusting element in the hash table and at least one more that improves mileage."
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Hash key", "value": "Package ID: unique and never changes", "note": "Keying by address would collide constantly, since several packages share a stop." },
+    { "label": "Open addressing", "value": "On a collision, probe for another empty slot (linear or quadratic probing)", "note": "The main alternative to chaining for the hash table itself." },
+    { "label": "Resizing cost", "value": "O(n) to rehash once · O(1) amortized per insert if you double m each time it grows" },
+    { "label": "Reported mileage", "value": "Nearest neighbor with trucks loaded by hand: about 98–116 miles", "note": "Stop optimizing once every deadline is met and you're safely under the limit." },
+    { "label": "Sorted list with binary search", "value": "O(log n) lookup · O(n) insert, because later elements shift" },
+    { "label": "Direct-address table", "value": "A list indexed by package ID: O(1) access every time", "note": "Works only when keys are small, dense integers." },
+    { "label": "Adjacency matrix vs list", "value": "Matrix: O(V²) space, O(1) edge lookup · list: O(V + E) space, but finding one edge takes a search" },
+    { "label": "Heuristic vs approximation algorithm", "value": "Heuristic: gives up guaranteed optimality for speed · approximation algorithm: comes with a proven bound on how far off it can be" },
+    { "label": "Status values", "value": "at the hub · en route · delivered (with the time)", "note": "Compute each one from the query time; never store a final status." },
+    { "label": "Status at time T", "value": "T &lt; departure → at the hub · departure ≤ T &lt; delivery → en route · T ≥ delivery → delivered" },
+    { "label": "Travel time", "value": "<code>hours = miles / mph</code> · <code>minutes = miles × 60 / mph</code>", "note": "Add <code>timedelta(hours=miles / mph)</code> to a <code>datetime</code>; <code>datetime.time</code> doesn't support arithmetic." },
+    { "label": "Hash index", "value": "<code>index = package_id % m</code> for m buckets", "note": "Chaining keeps a list of [key, value] pairs in each bucket." },
+    { "label": "Load factor", "value": "<code>α = n / m</code>", "note": "Expected chaining cost is O(1 + α); resize (for example, double m and rehash) when α passes your threshold." },
+    { "label": "Hash table Big-O", "value": "Insert and lookup O(1) average, O(n) worst · space O(n + m)" },
+    { "label": "Nearest neighbor", "value": "k(k + 1)/2 distance checks → O(k²) time, O(k) space per truck load", "note": "O(n²) over all loads; O(k² · V) if each check scans the address list." },
+    { "label": "Whole program", "value": "O(n² + V²) time · O(n + V²) space", "note": "n packages, V addresses, k packages per load; often summarized as O(n²)." },
+    { "label": "Distance matrix", "value": "<code>d[i][j] = d[j][i]</code>, <code>d[i][i] = 0</code> · O(V²) to build, O(1) per lookup" },
+    { "label": "Big-O rules", "value": "Sequential steps add · nested loops multiply · keep the dominant term" },
+    { "label": "Brute-force routing", "value": "s stops → s! visiting orders", "note": "Just 16 stops have 16! ≈ 2.1 × 10<sup>13</sup> orders." },
+    { "label": "Held–Karp (exact dynamic programming)", "value": "O(n² · 2<sup>n</sup>) time · O(n · 2<sup>n</sup>) space" },
+    { "label": "2-opt move", "value": "For a route … a → b … c → d …, reverse b…c when <code>d(a,c) + d(b,d) &lt; d(a,b) + d(c,d)</code>", "note": "O(1) per check, O(n²) per pass; keep the hub fixed." },
+    { "label": "Dijkstra", "value": "O(V²) with an array · O((V + E) log V) with a binary heap", "note": "Shortest paths from one source, non-negative weights only; it doesn't order a tour by itself." },
+    { "label": "P, NP, NP-complete, NP-hard", "value": "P: solvable in polynomial time · NP: checkable in polynomial time · NP-hard: at least as hard as every NP problem · NP-complete: in NP and NP-hard" },
+    { "label": "Self-balancing BST", "value": "AVL or red-black: O(log n) search, insert and delete in the worst case", "note": "A fair alternative to the hash table; keeps IDs in sorted order." },
+    { "label": "Self-adjusting examples", "value": "Splay tree and move-to-front list (strict sense) · resizing hash table and nearest neighbor (as C950 uses the term)" },
+    { "label": "Python dict and set", "value": "Already hash tables", "note": "Using them for the package table skips the skill being graded; build yours from lists." }
+  ],
+  "plan": [
+    {
+      "day": "Before Day 1",
+      "focus": "Prerequisites and Python readiness",
+      "tasks": [
+        "Pass C949 first: WGU lists Data Structures and Algorithms I and Discrete Math II as C950's prerequisites.",
+        "If Python is new, work through C949's Python chapters and labs: classes, lists, loops, if/elif, reading files and an <code>input()</code> loop.",
+        "Review your course planning tool report with the instructor (the guidebook's first step for the course), and budget roughly 35–45 hours over two weeks, about 2 hours on weekdays and 5–6 on weekend days (a planning estimate built from passers' reports). Fluent Python users report about a week."
+      ]
+    },
+    {
+      "day": "Day 1",
+      "focus": "Rubric checklist and constraint table",
+      "tasks": [
+        "Read both task pages and turn every rubric line into a checklist you can tick off.",
+        "Open the package file and distance table and list every deadline, special note and rule from the task page in your own constraint table.",
+        "Install a current Python 3 and PyCharm (or another IDE with a debugger), start a git repository, and watch the getting-started and Let's Go Hashing webinars."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Package class and hash table",
+      "tasks": [
+        "Write a Package class holding ID, address, city, ZIP, deadline, weight, note, truck, and departure and delivery times.",
+        "Build a chaining hash table from lists with insert and lookup keyed by package ID; add resizing if you want it as your self-adjusting element.",
+        "Save the package sheet as CSV, load it with <code>csv.reader</code>, and confirm every package comes back from lookup."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Distance data",
+      "tasks": [
+        "Load the address list and distance table into a 2-D list, mirroring each filled cell so <code>d[i][j]</code> equals <code>d[j][i]</code>.",
+        "Write a <code>distance(a, b)</code> helper and check three or four values by hand against the spreadsheet."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Trucks, time and a baseline run",
+      "tasks": [
+        "Write a Truck class: number, capacity, speed, package IDs, location, clock, mileage and departure time.",
+        "Do all time math with <code>datetime</code> and <code>timedelta</code>.",
+        "Deliver hand-picked loads in list order (no optimization yet) and record departure times, delivery times and miles."
+      ]
+    },
+    {
+      "day": "Days 5-6",
+      "focus": "Nearest neighbor and the special notes",
+      "tasks": [
+        "Replace list order with nearest neighbor on each truck, and add the drive back to the hub when a driver is needed again.",
+        "Adjust the hand-picked loads until every rule in your constraint table holds: every deadline, every special note and the limits on trucks and drivers.",
+        "Watch the Getting Greedy and How to Dijkstra webinars for your alternatives section.",
+        "Stop optimizing once every deadline is met and the total is comfortably under the mileage limit."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Self-checks and status at time T",
+      "tasks": [
+        "Add startup checks for every rule in your constraint table: deadlines, the mileage limit, truck capacity, start time, special notes and drivers.",
+        "Write the status-at-time function: at the hub, en route, or delivered with its time.",
+        "Put debug prints behind one boolean switch."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Command-line interface and comments",
+      "tasks": [
+        "Menu: one package by ID at a time the user enters, all packages at a time the user enters, total mileage, and exit.",
+        "Validate input so bad times or IDs don't crash the program, and show any package detail that changes during the day as it was at the time asked.",
+        "Add comments that explain what each part does and how control moves through the program."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Task 1 write-up, then submit",
+      "tasks": [
+        "Work through the Task 1 rubric line by line, using your working code as the source for every answer.",
+        "Write the pseudocode from your working code.",
+        "Give Big-O for each major part and the whole program with n, k and V defined, and cite your sources.",
+        "Edit for depth, since thin answers are the usual return reason, then submit Task 1."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Screenshots and the output PDF",
+      "tasks": [
+        "Capture every screenshot your task page lists, at the times it gives.",
+        "Collect them in one labeled PDF and check each one against the task page."
+      ]
+    },
+    {
+      "day": "Days 12-13",
+      "focus": "Task 2 writing, audit and submit",
+      "tasks": [
+        "Write the Task 2 justification line by line from the rubric, weighing your algorithm and data structure against alternatives and citing sources.",
+        "Audit against your checklist, run the program from a fresh copy, turn debug output off, package the files as your task page asks, and submit Task 2."
+      ]
+    },
+    {
+      "day": "Day 14 and after",
+      "focus": "Buffer for returns",
+      "tasks": [
+        "Nov 2026 posts report grading in minutes to hours. If a task comes back, fix exactly what the evaluator flagged and add depth there.",
+        "Revise and resubmit rather than argue; the May 2026 passer revised each task once and then passed."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Your hash table has 10 buckets, uses chaining, and places each package at index <code>package_id % 10</code>. After inserting packages 1 through 20, what is the load factor, and at most how many entries does one lookup scan?",
+      "choices": [
+        "α = 0.5; at most 1 entry",
+        "α = 2; at most 20 entries",
+        "α = 2; at most 2 entries",
+        "α = 10; at most 10 entries"
+      ],
+      "answer": "α = 2; at most 2 entries",
+      "why": "Load factor <code>α = n / m = 20 / 10 = 2</code>. IDs 1–20 cycle through remainders 1, 2, …, 9, 0, so every bucket gets exactly 2 IDs (bucket 0 holds 10 and 20). A lookup computes the index in O(1) and scans one chain of 2. In general the expected cost is O(1 + α), which stays O(1) if you resize as n grows."
+    },
+    {
+      "q": "What is the worst-case time for one lookup in a chaining hash table that holds n packages, and when does it happen?",
+      "choices": [
+        "O(n), when every key lands in the same bucket",
+        "O(1), because computing the bucket index takes constant time",
+        "O(1 + α), because the load factor is kept bounded",
+        "O(n²), when the table resizes during the lookup"
+      ],
+      "answer": "O(n), when every key lands in the same bucket",
+      "why": "Finding the bucket is O(1), but you then scan its chain. If all n keys collide, that chain holds all n entries, so the scan is O(n). O(1 + α) is the expected (average) case under a good hash function, not the worst case, and a lookup never triggers a resize. Writing O(1) worst case for chaining is a common Task 1 mistake."
+    },
+    {
+      "q": "Nearest neighbor routes a truck carrying k packages. At each step it checks the distance from the truck's current location to every undelivered package on the truck. How many distance checks does it make in total, and what is its time complexity?",
+      "choices": [
+        "k checks; O(k)",
+        "k(k + 1)/2 checks; O(k²)",
+        "k log k checks; O(k log k)",
+        "k! checks; O(k!)"
+      ],
+      "answer": "k(k + 1)/2 checks; O(k²)",
+      "why": "The first step checks all k packages, the next k − 1, and so on down to 1: <code>k + (k − 1) + … + 1 = k(k + 1)/2</code>. A load of 10 packages means 10 × 11 ÷ 2 = 55 checks. The leading term is k²/2, so the time is O(k²), with O(k) extra space for the undelivered list. If each check first scans a list of V addresses to find matrix indexes, the cost grows to O(k² · V), so either state that or hash the addresses too."
+    },
+    {
+      "q": "A truck starts at the hub, at mile 0 on a straight road. It must visit stops at mile 1, mile 3 and mile −2 (2 miles the other way), and it does not return to the hub. How far does nearest neighbor drive, and how far does the best order drive?",
+      "choices": [
+        "Nearest neighbor 7 miles; best order 7 miles",
+        "Nearest neighbor 10 miles; best order 8 miles",
+        "Nearest neighbor 8 miles; best order 8 miles",
+        "Nearest neighbor 8 miles; best order 7 miles"
+      ],
+      "answer": "Nearest neighbor 8 miles; best order 7 miles",
+      "why": "From mile 0 the closest stop is mile 1 (1 mile; mile −2 is 2 away). From mile 1, mile 3 is 2 miles away and mile −2 is 3, so it goes to 3. Then it drives all the way back to −2 (5 miles): 1 + 2 + 5 = 8. Checking all six orders, the best is −2, then 1, then 3: 2 + 3 + 2 = 7. Each greedy step looked best locally but forced one long leg at the end, which is why nearest neighbor is fast but not optimal. For WGUPS it only has to stay under the mileage limit."
+    },
+    {
+      "q": "Why is finding the shortest route that visits every WGUPS stop considered NP-hard, and what does that mean for your design?",
+      "answer": "It is a form of the traveling salesman problem. TSP's decision version is NP-complete, so no polynomial-time exact algorithm is known (finding one would prove P = NP), and exact methods take exponential or factorial time. A polynomial-time heuristic such as nearest neighbor is the practical choice, as long as it meets every constraint and the mileage limit.",
+      "why": "Brute force tries every visiting order: just 16 stops have 16! = 20,922,789,888,000 ≈ 2.1 × 10<sup>13</sup> orders. The classic exact dynamic-programming method, Held–Karp, still needs O(n² · 2<sup>n</sup>) time and O(n · 2<sup>n</sup>) space. The decision question (is there a tour no longer than L?) is in NP because a proposed tour's length can be checked in polynomial time, and the Hamiltonian cycle problem reduces to it, which makes it NP-complete; the optimization version is NP-hard. WGUPS adds deadlines, capacity and driver limits, which only make the exact problem harder."
+    },
+    {
+      "q": "The course competencies mention self-adjusting data structures and heuristics. In two or three sentences, explain what self-adjusting means in the strict sense, and how a resizing hash table and nearest neighbor fit the way the course uses the term.",
+      "answer": "Strictly, a self-adjusting structure reorganizes itself in response to how it is used, like a splay tree that moves each accessed node to the root or a move-to-front list. The course uses the term more loosely: a hash table that grows and rehashes when its load factor passes a threshold adjusts to its load, and nearest neighbor adjusts each choice to the truck's current location and the packages still undelivered.",
+      "why": "Say exactly what adjusts and in response to what; vague claims are a common reason written sections come back. AVL and red-black trees are self-balancing (they restructure on insert and delete to keep height O(log n)), and older course notes cite them as examples too. A list sorted once, or a matrix filled once, doesn't adjust at all."
+    },
+    {
+      "q": "You double the number of buckets in a chaining hash table and rehash every package. What is the main tradeoff?",
+      "choices": [
+        "Worst-case lookups become O(1), at no extra memory cost",
+        "Shorter expected chains and faster lookups, paid for with more memory and a one-time O(n) rehash",
+        "Memory use drops because each chain gets shorter",
+        "Nothing changes, because hashing is always O(1)"
+      ],
+      "answer": "Shorter expected chains and faster lookups, paid for with more memory and a one-time O(n) rehash",
+      "why": "With n items and m buckets the expected chain length is <code>α = n / m</code>. Doubling m halves α, so expected lookups get faster, but the bucket array is twice as large (more empty buckets) and every item is reinserted once, which is O(n). If you double whenever α passes a threshold, the rehash cost averages out to O(1) per insert (amortized). The worst case stays O(n), because every key could still collide. Spending memory to save time is a classic space-time tradeoff."
+    },
+    {
+      "q": "A truck leaves the hub at 1:00 p.m. and drives 10 miles to its first stop at 24 mph. When does it arrive?",
+      "choices": [
+        "1:10 p.m.",
+        "1:24 p.m.",
+        "1:42 p.m.",
+        "1:25 p.m."
+      ],
+      "answer": "1:25 p.m.",
+      "why": "Time = distance ÷ speed = 10 ÷ 24 = 0.41667 hours, and 0.41667 × 60 = 25 minutes, so 1:25 p.m. Shortcut: each mile takes 60 ÷ 24 = 2.5 minutes, and 10 × 2.5 = 25. In Python, add <code>timedelta(hours=10 / 24)</code> to a <code>datetime</code> set to 1:00 p.m. The 1:42 trap comes from reading 0.42 hours as 42 minutes."
+    },
+    {
+      "q": "What is the time complexity of this step, where n is the number of packages?<br><code>for each package p: for each package q: if p and q share an address, add 1 to p's count</code><br>After the loops, the n counts are sorted.",
+      "choices": [
+        "O(n²)",
+        "O(n log n)",
+        "O(n² log n)",
+        "O(n)"
+      ],
+      "answer": "O(n²)",
+      "why": "The nested loops run n × n = n² comparisons (100 for 10 packages). Sorting the n counts afterward is O(n log n). Sequential steps add, so the total is O(n² + n log n), and the n² term dominates: O(n²). You would multiply only if the sort ran inside the loops."
+    },
+    {
+      "q": "The WGUPS distance table fills in only one triangle of the grid. Why mirror it into a full symmetric matrix when you load it, and what does that cost?",
+      "answer": "So <code>distance(a, b)</code> is a single O(1) index lookup whatever the order of a and b, with no check for which index is larger and no blank-cell bugs. It costs O(V²) time and space once at load time, the same order as storing the triangle.",
+      "why": "The table lists each pair of addresses once, so a trip is the same length both ways, and setting <code>d[j][i] = d[i][j]</code> is valid. With V addresses the triangle holds V(V + 1)/2 cells including the diagonal of zeros, and the full matrix holds V², about twice as many, but both are O(V²). Nearest neighbor calls the distance function inside an O(k²) loop, so removing a branch and an error source from every call is worth the extra memory. Check three or four mirrored values by hand against the spreadsheet."
+    },
+    {
+      "q": "A package rides truck 1, which leaves the hub at 9:10 a.m., and it is delivered at 9:50 a.m. What should the all-packages view show for it at 9:30 a.m.?",
+      "choices": [
+        "At the hub",
+        "En route on truck 1",
+        "Delivered at 9:50 a.m.",
+        "Unknown until it's delivered"
+      ],
+      "answer": "En route on truck 1",
+      "why": "Status is a function of the query time T: before departure (T &lt; 9:10) the package is at the hub; from departure until delivery (9:10 ≤ T &lt; 9:50) it is en route; at or after 9:50 it is delivered at 9:50. 9:30 falls in the middle range. Showing delivered at 9:30 is the classic bug of storing only the end-of-day status. Status is never unknown: the recorded departure and delivery times answer the question for any T."
+    },
+    {
+      "q": "Which field should key the package hash table?",
+      "choices": [
+        "Delivery address",
+        "Delivery deadline",
+        "Package ID",
+        "Delivery status"
+      ],
+      "answer": "Package ID",
+      "why": "Package IDs are unique and never change, so one key reaches one package all day. Several packages go to the same building, so keying by address would collide constantly; deadlines repeat across packages; and status changes during the day, so you'd have to re-key entries as packages move. Store the other fields in a Package object under the ID."
+    }
+  ],
+  "pitfalls": [
+    "Skipping the all-packages-at-a-chosen-time view. A May 2026 first submission came back because a stop-by-stop route printout isn't a substitute; build both lookups.",
+    "Storing one end-of-day status. If status isn't computed from the query time, every screenshot says delivered, whatever time it shows.",
+    "Showing or using a corrected address before the correction is known; a 2024 submission was reportedly returned for exactly this.",
+    "Leaving out the drive back to the hub. A truck that returns for another load drives miles that count toward the total.",
+    "Weak Big-O: claiming O(1) worst case for chaining, leaving out the cost of finding an address's matrix index, not defining n, or giving only a whole-program figure with nothing for each major part.",
+    "Using <code>dict</code>, <code>set</code> or a library for the hash table. They're already hash tables, and the instructor page says to build yours from lists.",
+    "Hard-coding departure or elapsed times. A May 2026 passer found that reusing a truck with a hard-coded time threw off both the clock and the mileage.",
+    "Adding a <code>timedelta</code> to a <code>datetime.time</code> (a TypeError) or doing time math by hand with floats. Keep clocks as <code>datetime</code> values.",
+    "Writing one-sentence answers because an older post said that was enough. In May 2026 both tasks came back once for more depth.",
+    "Naming alternatives without comparing them. For each other algorithm or data structure, say how it differs from yours in approach, Big-O and result quality."
+  ],
+  "resources": [
+    {
+      "label": "Task directions and rubrics for Task 1 and Task 2 (course page)",
+      "kind": "official",
+      "note": "The source of truth for every requirement, time and limit. The instructor page also points to a C950 Task Directions and Rubric Summary."
+    },
+    {
+      "label": "Task 1 FAQ, Task 1 template and nearest-neighbor guide (Course Tips, C950 Supplemental Resources)",
+      "kind": "official",
+      "note": "Reported by a Mar 2024 passer; check that they're still there."
+    },
+    {
+      "label": "WGU CS instructor's C950 page",
+      "url": "https://sites.google.com/wgu.edu/jashe/home/c950",
+      "kind": "official",
+      "note": "Seven-step build order, hash-table-with-lists and CSV tutorials, PyCharm and standard-library links. Undated."
+    },
+    {
+      "label": "Instructor webinars: Let's Go Hashing (30 min), Getting Greedy (14 min), How to Dijkstra (20 min), Python Modules (10 min)",
+      "url": "https://sites.google.com/wgu.edu/jashe/home/c950",
+      "kind": "video",
+      "note": "Recordings with slides and sample code, plus long and short Getting Started in C950 videos, all linked from the instructor page."
+    },
+    {
+      "label": "WGU Connect resources for C950 and the course instructors",
+      "kind": "official",
+      "note": "2026 passers point stuck students here first."
+    },
+    {
+      "label": "C949 zyBooks Python chapters and labs",
+      "kind": "practice",
+      "note": "For anyone new to Python; 2026 posters say C949-level Python is enough."
+    },
+    {
+      "label": "Python docs: datetime",
+      "url": "https://docs.python.org/3/library/datetime.html",
+      "kind": "tool",
+      "note": "<code>timedelta</code>, <code>datetime.combine</code> and <code>strftime</code>; arithmetic on time objects isn't supported."
+    },
+    {
+      "label": "Python docs: csv",
+      "url": "https://docs.python.org/3/library/csv.html",
+      "kind": "tool",
+      "note": "<code>csv.reader</code> for the package and distance files once you save them as CSV."
+    },
+    {
+      "label": "PyCharm, or any Python 3 IDE with a debugger",
+      "kind": "tool",
+      "note": "PyCharm is the IDE named on the instructor page; record its exact version for the environment section."
+    },
+    {
+      "label": "C950 Passed - Tips and Advice (r/WGU_CompSci, May 2026)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tm2hzp/c950_passed_tips_and_advice/",
+      "kind": "community",
+      "note": "The most detailed 2026 write-up: architecture, the two lookups, time handling and the returns."
+    },
+    {
+      "label": "r/WGU_CompSci wiki, search and stickied posts",
+      "kind": "community",
+      "note": "Moderators redirect repeat C950 questions there (Jul 2026)."
+    }
+  ],
+  "community": {
+    "summary": "Posts from 2026 agree that C950 is one of the hardest courses in the degree and also its most enjoyable project. Passers used a hand-built hash table, nearest-neighbor routing, trucks loaded by hand and small Package, Truck and HashTable classes; one reported about 105 miles. Returns are common and usually ask for more written depth or a missing all-packages-at-a-chosen-time view; passers revised rather than appealed, and Nov 2026 reports describe grading in minutes to hours. Reported time runs from about a week to two weeks plus revisions, and students new to Python say to do the C949 Python material first. Advice on pseudocode is split between planning it first and writing it from working code.",
+    "coverage": "12 posts, Jul 2021 – Nov 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "My Fastest Submission (C950)",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1xp1pp7/my_fastest_submission_c950/",
+        "date": "Nov 2026",
+        "takeaway": "Image post about very fast grading. Commenters report one task graded in about 13 minutes and a Task 2 returned for revisions within about 3.5 hours."
+      },
+      {
+        "title": "What the difficulty level of these courses? I need to finish them by Nov 30th so that I can graduate.",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1w3wb27/what_the_difficulty_level_of_these_courses_i_need/p73c75k/",
+        "date": "Sep 2026",
+        "takeaway": "Commenters call C950 the best project in the curriculum and a lot of fun, but hard and time-consuming; one rated it about 9 out of 10 for difficulty."
+      },
+      {
+        "title": "C950 making me feel incompetent",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1vsr8lr/c950_making_me_feel_incompetent/",
+        "date": "Aug 2026",
+        "takeaway": "A student stuck for months on the pseudocode was told to code the algorithm first, write the pseudocode from the working code, and lean on WGU Connect and the instructor. Another commenter warned against relying on AI-generated examples."
+      },
+      {
+        "title": "C950 DSA 2 ....DONE",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u95wba/c950_dsa_2_done/",
+        "date": "Jun 2026",
+        "takeaway": "Lists the Python you need: classes for packages and trucks, nested loops, if/elif for deadlines and special notes, lists, <code>csv.reader</code> and an <code>input()</code> menu loop. Without Python experience, do all of C949's zyBook sections and labs first."
+      },
+      {
+        "title": "C950 Passed - Tips and Advice",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tm2hzp/c950_passed_tips_and_advice/",
+        "date": "May 2026",
+        "takeaway": "New to Python, about two weeks plus revisions, roughly 105 miles with nearest neighbor and trucks loaded by hand; both tasks came back once for more content. Key tips: build both lookups (one package, and every package at a chosen time), use datetime and timedelta, mirror the distance table, and put the screenshots in one labeled PDF."
+      },
+      {
+        "title": "C949 DSA1",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s2gcuh/c949_dsa1/oc8uvu0/",
+        "date": "Mar 2026",
+        "takeaway": "A commenter points out that C949 is an exam but C950 is a performance assessment that must be written in Python, so newcomers should study C949's Python chapters."
+      },
+      {
+        "title": "Finally done – 15 terms",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1q4rszg/finally_done_15_terms/nxy9a2d/",
+        "date": "Jan 2026",
+        "takeaway": "A graduate recommends an object-oriented design for the trucks, which they say can roughly halve the code."
+      },
+      {
+        "title": "Why did this get my PA sent back?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1gp0w3f/why_did_this_get_my_pa_sent_back/",
+        "date": "Nov 2024",
+        "takeaway": "Reported via Gemini: a submission was returned because a package's corrected address appeared before the time it becomes known."
+      },
+      {
+        "title": "C950 issue with evaluators and requirements",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1g25udj/c950_issue_with_evaluators_and_requirements/",
+        "date": "Oct 2024",
+        "takeaway": "Reported via Gemini: friction with evaluators over what the printed output had to show."
+      },
+      {
+        "title": "C950 - Data Structures and Algorithms II finished in 6 days with no python experience",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1bdf53t/",
+        "date": "Mar 2024",
+        "takeaway": "About 20–30 hours over six days using the Task 1 FAQ, the Task 1 template and a nearest-neighbor guide from the course's supplemental resources; the Big-O section came back once. A commenter says the two tasks can be submitted in either order."
+      },
+      {
+        "title": "They changed C950- Whats different about it?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/14wgmzp/they_changed_c950_whats_different_about_it/",
+        "date": "Jul 2023",
+        "takeaway": "Reported via Gemini: the assessment was split into separate tasks, while the coding project and the written report stayed."
+      },
+      {
+        "title": "C950 - Data Structures and Algorithms II Passed + Advice",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/ocfaix/c950_data_structures_and_algorithms_ii_passed/",
+        "date": "Jul 2021",
+        "takeaway": "Reported via Gemini, from the older single-task version: ask the instructor for study guides, build your own hash table, load the trucks by hand and keep total mileage under the limit."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU B.S. Computer Science degree page: DSA II description and prerequisites", "url": "https://www.wgu.edu/online-it-degrees/computer-science.html" },
+    { "label": "WGU Program Guidebook, B.S. AI Engineering (catalog 202607, May 2026): DSA II description and competencies", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSAIE.pdf" },
+    { "label": "WGU BSCS Program Guidebook (catalog 202611): prerequisites and course description", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026: DSA II at 4 CUs in BSCS 202611", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU CS instructor's C950 page: build order, webinars and hash-table rules", "url": "https://sites.google.com/wgu.edu/jashe/home/c950" },
+    { "label": "Python docs: datetime", "url": "https://docs.python.org/3/library/datetime.html" },
+    { "label": "Python docs: csv", "url": "https://docs.python.org/3/library/csv.html" },
+    { "label": "Wikipedia: Nearest neighbour algorithm", "url": "https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm" },
+    { "label": "Wikipedia: 2-opt", "url": "https://en.wikipedia.org/wiki/2-opt" },
+    { "label": "Wikipedia: Dijkstra's algorithm", "url": "https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm" },
+    { "label": "Wikipedia: Hash table", "url": "https://en.wikipedia.org/wiki/Hash_table" },
+    { "label": "r/WGU_CompSci: C950 Passed - Tips and Advice (May 2026)", "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tm2hzp/c950_passed_tips_and_advice/" }
+  ],
+  "caveats": [
+    "WGU's task directions and rubrics are behind the student login. The task outline here is a general summary from 2024–2026 student posts, so check every requirement, number and limit against your own task pages.",
+    "Unresolved: whether third-party packages such as pandas may read the input files; check your task page. A May 2026 passer used pandas and says only the hash table and routing must be your own. Using <code>csv</code> avoids the question.",
+    "Unresolved: whether Task 2 can be submitted before Task 1 is graded. A 2024 commenter said either order works; most 2026 passers did Task 1 first.",
+    "The instructor page is undated and mentions an older assessment code (NHP2), but its build order and hash-table rules still fit the current Task 2.",
+    "Competency wording comes from WGU's May 2026 AI Engineering program guidebook, which lists the same Data Structures and Algorithms II course; the BSCS guidebook is image-only, but its course description matches.",
+    "Time-to-finish and grading-speed figures are individual reports, not WGU numbers; WGU publishes no hour estimate for C950.",
+    "Some posts listed under community (Jul 2021, Jul 2023, Oct 2024 and Nov 2024) were summarized through Google Gemini and not opened directly."
+  ]
+}

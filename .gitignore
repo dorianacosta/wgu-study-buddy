@@ -1,0 +1,17 @@
+node_modules
+dist
+*.local
+.DS_Store
+
+# The retired private C952 bank and its old one-file build: never publish
+src/data/private/
+C952_Study_Buddy.html
+# Local launch configs (machine paths)
+.claude/
+# Logs, local environment files, stray TypeScript build info
+*.log
+.env
+*.tsbuildinfo
+# The one-file app (npm run build:file) is a build output: Netlify builds the site from source,
+# so the repo doesn't carry it. Ship it as a release download if you want one.
+WGU_Study_Buddy.html

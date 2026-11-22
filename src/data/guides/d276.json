@@ -1,0 +1,612 @@
+{
+  "code": "D276",
+  "summary": "D276 teaches HTML and CSS through a zyBook, and WGU's catalog says you pass it with a performance assessment; students report building three linked pages (a résumé, a cover letter and a career-goals page) with one external stylesheet, local image, video and audio files and a short script, then zipping the project folder for an evaluator to grade against a rubric. Student posts call the current PA stress-free or easy: builds took a weekend to a few weeks, grading took a day or two, the one return they describe was for Latin placeholder text, and a passer says the design doesn't need to be artistic.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment: a small HTML and CSS website, evaluator-graded",
+    "format": "1 performance assessment · students report 3 linked HTML pages + 1 external stylesheet + local image, video and audio + a short script, submitted as a zipped folder · rubric-graded, no exam",
+    "details": [
+      "<b>The task:</b> WGU's catalog says competency is shown through a performance assessment. Students describe building a small website with résumé-style content, following a rubric that names the elements and CSS techniques to show, and a 2025 student says evaluators grade the HTML and CSS, not whether the résumé is real. Students' public project write-ups from 2025–2026 describe three linked pages (a résumé, a cover letter and a career-goals page), one external stylesheet linked from every page and a short inline script on the résumé page, all written by hand with no frameworks.",
+      "<b>Media (reported):</b> the site needs an image, a video and an audio file stored in the project folder. A passer downloaded royalty-free files (from Pixabay, for example) instead of hot-linking them, and another credited the media at the bottom of a page to be safe; reference each file with a relative path. Use only the file types your task directions list: students report JPG, PNG or GIF images, MP3 or WAV audio and MP4, MOV or MPEG video, and one 2026 student had to convert an .m4a clip to MP3.",
+      "<b>Submission (reported):</b> keep every page, stylesheet and media file in one project folder and upload it as a zip. The evaluator opens your files on another computer, so every path must be relative and every file name must match exactly.",
+      "<b>Grading:</b> evaluators score each submission against the rubric and return it with feedback when something is missing (WGU's general PA process). Students report results in about one to two days. One submission came back for Latin placeholder text, so every section needs short, real sentences.",
+      "<b>Version history:</b> a Sep 2025 post calls the PA version 3 of the course and says earlier versions had an objective assessment instead. WGU's Credly badge for the course still describes a final exam and lists XML, which matches the older version.",
+      "<b>Course facts:</b> D276 is 3 CU, and BSCS version 202412 lists it in term 2. B.S. Software Engineering (202610), B.S. Data Analytics and B.S. AI Engineering also list it."
+    ],
+    "tips": [
+      "Turn the rubric into a checklist before you write any markup, and build only what it asks for. One passer put CSS comments naming the rubric item each part meets, which makes the evaluator's job easy.",
+      "Watch the instructor's recorded cohort sessions and build along; a passer says the first four cover more than half the rubric. Find them through the course page → Join WGU Connect → Resources, then fill the remaining items from MDN or W3Schools.",
+      "Work in VS Code with the Live Server extension so the browser reloads every time you save. Keep one project folder with subfolders such as <code>css/</code>, <code>images/</code> and <code>media/</code>, and use lowercase file names without spaces.",
+      "Run every page through the W3C Markup Validation Service and the stylesheet through the W3C CSS Validation Service, and fix each error. Debugging with tools is one of the course's competencies, and clean validator output is the quickest proof your code is sound.",
+      "Write a few sentences of real text for each section instead of Latin filler, then proofread the visible text with Grammarly (students say WGU gives students free access).",
+      "After you zip, unzip a copy somewhere else and click through every page before you submit: each link, image, video and audio file should still work. A broken path is the easiest return to avoid.",
+      "Don't spend hours on looks. One complementary color pair with readable contrast, one font stack and consistent spacing are enough; the rubric grades technique, not artistry."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and create your personalized course plan together (listed first in the program guidebook).",
+    "The learner creates the structure of basic web documents using HTML.",
+    "The learner implements web page formatting and interface aesthetics using CSS.",
+    "The learner resolves software problems in web development environments with debugging tools."
+  ],
+  "topics": [
+    {
+      "title": "Project setup: files, folders, URLs and relative paths",
+      "eli5": "A website is just a folder of files, and every link is a set of directions from one file to another that only works if the directions start from the right place.",
+      "detail": "A browser requests a file by URL (scheme, host and path, as in <code>https://example.com/cover-letter.html</code>) and renders what comes back. Your D276 site will be opened from the evaluator's computer, so every reference must be relative to the file that contains it. A relative path starts in the current file's folder: <code>cover-letter.html</code> is a sibling, <code>images/photo.jpg</code> is one folder down, and <code>../index.html</code> goes up one level first. A path that starts with <code>/</code> is root-relative; opened as local files, it points at the root of the drive instead of your project. An absolute path to your own disk works only on your machine. Name the home page <code>index.html</code> (servers load it by default for a folder), keep names lowercase with hyphens instead of spaces, and match case exactly, because many web servers treat <code>Photo.jpg</code> and <code>photo.jpg</code> as different files. VS Code's Live Server extension serves the folder at a local address and reloads the page whenever you save.",
+      "points": [
+        "Typical layout: <code>index.html</code> (the résumé page), <code>cover-letter.html</code>, <code>career-goals.html</code>, <code>css/styles.css</code>, <code>images/</code>, <code>media/</code>",
+        "From <code>pages/cover-letter.html</code>, the stylesheet is <code>../css/styles.css</code> and the résumé page is <code>../index.html</code>",
+        "Spaces become <code>%20</code> in URLs (<code>my photo.JPG</code> → <code>my%20photo.JPG</code>), which is easy to mistype; use <code>my-photo.jpg</code>",
+        "Zip the project folder itself, not a parent folder full of unrelated files, then test the unzipped copy in a fresh location",
+        "A page that shows its raw code in the browser usually has the wrong extension, such as <code>index.html.txt</code>; turn on file extensions in your file manager"
+      ]
+    },
+    {
+      "title": "HTML document anatomy and syntax rules",
+      "eli5": "Every page has the same skeleton: a head that holds information about the page and a body that holds what people actually see.",
+      "detail": "<code>&lt;!DOCTYPE html&gt;</code> puts the browser in standards mode. <code>&lt;html lang=\"en\"&gt;</code> wraps everything and tells screen readers and translation tools the page's language, <code>&lt;head&gt;</code> holds metadata that isn't displayed, and <code>&lt;body&gt;</code> holds the visible content. The head should contain <code>&lt;meta charset=\"utf-8\"&gt;</code>, the viewport tag <code>&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"&gt;</code> so phones don't shrink the page, a unique <code>&lt;title&gt;</code> for each page (shown in the tab, bookmarks and search results) and the stylesheet link. An element is a start tag, content and an end tag, and attributes go in the start tag as <code>name=\"value\"</code> pairs. Void elements such as <code>img</code>, <code>br</code>, <code>hr</code>, <code>meta</code>, <code>link</code>, <code>input</code> and <code>source</code> have no end tag. Elements must nest properly, closing the inner one first; an <code>id</code> must be unique within its page; and comments are written <code>&lt;!-- like this --&gt;</code>.",
+      "points": [
+        "Valid nesting: <code>&lt;p&gt;&lt;strong&gt;Hi&lt;/strong&gt;&lt;/p&gt;</code> · invalid: <code>&lt;p&gt;&lt;strong&gt;Hi&lt;/p&gt;&lt;/strong&gt;</code>",
+        "A <code>&lt;p&gt;</code> can't contain block content such as a <code>&lt;div&gt;</code>, a list or a heading; the browser closes the paragraph early and the validator reports a stray end tag",
+        "Boolean attributes are on whenever they appear, whatever their value: <code>required</code>, <code>controls</code>, <code>autoplay</code>, <code>disabled</code>",
+        "Global attributes work on any element: <code>id</code>, <code>class</code>, <code>style</code>, <code>title</code>, <code>lang</code>",
+        "Older versions of the course also covered XML (WGU's badge still lists it): you define your own tags, the document needs exactly one root element, and every tag must be closed"
+      ]
+    },
+    {
+      "title": "Semantic structure, headings and text",
+      "eli5": "Semantic tags are labels that say what each part of the page is, like navigation or main content, so browsers, search engines and screen readers know what they're looking at.",
+      "detail": "HTML landmark and sectioning elements describe a page's regions: <code>&lt;header&gt;</code> for introductory content or a banner, <code>&lt;nav&gt;</code> for major navigation links, <code>&lt;main&gt;</code> for the page's unique content (one per page), <code>&lt;section&gt;</code> for a themed group that normally has a heading, <code>&lt;article&gt;</code> for self-contained content that would make sense on its own, <code>&lt;aside&gt;</code> for tangential content and <code>&lt;footer&gt;</code> for closing details such as contact information or media credits. <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> are generic block and inline containers with no meaning, useful only as styling hooks. Headings <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code> form the page's outline: use one <code>h1</code> per page and go down a level at a time, choosing levels for structure while CSS sets the size. For text, use <code>&lt;p&gt;</code> paragraphs, <code>&lt;ul&gt;</code> (bulleted) or <code>&lt;ol&gt;</code> (numbered) lists of <code>&lt;li&gt;</code> items, <code>&lt;dl&gt;</code> with <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code> for term and description pairs, <code>&lt;strong&gt;</code> for importance, <code>&lt;em&gt;</code> for stressed emphasis and <code>&lt;blockquote&gt;</code> for quotations.",
+      "points": [
+        "Résumé-style content maps neatly: a <code>&lt;section&gt;</code> for each part (education, experience, skills), an <code>&lt;h2&gt;</code> for each title, a list for skills",
+        "<code>&lt;strong&gt;</code> marks importance and <code>&lt;em&gt;</code> stressed emphasis, while <code>&lt;b&gt;</code> draws attention to text such as a keyword and <code>&lt;i&gt;</code> sets off text such as a technical term or a foreign phrase, both without extra importance; choose by meaning and set the look in CSS",
+        "<code>&lt;br&gt;</code> breaks a line inside one block, such as an address; use margins, not stacked breaks, for spacing",
+        "Nested lists go inside an <code>&lt;li&gt;</code>, not directly inside the outer <code>&lt;ul&gt;</code>",
+        "Character references: <code>&amp;lt;</code> shows a less-than sign, <code>&amp;amp;</code> an ampersand, <code>&amp;copy;</code> a copyright symbol"
+      ]
+    },
+    {
+      "title": "Links and navigation",
+      "eli5": "A link is a door with an address on it, and a navigation bar is the same set of doors repeated on every page so visitors never get lost.",
+      "detail": "<code>&lt;a href=\"about.html\"&gt;About&lt;/a&gt;</code> links to another page in your folder, an <code>https://</code> address links to another site, <code>href=\"#skills\"</code> jumps to the element with <code>id=\"skills\"</code> on the same page, <code>href=\"about.html#skills\"</code> jumps to a spot on another page, and <code>href=\"mailto:name@example.com\"</code> opens an email program. <code>target=\"_blank\"</code> opens a new tab; current browsers treat it as if <code>rel=\"noopener\"</code> were set, but writing <code>rel=\"noopener\"</code> yourself does no harm. Link text should say where the link goes, such as \"Download my résumé\" rather than \"click here\", because screen-reader users often skim a list of links out of context. A site menu is usually a <code>&lt;nav&gt;</code> holding a <code>&lt;ul&gt;</code> of links, repeated on every page so each page can reach the others, and laid out in a row with flexbox. CSS pseudo-classes style link states: <code>:link</code>, <code>:visited</code>, <code>:hover</code>, <code>:focus</code> and <code>:active</code>.",
+      "points": [
+        "Write link-state rules in the order <code>:link</code>, <code>:visited</code>, <code>:hover</code>, <code>:active</code> (\"LoVe HAte\"): the four selectors have equal specificity, so the last matching rule wins, and this order lets hover and active styles override the link and visited ones",
+        "Style <code>:focus</code> (or <code>:focus-visible</code>) as well as <code>:hover</code>, so keyboard users can see where they are",
+        "Mark the current page in the menu with a class such as <code>current</code>, or with <code>aria-current=\"page\"</code>",
+        "Click every link in the unzipped copy; one typo in an <code>href</code> gives a file-not-found page"
+      ]
+    },
+    {
+      "title": "Images, audio and video",
+      "eli5": "Media tags are picture frames and players: you put the file in your folder, point the tag at it, and add words for anyone who can't see or hear it.",
+      "detail": "<code>&lt;img src=\"images/headshot.jpg\" alt=\"Portrait of the site's author\" width=\"300\" height=\"300\"&gt;</code> embeds an image. The <code>alt</code> attribute is required: describe what the image conveys, or use <code>alt=\"\"</code> for a purely decorative image. Width and height let the browser reserve space so the layout doesn't jump while the file loads, and <code>&lt;figure&gt;</code> with <code>&lt;figcaption&gt;</code> pairs media with a visible caption. <code>&lt;video&gt;</code> and <code>&lt;audio&gt;</code> show the browser's play, pause, volume and seek controls only when the <code>controls</code> attribute is present. Give them one or more <code>&lt;source src=\"…\" type=\"…\"&gt;</code> children; the browser plays the first format it supports, and text inside the element appears only in browsers that can't play media at all. <code>autoplay</code>, <code>muted</code>, <code>loop</code> and, for video, <code>poster</code> (a preview image) are optional. Browsers block autoplay with sound, so autoplay usually needs <code>muted</code>. These are Boolean attributes, so <code>autoplay=\"false\"</code> still turns autoplay on; leave the attribute out instead. A <code>&lt;track kind=\"captions\" src=\"captions.vtt\"&gt;</code> child adds captions to a video.",
+      "points": [
+        "Image formats: JPEG for photos, PNG for transparency and sharp graphics, GIF for simple animation; SVG and WebP are common on the web, but for the PA use a format your task directions allow",
+        "Media types: <code>video/mp4</code> and <code>video/webm</code>; <code>audio/mpeg</code> (MP3), <code>audio/ogg</code> and <code>audio/wav</code>; for the PA, students report MP3 or WAV audio and MP4, MOV or MPEG video",
+        "Download files into <code>images/</code> and <code>media/</code>; a file hot-linked from another site can vanish or be blocked",
+        "Pixabay's license allows free use without attribution, though credit is appreciated; a credits line in the footer costs nothing",
+        "Keep files small: a short clip of a few megabytes is plenty, and resize photos before adding them"
+      ]
+    },
+    {
+      "title": "Tables and forms",
+      "eli5": "A table is a grid for data, like a spreadsheet, and a form is a set of labeled blanks that a visitor fills in and sends.",
+      "detail": "Build a table from <code>&lt;table&gt;</code>, an optional <code>&lt;caption&gt;</code> that titles it, the row groups <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code> and <code>&lt;tfoot&gt;</code>, <code>&lt;tr&gt;</code> rows, <code>&lt;th&gt;</code> header cells (<code>scope=\"col\"</code> or <code>scope=\"row\"</code> says which cells they label) and <code>&lt;td&gt;</code> data cells; <code>colspan</code> and <code>rowspan</code> merge cells. Use tables for tabular data such as a schedule or a skills matrix, never for page layout. A <code>&lt;form&gt;</code> with <code>action</code> (where the data goes) and <code>method</code> (<code>get</code> or <code>post</code>) wraps the controls: <code>&lt;input&gt;</code> with a <code>type</code> such as text, email, tel, url, number, date, password, checkbox, radio or submit; <code>&lt;select&gt;</code> with <code>&lt;option&gt;</code> elements; <code>&lt;textarea&gt;</code> for longer text; and <code>&lt;button type=\"submit\"&gt;</code>. Every control needs a <code>&lt;label&gt;</code>, tied to it by matching the label's <code>for</code> to the control's <code>id</code> or by wrapping the control, and a <code>name</code>, which is the key its value is sent under. Radio buttons in one group share a <code>name</code> so only one can be chosen, <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code> groups related controls, and <code>required</code>, <code>minlength</code>, <code>maxlength</code>, <code>min</code>, <code>max</code> and <code>pattern</code> switch on the browser's built-in checks.",
+      "points": [
+        "GET adds the data to the URL (good for searches); POST sends it in the request body (sign-ups and anything private)",
+        "<code>placeholder</code> is a hint inside the box, not a label; it disappears as soon as someone types",
+        "<code>type=\"email\"</code> plus <code>required</code> gives a free format check and an email keyboard on phones",
+        "Style tables with <code>border-collapse: collapse;</code>, padding on the cells and a background color on <code>th</code>",
+        "Your site has no server code of its own; students report the task names a zyBooks form-viewer address for <code>action</code> that shows back what you submitted, so use the exact address your directions give, give every control a <code>name</code>, and send one test submission"
+      ]
+    },
+    {
+      "title": "CSS basics: syntax, linking and selectors",
+      "eli5": "CSS is a list of style instructions: first pick which elements to style (the selector), then say how they should look (property and value).",
+      "detail": "A rule is a selector followed by a declaration block, as in <code>h1 { color: navy; font-size: 2rem; }</code>. Each declaration is <code>property: value;</code>, and comments are written <code>/* like this */</code>. CSS can be inline (a <code>style</code> attribute on one element), internal (a <code>&lt;style&gt;</code> block in the head) or external (a .css file linked from each page's head with <code>&lt;link rel=\"stylesheet\" href=\"css/styles.css\"&gt;</code>). An external sheet styles every page from one place, which makes it the default for a multi-page site. Basic selectors are type (<code>p</code>), class (<code>.card</code>, reusable on many elements), ID (<code>#hero</code>, one element per page), universal (<code>*</code>), attribute (<code>input[type=\"email\"]</code>) and selector lists (<code>h1, h2</code>). Combinators relate elements: descendant (<code>nav a</code>, at any depth), child (<code>ul &gt; li</code>, direct children only), next sibling (<code>h2 + p</code>) and subsequent sibling (<code>h2 ~ p</code>). Pseudo-classes select a state or position (<code>a:hover</code>, <code>input:focus</code>, <code>li:first-child</code>, <code>tr:nth-child(even)</code>), and pseudo-elements style part of an element (<code>p::first-line</code>, <code>::before</code>, <code>::after</code>).",
+      "points": [
+        "Class names: lowercase with hyphens (<code>.skill-list</code>); one element can carry several, as in <code>class=\"card featured\"</code>",
+        "A misspelled property drops that declaration, and a missing semicolon merges a declaration with the next one into a single invalid value, so both are dropped (the semicolon after the last declaration is optional); DevTools flags invalid declarations in the Styles pane",
+        "Style with classes and keep IDs for fragment links and label targets; IDs are so specific that they're hard to override",
+        "<code>tr:nth-child(even)</code> stripes table rows without adding any classes",
+        "A CSS comment above each block, such as <code>/* Rubric: navigation styled with flexbox */</code>, maps your code to the rubric",
+        "Lists: <code>list-style-type</code> (<code>disc</code>, <code>circle</code>, <code>square</code>, <code>decimal</code>, <code>none</code>), <code>list-style-position</code> (<code>inside</code> or <code>outside</code>) and the <code>list-style</code> shorthand; <code>list-style: none</code> with zero margin and padding turns a <code>ul</code> into a plain nav list"
+      ]
+    },
+    {
+      "title": "The cascade, specificity and inheritance",
+      "eli5": "When two rules disagree, CSS breaks the tie like a referee: important beats normal, more specific beats less specific, and if they're still tied, the later rule wins.",
+      "detail": "The cascade picks one value for each property of each element. Origin and importance come first (an author declaration marked <code>!important</code> beats a normal one), then specificity, then source order, where the last declaration wins. Specificity is counted in three columns, ID-CLASS-TYPE. ID selectors count in the first column; classes, attribute selectors and pseudo-classes in the second; type selectors and pseudo-elements in the third. Columns are compared left to right, so <code>#nav a</code> (1-0-1) beats <code>.menu .item a:hover</code> (0-3-1), and the universal selector and combinators add nothing. Inline <code>style</code> attributes override any selector, and only <code>!important</code> beats them, which is why both are best avoided. Some properties inherit from parent to child, including <code>color</code>, <code>font-family</code>, <code>font-size</code>, <code>line-height</code> and <code>text-align</code>, while box properties such as <code>margin</code>, <code>padding</code>, <code>border</code>, <code>width</code> and <code>background</code> don't. The keyword <code>inherit</code> forces inheritance, and <code>initial</code> resets a property. Setting a font and color once on <code>body</code> gives the whole page a default.",
+      "points": [
+        "<code>p</code> 0-0-1 · <code>.intro</code> 0-1-0 · <code>p.intro</code> 0-1-1 · <code>#main p</code> 1-0-1 · <code>nav ul li a</code> 0-0-4",
+        "One class outweighs any number of type selectors, and one ID outweighs any number of classes",
+        "When specificity ties, the later rule wins, and a stylesheet linked later in the head wins over one linked earlier",
+        "If a style doesn't apply, inspect the element: DevTools lists every matching rule and strikes through the declarations that lost",
+        "Skip <code>!important</code>; add a class, raise specificity a little or reorder the rules instead"
+      ]
+    },
+    {
+      "title": "The box model and display types",
+      "eli5": "Every element is a box inside a box inside a box: the content, then padding as an inner cushion, then the border as a frame, then margin as the space between frames.",
+      "detail": "By default (<code>box-sizing: content-box</code>), <code>width</code> and <code>height</code> size only the content, so a box with <code>width: 300px</code>, 20px of padding and a 5px border is 350px wide from border edge to border edge. With <code>box-sizing: border-box</code>, the width includes padding and border, so the box is exactly 300px and the content area shrinks to 250px; many developers apply it to every element with <code>*, *::before, *::after { box-sizing: border-box; }</code>. Margins sit outside the border and aren't part of the box's size. Vertical margins between blocks collapse into the larger of the two, so a 30px bottom margin above a 20px top margin makes a 30px gap, not 50px. Shorthands run clockwise from the top: <code>margin: 10px 20px 30px 40px</code> is top, right, bottom, left; two values mean top-and-bottom, then left-and-right; and <code>margin: 0 auto</code> centers a block that has a width. <code>display</code> controls how a box behaves: <code>block</code> boxes start on a new line and fill the available width (<code>div</code>, <code>p</code>, <code>h1</code>, <code>section</code>); <code>inline</code> boxes flow within text and ignore <code>width</code>, <code>height</code> and vertical margins (<code>a</code>, <code>span</code>, <code>strong</code>); <code>inline-block</code> flows inline but respects width, height and padding; <code>none</code> removes the box from the layout; and <code>flex</code> and <code>grid</code> turn it into a layout container.",
+      "points": [
+        "content-box width on screen = width + left and right padding + left and right border",
+        "<code>border: 2px solid #333;</code> sets width, style and color at once; <code>border-radius</code> rounds the corners",
+        "<code>display: none</code> removes the box entirely, while <code>visibility: hidden</code> hides it but keeps its space",
+        "Make nav links <code>inline-block</code> or flex items so their padding enlarges the click area without overlapping neighbors",
+        "<code>max-width: 960px; margin: 0 auto;</code> centers a readable column of content"
+      ]
+    },
+    {
+      "title": "Layout with flexbox, grid and positioning",
+      "eli5": "Flexbox lines boxes up in a single row or column, like books on a shelf, while grid lays them out in rows and columns at once, like a spreadsheet.",
+      "detail": "<code>display: flex</code> makes an element a flex container whose children line up along the main axis: <code>flex-direction: row</code> by default, or <code>column</code>. <code>justify-content</code> spaces the items along the main axis (<code>flex-start</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code>, <code>space-evenly</code>), and <code>align-items</code> aligns them on the cross axis (<code>stretch</code> by default, or <code>center</code>, <code>flex-start</code> and <code>flex-end</code>). <code>flex-wrap: wrap</code> lets items move to a new line, <code>gap</code> sets the space between them, and <code>flex: 1</code> on an item lets it grow to share the free space. <code>display: grid</code> defines rows and columns: <code>grid-template-columns: repeat(3, 1fr)</code> makes three equal columns, where <code>fr</code> is a fraction of the free space, <code>gap</code> sets the gutters, and an item can span tracks with <code>grid-column: span 2</code> or be placed into named <code>grid-template-areas</code>. <code>position</code> moves boxes relative to the normal flow. <code>relative</code> offsets an element from where it would be and becomes the reference point for absolutely positioned children, <code>absolute</code> places it against the nearest positioned ancestor, <code>fixed</code> pins it to the viewport, <code>sticky</code> scrolls normally until it reaches an offset and then sticks, and <code>z-index</code> orders positioned boxes that overlap.",
+      "points": [
+        "Rule of thumb: flexbox for one dimension (a nav bar, a row of cards), grid for two (a page layout or a photo gallery)",
+        "Center anything inside a box: <code>display: flex; justify-content: center; align-items: center;</code>",
+        "<code>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))</code> builds a gallery that reflows without media queries",
+        "<code>position: sticky; top: 0;</code> keeps a header visible while the page scrolls",
+        "Floats are the old way to wrap text around an image; they're still fine for that, but not for page layout"
+      ]
+    },
+    {
+      "title": "Responsive design, units, color and type",
+      "eli5": "A responsive page is like water that takes the shape of its glass: the same page rearranges itself for a phone, a tablet or a big monitor.",
+      "detail": "Responsive design starts with the viewport meta tag and flexible sizes, then adds media queries where the layout breaks. <code>@media (min-width: 768px) { … }</code> applies its rules only when the viewport is at least 768px wide (the test is inclusive). A mobile-first stylesheet writes the single-column phone layout first and adds columns inside <code>min-width</code> queries, while <code>max-width</code> queries work the other way around. Units: <code>px</code> is fixed; <code>%</code> is relative to the parent; <code>em</code> is relative to the element's font size (the parent's, when used on <code>font-size</code>); <code>rem</code> is relative to the root font size, 16px by default in most browsers; and <code>vw</code> and <code>vh</code> are 1% of the viewport's width and height. Colors can be keywords (<code>navy</code>), hex (<code>#1e3a5f</code>), <code>rgb(30 58 95)</code> or <code>hsl(214 52% 24.5%)</code>, each with an optional alpha value for transparency. Complementary colors sit opposite each other on the color wheel, 180° apart in HSL. WCAG 2.2's minimum contrast (success criterion 1.4.3, level AA) is 4.5:1 for normal text and 3:1 for large text (18pt, or 14pt bold). Set type with a font stack that ends in a generic family, such as <code>font-family: \"Segoe UI\", Arial, sans-serif;</code>, and a <code>line-height</code> of about 1.5 for body text.",
+      "points": [
+        "<code>img, video { max-width: 100%; height: auto; }</code> keeps media inside narrow screens",
+        "Test narrow screens with DevTools' device toolbar (Ctrl+Shift+M, or Cmd+Shift+M on a Mac, while DevTools is open) or by dragging the window narrow",
+        "Common breakpoints are about 600px, 768px and 1024px, but put yours where your layout actually breaks",
+        "Check text and background colors with a contrast checker before you settle on a palette",
+        "<code>rem</code> sizes follow the visitor's browser font setting, which makes them friendlier than <code>px</code> for text",
+        "Text formatting: <code>font-weight</code>, <code>font-style: italic</code>, <code>text-decoration</code> (<code>none</code> removes link underlines), <code>text-transform</code> and <code>letter-spacing</code>, plus <code>background-color</code> for sections"
+      ]
+    },
+    {
+      "title": "Debugging, validation, accessibility and a first script",
+      "eli5": "Validators are spell-checkers for code, and DevTools is an X-ray that shows which styles reached each element and which files failed to load.",
+      "detail": "Resolving problems with debugging tools is one of D276's competencies, and the workflow is the same for every bug: reproduce it, inspect it, change one thing, reload. The W3C Markup Validation Service checks HTML by address, file upload or pasted code and reports errors with line numbers, such as misnested or unclosed tags, duplicate IDs, missing <code>alt</code> attributes, stray end tags and skipped heading levels; the W3C CSS Validation Service catches invalid properties and values. Browser DevTools opens with F12 or Ctrl+Shift+I (Cmd+Option+I on a Mac). Its Elements panel shows the live page structure and every CSS rule applied to the selected element, with overridden declarations struck through and invalid ones flagged; the Console shows messages and script errors with line numbers; and the Network panel lists every file request, where a 404 status means a wrong path or file name. Common bugs on a first site: a stylesheet that never loads because of a wrong <code>href</code>, a style that loses a specificity contest, an image whose name differs in case, a missing end tag that swallows the rest of the page, and a stale cached file (hard-reload with Ctrl+Shift+R, or Cmd+Shift+R on a Mac). For accessibility, check that every image has fitting alt text, every form control has a label, headings run in order, the <code>html</code> element has a <code>lang</code>, color contrast passes, and the whole page works from the keyboard alone (Tab, Shift+Tab, Enter). A <code>&lt;script&gt;</code> element runs JavaScript in the page; put a short inline script just before <code>&lt;/body&gt;</code> so the elements it uses already exist. <code>document.getElementById(\"today\")</code> finds the element with that <code>id</code>, assigning a string to its <code>textContent</code> replaces its text, <code>new Date().toLocaleDateString()</code> returns today's date as text, and <code>console.log(\"…\")</code> writes a message to the Console.",
+      "points": [
+        "One early error can trigger many messages, so fix the first error, revalidate, and repeat",
+        "In the Styles pane, toggle a declaration's checkbox or edit its value to test a fix live, then copy the working value into your .css file",
+        "Validator warnings aren't errors, but read them; some point to real problems, such as a section with no heading",
+        "Validate every HTML file separately, plus the stylesheet; passing one page says nothing about the others",
+        "If a script runs before its element exists, <code>getElementById</code> returns <code>null</code> and the Console shows a TypeError; move the script to the end of the body"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Assessment", "value": "1 performance assessment (catalog); students report three linked HTML pages with one external stylesheet, an image, video and audio file and a short script, submitted as a zipped folder", "note": "Students report grading in about 1–2 days" },
+    { "label": "Course", "value": "3 CU · term 2 in BSCS 202412 · HTML and CSS taught through a zyBook", "note": "Also listed in B.S. Software Engineering (202610), B.S. Data Analytics and B.S. AI Engineering" },
+    { "label": "Page skeleton", "value": "<code>&lt;!DOCTYPE html&gt;</code> · <code>&lt;html lang=\"en\"&gt;</code> · <code>&lt;meta charset=\"utf-8\"&gt;</code> · <code>&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"&gt;</code> · <code>&lt;title&gt;</code> · stylesheet <code>&lt;link&gt;</code>", "note": "Head = metadata; body = visible content" },
+    { "label": "Landmark and sectioning elements", "value": "<code>header</code> · <code>nav</code> · <code>main</code> (one per page) · <code>section</code> · <code>article</code> · <code>aside</code> · <code>footer</code>", "note": "<code>div</code> and <code>span</code> have no meaning; use them only as styling hooks" },
+    { "label": "Headings", "value": "One <code>h1</code> per page, then <code>h2</code>–<code>h6</code> in order without skipping levels", "note": "Pick the level for structure; CSS sets the size. The W3C validator reports a skipped level as an error" },
+    { "label": "Void elements (no end tag)", "value": "<code>img</code> · <code>br</code> · <code>hr</code> · <code>meta</code> · <code>link</code> · <code>input</code> · <code>source</code> · <code>track</code>" },
+    { "label": "Relative paths", "value": "<code>about.html</code> same folder · <code>images/a.jpg</code> one folder down · <code>../index.html</code> one folder up · <code>/images/a.jpg</code> root-relative (breaks when opened as local files)" },
+    { "label": "Link targets", "value": "<code>href=\"#skills\"</code> same page · <code>href=\"about.html#skills\"</code> another page · <code>href=\"mailto:…\"</code> email · <code>target=\"_blank\"</code> new tab" },
+    { "label": "Image", "value": "<code>&lt;img src=\"images/me.jpg\" alt=\"…\" width=\"300\" height=\"300\"&gt;</code>", "note": "<code>alt=\"\"</code> only for purely decorative images" },
+    { "label": "Video and audio", "value": "<code>controls</code> shows the player · <code>&lt;source src type&gt;</code> children, first supported wins · fallback text inside · <code>autoplay</code> needs <code>muted</code> · <code>&lt;track kind=\"captions\"&gt;</code>", "note": "Boolean attributes: <code>autoplay=\"false\"</code> still autoplays" },
+    { "label": "Media types", "value": "<code>video/mp4</code> · <code>video/webm</code> · <code>audio/mpeg</code> (MP3) · <code>audio/ogg</code> · <code>audio/wav</code>", "note": "For the PA, students report MP3 or WAV audio and MP4, MOV or MPEG video" },
+    { "label": "Table parts", "value": "<code>table</code> · <code>caption</code> · <code>thead</code> / <code>tbody</code> / <code>tfoot</code> · <code>tr</code> · <code>th scope=\"col|row\"</code> · <code>td</code> · <code>colspan</code> / <code>rowspan</code>", "note": "For data only, never for page layout" },
+    { "label": "Form essentials", "value": "<code>&lt;label for=\"email\"&gt;</code> matches <code>id=\"email\"</code> · <code>name</code> is the key sent · <code>required</code> · GET puts data in the URL, POST in the request body", "note": "Radio buttons in one group share a <code>name</code>" },
+    { "label": "Input types", "value": "text · email · tel · url · number · date · password · checkbox · radio · submit", "note": "Plus <code>&lt;select&gt;</code>/<code>&lt;option&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;fieldset&gt;</code>/<code>&lt;legend&gt;</code>" },
+    { "label": "CSS rule anatomy", "value": "<code>selector { property: value; property: value; }</code> · comments <code>/* … */</code>", "note": "HTML comments are <code>&lt;!-- … --&gt;</code>" },
+    { "label": "Three ways to add CSS", "value": "Inline <code>style=\"…\"</code> · internal <code>&lt;style&gt;</code> in the head · external <code>&lt;link rel=\"stylesheet\" href=\"css/styles.css\"&gt;</code>", "note": "External is the default for a multi-page site; inline beats any selector" },
+    { "label": "Specificity (ID-CLASS-TYPE)", "value": "IDs 1-0-0 · classes, attribute selectors and pseudo-classes 0-1-0 · types and pseudo-elements 0-0-1 · <code>*</code> and combinators 0", "note": "Compare columns left to right; ties go to the later rule" },
+    { "label": "Selector cheat sheet", "value": "<code>nav a</code> descendant · <code>ul &gt; li</code> child · <code>h2 + p</code> next sibling · <code>h2 ~ p</code> later siblings · <code>[type=\"email\"]</code> attribute · <code>a:hover</code> state · <code>p::first-line</code> part" },
+    { "label": "Inherited by default", "value": "<code>color</code> · <code>font-family</code> · <code>font-size</code> · <code>line-height</code> · <code>text-align</code>", "note": "Not inherited: <code>margin</code>, <code>padding</code>, <code>border</code>, <code>width</code>, <code>background</code>" },
+    { "label": "Box model math", "value": "content-box: on-screen width = width + padding × 2 + border × 2 (300 + 40 + 10 = 350px) · border-box: on-screen width = width", "note": "Margins are outside the box; vertical margins collapse to the larger one" },
+    { "label": "Shorthand order", "value": "4 values: top right bottom left (clockwise) · 3: top, left-and-right, bottom · 2: top-and-bottom, left-and-right · 1: all sides", "note": "<code>margin: 0 auto</code> centers a block with a set width" },
+    { "label": "display values", "value": "<code>block</code> new line, full width · <code>inline</code> ignores width, height and vertical margins · <code>inline-block</code> inline but sizable · <code>none</code> removed · <code>flex</code> · <code>grid</code>" },
+    { "label": "Flexbox", "value": "<code>justify-content</code> main axis · <code>align-items</code> cross axis · <code>flex-direction</code> row or column · <code>flex-wrap: wrap</code> · <code>gap</code> · <code>flex: 1</code> grow", "note": "Main axis is horizontal for the default <code>row</code>" },
+    { "label": "Grid", "value": "<code>grid-template-columns: repeat(3, 1fr)</code> · <code>gap: 1rem</code> · <code>grid-column: span 2</code> · <code>grid-template-areas</code>", "note": "<code>fr</code> = a fraction of the free space" },
+    { "label": "position values", "value": "<code>static</code> default · <code>relative</code> offset from normal spot · <code>absolute</code> against nearest positioned ancestor · <code>fixed</code> to the viewport · <code>sticky</code> scrolls, then sticks" },
+    { "label": "Units", "value": "<code>px</code> fixed · <code>%</code> of the parent · <code>em</code> of the font size · <code>rem</code> of the root font size (16px default) · <code>vw</code>/<code>vh</code> 1% of the viewport" },
+    { "label": "Media queries", "value": "<code>@media (min-width: 768px) { … }</code> = 768px and wider (mobile-first) · <code>@media (max-width: 767px) { … }</code> = narrower", "note": "Needs the viewport meta tag to work on phones" },
+    { "label": "Color and contrast", "value": "<code>#1e3a5f</code> · <code>rgb(30 58 95)</code> · <code>hsl(214 52% 24.5%)</code> · complementary = 180° apart in hue · WCAG AA contrast 4.5:1 normal text, 3:1 large text", "note": "Large text = 18pt, or 14pt bold; AAA is 7:1 (4.5:1 for large text)" },
+    { "label": "Validators", "value": "HTML: validator.w3.org · CSS: jigsaw.w3.org/css-validator", "note": "Fix the first error, then revalidate" },
+    { "label": "DevTools", "value": "F12 or Ctrl+Shift+I (Cmd+Option+I on a Mac) · Elements and Styles · Console · Network (404 = wrong path or name) · hard reload Ctrl+Shift+R (Cmd+Shift+R on a Mac)" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Orientation, rubric checklist and setup",
+      "tasks": [
+        "Discuss your course planning tool report with your instructor and confirm you have the current task directions.",
+        "Read the task and rubric, and turn every rubric row into a checklist item you can tick off.",
+        "Install VS Code and the Live Server extension, then create the project folder with <code>css/</code>, <code>images/</code> and <code>media/</code> subfolders.",
+        "Find the recorded cohort sessions (course page → Join WGU Connect → Resources) and watch the first one."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "HTML skeleton and semantic structure",
+      "tasks": [
+        "Read the zyBook's HTML basics chapters and do their activities.",
+        "Create each page from the same skeleton: doctype, <code>lang</code>, charset, viewport, a unique title and the stylesheet link.",
+        "Lay out <code>header</code>, <code>nav</code>, <code>main</code> and <code>footer</code>, plan the heading outline, and draft a few real sentences for each section."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Text, lists, links and navigation",
+      "tasks": [
+        "Add paragraphs, lists and emphasis, then build one <code>&lt;nav&gt;</code> menu and copy it onto every page.",
+        "Practice relative links, a same-page fragment link and a <code>mailto:</code> link; click each one in the browser.",
+        "Watch the next cohort recording and build along."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Images, video and audio",
+      "tasks": [
+        "Download a royalty-free image, a short video and an audio clip (Pixabay, for example) into <code>images/</code> and <code>media/</code>, using file types your task directions allow.",
+        "Add the image with descriptive alt text and size attributes, and add video and audio with <code>controls</code>, <code>&lt;source&gt;</code> and <code>type</code>.",
+        "Add a credits line for the media in the footer."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Tables and forms",
+      "tasks": [
+        "Build any table your rubric asks for with a caption, <code>thead</code>, <code>th scope</code> and <code>tbody</code>.",
+        "Build any form it asks for: a label for every control, a <code>name</code> on each, fitting input types, <code>required</code> where it makes sense, and a fieldset for related choices.",
+        "Run each page through the W3C Markup Validation Service and fix what it finds."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "CSS foundations: selectors and the cascade",
+      "tasks": [
+        "Read the zyBook's CSS chapters, then style <code>body</code> with a font stack, base color and line height.",
+        "Practice type, class, ID, descendant, child and pseudo-class selectors on your own pages.",
+        "Work out the specificity of ten selectors by hand, then check yourself in DevTools. Start the CSS comments that name each rubric item."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Box model and layout",
+      "tasks": [
+        "Set <code>box-sizing: border-box</code>, then tune margins, padding and borders with the DevTools box diagram open.",
+        "Lay out the nav bar with flexbox and any card or gallery area with grid.",
+        "Play a few levels of Flexbox Froggy and Grid Garden if the axes still feel confusing."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Responsive design and visual polish",
+      "tasks": [
+        "Make the layout work at phone width first, then add one or two <code>min-width</code> media queries for wider screens.",
+        "Pick a small palette (a complementary pair plus neutrals) and check its contrast; set consistent spacing with rem units.",
+        "Make images and video fluid with <code>max-width: 100%</code>."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Debug, validate and test",
+      "tasks": [
+        "Validate every HTML file and the stylesheet until both validators report no errors.",
+        "Add the short script your rubric asks for, then use the Console to confirm its message appears and no errors are listed, and the Network panel to confirm there are no 404s.",
+        "Do a keyboard-only pass (Tab through every link and field) and a narrow-window pass on every page."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Final rubric pass and submission",
+      "tasks": [
+        "Walk the rubric checklist line by line and point to the exact element or CSS rule that meets each item.",
+        "Proofread the visible text (Grammarly helps), then zip the project folder.",
+        "Unzip the copy somewhere else, click through every page, and submit only once everything works there."
+      ]
+    },
+    {
+      "day": "Days 11-12",
+      "focus": "Buffer for a revision",
+      "tasks": [
+        "If the submission comes back, fix exactly the rubric items the evaluator names, then revalidate and retest the zipped copy.",
+        "If feedback is unclear, ask your instructor before resubmitting.",
+        "While you wait for grading, start your next course."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Your project has <code>index.html</code> at the top of the folder, a page at <code>pages/resume.html</code> and a photo at <code>images/me.jpg</code>. The page has to work when someone opens <code>resume.html</code> by double-clicking it in the unzipped folder. Which <code>src</code> shows the photo?",
+      "choices": [
+        "<code>images/me.jpg</code>",
+        "<code>../images/me.jpg</code>",
+        "<code>/images/me.jpg</code>",
+        "<code>file:///images/me.jpg</code>"
+      ],
+      "answer": "<code>../images/me.jpg</code>",
+      "why": "A relative path starts in the folder of the file that contains it, here <code>pages/</code>. <code>..</code> climbs to the project folder and <code>images/me.jpg</code> goes down into the images folder. Plain <code>images/me.jpg</code> would look for <code>pages/images/me.jpg</code>, which doesn't exist. <code>/images/me.jpg</code> is root-relative, so opened as local files it points at the root of the drive rather than your project, and a <code>file:///</code> address works only on one computer. Under Live Server, <code>/images/me.jpg</code> may still work because the server's root is the folder you opened in VS Code, so also test by opening the files directly."
+    },
+    {
+      "q": "Which markup plays a video with the browser's built-in controls and offers a second format in case the first isn't supported?",
+      "choices": [
+        "<code>&lt;video src=\"media/intro.mp4\" autoplay=\"false\"&gt;&lt;/video&gt;</code>",
+        "<code>&lt;video&gt;&lt;source src=\"media/intro.mp4\" type=\"video/mp4\"&gt;&lt;/video&gt;</code>",
+        "<code>&lt;img src=\"media/intro.mp4\" alt=\"Intro video\"&gt;</code>",
+        "<code>&lt;video controls&gt;&lt;source src=\"media/intro.webm\" type=\"video/webm\"&gt;&lt;source src=\"media/intro.mp4\" type=\"video/mp4\"&gt;Your browser can't play this video.&lt;/video&gt;</code>"
+      ],
+      "answer": "<code>&lt;video controls&gt;&lt;source src=\"media/intro.webm\" type=\"video/webm\"&gt;&lt;source src=\"media/intro.mp4\" type=\"video/mp4\"&gt;Your browser can't play this video.&lt;/video&gt;</code>",
+      "why": "The <code>controls</code> attribute is what draws play, pause, volume and seek; the version with a single source and no <code>controls</code> shows no player controls at all. Nested <code>&lt;source&gt;</code> elements are tried in order and the browser plays the first type it supports, and the text inside appears only in browsers that don't support the video element at all (if no source can be played, the text isn't shown). <code>autoplay=\"false\"</code> doesn't switch autoplay off, because a Boolean attribute is on whenever it's present, and an <code>&lt;img&gt;</code> can't play video. For the PA itself, use a video type your task directions allow (students report MP4, MOV or MPEG)."
+    },
+    {
+      "q": "A paragraph is marked up as <code>&lt;p id=\"intro\" class=\"lead\"&gt;</code> inside <code>&lt;main class=\"content\"&gt;</code>. Four rules set its color. Which color does it get?",
+      "choices": [
+        "Gray, from <code>main p { color: gray; }</code>",
+        "Green, from <code>.content p.lead { color: green; }</code>",
+        "Blue, from <code>#intro { color: blue; }</code>",
+        "Black, from <code>p { color: black; }</code>, the last rule in the stylesheet"
+      ],
+      "answer": "Blue, from <code>#intro { color: blue; }</code>",
+      "why": "Specificity compares the ID-CLASS-TYPE columns from left to right: <code>#intro</code> is 1-0-0, <code>.content p.lead</code> is 0-2-1, <code>main p</code> is 0-0-2 and <code>p</code> is 0-0-1. Any ID outweighs any number of classes, so blue wins. Source order only breaks ties between equal specificities, which is why being last doesn't help the <code>p</code> rule. An inline <code>style</code> attribute or <code>!important</code> would beat all four."
+    },
+    {
+      "q": "A box has <code>width: 300px; padding: 20px; border: 5px solid; margin: 10px;</code> and the default <code>box-sizing</code>. How wide is it from the outer edge of its left border to the outer edge of its right border?",
+      "choices": [
+        "350px",
+        "300px",
+        "330px",
+        "370px"
+      ],
+      "answer": "350px",
+      "why": "With the default <code>content-box</code>, <code>width</code> sizes only the content: 300 + 20 + 20 for the padding + 5 + 5 for the border = 350px. Margins sit outside the border, so they add space around the box (370px including them) but aren't part of its size. With <code>box-sizing: border-box</code>, the same rule gives a 300px box with a 250px content area."
+    },
+    {
+      "q": "A screen reader announces only \"edit text\" for the email field in your contact form. Which change gives the field a proper label that stays visible and is announced reliably?",
+      "choices": [
+        "Add <code>placeholder=\"Email\"</code> to the input",
+        "Add <code>&lt;label for=\"email\"&gt;Email&lt;/label&gt;</code> and give the input <code>id=\"email\"</code>",
+        "Put the word Email in a <code>&lt;span&gt;</code> just before the input",
+        "Change the input to <code>type=\"text\"</code>"
+      ],
+      "answer": "Add <code>&lt;label for=\"email\"&gt;Email&lt;/label&gt;</code> and give the input <code>id=\"email\"</code>",
+      "why": "A <code>&lt;label&gt;</code> whose <code>for</code> matches the control's <code>id</code> (or that wraps the control) gives the field an accessible name, and clicking the label focuses the field. Browsers can fall back to a placeholder for the field's name when nothing else labels it, but the hint vanishes as soon as someone types and is no substitute for a visible label. A nearby span isn't tied to the input in code, and switching to <code>type=\"text\"</code> just loses the email keyboard and the built-in format check."
+    },
+    {
+      "q": "A table of courses starts with a row holding the column titles Course, Credits and Term. Which markup suits those titles?",
+      "choices": [
+        "<code>&lt;td&gt;&lt;b&gt;Course&lt;/b&gt;&lt;/td&gt;</code> in each cell of the first row",
+        "<code>&lt;caption&gt;Course&lt;/caption&gt;</code> for each title",
+        "<code>&lt;h3&gt;Course&lt;/h3&gt;</code> placed above the table",
+        "<code>&lt;th scope=\"col\"&gt;Course&lt;/th&gt;</code> in a row inside <code>&lt;thead&gt;</code>"
+      ],
+      "answer": "<code>&lt;th scope=\"col\"&gt;Course&lt;/th&gt;</code> in a row inside <code>&lt;thead&gt;</code>",
+      "why": "<code>&lt;th&gt;</code> marks a header cell, and <code>scope=\"col\"</code> tells assistive technology that it labels the cells below it; <code>&lt;thead&gt;</code> separates the header row from the data in <code>&lt;tbody&gt;</code>. Bold text in a <code>&lt;td&gt;</code> only looks like a header. A table has at most one <code>&lt;caption&gt;</code>, which titles the whole table, and a heading outside the table isn't tied to any column."
+    },
+    {
+      "q": "Your nav <code>&lt;ul&gt;</code> has <code>display: flex;</code> and otherwise default settings. Which declaration puts the first link at the left edge, the last at the right edge and shares the remaining space equally between links?",
+      "choices": [
+        "<code>align-items: center;</code>",
+        "<code>justify-content: space-between;</code>",
+        "<code>flex-direction: column;</code>",
+        "<code>text-align: justify;</code>"
+      ],
+      "answer": "<code>justify-content: space-between;</code>",
+      "why": "<code>justify-content</code> distributes flex items along the main axis, which is horizontal for the default <code>flex-direction: row</code>, and <code>space-between</code> pins the first and last items to the edges with equal gaps between. <code>align-items</code> works on the cross axis (vertical here), <code>flex-direction: column</code> would stack the links, and <code>text-align</code> affects inline text, not flex items."
+    },
+    {
+      "q": "A stylesheet is written mobile-first. Which rule switches the <code>.cards</code> grid to three columns only on screens at least 768px wide?",
+      "choices": [
+        "<code>@media (max-width: 768px) { .cards { grid-template-columns: repeat(3, 1fr); } }</code>",
+        "<code>@media print { .cards { grid-template-columns: repeat(3, 1fr); } }</code>",
+        "<code>@media (min-width: 768px) { .cards { grid-template-columns: repeat(3, 1fr); } }</code>",
+        "<code>.cards:hover { grid-template-columns: repeat(3, 1fr); }</code>"
+      ],
+      "answer": "<code>@media (min-width: 768px) { .cards { grid-template-columns: repeat(3, 1fr); } }</code>",
+      "why": "<code>min-width: 768px</code> is true when the viewport is 768px or wider (the test is inclusive), which is how mobile-first CSS adds columns as screens grow. <code>max-width: 768px</code> does the opposite and applies only to narrow screens, <code>print</code> targets printing, and <code>:hover</code> depends on the pointer, not the screen size. On phones, width queries only behave this way if the page has the viewport meta tag."
+    },
+    {
+      "q": "Which element should wrap the group of links that lets visitors move between your site's pages?",
+      "choices": [
+        "<code>&lt;nav&gt;</code>",
+        "<code>&lt;aside&gt;</code>",
+        "<code>&lt;div class=\"links\"&gt;</code>",
+        "<code>&lt;section&gt;</code>"
+      ],
+      "answer": "<code>&lt;nav&gt;</code>",
+      "why": "<code>&lt;nav&gt;</code> marks a block of major navigation links, and assistive technology exposes it as a navigation landmark that users can jump to. <code>&lt;aside&gt;</code> is for tangential content such as a sidebar note, <code>&lt;section&gt;</code> is a themed group of content that usually has a heading, and a <code>&lt;div&gt;</code> carries no meaning at all, even though it can be styled to look identical."
+    },
+    {
+      "q": "Your headshot shows as a broken image. The DevTools Network panel lists <code>images/Headshot.JPG</code> with status 404, and the file in your folder is named <code>headshot.jpg</code>. What's the fix?",
+      "choices": [
+        "Add <code>width</code> and <code>height</code> attributes to the <code>&lt;img&gt;</code>",
+        "Rewrite the alt text so it describes the photo",
+        "Clear the browser cache and reload",
+        "Change the <code>src</code> to match the file name exactly: <code>images/headshot.jpg</code>"
+      ],
+      "answer": "Change the <code>src</code> to match the file name exactly: <code>images/headshot.jpg</code>",
+      "why": "A 404 means no file exists at the requested path. Many servers treat file names as case sensitive, so <code>Headshot.JPG</code> and <code>headshot.jpg</code> are different files; match the name exactly and keep names lowercase to avoid the problem. Width, height and alt text don't change whether the file loads (alt text is what shows when it doesn't), and clearing the cache can't produce a file that isn't there."
+    },
+    {
+      "q": "You want a music clip on your home page that visitors can play, but that never starts on its own. Which markup does that?",
+      "choices": [
+        "<code>&lt;audio controls src=\"media/theme.mp3\"&gt;&lt;/audio&gt;</code>",
+        "<code>&lt;audio src=\"media/theme.mp3\" autoplay=\"false\"&gt;&lt;/audio&gt;</code>",
+        "<code>&lt;audio src=\"media/theme.mp3\"&gt;&lt;/audio&gt;</code>",
+        "<code>&lt;audio controls autoplay loop src=\"media/theme.mp3\"&gt;&lt;/audio&gt;</code>"
+      ],
+      "answer": "<code>&lt;audio controls src=\"media/theme.mp3\"&gt;&lt;/audio&gt;</code>",
+      "why": "With <code>controls</code> and no <code>autoplay</code>, the browser shows a player and waits for the visitor to press play. <code>autoplay=\"false\"</code> still requests autoplay, because Boolean attributes are on whenever present (most browsers would block unmuted autoplay anyway, but don't rely on that). An audio element without <code>controls</code> has no visible output, so visitors couldn't start it, and <code>autoplay loop</code> is the opposite of what you want."
+    },
+    {
+      "q": "Your site has four pages that should share one look. Where should most of the CSS go?",
+      "choices": [
+        "In one file such as <code>css/styles.css</code>, linked from each page's <code>&lt;head&gt;</code> with <code>&lt;link rel=\"stylesheet\" href=\"css/styles.css\"&gt;</code>",
+        "In a <code>style</code> attribute on each element that needs styling",
+        "In a <code>&lt;style&gt;</code> block copied into each page's head",
+        "In a <code>&lt;link&gt;</code> placed at the very end of each page's <code>&lt;body&gt;</code>"
+      ],
+      "answer": "In one file such as <code>css/styles.css</code>, linked from each page's <code>&lt;head&gt;</code> with <code>&lt;link rel=\"stylesheet\" href=\"css/styles.css\"&gt;</code>",
+      "why": "An external stylesheet styles every page from one file: a change happens once, the browser caches it, and the HTML stays about structure. Inline styles and copied <code>&lt;style&gt;</code> blocks repeat the same rules on every page, and inline styles win specificity contests you'd later have to undo. The link belongs in the head so the styles load before the content renders. Check your rubric too, since it may name the method it expects."
+    },
+    {
+      "q": "Under WCAG 2.2 success criterion 1.4.3 (level AA), what is the minimum contrast ratio for normal-size body text against its background?",
+      "choices": [
+        "3:1",
+        "4.5:1",
+        "7:1",
+        "21:1"
+      ],
+      "answer": "4.5:1",
+      "why": "Success criterion 1.4.3 requires 4.5:1 for normal text and 3:1 for large text (at least 18pt, or 14pt bold), so 3:1 applies only to large text. 7:1 is the stricter AAA level (1.4.6), and 21:1 is the highest ratio possible, black on white. A contrast checker gives you the ratio for any pair of colors."
+    },
+    {
+      "q": "What does <code>margin: 10px 20px;</code> do?",
+      "choices": [
+        "10px on the left and right, 20px on the top and bottom",
+        "10px on the top only and 20px on the right only",
+        "10px on the top and bottom, 20px on the left and right",
+        "10px on every side, growing to 20px on wide screens"
+      ],
+      "answer": "10px on the top and bottom, 20px on the left and right",
+      "why": "Box shorthands run clockwise from the top: top, right, bottom, left. With two values, the first sets top and bottom and the second sets left and right; three values mean top, then left and right, then bottom; one value sets all four sides. The same pattern applies to <code>padding</code>, and nothing in a plain shorthand changes with screen size."
+    },
+    {
+      "q": "The script on your résumé page includes <code>console.log(\"Script is running\");</code>. Where does that message appear?",
+      "choices": [
+        "As a line of text at the top of the page",
+        "In a pop-up box the visitor has to close",
+        "In the Console panel of the browser's DevTools",
+        "In the W3C Markup Validation Service's results"
+      ],
+      "answer": "In the Console panel of the browser's DevTools",
+      "why": "<code>console.log</code> writes to the browser's developer console: open DevTools with F12 or Ctrl+Shift+I (Cmd+Option+I on a Mac) and choose the Console tab. Nothing appears on the page itself; to show text there, a script changes an element instead, for example by setting its <code>textContent</code>, and <code>alert()</code> is the call that opens a pop-up box. The validator checks your markup without running any scripts, so console messages never reach it. The Console is also where script errors appear, with the file name and line number."
+    }
+  ],
+  "pitfalls": [
+    "<b>Latin placeholder text.</b> A submission came back for it. Write two or three real sentences per section; evaluators don't check whether your résumé is true, but they do notice filler.",
+    "<b>Paths that only work on your computer.</b> Root-relative (<code>/images/…</code>) and absolute file paths break once the zip is opened elsewhere, hot-linked media can disappear (students report the task wants local files anyway), and mismatched capitalization breaks on case-sensitive systems such as Linux web servers even though Windows and macOS usually load it. Use relative paths and lowercase names, compare every <code>src</code> and <code>href</code> with the real file name, and test the unzipped copy.",
+    "<b>Missing media attributes.</b> A video or audio element without <code>controls</code> shows nothing to click, <code>autoplay=\"false\"</code> still autoplays, and an image without <code>alt</code> fails validation and accessibility checks.",
+    "<b>Skipping the validators.</b> Unclosed or misnested tags, duplicate IDs and a <code>div</code> inside a <code>p</code> look fine in a forgiving browser but show up immediately in the W3C validator. Debugging is one of the course's competencies, so don't submit with validator errors.",
+    "<b>Inline styles everywhere.</b> Styling element by element with <code>style</code> attributes repeats code, defeats the external stylesheet and starts specificity fights. Keep the CSS in one linked file unless your rubric asks otherwise.",
+    "<b>Specificity battles.</b> Piling on IDs and <code>!important</code> to force a style makes later changes painful. Inspect the element, see which rule won and why, then adjust a class or the rule order.",
+    "<b>Adding extras the rubric didn't ask for.</b> A passer advises adding nothing beyond the rubric, and students' write-ups say the task wants your own code with no frameworks such as Bootstrap. They also report one small script on the résumé page that shows the current date and writes a message to the Console, so include that, but skip libraries, extra scripts and flashy effects; they add risk without adding points.",
+    "<b>Zipping the wrong thing.</b> Leaving media outside the project folder, zipping a parent folder full of unrelated files, or submitting only the HTML files breaks the site for the evaluator. Zip the project folder, then open the zip and check it.",
+    "<b>Headings picked for size.</b> Jumping from <code>h1</code> to <code>h4</code> because it looks right breaks the outline, and the W3C Markup Validation Service reports each skipped level as an error. Choose levels for structure and set sizes in CSS."
+  ],
+  "resources": [
+    {
+      "label": "Task directions and rubric (course page)",
+      "kind": "official",
+      "note": "The source of truth for which pages, elements and CSS techniques are required. Turn every row into a checklist item and keep it open while you build."
+    },
+    {
+      "label": "Course zyBook: Web Development Foundations (course page)",
+      "kind": "official",
+      "note": "The official learning resource, with readings, knowledge checks and hands-on activities for HTML and CSS. The catalog recommends completing every chapter."
+    },
+    {
+      "label": "Recorded instructor cohort sessions (course page → Join WGU Connect → Resources)",
+      "kind": "video",
+      "note": "A passer says building along with the first four recordings covers more than half the rubric, and another estimates about 90% of the content."
+    },
+    {
+      "label": "MDN: Learn web development",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+      "kind": "official",
+      "note": "Free, standards-based lessons on structuring content with HTML, CSS styling basics, text styling, layout and accessibility, with small exercises."
+    },
+    {
+      "label": "MDN: HTML elements reference",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements",
+      "kind": "official",
+      "note": "Look up any element's attributes and examples, such as <code>video</code>, <code>audio</code>, <code>table</code> and <code>label</code>."
+    },
+    {
+      "label": "W3C Markup Validation Service",
+      "url": "https://validator.w3.org/",
+      "kind": "tool",
+      "note": "Upload or paste each HTML file and fix every error before you submit."
+    },
+    {
+      "label": "W3C CSS Validation Service",
+      "url": "https://jigsaw.w3.org/css-validator/",
+      "kind": "tool",
+      "note": "Catches invalid properties and values in your stylesheet."
+    },
+    {
+      "label": "W3Schools HTML and CSS tutorials",
+      "url": "https://www.w3schools.com/html/",
+      "kind": "practice",
+      "note": "What passers use to fill in rubric items the recordings don't cover; the Try It editor is handy for quick experiments. The CSS tutorial lives at w3schools.com/css."
+    },
+    {
+      "label": "W3Schools complementary colors tool",
+      "url": "https://www.w3schools.com/colors/colors_complementary.asp",
+      "kind": "tool",
+      "note": "Suggested in the Sep 2025 post for picking a simple palette without design skills."
+    },
+    {
+      "label": "VS Code Live Server extension",
+      "url": "https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer",
+      "kind": "tool",
+      "note": "Serves your folder locally and reloads the browser on every save; the Sep 2025 post says the instructor uses it too."
+    },
+    {
+      "label": "Pixabay",
+      "url": "https://pixabay.com/",
+      "kind": "tool",
+      "note": "Royalty-free images, videos and music, suggested in the Sep 2025 post; download files into the project folder rather than hot-linking them. Its license needs no attribution, though credit is appreciated."
+    },
+    {
+      "label": "WebAIM Contrast Checker",
+      "url": "https://webaim.org/resources/contrastchecker/",
+      "kind": "tool",
+      "note": "Enter two colors to see whether they meet WCAG AA (4.5:1) for body text."
+    },
+    {
+      "label": "Flexbox Froggy and Grid Garden",
+      "url": "https://flexboxfroggy.com/",
+      "kind": "practice",
+      "note": "Short free games that drill <code>justify-content</code>, <code>align-items</code> and grid placement; Grid Garden is at cssgridgarden.com."
+    },
+    {
+      "label": "MDN: the script element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script",
+      "kind": "official",
+      "note": "How a <code>script</code> element runs JavaScript in a page, inline or from a file, with examples."
+    }
+  ],
+  "community": {
+    "summary": "Both posts in this research make the current PA sound manageable: the Sep 2025 post promises a stress-free pass, and a reply in the other calls the PA easy. One passer finished in a weekend, another estimates two days to build plus two days for grading, and a student with coding experience from elsewhere spent three weeks learning HTML and CSS properly and passed on the first try. Both point to the instructor's recorded cohort sessions, with W3Schools for whatever they don't cover; the Sep 2025 post adds keeping the rubric open as a checklist, downloading royalty-free media into the project folder, and adding nothing beyond the rubric. Write real short text, since one submission came back for Latin placeholder text, and don't worry about artistic design: one passer says looks don't need to be artistic, and another says evaluators look at the HTML and CSS.",
+    "coverage": "1 linked post, Sep 2025, r/WGU_CompSci, plus one undated 2025 post without a link",
+    "posts": [
+      {
+        "title": "D276 New PA Version, How to Pass Stress Free",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1np35zy/d276_new_pa_version_how_to_pass_stress_free/",
+        "date": "Sep 2025",
+        "takeaway": "Version 3 replaced the OA with a website PA, and the poster finished in a weekend: VS Code with Live Server, everything in one zipped folder, downloaded royalty-free image, video and audio, the rubric as a checklist, cohort recordings 1-4 plus W3Schools, CSS comments naming rubric items, and no extras. Graded in about a day. Commenters warn about Latin placeholder text and recommend Grammarly."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Institutional Catalog, November 2026 (D276 description; BSCS 202611 and BSSWE 202610 course lists)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, January 2026 (BSCS 202412 lists D276 in term 2)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-january-2026.pdf" },
+    { "label": "WGU: B.S. Software Engineering Program Guidebook, catalog 202610 (D276 competencies)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSSWE.pdf" },
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (course list)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU on Credly: Web Development Foundations badge", "url": "https://www.credly.com/org/wgu/badge/web-development-foundations" },
+    { "label": "MDN: the video element", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video" },
+    { "label": "MDN: the audio element", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/audio" },
+    { "label": "MDN: Specificity", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity" },
+    { "label": "MDN: The box model", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model" },
+    { "label": "MDN: Using media queries", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using" },
+    { "label": "W3C WAI: Understanding WCAG 2.2 SC 1.4.3 Contrast (Minimum)", "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" },
+    { "label": "W3C Markup Validation Service", "url": "https://validator.w3.org/" },
+    { "label": "Pixabay Content License summary", "url": "https://pixabay.com/service/license-summary/" },
+    { "label": "Visual Studio Marketplace: Live Server", "url": "https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer" }
+  ],
+  "caveats": [
+    "Students who start on WGU's newest BSCS version (202611, from the Nov 2026 catalog) see E009 Web Design Fundamentals in this slot instead; this guide covers D276.",
+    "The task details here come from students, not from WGU: the media files, the zipped folder and grading times from one Sep 2025 post and one undated 2025 post, and the three pages, the external stylesheet, the short script, the allowed media file types and the zyBooks form-viewer action from students' public project write-ups (2025–2026). Those write-ups also report that the task asks for a table and a form. WGU's task directions and rubric are behind the login and can change, so follow your current task directions for the exact required elements.",
+    "WGU's Credly badge for the course still mentions a final exam and lists XML, which matches the older OA version. The catalog and 2025 students describe a performance assessment.",
+    "Reddit couldn't be opened directly for this research, so post content comes from condensed notes, and post dates are approximate (converted from Reddit's relative timestamps). A second 2025 post used in the summary had no link, and a search by its title didn't find it.",
+    "The practice questions are original concept checks written for this guide. The PA itself has no multiple-choice questions; they're here to test the HTML and CSS ideas the website needs."
+  ]
+}

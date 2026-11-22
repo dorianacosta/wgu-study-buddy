@@ -1,0 +1,533 @@
+{
+  "code": "D197",
+  "summary": "D197 is a 1-CU course on Git and GitLab with no exam: you pass one performance assessment which, as students describe it, has you carry out a series of version-control steps in a WGU GitLab repository (cloning, committing, branching, pushing, merging, resolving a conflict and tagging) and paste a screenshot of each step into the task's Word template. WGU's catalog describes it as the basics of publishing, retrieving, branching and cloning, with no prerequisites, and it sits in term 3 of the BSCS. Students report finishing in an afternoon to a day and a half; one passer warns not to clear the terminal until every screenshot is taken, another says the instructor webinars cover every step but tagging, and some commenters found merge conflicts the hardest part.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (Git and GitLab task, evaluator-graded)",
+    "format": "One task · Git commands in a WGU GitLab repository · a screenshot of each step in the provided Word template · no exam",
+    "details": [
+      "No exam: one task that evaluators grade against a rubric. WGU lists D197 at 1 CU with no prerequisites, in term 3 of both BSCS 202412 and BSCS 202611 and in several other IT programs, and, besides the standard course-planning item, its one competency is implementing version-control processes that maintain source code.",
+      "The work, as students describe it: in WGU's GitLab environment, clone the provided repository to your computer, make and commit changes, work on branches, push to GitLab, create and resolve a merge conflict and tag a commit. Smaller steps include adding the output of <code>git version</code> to README.md and creating a folder (students call it the retrospective folder) and pushing it.",
+      "Evidence: each step's terminal output goes into the task's Word template as a screenshot while you work. One passer found the template first, and another recommends reading the GitLab how-to linked at the bottom of the task before running any command; the second also says cloning the GitLab repository set up most of the task.",
+      "Help: a Jan 2026 passer reports five instructor webinars in WGU Connect that walk through every step except tagging (course page → Course Community → Join WGU Connect → Resources → D197 Additional Resources). Commenters say they're recorded on Windows; Mac users report that Terminal works with small differences and that WGU Connect has Mac notes.",
+      "Time and grading: students report 3–4 hours to a day and a half of work, and a Jan 2026 passer submitted the same night and had a pass the next morning.",
+      "Integrity: WGU's catalog requires your own work, bars falsifying anything you submit, and forbids reviewing other students' completed assessments, so every screenshot should come from your own terminal and repository."
+    ],
+    "tips": [
+      "Follow the task steps line by line and paste each screenshot into the template right after the command that produced it. Don't clear or close the terminal until every screenshot for that step is in.",
+      "Set your identity and editor before step one: <code>git config --global user.name \"Your Name\"</code>, <code>git config --global user.email you@example.com</code> and an editor you know, such as VS Code with <code>git config --global core.editor \"code --wait\"</code>, so a merge or tag message doesn't drop you into an unfamiliar editor. On a Mac, Git can't start VS Code until its <code>code</code> command is installed: open VS Code's Command Palette (Cmd+Shift+P), search \"shell command\", choose the entry that installs <code>code</code> in PATH and open a new Terminal window.",
+      "Read the GitLab how-to linked at the bottom of the task before you run anything; a passer recommends it as the first thing to read.",
+      "Run <code>git status</code> before and after each step. It shows the branch you're on and what's staged, which heads off most mistakes, and it makes a good screenshot too.",
+      "Learn tagging from the Git book's Tagging chapter, since a Jan 2026 passer reports the webinars skip it: create annotated tags with <code>git tag -a</code>, and remember that <code>git push</code> doesn't send tags unless you push them explicitly.",
+      "For the merge conflict, change the same line differently on two branches, commit both, merge, then edit the file, delete the markers, <code>git add</code> and <code>git commit</code>; screenshot both the conflict message and the resolved state.",
+      "Git doesn't track empty folders, so put a file in a new folder before you add, commit and push it.",
+      "Don't overcomplicate it: it's a 1-CU course, and one passer's advice is simply to do each step exactly as written."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your Course Planning Tool report with your instructor and create your personalized course plan together.",
+    "The learner implements version control processes and solutions that maintains source code."
+  ],
+  "topics": [
+    {
+      "title": "Version control and Git basics",
+      "eli5": "Version control is an unlimited undo button with a diary: every save point records what changed, who changed it and why, and you can go back to any of them.",
+      "detail": "A version control system records changes to a project over time, so you can compare versions, restore old ones and let several people work on the same files. Centralized systems such as Subversion keep the history on one server, while distributed systems such as Git give every clone the full history, so most operations run locally and quickly and you can commit without a network connection. Git stores each commit as a snapshot of the whole project, linking to unchanged files instead of copying them, and names every object by a checksum (a 40-character SHA-1 hash by default), which makes silent corruption detectable. The repository is the hidden .git directory that holds the history, and the working tree is the checked-out files you edit; a commit is one snapshot with an author, a date, a message and a link to its parent; and GitLab is a web platform that hosts Git repositories and adds projects, groups, merge requests and access control on top.",
+      "points": [
+        "Git is the tool on your computer; GitLab (like GitHub) is a server that hosts repositories and adds collaboration features",
+        "WGU's four basics map to commands: publishing = <code>git push</code>, retrieving = <code>git fetch</code> or <code>git pull</code>, branching = <code>git branch</code> or <code>git switch -c</code>, cloning = <code>git clone</code>",
+        "Distributed means every clone holds the complete history",
+        "Short commit IDs such as <code>24b9da6</code> are the first characters of the full hash",
+        "The <code>.git</code> folder is the repository itself; deleting it erases the history"
+      ]
+    },
+    {
+      "title": "Installing and configuring Git",
+      "eli5": "Just as you fill in a name tag before signing a guestbook, Git needs your name, your email and your favorite pen (an editor) before your first commit.",
+      "detail": "On Windows, install Git for Windows from git-scm.com (version 2.56.1 as of Nov 2026), which also gives you the Git Bash terminal; on a Mac, running <code>git --version</code> in Terminal offers to install Apple's command-line tools, or you can install Git with Homebrew. <code>git version</code> (or <code>git --version</code>) prints a line such as <code>git version 2.56.1.windows.1</code> on Windows or <code>git version 2.50.1 (Apple Git-155)</code> from Apple's tools. Settings live at three levels: <code>--system</code> for every user, <code>--global</code> for your account (~/.gitconfig) and <code>--local</code> for one repository (.git/config), and the more specific level wins. Set your identity once with <code>git config --global user.name \"Your Name\"</code> and <code>git config --global user.email you@example.com</code>, because every commit records them permanently; choose an editor with <code>core.editor</code>, such as <code>git config --global core.editor \"code --wait\"</code> for VS Code (on a Mac, first open VS Code's Command Palette with Cmd+Shift+P, search \"shell command\" and choose the entry that installs the <code>code</code> command in PATH, then open a new Terminal window); and review everything with <code>git config --list --show-origin</code>.",
+      "points": [
+        "A step that asks for the Git version wants the output of <code>git version</code>, not a tag",
+        "<code>--wait</code> makes Git pause until you close VS Code's message tab; without it, <code>code</code> returns at once, so Git finds no message and aborts a commit or tag (a merge just keeps its default message)",
+        "<code>git config --global init.defaultBranch main</code> names the first branch of new repositories main (Git 2.28 and later)",
+        "<code>git config --global pull.rebase false</code> makes <code>git pull</code> merge when your branch and the remote have both moved; with no pull style set, as with Apple's Git, such a pull stops and asks you to choose",
+        "<code>git config user.name</code> prints one setting, and <code>git config --list</code> prints them all",
+        "Stuck in Vim because no editor was set? Press Esc, then type <code>:wq</code> and Enter to save and quit, or <code>:q!</code> to quit without saving"
+      ]
+    },
+    {
+      "title": "The three areas: working tree, staging area and repository",
+      "eli5": "Think of mailing a package: the working tree is your messy room, the staging area is the open box where you place exactly what you want to send, and a commit tapes the box shut and labels it.",
+      "detail": "The working tree holds the files you edit, the staging area (also called the index) holds the exact content that will go into the next commit, and the repository (.git) holds the committed history. A file is untracked until you first <code>git add</code> it, and tracked files are unmodified, modified or staged. <code>git add</code> stages a file's content as it is at that moment, so if you edit it again you need another <code>git add</code>, and <code>git commit -m \"message\"</code> stores everything staged as one snapshot. <code>git status</code> lists staged changes, unstaged changes and untracked files; <code>git status -s</code> shows the same in two columns (staging area on the left, working tree on the right); <code>git diff</code> shows unstaged changes; and <code>git diff --staged</code> shows what the next commit will contain. A .gitignore file lists patterns, such as <code>*.log</code> or <code>build/</code>, for untracked files Git should ignore; it doesn't affect files Git already tracks, which you stop tracking with <code>git rm --cached</code>.",
+      "points": [
+        "Lifecycle: untracked → <code>git add</code> → staged → <code>git commit</code> → committed; editing again makes it modified until the next <code>git add</code>",
+        "<code>git status -s</code> codes: <code>??</code> untracked · <code>A</code> new and staged · <code>M</code> modified (left column staged, right column not)",
+        "<code>git add .</code> stages everything under the current folder; <code>git commit -a</code> stages tracked files only, never new ones",
+        "<code>git restore --staged file</code> unstages a file; <code>git restore file</code> discards its unstaged edits for good",
+        "Git tracks files, not folders: an empty folder can't be committed until it contains a file"
+      ]
+    },
+    {
+      "title": "Commits, messages and history",
+      "eli5": "Each commit is a dated page in the project's diary, and the log is the diary read backward, newest page first.",
+      "detail": "A commit records the staged snapshot, its author and date, a message and the ID of its parent commit, so the history forms a chain you can walk backward. Good messages are short, specific and written as commands that describe what the commit does, such as \"Add contact section to index.html.\" <code>git log</code> lists commits newest first; <code>--oneline</code> prints one line per commit, <code>--graph</code> draws branches and merges as lines, and <code>--all</code> includes every branch. <code>HEAD</code> points to the commit you're on, usually through the current branch, <code>HEAD~1</code> is the commit before it, and <code>git show &lt;commit&gt;</code> prints one commit's details and changes. <code>git commit --amend</code> replaces the last commit, which is fine before you push but rewrites history that others may already have pulled after you push.",
+      "points": [
+        "<code>git log --oneline --graph --all</code> is the clearest single view of a repository's history",
+        "One logical change per commit makes the history easy to read and easy to undo",
+        "Amend only commits you haven't pushed",
+        "<code>git log -1</code> shows just the latest commit",
+        "Every commit permanently records the <code>user.name</code> and <code>user.email</code> set when it was made"
+      ]
+    },
+    {
+      "title": "Remotes, cloning, pushing and pulling with GitLab",
+      "eli5": "The remote is a shared filing cabinet: clone makes your own copy of it, push files your new pages in it, and pull brings back what others added.",
+      "detail": "<code>git clone &lt;url&gt;</code> copies a repository with its whole history into a new folder and names the source remote <code>origin</code>, and <code>git remote -v</code> shows its fetch and push URLs. GitLab's Code button on a project page offers two clone URLs: HTTPS, which authenticates on each operation (with two-factor authentication on, a token such as a personal access token with repository scope, or an OAuth credential helper, replaces your password), and SSH, which uses a key you add to your GitLab profile once. <code>git push origin main</code> uploads that branch's commits, and the first push of a new branch is usually <code>git push -u origin branch-name</code>, where <code>-u</code> sets the upstream so later pushes and pulls need no arguments. <code>git fetch</code> downloads new commits without touching your work, while <code>git pull</code> fetches and then brings them into your current branch: it fast-forwards when only the remote has new commits, and when both sides do, it merges or rebases depending on your pull style. If no style is set, as with Apple's Git on a Mac, that pull stops with \"Need to specify how to reconcile divergent branches\"; <code>git pull --no-rebase</code> merges, and <code>git config --global pull.rebase false</code> makes merging the default. If someone else pushed first, your push is rejected until you pull and integrate their work, and GitLab automatically protects a project's default branch, which limits who can push or force-push to it.",
+      "points": [
+        "<code>git clone https://gitlab.com/group/project.git</code> creates a folder named <code>project</code>",
+        "First push of a branch: <code>git push -u origin working</code>; after that, plain <code>git push</code>",
+        "pull = fetch + fast-forward when only the remote moved; when both sides have new commits it merges or rebases (<code>pull.rebase</code> false or true), and <code>git pull --no-rebase</code> always merges",
+        "\"Updates were rejected\" means the remote has commits you don't: run <code>git pull --no-rebase</code>, fix and commit any conflict, then push",
+        "GitLab groups hold subgroups and projects, and members' access flows down from a group to everything inside it"
+      ]
+    },
+    {
+      "title": "Branches",
+      "eli5": "A branch is a bookmark that moves forward as you write, so a new branch lets you try a draft without touching the published chapter.",
+      "detail": "A branch is a lightweight, movable pointer to a commit, and each new commit on the branch moves the pointer forward; <code>HEAD</code> tells Git which branch you're on. <code>git branch</code> lists local branches with an asterisk beside the current one, <code>git branch -a</code> adds remote-tracking branches such as <code>origin/main</code>, and <code>git branch name</code> creates a branch without switching to it. <code>git switch -c name</code>, or the older <code>git checkout -b name</code>, creates a branch and switches to it in one step, and <code>git switch name</code> or <code>git checkout name</code> moves to an existing branch. Git refuses to switch when uncommitted changes would be overwritten, so commit or stash them first, and <code>git branch -d name</code> deletes a branch that has already been merged.",
+      "points": [
+        "Create and switch: <code>git switch -c working</code> = <code>git checkout -b working</code>",
+        "<code>git switch -</code> jumps back to the previous branch",
+        "New commits land on whichever branch HEAD points to, so check <code>git status</code> before committing",
+        "A local branch appears in GitLab only after you push it",
+        "<code>git branch -d</code> refuses to delete unmerged work; <code>-D</code> forces it"
+      ]
+    },
+    {
+      "title": "Merging and merge requests",
+      "eli5": "Merging combines two drafts into one, and if they changed different parts, Git stitches them together by itself.",
+      "detail": "<code>git merge other</code> brings another branch's commits into the branch you're on, so switch to the receiving branch first. If your branch hasn't moved since the other one split off, Git fast-forwards: it simply moves your branch pointer ahead and creates no new commit. If both branches have new commits, Git performs a three-way merge using the two branch tips and their common ancestor and records a merge commit with two parents. In GitLab, a merge request proposes merging one branch into another so teammates can review the changes, discuss them and run checks before anyone selects Merge, which is how most teams keep the protected default branch clean.",
+      "points": [
+        "Merge into the branch you're on: <code>git switch main</code>, then <code>git merge working</code>",
+        "Fast-forward: no merge commit · three-way: a merge commit with two parents",
+        "<code>git log --oneline --graph</code> shows a three-way merge as two lines joining",
+        "<code>git merge --abort</code> backs out of a merge that stopped with conflicts, before you commit it; once a merge is committed, there's nothing left to abort",
+        "A local merge reaches GitLab only after you push the receiving branch",
+        "GitLab's default merge-request method always creates a merge commit, even when a fast-forward is possible, like <code>git merge --no-ff</code>"
+      ]
+    },
+    {
+      "title": "Merge conflicts",
+      "eli5": "A conflict is two people editing the same sentence in different ways, and since Git can't guess which version you want, it shows you both and asks you to decide.",
+      "detail": "A conflict happens when both branches changed the same or neighboring lines of a file, or one branch deleted a file the other edited. Git stops the merge with <code>CONFLICT (content): Merge conflict in index.html</code> and \"Automatic merge failed; fix conflicts and then commit the result,\" and <code>git status</code> lists the file under unmerged paths as <i>both modified</i>. Inside the file, everything between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code> is the version from the branch you had checked out, and everything from there to <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code> is the incoming version. To resolve it, edit the file into the version you want, delete every marker line (each conflicted section has three), run <code>git add</code> on the file to mark it resolved and then <code>git commit</code> to finish the merge, or run <code>git merge --abort</code> to go back to where you started.",
+      "points": [
+        "Markers: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> starts your side · <code>=======</code> divides · <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch</code> ends the incoming side",
+        "Resolve: edit → remove the markers → <code>git add</code> → <code>git commit</code>",
+        "Committing a file that still contains markers is the classic sloppy resolution",
+        "To practice: change the same line differently on two branches, commit on both, then merge",
+        "VS Code's merge editor or <code>git mergetool</code> can help, but finish with the same add-and-commit steps in the terminal"
+      ]
+    },
+    {
+      "title": "Tags",
+      "eli5": "A tag is a permanent sticky label, such as \"Version 1.0,\" on one diary page, and unlike a branch bookmark it never moves.",
+      "detail": "A tag names a specific commit, usually a release, and unlike a branch it stays put when you make new commits. Git has two kinds: a lightweight tag is only a name pointing at a commit (<code>git tag v1.0-lw</code>), while an annotated tag is a full object with the tagger's name, email, date and a message (<code>git tag -a v1.0 -m \"First release\"</code>), the kind the Git book recommends for anything you share. <code>git tag</code> lists tags, <code>git tag -l \"v1.*\"</code> filters them, <code>git show v1.0</code> displays one, and <code>git tag -a v0.9 9fceb02</code> tags an earlier commit by its ID. <code>git push</code> doesn't transfer tags by default: push one with <code>git push origin v1.0</code> or all of them with <code>git push origin --tags</code>, after which they appear under the project's tags list in GitLab. Deleting a tag locally with <code>git tag -d v1.0</code> doesn't remove it from the remote; <code>git push origin --delete v1.0</code> does.",
+      "points": [
+        "Annotated: <code>git tag -a v1.0 -m \"message\"</code> · lightweight: <code>git tag v1.0</code>",
+        "Push tags explicitly: <code>git push origin v1.0</code> or <code>git push origin --tags</code>",
+        "<code>git push origin --follow-tags</code> pushes annotated tags along with the commits they point to",
+        "Checking out a tag puts you in detached HEAD; create a branch from it if you need to make changes",
+        "A Jan 2026 passer reports the webinars cover every task step except tagging, so practice it on your own"
+      ]
+    },
+    {
+      "title": "Undoing changes safely",
+      "eli5": "Some undo buttons erase the past and some write a correction note, and on shared work you always want the correction note.",
+      "detail": "<code>git restore file</code> throws away a file's unstaged edits, and <code>git restore --staged file</code> unstages it while keeping your edits (older Git versions suggested <code>git reset HEAD file</code> for the same job). <code>git commit --amend</code> replaces the last commit, handy for fixing a typo in its message before you push. <code>git revert &lt;commit&gt;</code> makes a new commit that reverses an earlier one, which is the safe choice once work is pushed, while <code>git reset</code> moves the branch pointer backward: <code>--soft</code> keeps the changes staged, the default <code>--mixed</code> keeps them unstaged, and <code>--hard</code> discards them. <code>git rm</code> deletes a file and stages the deletion, <code>git rm --cached</code> stops tracking a file but leaves it on disk, and <code>git mv</code> renames a file and stages the rename.",
+      "points": [
+        "Already pushed? Use <code>git revert</code>, not <code>git reset</code> or <code>--amend</code>",
+        "<code>git reset --soft HEAD~1</code> undoes the last commit but keeps its changes staged",
+        "<code>git stash</code> shelves uncommitted work so you can switch branches, and <code>git stash pop</code> brings it back",
+        "<code>git reflog</code> lists where HEAD has been, which can rescue commits after a bad reset",
+        "Read what <code>git status</code> suggests: it prints the undo command for each section"
+      ]
+    },
+    {
+      "title": "Working through the D197 task",
+      "eli5": "The task is a guided obstacle course: do each step in order, snap a photo at every checkpoint, and don't leave until the photo album is complete.",
+      "detail": "One passer installed Git and found the Word template first, and another recommends reading the GitLab how-to at the bottom of the task before running anything and following the steps line by line; paste each screenshot into the template right after the command that produced it. A useful screenshot shows the command and its output, ideally with the prompt or <code>git status</code> showing which branch you're on, and clearing the terminal too early means redoing a step. Two steps confuse people: adding \"the git version\" to README.md means the output of <code>git version</code>, not a tag, and the retrospective folder is just a directory you create and push, which Git can commit only once it contains a file. Some commenters found merge conflicts the hardest step, and a Jan 2026 passer says tagging is the one step the webinars skip. The commands are identical in Git Bash on Windows and Terminal on macOS, though paths and windows look different from the videos.",
+      "points": [
+        "Before step one: install Git, set your name, email and editor, find the template and read the GitLab how-to",
+        "One step, one screenshot, pasted immediately; keep the terminal open until the step's screenshots are in",
+        "Add <code>git status</code> or <code>git log --oneline --graph --all</code> to a screenshot when a step is about branches or history",
+        "Mac users: Terminal works, and WGU Connect has notes on where the Windows videos differ",
+        "One Jan 2026 passer submitted at night and had a pass the next morning"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Course", "value": "1 CU · catalog number ITSW 2110 · no prerequisites · term 3 in BSCS 202412 and 202611", "note": "One performance assessment, no exam" },
+    { "label": "Identity", "value": "<code>git config --global user.name \"Your Name\"</code> · <code>git config --global user.email you@example.com</code>", "note": "Recorded permanently in every commit" },
+    { "label": "Editor", "value": "<code>git config --global core.editor \"code --wait\"</code>", "note": "<code>--wait</code> keeps Git waiting until you close the tab. On a Mac, first install the <code>code</code> command from VS Code's Command Palette (Cmd+Shift+P, search \"shell command\")" },
+    { "label": "Version", "value": "<code>git version</code> or <code>git --version</code> → for example <code>git version 2.56.1.windows.1</code> on Git for Windows, or <code>git version 2.50.1 (Apple Git-155)</code> from Apple's tools", "note": "Git for Windows 2.56.1 was released Nov 10, 2026; paste exactly what your own terminal prints" },
+    { "label": "Config levels", "value": "<code>--system</code> all users · <code>--global</code> ~/.gitconfig · <code>--local</code> .git/config", "note": "The most specific level wins; <code>git config --list --show-origin</code> shows where each value comes from" },
+    { "label": "Start a repository", "value": "<code>git clone &lt;url&gt;</code> copies an existing one · <code>git init</code> starts a new one in the current folder" },
+    { "label": "Three states", "value": "modified → staged → committed (working tree → staging area or index → .git directory)" },
+    { "label": "Status and diff", "value": "<code>git status</code> · <code>git status -s</code> · <code>git diff</code> unstaged changes · <code>git diff --staged</code> what the next commit holds" },
+    { "label": "Stage and commit", "value": "<code>git add file</code> · <code>git add .</code> · <code>git commit -m \"message\"</code> · <code>git commit -a -m \"message\"</code>", "note": "<code>-a</code> stages tracked files only" },
+    { "label": "History", "value": "<code>git log --oneline --graph --all</code> · <code>git show &lt;commit&gt;</code> · <code>HEAD</code>, <code>HEAD~1</code>" },
+    { "label": "Branches", "value": "<code>git branch</code> · <code>git branch -a</code> · <code>git switch -c name</code> (= <code>git checkout -b name</code>) · <code>git switch name</code> · <code>git branch -d name</code>" },
+    { "label": "Remotes", "value": "<code>git remote -v</code> · <code>origin</code> = the default name for the clone source · <code>git fetch</code> downloads · <code>git pull</code> = fetch, then fast-forward, merge or rebase (merge with <code>--no-rebase</code> or <code>pull.rebase false</code>)", "note": "With no pull style set, as with Apple's Git, a pull on diverged branches stops with \"Need to specify how to reconcile divergent branches\"; run <code>git pull --no-rebase</code> or set <code>git config --global pull.rebase false</code> once" },
+    { "label": "Push", "value": "<code>git push -u origin branch</code> the first time · <code>git push</code> afterward", "note": "Rejected because the remote has new commits? <code>git pull --no-rebase</code>, resolve and commit any conflict, push" },
+    { "label": "Merge", "value": "<code>git switch main</code> then <code>git merge working</code> · fast-forward = no merge commit · three-way = merge commit with two parents", "note": "<code>git merge --abort</code> backs out of a merge stopped by conflicts" },
+    { "label": "Conflict markers", "value": "<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> your branch · <code>=======</code> divider · <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch</code> incoming branch" },
+    { "label": "Resolve a conflict", "value": "Edit the file → delete all markers → <code>git add file</code> → <code>git commit</code>" },
+    { "label": "Tags", "value": "<code>git tag -a v1.0 -m \"message\"</code> annotated · <code>git tag v1.0</code> lightweight · <code>git tag</code> lists · <code>git show v1.0</code>", "note": "Annotated tags store tagger, email, date and message" },
+    { "label": "Pushing and deleting tags", "value": "<code>git push origin v1.0</code> · <code>git push origin --tags</code> · <code>git tag -d v1.0</code> local · <code>git push origin --delete v1.0</code> remote", "note": "Plain <code>git push</code> doesn't send tags" },
+    { "label": "Undo", "value": "<code>git restore file</code> · <code>git restore --staged file</code> · <code>git revert &lt;commit&gt;</code> · <code>git reset --soft</code> / <code>--mixed</code> / <code>--hard</code>", "note": "Revert for pushed work; reset rewrites history" },
+    { "label": ".gitignore", "value": "<code>*.log</code> pattern · <code>build/</code> folder · <code>!keep.log</code> exception · <code>#</code> comment · <code>/notes.md</code> only at the top level" },
+    { "label": "Empty folders", "value": "Git tracks files, not directories: add a file to a new folder before committing it" },
+    { "label": "Commit IDs", "value": "40-character SHA-1 hash by default; short forms like <code>24b9da6</code> work when unambiguous" },
+    { "label": "GitLab clone URLs", "value": "Project page → Code → Clone with HTTPS or Clone with SSH", "note": "With two-factor authentication, HTTPS needs a token (such as a personal access token with <code>write_repository</code>) or an OAuth credential helper instead of your password" },
+    { "label": "GitLab structure", "value": "Groups contain subgroups (up to 20 levels) and projects; members inherit access downward", "note": "The default branch is protected automatically" },
+    { "label": "Default branch name", "value": "<code>git config --global init.defaultBranch main</code> (Git 2.28+); without it, upstream Git 2.x creates master, while Apple's Git on macOS ships a config that already sets main" },
+    { "label": "Leaving Vim", "value": "Esc, then <code>:wq</code> Enter to save and quit · <code>:q!</code> Enter to quit without saving" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Install, configure and read the task",
+      "tasks": [
+        "Install Git (Git for Windows from git-scm.com, or Apple's command-line tools or Homebrew on a Mac) and run <code>git version</code>.",
+        "Set <code>user.name</code>, <code>user.email</code>, <code>core.editor</code> (on a Mac, install VS Code's <code>code</code> command in PATH first) and <code>pull.rebase false</code> (so <code>git pull</code> merges), then check them with <code>git config --list --show-origin</code>.",
+        "Open the task, download the Word template and read the GitLab how-to linked at the bottom of the task."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Local basics in a practice repository",
+      "tasks": [
+        "In a scratch folder, run <code>git init</code>, create two files, and practice <code>git status</code>, <code>git add</code>, <code>git commit -m</code>, <code>git diff</code> and <code>git diff --staged</code>.",
+        "Add a .gitignore for <code>*.log</code>, then try committing an empty folder and see why nothing happens.",
+        "Read the history with <code>git log --oneline</code>."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Branches and merging",
+      "tasks": [
+        "Create a branch with <code>git switch -c working</code>, commit on it, switch back and merge to see a fast-forward.",
+        "Commit on both branches, merge again and view the merge commit with <code>git log --oneline --graph --all</code>."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Merge conflicts",
+      "tasks": [
+        "Change the same line differently on two branches, merge, and read the conflict markers.",
+        "Resolve it by editing, deleting the markers, <code>git add</code> and <code>git commit</code>; repeat once, then try <code>git merge --abort</code> on a third conflict."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Remotes and GitLab",
+      "tasks": [
+        "Watch the instructor webinars in WGU Connect (Resources → D197 Additional Resources), checking the Mac notes if you're on macOS.",
+        "Clone a practice repository, push a new branch with <code>git push -u origin working</code>, and practice <code>git fetch</code> and <code>git pull</code>.",
+        "Make sure your credentials work over HTTPS (a personal access token if two-factor authentication is on) or set up an SSH key."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Tags and undo commands",
+      "tasks": [
+        "Read the Git book's Tagging chapter, create an annotated tag and a lightweight tag, and compare them with <code>git show</code>.",
+        "Push a tag with <code>git push origin v1.0</code> and find it in the remote's tag list.",
+        "Try <code>git restore</code>, <code>git restore --staged</code> and <code>git revert</code> on throwaway commits."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Do the task",
+      "tasks": [
+        "Work through the task steps in order in your WGU GitLab repository, pasting each screenshot into the template right after the step.",
+        "Keep the terminal open until each step's screenshots are in, and run <code>git status</code> before every commit and push."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Check and submit",
+      "tasks": [
+        "Compare the template with the task line by line: every step has its screenshot, and every screenshot shows the command and its output.",
+        "Open the repository in GitLab and confirm the branches, commits and tags you pushed are all there.",
+        "Submit, and keep the practice repository handy in case a revision is requested; experienced Git users can compress this whole plan into one or two sittings."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which command creates a new branch named <code>working</code> and switches to it in one step?",
+      "choices": ["<code>git branch working</code>", "<code>git switch -c working</code>", "<code>git merge working</code>", "<code>git push -u origin working</code>"],
+      "answer": "<code>git switch -c working</code>",
+      "why": "<code>git switch -c working</code> creates the branch at the current commit and switches to it; <code>git checkout -b working</code> does the same in older syntax. <code>git branch working</code> only creates it, leaving you on your current branch. <code>git merge working</code> merges an existing branch into the current one, and <code>git push -u origin working</code> publishes a branch that already exists locally."
+    },
+    {
+      "q": "You edit <code>index.html</code>, run <code>git add index.html</code>, then edit the file again and run <code>git commit -m \"Update heading\"</code>. What does the commit contain?",
+      "choices": [
+        "Both edits",
+        "Only the second edit",
+        "Only the first edit; the second is still unstaged",
+        "Neither edit, because the file changed after staging"
+      ],
+      "answer": "Only the first edit; the second is still unstaged",
+      "why": "<code>git add</code> stages a file's content as it is at that moment, and <code>git commit</code> records what's staged. The second edit stays in the working tree, so <code>git status</code> still lists index.html as modified, and another <code>git add</code> would include it. A plain <code>git commit</code> never picks up unstaged edits; <code>git commit -a</code> (tracked files) or naming the file, as in <code>git commit -m \"Update heading\" index.html</code>, would record its current working-tree version, second edit included."
+    },
+    {
+      "q": "<code>git push origin main</code> fails with \"Updates were rejected because the remote contains work that you do not have locally.\" What should you do?",
+      "choices": [
+        "Run <code>git pull</code>, resolve any conflicts, then push again",
+        "Run <code>git push --force</code> so your commits overwrite the remote branch",
+        "Delete the GitLab project, create it again and push your branch",
+        "Run <code>git commit --amend</code> to refresh your last commit, then push"
+      ],
+      "answer": "Run <code>git pull</code>, resolve any conflicts, then push again",
+      "why": "The remote branch has commits yours doesn't, so Git refuses a push that would throw them away. Pulling fetches those commits and combines them with yours (resolve any conflicts and commit), after which your push succeeds. Because both sides have new commits, a plain <code>git pull</code> stops with \"Need to specify how to reconcile divergent branches\" if no pull style is set, as with Apple's Git on a Mac: run <code>git pull --no-rebase</code> to merge, or set <code>git config --global pull.rebase false</code> once. Force-pushing would erase the other commits, deleting the project destroys the history, and amending changes your last commit without fetching anything."
+    },
+    {
+      "q": "In a file with a merge conflict, which lines hold the version from the branch you had checked out when you ran <code>git merge</code>?",
+      "choices": [
+        "The lines after <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code>",
+        "The lines between <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code>",
+        "None: Git discards your version and keeps the incoming one",
+        "The lines between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code>"
+      ],
+      "answer": "The lines between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> and <code>=======</code>",
+      "why": "HEAD is the branch you're on, so the block from <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> to <code>=======</code> is your side, and the block from <code>=======</code> to <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code> is the incoming branch's side. Lines after the closing marker are ordinary, unconflicted text. Git never silently picks a side in a conflict; it keeps both and waits for you."
+    },
+    {
+      "q": "You've edited a conflicted file into the version you want and deleted all the conflict markers. What finishes the merge?",
+      "choices": [
+        "<code>git push</code> the branch to GitLab",
+        "<code>git add</code> the file, then <code>git commit</code>",
+        "<code>git restore</code> the file to save your resolution",
+        "<code>git branch -d feature</code> to close the merge"
+      ],
+      "answer": "<code>git add</code> the file, then <code>git commit</code>",
+      "why": "Staging the file with <code>git add</code> tells Git the conflict is resolved, and <code>git commit</code> creates the merge commit that completes the merge. Pushing before committing sends nothing new, and deleting the other branch doesn't finish anything. <code>git restore</code> refuses to touch a file that's still unmerged (\"path ... is unmerged\"), and with <code>--ours</code>, <code>--theirs</code> or <code>--merge</code> it would overwrite your resolution. If you want to start over instead, <code>git merge --abort</code> returns to the state before the merge."
+    },
+    {
+      "q": "You ran <code>git tag -a v1.0 -m \"First release\"</code> and then <code>git push</code>, but the tag doesn't appear in GitLab. Why?",
+      "choices": [
+        "Annotated tags can't be pushed to GitLab; only lightweight tags are accepted there",
+        "Tags have to be submitted through a merge request before GitLab will list them",
+        "<code>git push</code> doesn't send tags by default; push it with <code>git push origin v1.0</code>",
+        "Tags show up in GitLab only after the tagged commit is merged into the default branch"
+      ],
+      "answer": "<code>git push</code> doesn't send tags by default; push it with <code>git push origin v1.0</code>",
+      "why": "Tags are pushed separately: <code>git push origin v1.0</code> sends one, and <code>git push origin --tags</code> sends every tag the remote doesn't have. GitLab accepts both annotated and lightweight tags (annotated ones are the recommended kind for anything you share), tags don't go through merge requests, and a pushed tag appears right away, whichever branch its commit is on."
+    },
+    {
+      "q": "Which statement about Git tags is true?",
+      "choices": [
+        "An annotated tag stores the tagger, date and a message; a lightweight tag is only a name for a commit",
+        "A lightweight tag stores the tagger, date and a message; an annotated tag is only a name for a commit",
+        "Both kinds of tag move forward to the newest commit each time you commit, just as branches do",
+        "An annotated tag can point only at the latest commit, so older commits can never be tagged"
+      ],
+      "answer": "An annotated tag stores the tagger, date and a message; a lightweight tag is only a name for a commit",
+      "why": "An annotated tag (<code>git tag -a</code>) is a full Git object with the tagger's name, email, date and message, while a lightweight tag is just a pointer to a commit, like a branch that never moves. Neither kind moves when you commit, which is what makes tags good release markers. You can tag any commit by adding its ID, as in <code>git tag -a v0.9 9fceb02</code>."
+    },
+    {
+      "q": "A step asks you to add the installed Git version to README.md. Which command prints that information?",
+      "choices": ["<code>git tag</code>", "<code>git log -1</code>", "<code>git describe</code>", "<code>git version</code>"],
+      "answer": "<code>git version</code>",
+      "why": "<code>git version</code> (or <code>git --version</code>) prints a line such as <code>git version 2.56.1.windows.1</code>, the version of Git installed on your computer. This exact step has confused students into making a tag. <code>git tag</code> lists or creates tags, <code>git log -1</code> shows the latest commit, and <code>git describe</code> names a commit relative to the nearest tag."
+    },
+    {
+      "q": "You create an empty folder named <code>docs</code>, run <code>git add docs</code> and then <code>git commit</code>, but Git says there's nothing to commit. Why?",
+      "choices": [
+        "Git accepts a new folder only when its name starts with a capital letter",
+        "Git tracks files, not directories, so an empty folder has nothing to commit",
+        "A default .gitignore blocks new folders until you add an exception for them",
+        "Every new folder needs its own <code>git init</code> before it can be committed"
+      ],
+      "answer": "Git tracks files, not directories, so an empty folder has nothing to commit",
+      "why": "Git's snapshots record files and the paths that lead to them, so a folder exists in the history only when it contains at least one tracked file. Add a file, such as a short notes file, then add and commit again. Folder names have no case rule, there's no default .gitignore blocking folders, and running <code>git init</code> inside a subfolder would create a separate, nested repository."
+    },
+    {
+      "q": "Which statement about <code>git fetch</code> is true?",
+      "choices": [
+        "It downloads new commits from the remote without changing your files or your current branch",
+        "It uploads your local commits to the remote and moves the remote branch to match yours",
+        "It downloads new commits from the remote and merges them into your current branch automatically",
+        "It deletes your local branches whose matching branches no longer exist on the remote"
+      ],
+      "answer": "It downloads new commits from the remote without changing your files or your current branch",
+      "why": "<code>git fetch</code> updates your remote-tracking branches, such as <code>origin/main</code>, and leaves your work alone, so you can inspect what arrived before merging it. <code>git pull</code> is the command that fetches and then integrates the new commits (a fast-forward, merge or rebase), <code>git push</code> uploads, and fetch never deletes your local branches: even <code>git fetch --prune</code> removes only stale remote-tracking branches such as <code>origin/old-feature</code>."
+    },
+    {
+      "q": "A commit you already pushed to a shared branch introduced a bug. What's the safest way to undo it?",
+      "choices": [
+        "<code>git reset --hard HEAD~1</code>, then <code>git push --force</code>",
+        "<code>git commit --amend</code>, then push",
+        "<code>git revert &lt;commit&gt;</code>, then push",
+        "Delete the .git folder and clone again"
+      ],
+      "answer": "<code>git revert &lt;commit&gt;</code>, then push",
+      "why": "<code>git revert</code> adds a new commit that reverses the bad one, so history only moves forward and teammates' copies stay valid. Resetting and force-pushing rewrites shared history and can destroy other people's work, amending changes only your latest commit (and rewrites it), and re-cloning just gives you a fresh copy that still contains the bug."
+    },
+    {
+      "q": "Which command shows exactly which changes will go into your next commit?",
+      "choices": ["<code>git diff</code>", "<code>git diff --staged</code>", "<code>git log</code>", "<code>git status -s</code>"],
+      "answer": "<code>git diff --staged</code>",
+      "why": "<code>git diff --staged</code> (also spelled <code>--cached</code>) compares the staging area with the last commit, which is precisely what <code>git commit</code> will record. Plain <code>git diff</code> shows unstaged changes, so it can print nothing even when changes are staged. <code>git log</code> shows past commits, and <code>git status -s</code> lists which files changed but not the lines."
+    },
+    {
+      "q": "Which command makes VS Code Git's editor for every repository in your account and lets Git wait while you write the message?",
+      "choices": [
+        "<code>git config core.editor code</code>",
+        "<code>git config --system user.editor vscode</code>",
+        "<code>git editor --set code</code>",
+        "<code>git config --global core.editor \"code --wait\"</code>"
+      ],
+      "answer": "<code>git config --global core.editor \"code --wait\"</code>",
+      "why": "<code>--global</code> writes the setting to your user configuration, so it applies to every repository you use, and <code>--wait</code> tells the <code>code</code> command not to return until you close the tab, so Git waits for your message. Without <code>--global</code> the setting applies to one repository, and without <code>--wait</code> the <code>code</code> command returns at once, so Git reads the message before you've typed it and aborts the commit. There's no <code>user.editor</code> key and no <code>git editor</code> command."
+    },
+    {
+      "q": "Branch <code>main</code> hasn't changed since you created <code>working</code>, and <code>working</code> now has two new commits. What does <code>git merge working</code> do when run on <code>main</code>?",
+      "choices": [
+        "It creates a new merge commit with two parents that joins main and working",
+        "It reports a merge conflict and waits for you to choose between the versions",
+        "It fast-forwards main to the newest commit on working, with no merge commit",
+        "It deletes the working branch once its two commits have been copied onto main"
+      ],
+      "answer": "It fast-forwards main to the newest commit on working, with no merge commit",
+      "why": "Because main's latest commit is an ancestor of working's, there's nothing to combine: Git just moves the main pointer forward, which it reports as a fast-forward. A plain <code>git merge</code> makes a two-parent merge commit only when both branches have new commits (<code>--no-ff</code> forces one, and so does GitLab's default merge-request method), a conflict needs both sides to change the same or neighboring lines, and merging never deletes a branch; you do that with <code>git branch -d</code>."
+    },
+    {
+      "q": "Your GitLab account uses two-factor authentication, and pushing over HTTPS rejects your password. What should you use instead?",
+      "choices": [
+        "A personal access token with repository write scope, or an SSH key instead of HTTPS",
+        "Your GitLab password with the current six-digit two-factor code typed directly after it",
+        "Your email address in place of your username, together with your usual GitLab password",
+        "Your usual password again, after adding <code>--no-verify</code> to the <code>git push</code> command"
+      ],
+      "answer": "A personal access token with repository write scope, or an SSH key instead of HTTPS",
+      "why": "GitLab's docs say that with two-factor authentication on, your password no longer works over HTTPS: use a token (such as a personal access token with <code>write_repository</code> scope for pushing) or an OAuth credential helper, and an SSH key added to your profile avoids passwords entirely. Appending a code to the password doesn't work, the email isn't the problem, and <code>--no-verify</code> only skips local hooks. WGU's GitLab environment may handle sign-in its own way, so follow the task's how-to first."
+    }
+  ],
+  "pitfalls": [
+    "<b>Clearing the terminal too soon.</b> A passer warns not to clear or close the terminal until every screenshot for a step is in the template; otherwise you redo the step.",
+    "<b>Committing on the wrong branch.</b> New commits land wherever HEAD points. Check <code>git status</code> or your prompt before every commit and merge.",
+    "<b>Making a tag for \"the git version.\"</b> That step wants the output of <code>git version</code> in README.md, not a tag.",
+    "<b>Trying to commit an empty folder.</b> Git ignores empty directories, so a new folder needs at least one file before it can be committed and pushed.",
+    "<b>Forgetting to push tags and new branches.</b> Plain <code>git push</code> sends neither a new branch without upstream nor any tag; use <code>git push -u origin branch</code> and <code>git push origin v1.0</code>.",
+    "<b>Leaving conflict markers in the file.</b> Delete every <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> line before <code>git add</code>, and look at the file once more before committing.",
+    "<b>Getting trapped in Vim.</b> With no editor configured, a merge or tag message opens Vim; set <code>core.editor</code> first, or press Esc and type <code>:wq</code>.",
+    "<b>Rewriting shared history.</b> <code>git reset --hard</code>, <code>--amend</code> and <code>git push --force</code> on pushed commits can wipe out work; use <code>git revert</code> instead.",
+    "<b>Copying the Windows videos literally on a Mac.</b> The commands match, but paths, terminals and installers differ; use Terminal and check WGU Connect's Mac notes.",
+    "<b>Overcomplicating a 1-CU course.</b> The task rewards doing each step exactly as written, not extra Git features; follow the steps line by line."
+  ],
+  "resources": [
+    {
+      "label": "Task directions, Word template and GitLab how-to (course page)",
+      "kind": "official",
+      "note": "The source of truth for every step and screenshot. One passer found the template first, and another says to read the GitLab how-to at the bottom of the task before running any command."
+    },
+    {
+      "label": "Instructor webinars in WGU Connect",
+      "kind": "video",
+      "note": "Course page → Course Community → Join WGU Connect → Resources → D197 Additional Resources. A Jan 2026 passer reports five recordings that cover every step but tagging, recorded on Windows, with Mac notes alongside."
+    },
+    {
+      "label": "Git for Windows download (git-scm.com)",
+      "url": "https://git-scm.com/install/windows",
+      "kind": "tool",
+      "note": "The official installer, version 2.56.1 as of Nov 2026, with Git Bash included. Mac users can install Apple's command-line tools or use Homebrew."
+    },
+    {
+      "label": "Pro Git book (free, git-scm.com)",
+      "url": "https://git-scm.com/book/en/v2",
+      "kind": "official",
+      "note": "Chapter 1 covers installing Git and first-time setup, and chapters 2 and 3 cover the rest of what the task uses: recording changes, history, remotes, tagging, branching and merging."
+    },
+    {
+      "label": "Pro Git: Tagging",
+      "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging",
+      "kind": "official",
+      "note": "Covers the step a Jan 2026 passer says the webinars skip: annotated vs lightweight tags, tagging older commits and pushing tags. A ~2023 passer recommends it."
+    },
+    {
+      "label": "Pro Git: Basic Branching and Merging",
+      "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+      "kind": "official",
+      "note": "Fast-forward vs three-way merges and a full walk-through of a merge conflict, markers included."
+    },
+    {
+      "label": "GitLab Docs: Make your first Git commit",
+      "url": "https://docs.gitlab.com/tutorials/make_first_git_commit/",
+      "kind": "official",
+      "note": "A short GitLab tutorial covering clone, branch, edit, add, commit, push and merge, close to the task's flow."
+    },
+    {
+      "label": "GitLab Docs: Clone a Git repository",
+      "url": "https://docs.gitlab.com/topics/git/clone/",
+      "kind": "official",
+      "note": "Where the clone URLs live and how HTTPS (with a token when two-factor authentication is on) and SSH authentication differ."
+    },
+    {
+      "label": "Atlassian Git glossary and command list",
+      "url": "https://www.atlassian.com/git/glossary#commands",
+      "kind": "tool",
+      "note": "Plain-language definitions of Git terms and commands; recommended by a ~2023 passer."
+    },
+    {
+      "label": "GitHub Education Git cheat sheet (PDF)",
+      "url": "https://education.github.com/git-cheat-sheet-education.pdf",
+      "kind": "tool",
+      "note": "A two-page command reference to keep open while you work; recommended by the same passer."
+    },
+    {
+      "label": "Learn Git Branching",
+      "url": "https://learngitbranching.js.org/",
+      "kind": "practice",
+      "note": "Free interactive puzzles that draw your branches and merges as you type commands; good for making branching and merging click."
+    },
+    {
+      "label": "GitHub Docs: Associating text editors with Git",
+      "url": "https://docs.github.com/en/get-started/git-basics/associating-text-editors-with-git",
+      "kind": "tool",
+      "note": "The <code>core.editor</code> commands for VS Code and other editors on Windows, macOS and Linux."
+    }
+  ],
+  "community": {
+    "summary": "Two posts, a Jan 2026 pass and an older one from about 2023, describe D197 as quick: about 3–4 hours of work for the Jan 2026 passer and a day and a half for the other. The Jan 2026 passer installed Git and found the task's Word template first, then pasted screenshots into it while working. The older post's advice is not to overcomplicate it: read the GitLab how-to linked at the bottom of the task first, follow the steps line by line and don't clear the terminal until every required screenshot is taken; it also says cloning the GitLab repository set up most of the task. The Jan 2026 passer points to five instructor webinars in WGU Connect that walk through every step except tagging; commenters note they're recorded on Windows, that Mac users found Terminal works with some differences and that WGU Connect has Mac notes, and some switched to a Windows PC to save time. Commenters on the older post cleared up two confusing steps (\"the git version\" means the output of <code>git version</code>, and the retrospective folder is just a directory you create and push), and some found merge conflicts the hardest part. The Jan 2026 passer submitted the same night and passed the next morning.",
+    "coverage": "2 posts without links, about 2023 – Jan 2026 (the Jan 2026 one on r/WGU); neither thread could be found by its exact title, so none are listed",
+    "posts": []
+  },
+  "sources": [
+    { "label": "WGU Program Guidebook, B.S. Computer Science (catalog 202611, published Jun 30, 2026): Version Control description and competency", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026: D197 description, 1 CU, BSCS 202611 term 3, and assessment integrity rules", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, July 2026: BSCS 202412 lists D197 (ITSW 2110, 1 CU) in term 3", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-july-2026.pdf" },
+    { "label": "Pro Git: What is Git? (snapshots, checksums, three states)", "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F" },
+    { "label": "Pro Git: First-Time Git Setup (config levels, identity, editor, default branch)", "url": "https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup" },
+    { "label": "Pro Git: Recording Changes to the Repository (status, add, diff, .gitignore, rm, mv)", "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository" },
+    { "label": "Pro Git: Working with Remotes (origin, fetch vs pull, push rejection)", "url": "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes" },
+    { "label": "Pro Git: Basic Branching and Merging (fast-forward, merge commits, conflicts)", "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging" },
+    { "label": "Pro Git: Tagging (annotated vs lightweight, pushing and deleting tags)", "url": "https://git-scm.com/book/en/v2/Git-Basics-Tagging" },
+    { "label": "Git documentation: git-switch", "url": "https://git-scm.com/docs/git-switch" },
+    { "label": "Git documentation: git-pull (fast-forward by default, --no-rebase, pull.rebase)", "url": "https://git-scm.com/docs/git-pull" },
+    { "label": "Git for Windows download page (2.56.1, Nov 10, 2026)", "url": "https://git-scm.com/install/windows" },
+    { "label": "GitLab Docs: Clone a Git repository to your local computer (HTTPS, SSH, tokens)", "url": "https://docs.gitlab.com/topics/git/clone/" },
+    { "label": "GitLab Docs: Protected branches", "url": "https://docs.gitlab.com/user/project/repository/branches/protected/" },
+    { "label": "GitLab Docs: Subgroups (nesting and inherited membership)", "url": "https://docs.gitlab.com/user/group/subgroups/" }
+  ],
+  "caveats": [
+    "WGU's task directions, rubric and template are behind the student login. The step list here comes from two students' posts, one from about 2023, so it's deliberately general; follow your own task page line by line.",
+    "No posts are listed: the two D197 posts came from pasted notes without URLs, Reddit couldn't be opened or searched directly for this guide, and searches for both exact titles found nothing, so the community section summarizes them without links.",
+    "The webinar details (five recordings, tagging not covered, Mac notes) come from one Jan 2026 post; WGU Connect's resources change, so check what's posted now.",
+    "WGU's GitLab environment may handle sign-in and permissions differently from a personal GitLab.com account. The GitLab details here come from GitLab's public docs, so follow the task's GitLab how-to where they differ.",
+    "Commands were checked against Git's documentation for versions 2.55–2.56. Older Git versions print some different hints (for example <code>git reset HEAD</code> instead of <code>git restore --staged</code>), and <code>git switch</code> needs Git 2.23 or later."
+  ]
+}

@@ -1,0 +1,611 @@
+{
+  "code": "D427",
+  "summary": "D427 is the hands-on MySQL course: you create and alter tables, keys, views and indexes, insert, update and delete rows, and write SELECT queries that range from single-table filters to joins across three or more tables. Since a May 2025 revamp, students report an objective assessment of about 25 questions, most of them SQL statements you type and run against sample data, with a SQL syntax reference sheet built into both the pre-assessment and the OA. A Jun 2026 passer who earned a perfect score found joins the hardest part and warns that graders expect queries that solve the problem in general, not ones tuned to the sample rows; a commenter on that post says most people finish the OA in 30–60 minutes.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored; mostly hands-on MySQL coding)",
+    "format": "About 25 questions, mostly SQL you write and run, with a built-in SQL reference sheet (students report) · proctored · time limit and passing score not published",
+    "details": [
+      "Students report the course was revamped on May 1, 2025. The new OA has about 25 questions, and most ask you to write a SQL statement in an editor that can run it; the posts don't say what form the other items take. A Jun 2026 commenter says the OA mirrors the PA's question types with different data.",
+      "Running isn't grading. The editor's Run Test Cases button checks your statement against sample data, but a Jun 2026 passer with a perfect score warns that a query can pass those checks and still lose credit if it only works for the sample rows. Graders expect a query that answers the question for any data, such as a SUM over every matching row rather than picking the one row the sample happens to contain.",
+      "Students report a SQL syntax reference sheet built into the PA and the OA, and say it's the same sheet in both. It covers the general syntax of CREATE, ALTER, INSERT, UPDATE, DELETE, views, indexes, SELECT clauses, joins and aggregates, so the exam rewards knowing which statement fits and putting it together correctly rather than memorizing keywords. This guide doesn't reproduce it.",
+      "Reported content: column data types (INT, VARCHAR, DECIMAL, TIMESTAMP and others), signed vs unsigned numbers, INNER, LEFT and RIGHT joins (the hardest part for the Jun 2026 passer, self-joins included), aggregate functions, foreign keys linking two tables, entities and attributes, and ALTER vs UPDATE. A May 2025 taker saw no subqueries or complex nested joins, but the official description lists subqueries, so learn the basics.",
+      "Question count, time limit and passing score aren't published by WGU. A Jun 2026 commenter says most people finish in 30–60 minutes.",
+      "Prerequisite: D426 Data Management - Foundations (WGU program guide, catalog 202611). D427 builds directly on D426's keys, joins and design vocabulary and adds MySQL practice."
+    ],
+    "tips": [
+      "Take the PA open-note first: look up whatever you don't know and run every query until it returns the right rows (May 2025 advice). Then retake it without notes until you can write each statement from scratch.",
+      "Write the general query, not the sample's answer. Join on keys, filter with the condition the question states, aggregate over all matching rows, and never hard-code an ID or a total you read off the sample data.",
+      "Format the way the course does: one clause per line, keywords in capitals, a semicolon at the end. Readable SQL is easier to debug under time pressure, and SQLZoo's leniency about capitalization and semicolons can build bad habits.",
+      "Match the requested output exactly: the columns in the order asked, any alias names given, ORDER BY when an order is requested, and DISTINCT when duplicates should go.",
+      "Before an UPDATE or DELETE, run the same WHERE clause in a SELECT to see exactly which rows will change.",
+      "Know your verb: ALTER TABLE changes structure (columns, types, keys) and UPDATE changes the values in rows. Students single this out as a common slip.",
+      "Drill joins until they're automatic, including a table joined to itself; the Jun 2026 passer used SQLZoo's join and self-join tutorials. The same passer checked large totals with a calculator, so confirm what your proctoring rules allow.",
+      "Learn the reference sheet's layout during the PA so you know where each statement's syntax sits before the OA."
+    ]
+  },
+  "competencies": [
+    "Course planning: begin by discussing your Course Planning Tool report with your instructor and creating your personalized course plan together (listed first in the program guide).",
+    "The learner creates DML statements that insert, update, and delete data in data tables.",
+    "The learner implements joins and aggregate functions in SQL queries.",
+    "The learner queries database tables and views with SQL code.",
+    "The learner recommends databases and database management systems to meet organizational needs."
+  ],
+  "topics": [
+    {
+      "title": "Working in MySQL: databases, statements and style",
+      "eli5": "MySQL is a very literal assistant: give it one complete sentence at a time, spell every name exactly, end with a semicolon, and it does exactly what you said.",
+      "detail": "A MySQL server holds databases, also called schemas, and each one contains tables, views and other objects. CREATE DATABASE makes one, USE picks the default database, SHOW TABLES lists its tables, and DESCRIBE shows a table's columns, types, keys and defaults. Every statement ends with a semicolon. Keywords and function names aren't case-sensitive, but writing them in capitals keeps queries readable. Table names can be case-sensitive depending on the server's operating system, so type them exactly as they were defined. Strings and dates go in single quotes ('Harbor', '2026-11-21'), numbers don't, and identifiers that are reserved words or contain spaces need backticks. MySQL's default SQL mode is strict, so a value that doesn't fit its column, such as text longer than a VARCHAR(10), raises an error instead of being cut short quietly.",
+      "points": [
+        "<code>CREATE DATABASE BikeShare;</code> · <code>USE BikeShare;</code> · <code>SHOW TABLES;</code> · <code>DESCRIBE Ride;</code>",
+        "Comments: <code>-- note</code> (with a space after the dashes), <code># note</code>, <code>/* block */</code>",
+        "In default MySQL, double quotes make strings, not identifiers; backticks quote identifiers, as in <code>SELECT `Order` FROM `Sale`;</code>",
+        "Statement families: DDL (CREATE, ALTER, DROP) changes structure, DML (INSERT, UPDATE, DELETE) changes rows, and SELECT reads them",
+        "Autocommit is on by default, so each statement is permanent once it finishes. While practicing, wrap risky INSERT, UPDATE and DELETE statements in <code>START TRANSACTION;</code> … <code>ROLLBACK;</code>. DDL such as CREATE, ALTER, DROP and TRUNCATE commits immediately, along with anything the transaction had already done, so ROLLBACK can't undo it"
+      ]
+    },
+    {
+      "title": "Data types: numbers, text and dates",
+      "eli5": "A data type is the shape of the box a column's values go in: whole numbers, exact money amounts, text of some length, or dates.",
+      "detail": "The integer types differ only in size and range: TINYINT (1 byte), SMALLINT (2), MEDIUMINT (3), INT (4) and BIGINT (8). Each is signed by default. UNSIGNED removes the negative values and roughly doubles the positive maximum, so TINYINT holds −128 to 127 while TINYINT UNSIGNED holds 0 to 255. DECIMAL(M,D) stores exact numbers with M digits in total and D of them after the decimal point, which is why money uses it; FLOAT and DOUBLE store approximate binary values and suit measurements. CHAR(n) always takes n characters, padding with spaces, while VARCHAR(n) stores up to n characters plus a 1- or 2-byte length prefix, and TEXT holds long strings. DATE stores 'YYYY-MM-DD', TIME 'hh:mm:ss', DATETIME both together, and TIMESTAMP is like DATETIME but converted to UTC for storage and limited to 1970–2038. BOOLEAN is an alias for TINYINT(1), where 0 is false and any other value is true.",
+      "points": [
+        "Signed / unsigned ranges: TINYINT −128..127 / 0..255 · SMALLINT −32,768..32,767 / 0..65,535 · MEDIUMINT −8,388,608..8,388,607 / 0..16,777,215 · INT −2,147,483,648..2,147,483,647 / 0..4,294,967,295",
+        "<code>DECIMAL(6,2)</code> holds up to 9,999.99, while <code>DECIMAL(4,2)</code> stops at 99.99; plain <code>DECIMAL</code> means <code>DECIMAL(10,0)</code>",
+        "Signed vs unsigned matters for keys: a foreign key must match the integer size and sign of the column it references",
+        "CHAR suits fixed-length codes such as <code>CHAR(2)</code> state abbreviations; VARCHAR suits names and titles",
+        "Date literals: <code>'2026-11-21'</code> for DATE and <code>'2026-11-21 08:15:00'</code> for DATETIME. Useful functions: <code>CURDATE()</code>, <code>NOW()</code>, <code>YEAR()</code>, <code>MONTH()</code>, <code>DATEDIFF()</code>",
+        "Display widths such as <code>INT(11)</code> don't change the range and are deprecated in current MySQL"
+      ]
+    },
+    {
+      "title": "CREATE TABLE with keys and constraints",
+      "eli5": "CREATE TABLE is the blueprint: name every column, give it a type, and write down the rules the database must enforce from then on.",
+      "detail": "A CREATE TABLE statement lists each column as a name, a data type and optional column constraints, then any table constraints. PRIMARY KEY marks the identifying column; a composite key goes in a table constraint such as PRIMARY KEY (RideID, StopNo). AUTO_INCREMENT makes MySQL generate the next integer when an insert leaves the column out or supplies NULL or 0. NOT NULL requires a value, DEFAULT supplies one when an insert leaves the column out, UNIQUE forbids duplicate values (NULLs aside), and CHECK rejects rows whose condition is false. A FOREIGN KEY clause names the local column, then REFERENCES the parent table and column. The two columns must have the same integer size and sign, and the parent column must be a PRIMARY KEY or UNIQUE key; by default MySQL 8.4 rejects a reference to a column that has only a non-unique index, which 8.0 allowed. ON DELETE and ON UPDATE choose what happens to child rows when the parent changes; with neither clause, MySQL rejects parent deletes and key updates that would leave children pointing at nothing.",
+      "points": [
+        "<code>CREATE TABLE Bike (BikeID INT UNSIGNED PRIMARY KEY, Model VARCHAR(30) NOT NULL, IsElectric BOOLEAN DEFAULT FALSE, HomeStationID INT UNSIGNED, FOREIGN KEY (HomeStationID) REFERENCES Station (StationID) ON DELETE SET NULL);</code>",
+        "Referential actions: CASCADE (follow the parent) · SET NULL (the child column must allow NULL) · RESTRICT or NO ACTION (reject the change; the default)",
+        "Name constraints so you can drop them later: <code>CONSTRAINT fk_bike_station FOREIGN KEY (HomeStationID) REFERENCES Station (StationID)</code>",
+        "A UNIQUE column allows several NULLs; a PRIMARY KEY allows none",
+        "<code>DROP TABLE Ride;</code> removes the table and its rows. Drop child tables before the parent tables they reference"
+      ]
+    },
+    {
+      "title": "ALTER TABLE: changing structure",
+      "eli5": "ALTER TABLE remodels the house, adding a room or renaming a door. It never moves the furniture inside; that's UPDATE's job.",
+      "detail": "ALTER TABLE changes a table's definition while keeping its rows. ADD adds a column, at the end unless you say FIRST or AFTER another column. DROP COLUMN removes a column along with its data. MODIFY changes a column's type or attributes but not its name, CHANGE renames and redefines in one step (you must restate the full definition), and RENAME COLUMN changes only the name. ALTER COLUMN … SET DEFAULT or DROP DEFAULT changes just the default. With MODIFY and CHANGE, any column attribute you don't restate, such as NOT NULL, UNSIGNED, DEFAULT or AUTO_INCREMENT, is dropped. Index attributes such as PRIMARY KEY and UNIQUE stay, so don't repeat them: restating PRIMARY KEY on a column that is already the key fails with error 1068, 'Multiple primary key defined'. The same statement adds and removes constraints: ADD PRIMARY KEY, ADD CONSTRAINT … FOREIGN KEY, DROP FOREIGN KEY by the constraint's name, and DROP PRIMARY KEY. RENAME TO renames the table, and you can combine several changes in one statement with commas.",
+      "points": [
+        "<code>ALTER TABLE Rider ADD Email VARCHAR(80) AFTER FullName;</code>",
+        "<code>ALTER TABLE Rider DROP COLUMN PlanType;</code>",
+        "<code>ALTER TABLE Station MODIFY DockCount SMALLINT UNSIGNED NOT NULL;</code>",
+        "<code>ALTER TABLE Station CHANGE DockCount Docks TINYINT UNSIGNED;</code> renames and redefines · <code>ALTER TABLE Station RENAME COLUMN DockCount TO Docks;</code> only renames",
+        "<code>ALTER TABLE Ride ADD CONSTRAINT fk_ride_bike FOREIGN KEY (BikeID) REFERENCES Bike (BikeID);</code> · <code>ALTER TABLE Ride DROP FOREIGN KEY fk_ride_bike;</code>",
+        "<code>ALTER TABLE Rider RENAME TO Member;</code> renames the table itself"
+      ]
+    },
+    {
+      "title": "INSERT, UPDATE and DELETE",
+      "eli5": "INSERT adds new rows, UPDATE edits rows that already exist, and DELETE removes rows. WHERE is your aim: leave it off and you hit every row.",
+      "detail": "INSERT INTO lists the target columns, then VALUES in the same order; columns you leave out get their DEFAULT value, NULL if they allow it, or the next AUTO_INCREMENT value. Leaving out a NOT NULL column that has no DEFAULT, such as Bike.Model, fails in MySQL's default strict mode with error 1364, 'Field … doesn't have a default value'. Leaving out the column list means supplying a value for every column in table order, which breaks as soon as the table changes, so name the columns. One INSERT can add several rows with comma-separated value lists, and INSERT … SELECT copies the rows a query returns. UPDATE … SET changes one or more columns, using literals or expressions such as Fare = Fare * 1.10, in every row the WHERE clause matches. DELETE FROM removes the rows the WHERE clause matches. Without a WHERE clause, UPDATE changes every row and DELETE empties the table. Foreign keys can block a change, such as deleting a station that bikes still reference under RESTRICT, or extend it, as ON DELETE CASCADE does.",
+      "points": [
+        "<code>INSERT INTO Station (StationName, Neighborhood, DockCount) VALUES ('Pier 9', 'Harbor', 15), ('Mill St', 'Old Town', 12);</code>",
+        "<code>INSERT INTO RideArchive (RideID, Fare) SELECT RideID, Fare FROM Ride WHERE StartTime &lt; '2026-01-01';</code>",
+        "<code>UPDATE Rider SET PlanType = 'annual' WHERE RiderID = 17;</code>",
+        "<code>DELETE FROM Ride WHERE Minutes = 0;</code> · <code>TRUNCATE TABLE Ride;</code> empties a table faster, but it's DDL and resets AUTO_INCREMENT",
+        "Strings go in single quotes, numbers go bare, and NULL takes no quotes ('NULL' is a four-letter string)",
+        "Error 1136, 'Column count doesn't match value count', means your column list and VALUES list have different lengths"
+      ]
+    },
+    {
+      "title": "SELECT basics: filtering, sorting and calculated columns",
+      "eli5": "A SELECT is a question with a fixed grammar: what to show, from where, which rows, and in what order.",
+      "detail": "SELECT lists the output columns or expressions, FROM names the table, WHERE keeps only the rows whose condition is true, ORDER BY sorts (ascending unless you add DESC) and LIMIT caps the number of rows. Conditions combine with AND, OR and NOT, and AND binds tighter than OR, so use parentheses. IN tests a list, BETWEEN tests an inclusive range, LIKE matches patterns (% for any run of characters, _ for exactly one, case-insensitive under MySQL's default collation), and IS NULL or IS NOT NULL test for missing values. Expressions create calculated columns, such as Minutes / 60 or CONCAT(FullName, ' (', PlanType, ')'), and AS gives a column or table an alias. You can use a column alias in ORDER BY and, as a MySQL extension to standard SQL, in GROUP BY and HAVING, but not in WHERE, because the alias's value isn't known yet when WHERE is evaluated. DISTINCT removes duplicate result rows, and CASE returns different values depending on conditions.",
+      "points": [
+        "<code>SELECT StationName, DockCount FROM Station WHERE Neighborhood IN ('Harbor', 'Old Town') AND DockCount BETWEEN 10 AND 20 ORDER BY DockCount DESC, StationName;</code>",
+        "<code>LIMIT 5</code> returns the first 5 rows · <code>LIMIT 10 OFFSET 20</code> returns rows 21–30, because offsets start at 0",
+        "Functions: <code>CONCAT()</code>, <code>UPPER()</code>, <code>LOWER()</code>, <code>LENGTH()</code>, <code>SUBSTRING()</code>, <code>ROUND(x, 2)</code>, <code>IFNULL(x, 0)</code>, <code>COALESCE(a, b, c)</code>",
+        "<code>CONCAT()</code> returns NULL if any argument is NULL, so wrap nullable parts in <code>IFNULL()</code>",
+        "<code>CASE WHEN Minutes &gt; 60 THEN 'long' ELSE 'short' END AS RideLength</code>",
+        "<code>/</code> always returns a decimal (7 / 2 = 3.5000), <code>DIV</code> divides whole numbers (7 DIV 2 = 3), and <code>%</code> or <code>MOD()</code> gives the remainder"
+      ]
+    },
+    {
+      "title": "Aggregates, GROUP BY and HAVING",
+      "eli5": "GROUP BY sorts rows into piles, aggregate functions summarize each pile, and HAVING throws away whole piles that don't qualify.",
+      "detail": "COUNT, SUM, AVG, MIN and MAX turn many rows into one value. With no GROUP BY, the whole result is one group and the query returns one row; with GROUP BY, you get one row for each distinct combination of the grouping columns. MySQL's default ONLY_FULL_GROUP_BY mode rejects a select list that mixes aggregates with plain columns that aren't in the GROUP BY list, unless those columns depend on it, as other columns of a grouped primary key do. WHERE filters individual rows before grouping and can't contain aggregates; HAVING filters groups after aggregation and usually does. Every aggregate ignores NULLs except COUNT(*), so AVG divides by the number of non-NULL values, and when no rows match, SUM, AVG, MIN and MAX return NULL while COUNT returns 0. Logically, a query is evaluated in this order, though the optimizer may do the actual work differently: FROM and joins, WHERE, GROUP BY, HAVING, the select list, DISTINCT, ORDER BY, then LIMIT.",
+      "points": [
+        "<code>SELECT RiderID, COUNT(*) AS Rides, SUM(Fare) AS Spent FROM Ride WHERE StartTime &gt;= '2026-10-01' GROUP BY RiderID HAVING SUM(Fare) &gt; 50 ORDER BY Spent DESC;</code>",
+        "<code>COUNT(*)</code> counts rows · <code>COUNT(EndStationID)</code> counts non-NULL values · <code>COUNT(DISTINCT BikeID)</code> counts different bikes",
+        "SUM and AVG of integer or DECIMAL columns return DECIMAL; use <code>ROUND(AVG(Fare), 2)</code> for money",
+        "An aggregate in WHERE raises error 1111, 'Invalid use of group function'; move that condition to HAVING",
+        "<code>GROUP BY StartStationID, YEAR(StartTime)</code> gives one row per station per year"
+      ]
+    },
+    {
+      "title": "Joins: inner, outer, self and multi-table",
+      "eli5": "A join zips two tables together wherever a key matches; an outer join also keeps the rows that found no partner.",
+      "detail": "An INNER JOIN, or just JOIN, returns only the pairs of rows that satisfy the ON condition, normally a foreign key equal to the primary key it references. LEFT JOIN keeps every row of the left (first) table and fills the right table's columns with NULL where nothing matches. RIGHT JOIN does the same for the right table, and MySQL's manual suggests writing it as a LEFT JOIN instead for portability. MySQL has no FULL OUTER JOIN, so you combine a LEFT JOIN and a RIGHT JOIN with UNION. A join with no condition, or a CROSS JOIN, pairs every row with every row. To join three or more tables, chain JOIN … ON clauses, one for each relationship. Give tables short aliases and qualify every column name that appears in more than one table, or MySQL reports an ambiguous column. A self-join reads one table twice under two aliases, for example to pair each rider with the rider who referred them. To filter the right table of a LEFT JOIN and still keep every left row, put the condition, such as rd.Fare &gt; 10, in the ON clause; in WHERE it discards the NULL rows and quietly turns the join into an inner join. The exception is the IS NULL test on the right table's key, which goes in WHERE to find left rows with no match.",
+      "points": [
+        "<code>SELECT r.FullName, s.StationName, rd.StartTime FROM Ride AS rd JOIN Rider AS r ON rd.RiderID = r.RiderID JOIN Station AS s ON rd.StartStationID = s.StationID;</code>",
+        "Rows with no match: <code>SELECT b.BikeID FROM Bike b LEFT JOIN Ride rd ON rd.BikeID = b.BikeID WHERE rd.RideID IS NULL;</code>",
+        "Self-join: <code>SELECT r.FullName, ref.FullName AS ReferrerName FROM Rider r JOIN Rider ref ON r.ReferredBy = ref.RiderID;</code> (a LEFT JOIN keeps riders nobody referred)",
+        "One table in two roles: join Station twice, as <code>s1</code> on StartStationID and as <code>s2</code> on EndStationID",
+        "<code>USING (RiderID)</code> is shorthand for <code>ON a.RiderID = b.RiderID</code> when both columns have the same name",
+        "Full outer join in MySQL: <code>SELECT … FROM A LEFT JOIN B ON … UNION SELECT … FROM A RIGHT JOIN B ON …;</code>"
+      ]
+    },
+    {
+      "title": "Subqueries and set operations",
+      "eli5": "A subquery is a question inside a question: work out the inner answer first, then use it in the outer query.",
+      "detail": "A subquery is a SELECT in parentheses inside another statement. A scalar subquery returns one value and can go anywhere a value can, as in WHERE Fare &gt; (SELECT AVG(Fare) FROM Ride). A subquery after IN or NOT IN returns a list of values, EXISTS and NOT EXISTS test whether a subquery returns any rows, and a subquery in FROM, called a derived table, needs an alias. A correlated subquery refers to a column of the outer query, so it's logically evaluated once per outer row, for example to compare each ride with the average for its own rider. Many subqueries can be rewritten as joins, and both styles are fair game. UNION stacks the results of two SELECTs that have the same number of compatible columns and removes duplicate rows, while UNION ALL keeps them and is faster. NOT IN with a subquery that returns any NULL matches nothing, so prefer NOT EXISTS or a LEFT JOIN … IS NULL for 'has no match' questions.",
+      "points": [
+        "<code>SELECT FullName FROM Rider WHERE RiderID IN (SELECT RiderID FROM Ride WHERE Fare &gt; 10);</code>",
+        "Correlated: <code>SELECT rd.RideID FROM Ride rd WHERE rd.Fare &gt; (SELECT AVG(x.Fare) FROM Ride x WHERE x.RiderID = rd.RiderID);</code>",
+        "Derived table: <code>SELECT AVG(t.Spent) FROM (SELECT RiderID, SUM(Fare) AS Spent FROM Ride GROUP BY RiderID) AS t;</code>",
+        "<code>SELECT r.FullName FROM Rider r WHERE NOT EXISTS (SELECT 1 FROM Ride rd WHERE rd.RiderID = r.RiderID);</code> finds riders with no rides",
+        "A May 2025 taker saw no subqueries on the OA, but the course description lists them"
+      ]
+    },
+    {
+      "title": "Views and indexes",
+      "eli5": "A view is a saved question you can ask again by name. An index is the index at the back of a book, letting MySQL jump to rows instead of reading every page.",
+      "detail": "CREATE VIEW name AS SELECT … stores a query under a name. Selecting from the view runs that query against the current data, so a view stores no rows of its own and never goes stale. Views simplify repeated joins, hide columns some users shouldn't see and give reports a stable name; CREATE OR REPLACE VIEW changes the definition, and DROP VIEW removes it. You can insert or update through simple single-table views, and WITH CHECK OPTION blocks changes through the view that would fall outside its WHERE condition. An index is a separate sorted structure, a B-tree in InnoDB, that lets MySQL find rows by the indexed columns without scanning the whole table. MySQL indexes primary keys, UNIQUE columns and foreign key columns automatically, and you add others with CREATE INDEX on columns you often filter, join or sort by. A composite index on (A, B) helps queries that filter on A, or on A and B, but not on B alone. Indexes speed reads but take space and slow inserts, updates and deletes, and EXPLAIN shows whether a query uses one.",
+      "points": [
+        "<code>CREATE VIEW ElectricBike AS SELECT BikeID, Model, HomeStationID FROM Bike WHERE IsElectric = TRUE;</code>, then <code>SELECT * FROM ElectricBike;</code>",
+        "<code>CREATE OR REPLACE VIEW …</code> redefines a view · <code>DROP VIEW ElectricBike;</code> removes it",
+        "<code>CREATE INDEX idx_ride_start ON Ride (StartTime);</code> · <code>CREATE UNIQUE INDEX uq_rider_email ON Rider (Email);</code> · <code>DROP INDEX idx_ride_start ON Ride;</code> · <code>SHOW INDEX FROM Ride;</code>",
+        "<code>CREATE TABLE … AS SELECT</code> makes a copy that doesn't follow later changes; a view always shows the current data",
+        "<code>EXPLAIN SELECT * FROM Ride WHERE StartTime &gt;= '2026-11-01';</code> shows the index MySQL chose in its key column"
+      ]
+    },
+    {
+      "title": "Choosing a database and a DBMS",
+      "eli5": "Picking a database is like picking a vehicle: a sedan (relational) suits most trips, but sometimes the job calls for a truck, a bike or a bus.",
+      "detail": "Relational DBMSs such as MySQL, PostgreSQL, Oracle Database and SQL Server fit structured data with clear relationships, ad hoc queries with joins, and transactions that must be ACID, which describes most business systems: orders, payroll, registrations. NoSQL databases give up some of that for flexible schemas and easy scaling across many servers. Key-value stores (Redis, Amazon DynamoDB) suit fast lookups by key, such as sessions and caches. Document databases (MongoDB) suit JSON-like records whose fields vary. Wide-column stores (Cassandra, HBase) suit huge, write-heavy datasets spread over many servers, and graph databases (Neo4j) suit highly connected data such as social networks and recommendations. Analytics usually runs apart from day-to-day transaction processing (OLTP), in a data warehouse or data mart (OLAP) that's loaded on a schedule and often denormalized for fast reporting. Other deciding factors are data volume and growth, how much consistency the application needs (many NoSQL systems settle for eventual consistency), licensing and cost, hosting (on-premises or a managed cloud service), the team's skills and the tools that must connect.",
+      "points": [
+        "Rule of thumb: structured, related data with transactions → relational; varied or huge data that must scale out → the matching NoSQL family",
+        "MySQL Community Server is free and open source (GPL); Oracle sells a commercial Enterprise Edition, and the major clouds offer managed MySQL",
+        "Within MySQL, the storage engine matters too: InnoDB, the default, has transactions, row-level locking and foreign keys; MyISAM has table locks and no foreign keys; MEMORY keeps data in RAM, so its rows vanish on restart",
+        "Embedded databases such as SQLite run inside an application with no separate server, which suits mobile and desktop apps",
+        "Big data is usually described by its volume, velocity and variety"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Clause order", "value": "<code>SELECT … FROM … JOIN … ON … WHERE … GROUP BY … HAVING … ORDER BY … LIMIT …;</code>", "note": "Logical order: FROM and joins → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT" },
+    { "label": "Integer ranges (signed / unsigned)", "value": "TINYINT −128..127 / 0..255 · SMALLINT −32,768..32,767 / 0..65,535 · MEDIUMINT −8,388,608..8,388,607 / 0..16,777,215 · INT −2,147,483,648..2,147,483,647 / 0..4,294,967,295", "note": "1, 2, 3, 4 and 8 bytes (BIGINT is the 8-byte one)" },
+    { "label": "DECIMAL(M,D)", "value": "M digits in total (max 65), D after the point (max 30): <code>DECIMAL(5,2)</code> = −999.99 to 999.99 · <code>DECIMAL</code> alone = <code>DECIMAL(10,0)</code>", "note": "Exact, so use it for money; FLOAT and DOUBLE are approximate" },
+    { "label": "Text types", "value": "<code>CHAR(n)</code> fixed length, 0–255, padded · <code>VARCHAR(n)</code> variable length, up to 65,535 bytes per row in total · <code>TEXT</code> for long strings" },
+    { "label": "Date and time types", "value": "<code>DATE</code> 'YYYY-MM-DD' · <code>TIME</code> 'hh:mm:ss' · <code>DATETIME</code> 'YYYY-MM-DD hh:mm:ss' (years 1000–9999) · <code>TIMESTAMP</code> 1970–2038, stored as UTC" },
+    { "label": "BOOLEAN", "value": "An alias for <code>TINYINT(1)</code>: 0 = FALSE, any other value = TRUE", "note": "TRUE and FALSE are just 1 and 0, so <code>IsElectric = TRUE</code> matches only 1; <code>WHERE IsElectric</code> or <code>IsElectric IS TRUE</code> matches any nonzero value" },
+    { "label": "Column options", "value": "<code>PRIMARY KEY</code> · <code>NOT NULL</code> · <code>UNIQUE</code> · <code>DEFAULT v</code> · <code>CHECK (condition)</code> · <code>AUTO_INCREMENT</code> · <code>UNSIGNED</code>" },
+    { "label": "Foreign key", "value": "<code>FOREIGN KEY (col) REFERENCES Parent (col) ON DELETE … ON UPDATE …</code>", "note": "The parent column must be a PRIMARY KEY or UNIQUE key with the same integer size and sign" },
+    { "label": "Referential actions", "value": "<code>CASCADE</code> · <code>SET NULL</code> · <code>RESTRICT</code> = <code>NO ACTION</code> = the default (reject)", "note": "InnoDB rejects SET DEFAULT" },
+    { "label": "AUTO_INCREMENT", "value": "Omitting the column, or inserting NULL or 0, generates the next value; <code>LAST_INSERT_ID()</code> returns the last generated value", "note": "Starts at 1; <code>ALTER TABLE t AUTO_INCREMENT = 100;</code> changes the next value" },
+    { "label": "ALTER TABLE forms", "value": "<code>ADD col type [FIRST | AFTER x]</code> · <code>DROP COLUMN col</code> · <code>MODIFY col type</code> · <code>CHANGE old new type</code> · <code>RENAME COLUMN old TO new</code> · <code>RENAME TO new_table</code> · <code>ALTER COLUMN col SET DEFAULT v</code>", "note": "MODIFY and CHANGE drop NOT NULL, UNSIGNED, DEFAULT and AUTO_INCREMENT unless you restate them; PRIMARY KEY and UNIQUE indexes stay" },
+    { "label": "Constraints after the fact", "value": "<code>ADD PRIMARY KEY (c)</code> · <code>ADD CONSTRAINT name FOREIGN KEY (c) REFERENCES T (c)</code> · <code>DROP FOREIGN KEY name</code> · <code>DROP PRIMARY KEY</code>" },
+    { "label": "INSERT", "value": "<code>INSERT INTO T (c1, c2) VALUES (v1, v2), (v3, v4);</code> · <code>INSERT INTO T (c1) SELECT …;</code>", "note": "Omitted columns get their DEFAULT, NULL or the next AUTO_INCREMENT value; omitting a NOT NULL column that has no DEFAULT fails in strict mode (error 1364)" },
+    { "label": "UPDATE and DELETE", "value": "<code>UPDATE T SET c = v WHERE …;</code> · <code>DELETE FROM T WHERE …;</code>", "note": "No WHERE = every row" },
+    { "label": "ALTER vs UPDATE", "value": "ALTER TABLE changes columns, types and keys · UPDATE changes the values stored in rows" },
+    { "label": "WHERE operators", "value": "<code>=</code> <code>&lt;&gt;</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> · <code>AND</code> <code>OR</code> <code>NOT</code> · <code>IN (…)</code> · <code>BETWEEN a AND b</code> (inclusive) · <code>LIKE</code> · <code>IS [NOT] NULL</code>" },
+    { "label": "LIKE wildcards", "value": "<code>%</code> any number of characters, even none · <code>_</code> exactly one character", "note": "Case-insensitive under MySQL's default collation; LIKE with a NULL operand returns NULL" },
+    { "label": "Aggregates", "value": "<code>COUNT(*)</code> rows · <code>COUNT(col)</code> non-NULL values · <code>COUNT(DISTINCT col)</code> · <code>SUM</code> · <code>AVG</code> · <code>MIN</code> · <code>MAX</code>", "note": "All ignore NULL except COUNT(*); with no rows, COUNT gives 0 and the others NULL" },
+    { "label": "WHERE vs HAVING", "value": "WHERE filters rows before grouping and can't use aggregates · HAVING filters groups afterward and can" },
+    { "label": "ONLY_FULL_GROUP_BY", "value": "On by default: every non-aggregated column in the select list must be in GROUP BY or depend on a grouped key" },
+    { "label": "Join types", "value": "<code>[INNER] JOIN</code> matches only · <code>LEFT JOIN</code> every left row · <code>RIGHT JOIN</code> every right row · <code>CROSS JOIN</code> every pairing · no FULL OUTER JOIN (use LEFT … UNION … RIGHT)" },
+    { "label": "Join patterns", "value": "No match: <code>LEFT JOIN B ON … WHERE B.id IS NULL</code> · self-join: <code>FROM T a JOIN T b ON a.ParentID = b.ID</code>", "note": "A self-join needs two aliases" },
+    { "label": "Subqueries", "value": "Scalar (one value) · <code>IN (subquery)</code> list · <code>EXISTS</code> · correlated (refers to the outer row) · derived table in FROM (needs an alias)" },
+    { "label": "UNION", "value": "<code>UNION</code> removes duplicate rows · <code>UNION ALL</code> keeps them · both SELECTs need the same number of compatible columns" },
+    { "label": "Views", "value": "<code>CREATE [OR REPLACE] VIEW v AS SELECT …;</code> · <code>DROP VIEW v;</code> · <code>WITH CHECK OPTION</code>", "note": "A view stores the query, not the rows" },
+    { "label": "Indexes", "value": "<code>CREATE [UNIQUE] INDEX name ON T (c1, c2);</code> · <code>DROP INDEX name ON T;</code> · <code>SHOW INDEX FROM T;</code> · <code>EXPLAIN SELECT …</code>", "note": "A composite index helps filters on its leftmost columns" },
+    { "label": "LIMIT", "value": "<code>LIMIT n</code> · <code>LIMIT offset, n</code> · <code>LIMIT n OFFSET offset</code>; the first row is offset 0" },
+    { "label": "Arithmetic", "value": "<code>7 / 2</code> = 3.5000 · <code>7 DIV 2</code> = 3 · <code>7 % 2</code> = 1 · <code>ROUND(2.345, 2)</code> = 2.35" },
+    { "label": "NULL helpers", "value": "<code>IFNULL(x, alt)</code> · <code>COALESCE(a, b, …)</code> returns the first non-NULL value · test with <code>x IS NULL</code>, never <code>x = NULL</code>" },
+    { "label": "Quoting", "value": "Strings and dates in single quotes (<code>'Harbor'</code>, <code>'2026-11-21'</code>) · numbers bare · identifiers in backticks (<code>`Order`</code>)" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup",
+      "tasks": [
+        "Discuss your Course Planning Tool report with your instructor and open the zyBook and its labs.",
+        "Install MySQL Community Server and Workbench, or bookmark a browser playground such as DB Fiddle.",
+        "Build this guide's bike-share tables (Station, Rider, Bike, Ride) and insert 10–20 rows into each so later drills have data to work on."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Data types and CREATE TABLE",
+      "tasks": [
+        "Integer ranges, signed vs unsigned, DECIMAL(M,D), CHAR vs VARCHAR, DATE, DATETIME and TIMESTAMP, BOOLEAN.",
+        "Lab: rewrite your CREATE TABLE statements with PRIMARY KEY, AUTO_INCREMENT, NOT NULL, DEFAULT, UNIQUE, CHECK and named foreign keys.",
+        "Break things on purpose: insert 300 into a TINYINT UNSIGNED column, and reference an INT UNSIGNED key from a signed INT column, then read each error."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "ALTER TABLE and DROP",
+      "tasks": [
+        "ADD (with AFTER), DROP COLUMN, MODIFY, CHANGE, RENAME COLUMN, RENAME TO, ALTER COLUMN SET DEFAULT.",
+        "Add and drop a primary key and a named foreign key; check the results with <code>DESCRIBE</code> and <code>SHOW CREATE TABLE</code>.",
+        "Write five ALTER statements from plain-English requests, the way an exam item would phrase them."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "INSERT, UPDATE and DELETE",
+      "tasks": [
+        "Multi-row INSERT, INSERT … SELECT, UPDATE with expressions, DELETE with WHERE, TRUNCATE.",
+        "Practice the INSERT, UPDATE and DELETE drills inside <code>START TRANSACTION;</code> … <code>ROLLBACK;</code>, and run every WHERE as a SELECT first. TRUNCATE commits immediately, so ROLLBACK can't bring those rows back.",
+        "Trigger a foreign key error with RESTRICT, then retry with CASCADE and SET NULL."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "SELECT basics",
+      "tasks": [
+        "WHERE with AND, OR and parentheses, IN, BETWEEN, LIKE, IS NULL; DISTINCT, ORDER BY, LIMIT and OFFSET.",
+        "Calculated columns, aliases, CONCAT, ROUND, IFNULL, date functions and CASE.",
+        "Work the first few SQLZoo or SQLBolt lessons, writing every answer in the course's formatting."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Aggregates, GROUP BY and HAVING",
+      "tasks": [
+        "COUNT(*) vs COUNT(column) vs COUNT(DISTINCT column); SUM, AVG, MIN and MAX with NULLs.",
+        "GROUP BY on one and two columns, HAVING vs WHERE, and the ONLY_FULL_GROUP_BY error.",
+        "Write ten report queries, such as rides per station, revenue per month and riders who spent over 50."
+      ]
+    },
+    {
+      "day": "Days 7-8",
+      "focus": "Joins",
+      "tasks": [
+        "INNER, LEFT and RIGHT joins, CROSS JOIN, three- and four-table joins, aliases and ambiguous columns.",
+        "Self-joins (rider and referrer), one table in two roles (start and end station), and rows with no match.",
+        "Do SQLZoo's JOIN and self-join tutorials, which the Jun 2026 passer used for joins, the part they found hardest.",
+        "Rewrite two LEFT JOIN queries as RIGHT JOINs and back so the direction stops confusing you."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Subqueries, UNION, views and indexes",
+      "tasks": [
+        "Scalar, IN, EXISTS and correlated subqueries; derived tables; UNION vs UNION ALL; a full outer join in MySQL.",
+        "CREATE VIEW, query the view, CREATE OR REPLACE, WITH CHECK OPTION, DROP VIEW.",
+        "CREATE INDEX, UNIQUE and composite indexes, DROP INDEX … ON, and EXPLAIN before and after."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Open-note pre-assessment",
+      "tasks": [
+        "Take the PA with your notes and the built-in reference sheet, running every query until it's right.",
+        "For each item, ask whether your query would still be right with different data; fix any that only fit the sample.",
+        "Log every miss by topic: data types, ALTER, DML, joins, aggregates or views."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Database choices and weak spots",
+      "tasks": [
+        "Relational vs key-value, document, wide-column and graph databases; OLTP vs OLAP and data warehouses; storage engines.",
+        "Rewrite each logged miss from scratch without notes.",
+        "Ask your instructor about any query you still can't explain; they can share extra practice on request."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Closed-book PA and timing",
+      "tasks": [
+        "Retake the PA without notes, using only the built-in reference sheet, and time yourself.",
+        "Check formatting habits: one clause per line, semicolons, the exact columns and aliases requested.",
+        "Book the OA once you can write every PA item from scratch."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "Exam day",
+      "tasks": [
+        "Read each item twice and note the exact output it asks for before you type.",
+        "Run each query, then ask whether it would still be right if the data changed: no hard-coded IDs or totals.",
+        "Move quickly through any items that don't ask you to write SQL, and spend the saved time rechecking joins and GROUP BY queries."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Ride.Fare will store amounts up to 9,999.99 and must add up exactly to the cent. Which column definition fits?",
+      "choices": [
+        "<code>Fare FLOAT</code>",
+        "<code>Fare DECIMAL(4,2)</code>",
+        "<code>Fare DECIMAL(6,2)</code>",
+        "<code>Fare INT UNSIGNED</code>"
+      ],
+      "answer": "<code>Fare DECIMAL(6,2)</code>",
+      "why": "DECIMAL(M,D) stores exact values with M digits in total and D after the decimal point, so DECIMAL(6,2) holds up to 9,999.99. DECIMAL(4,2) stops at 99.99. FLOAT is approximate binary floating point, so sums of cents can drift, and INT can't hold cents at all unless you store whole cents and convert later."
+    },
+    {
+      "q": "Station.DockCount is declared <code>TINYINT UNSIGNED</code>. Which value can it <b>not</b> store?",
+      "choices": [
+        "0",
+        "127",
+        "255",
+        "300"
+      ],
+      "answer": "300",
+      "why": "TINYINT uses 1 byte. Signed, it holds −128 to 127; UNSIGNED shifts the range to 0 to 255, so 0, 127 and 255 all fit. 300 is out of range, and in MySQL's default strict mode the insert fails with an out-of-range error. For bigger counts, use SMALLINT UNSIGNED (0 to 65,535)."
+    },
+    {
+      "q": "Station.StationID is <code>INT UNSIGNED PRIMARY KEY</code>. Which lines, placed inside <code>CREATE TABLE Bike (…)</code>, make every bike reference an existing station?",
+      "choices": [
+        "<code>HomeStationID INT NOT NULL,</code><br><code>FOREIGN KEY (HomeStationID) REFERENCES Station (StationID)</code>",
+        "<code>HomeStationID INT UNSIGNED NOT NULL,</code><br><code>FOREIGN KEY (HomeStationID) REFERENCES Station (StationID)</code>",
+        "<code>HomeStationID INT UNSIGNED NOT NULL,</code><br><code>FOREIGN KEY (StationID) REFERENCES Station (HomeStationID)</code>",
+        "<code>HomeStationID INT UNSIGNED NOT NULL UNIQUE</code>"
+      ],
+      "answer": "<code>HomeStationID INT UNSIGNED NOT NULL,</code><br><code>FOREIGN KEY (HomeStationID) REFERENCES Station (StationID)</code>",
+      "why": "FOREIGN KEY names the column in this table, and REFERENCES names the parent table and its key. MySQL requires both columns to have the same integer size and sign, so the signed INT version fails with an incompatible-columns error. Swapping the two column names points at columns that don't exist in those tables, and UNIQUE only blocks duplicates without checking that the station exists. NOT NULL makes the reference required."
+    },
+    {
+      "q": "The co-op is renaming its 'student' plan to 'campus'. Which statement updates the existing riders correctly?",
+      "choices": [
+        "<code>UPDATE Rider SET PlanType = 'campus' WHERE PlanType = 'student';</code>",
+        "<code>ALTER TABLE Rider MODIFY PlanType = 'campus' WHERE PlanType = 'student';</code>",
+        "<code>UPDATE Rider SET PlanType = 'campus';</code>",
+        "<code>ALTER TABLE Rider RENAME COLUMN student TO campus;</code>"
+      ],
+      "answer": "<code>UPDATE Rider SET PlanType = 'campus' WHERE PlanType = 'student';</code>",
+      "why": "Changing values in existing rows is DML, so it's UPDATE … SET … WHERE. The UPDATE without a WHERE clause turns every rider's plan into 'campus'. ALTER TABLE changes structure such as columns and types: the MODIFY version isn't valid syntax, and RENAME COLUMN would try to rename a column called student."
+    },
+    {
+      "q": "Which statement renames Station's column DockCount to Docks and keeps its type, <code>TINYINT UNSIGNED</code>, unchanged?",
+      "choices": [
+        "<code>ALTER TABLE Station MODIFY DockCount Docks TINYINT UNSIGNED;</code>",
+        "<code>UPDATE Station SET Docks = DockCount;</code>",
+        "<code>ALTER TABLE Station RENAME DockCount TO Docks;</code>",
+        "<code>ALTER TABLE Station RENAME COLUMN DockCount TO Docks;</code>"
+      ],
+      "answer": "<code>ALTER TABLE Station RENAME COLUMN DockCount TO Docks;</code>",
+      "why": "RENAME COLUMN old TO new changes only the name. MODIFY can change a column's definition but never its name; CHANGE can do both (<code>CHANGE DockCount Docks TINYINT UNSIGNED</code>), but you must restate the full definition. Plain RENAME renames the table, so RENAME DockCount TO Docks is a syntax error, and UPDATE copies values between columns, which assumes a Docks column already exists."
+    },
+    {
+      "q": "Station has the columns StationID (<code>INT UNSIGNED AUTO_INCREMENT PRIMARY KEY</code>), StationName, Neighborhood and DockCount. Which statement adds 'Pier 9' in Harbor with 15 docks and lets MySQL assign the ID?",
+      "choices": [
+        "<code>INSERT INTO Station VALUES ('Pier 9', 'Harbor', 15);</code>",
+        "<code>INSERT INTO Station (StationName, Neighborhood, DockCount) VALUES ('Pier 9', 'Harbor', 15);</code>",
+        "<code>INSERT INTO Station (StationName, Neighborhood, DockCount) VALUES (Pier 9, Harbor, 15);</code>",
+        "<code>UPDATE Station SET StationName = 'Pier 9', Neighborhood = 'Harbor', DockCount = 15;</code>"
+      ],
+      "answer": "<code>INSERT INTO Station (StationName, Neighborhood, DockCount) VALUES ('Pier 9', 'Harbor', 15);</code>",
+      "why": "Listing the columns lets you skip StationID, so AUTO_INCREMENT supplies the next value. Without a column list, VALUES must cover all four columns in table order, so the three-value version fails with a column-count error. Strings need single quotes, so the unquoted version is a syntax error, and UPDATE changes existing rows (here every row, since there's no WHERE) instead of adding one."
+    },
+    {
+      "q": "Task: show the total fare collected from rides that started at station 4. In the sample data, only one such ride exists, with a fare of 3.10. Which query is correct for any data?",
+      "choices": [
+        "<code>SELECT Fare FROM Ride WHERE StartStationID = 4;</code>",
+        "<code>SELECT MAX(Fare) FROM Ride WHERE StartStationID = 4;</code>",
+        "<code>SELECT SUM(Fare) AS TotalFare FROM Ride WHERE StartStationID = 4;</code>",
+        "<code>SELECT 3.10 AS TotalFare;</code>"
+      ],
+      "answer": "<code>SELECT SUM(Fare) AS TotalFare FROM Ride WHERE StartStationID = 4;</code>",
+      "why": "A total is a SUM over every matching row. With the sample's single ride, all four queries print 3.10, so each looks right when you run it, but only SUM still answers the question once station 4 has many rides. Students report that a query fitted to the sample data like this can pass the test cases and still lose credit."
+    },
+    {
+      "q": "Which query lists each rider's ID and total fares, but only for riders whose total is over 50?",
+      "choices": [
+        "<code>SELECT RiderID, SUM(Fare) FROM Ride GROUP BY RiderID HAVING SUM(Fare) &gt; 50;</code>",
+        "<code>SELECT RiderID, SUM(Fare) FROM Ride WHERE SUM(Fare) &gt; 50 GROUP BY RiderID;</code>",
+        "<code>SELECT RiderID, SUM(Fare) FROM Ride WHERE Fare &gt; 50 GROUP BY RiderID;</code>",
+        "<code>SELECT RiderID, SUM(Fare) FROM Ride GROUP BY RiderID ORDER BY SUM(Fare) &gt; 50;</code>"
+      ],
+      "answer": "<code>SELECT RiderID, SUM(Fare) FROM Ride GROUP BY RiderID HAVING SUM(Fare) &gt; 50;</code>",
+      "why": "HAVING filters groups after aggregation, so it can test SUM(Fare). WHERE runs before grouping and can't contain an aggregate; that version raises 'Invalid use of group function'. WHERE Fare &gt; 50 keeps only single rides over 50 and then sums those, which answers a different question, and ORDER BY sorts the rows without removing any."
+    },
+    {
+      "q": "Ride has foreign keys RiderID and StartStationID. Which query lists each ride's rider name and starting station name?",
+      "choices": [
+        "<code>SELECT r.FullName, s.StationName FROM Ride rd JOIN Rider r ON rd.RiderID = r.RiderID JOIN Station s ON rd.RideID = s.StationID;</code>",
+        "<code>SELECT r.FullName, s.StationName FROM Ride rd, Rider r, Station s;</code>",
+        "<code>SELECT r.FullName, s.StationName FROM Rider r JOIN Station s ON r.RiderID = s.StationID;</code>",
+        "<code>SELECT r.FullName, s.StationName FROM Ride rd JOIN Rider r ON rd.RiderID = r.RiderID JOIN Station s ON rd.StartStationID = s.StationID;</code>"
+      ],
+      "answer": "<code>SELECT r.FullName, s.StationName FROM Ride rd JOIN Rider r ON rd.RiderID = r.RiderID JOIN Station s ON rd.StartStationID = s.StationID;</code>",
+      "why": "Each join condition should follow a real relationship: a foreign key equal to the primary key it references. The right query joins Ride to Rider on RiderID and Ride to Station on StartStationID. Matching RideID to StationID pairs rows whose numbers only happen to line up. Listing the tables with commas and no condition returns every combination of rows (a Cartesian product), and joining Rider straight to Station skips Ride, the table that connects them."
+    },
+    {
+      "q": "Which query lists the bikes that have never been ridden?",
+      "choices": [
+        "<code>SELECT b.BikeID FROM Bike b JOIN Ride rd ON rd.BikeID = b.BikeID WHERE rd.RideID IS NULL;</code>",
+        "<code>SELECT b.BikeID FROM Bike b LEFT JOIN Ride rd ON rd.BikeID = b.BikeID WHERE rd.RideID = NULL;</code>",
+        "<code>SELECT b.BikeID FROM Bike b LEFT JOIN Ride rd ON rd.BikeID = b.BikeID WHERE rd.RideID IS NULL;</code>",
+        "<code>SELECT BikeID FROM Ride WHERE RideID IS NULL;</code>"
+      ],
+      "answer": "<code>SELECT b.BikeID FROM Bike b LEFT JOIN Ride rd ON rd.BikeID = b.BikeID WHERE rd.RideID IS NULL;</code>",
+      "why": "A LEFT JOIN keeps every bike and fills Ride's columns with NULL when a bike has no rides, so testing Ride's primary key with IS NULL leaves exactly the unridden bikes. The inner join has already dropped those bikes before WHERE runs, and <code>= NULL</code> is never true. Searching Ride itself finds nothing, because every ride has a RideID. NOT EXISTS is another correct approach."
+    },
+    {
+      "q": "Rider.ReferredBy holds the RiderID of whoever referred that rider. Which query lists each referred rider next to the referrer's name?",
+      "choices": [
+        "<code>SELECT r.FullName, ref.FullName AS ReferrerName FROM Rider r JOIN Rider ref ON r.RiderID = ref.RiderID;</code>",
+        "<code>SELECT r.FullName, ref.FullName AS ReferrerName FROM Rider r JOIN Rider ref ON r.ReferredBy = ref.RiderID;</code>",
+        "<code>SELECT r.FullName, ref.FullName AS ReferrerName FROM Rider r JOIN Rider ref ON r.ReferredBy = ref.ReferredBy;</code>",
+        "<code>SELECT FullName, ReferredBy FROM Rider WHERE ReferredBy IS NOT NULL;</code>"
+      ],
+      "answer": "<code>SELECT r.FullName, ref.FullName AS ReferrerName FROM Rider r JOIN Rider ref ON r.ReferredBy = ref.RiderID;</code>",
+      "why": "A self-join reads the same table twice under two aliases. Here r is the referred rider and ref is the referrer, so r's foreign key, ReferredBy, must equal ref's primary key. Joining on RiderID matches every rider with itself, joining ReferredBy to ReferredBy pairs riders who share a referrer, and the single-table query shows the referrer's ID instead of a name. Use a LEFT JOIN if riders nobody referred should appear too."
+    },
+    {
+      "q": "Which query returns the rides whose fare is above the average fare of all rides?",
+      "choices": [
+        "<code>SELECT RideID, Fare FROM Ride WHERE Fare &gt; (SELECT AVG(Fare) FROM Ride);</code>",
+        "<code>SELECT RideID, Fare FROM Ride WHERE Fare &gt; AVG(Fare);</code>",
+        "<code>SELECT RideID, Fare FROM Ride GROUP BY RideID HAVING Fare &gt; AVG(Fare);</code>",
+        "<code>SELECT RideID, Fare FROM Ride WHERE Fare &gt; ALL (SELECT Fare FROM Ride);</code>"
+      ],
+      "answer": "<code>SELECT RideID, Fare FROM Ride WHERE Fare &gt; (SELECT AVG(Fare) FROM Ride);</code>",
+      "why": "The scalar subquery computes one value, the overall average, and the outer WHERE compares each ride with it. An aggregate can't appear directly in WHERE, so that version raises an error. With GROUP BY RideID, each group holds a single ride, so AVG(Fare) equals that ride's own fare and the HAVING condition is never true. Fare &gt; ALL asks for a fare greater than every fare, including its own, so it returns nothing."
+    },
+    {
+      "q": "Which statement creates a view named ElectricBike that always shows the current ID and model of every electric bike?",
+      "choices": [
+        "<code>CREATE TABLE ElectricBike AS SELECT BikeID, Model FROM Bike WHERE IsElectric = TRUE;</code>",
+        "<code>CREATE VIEW ElectricBike (SELECT BikeID, Model FROM Bike WHERE IsElectric = TRUE);</code>",
+        "<code>CREATE VIEW ElectricBike AS SELECT BikeID, Model FROM Bike WHERE IsElectric = TRUE;</code>",
+        "<code>CREATE INDEX ElectricBike ON Bike (IsElectric);</code>"
+      ],
+      "answer": "<code>CREATE VIEW ElectricBike AS SELECT BikeID, Model FROM Bike WHERE IsElectric = TRUE;</code>",
+      "why": "CREATE VIEW name AS SELECT … saves the query, and every SELECT from the view runs it against the current Bike rows. CREATE TABLE … AS SELECT copies today's rows into a new table that won't follow later changes. The version without AS is a syntax error, and an index speeds up lookups but returns nothing by itself."
+    },
+    {
+      "q": "Reports often filter rides by StartTime. Which statement adds an index to speed that up?",
+      "choices": [
+        "<code>CREATE INDEX idx_ride_start ON Ride (StartTime);</code>",
+        "<code>ALTER TABLE Ride ADD PRIMARY KEY (StartTime);</code>",
+        "<code>CREATE INDEX ON Ride.StartTime;</code>",
+        "<code>CREATE VIEW idx_ride_start AS SELECT StartTime FROM Ride;</code>"
+      ],
+      "answer": "<code>CREATE INDEX idx_ride_start ON Ride (StartTime);</code>",
+      "why": "CREATE INDEX name ON table (column) builds a B-tree index that MySQL can use for StartTime filters and sorts; EXPLAIN confirms it's used. Ride already has a primary key (RideID), and start times aren't guaranteed to be unique, so adding a second primary key fails. The CREATE INDEX without a name or parenthesized column list is a syntax error, and a view stores a query, not an index."
+    },
+    {
+      "q": "A startup stores product listings whose attributes vary widely by category (shoes have sizes, laptops have processor specs) and change often, and it expects to spread the data across many servers. Which database type fits best?",
+      "choices": [
+        "A relational database with one table per product category",
+        "A key-value store",
+        "A graph database",
+        "A document database such as MongoDB"
+      ],
+      "answer": "A document database such as MongoDB",
+      "why": "Document databases store each record as a JSON-like document whose fields can differ from one document to the next, and they're built to scale across servers, which matches flexible, changing product attributes. A relational design would need constant ALTER TABLE changes or many mostly empty columns. A key-value store fetches whole values by key but can't easily query inside them, and graph databases are for highly connected data such as social networks. A relational DBMS is still the better pick when you need joins and strict ACID transactions, as for orders and payments."
+    }
+  ],
+  "pitfalls": [
+    "<b>Coding to the sample data.</b> A query that returns the right rows for the sample but wouldn't for other data, such as a hard-coded ID, MAX where SUM was asked, or a LIMIT 1 that happens to hit the right row, can pass Run Test Cases and still lose credit.",
+    "<b>ALTER vs UPDATE.</b> Structure changes (add a column, change a type, rename something) are ALTER TABLE. Value changes are UPDATE … SET … WHERE.",
+    "<b>Forgetting WHERE.</b> UPDATE and DELETE without WHERE hit every row. Run the WHERE as a SELECT first.",
+    "<b>Aggregates in the wrong clause.</b> WHERE can't use SUM or COUNT (error 1111). A row-level condition belongs in WHERE and a group-level one in HAVING, and every non-aggregated column in the select list must appear in GROUP BY.",
+    "<b>Join mistakes.</b> A missing or wrong ON condition multiplies rows, shared column names without a table alias are ambiguous, an INNER JOIN drops the unmatched rows a question may want, and a WHERE filter on a LEFT JOIN's right table, other than the IS NULL test for unmatched rows, quietly makes it an inner join.",
+    "<b>NULL comparisons.</b> <code>= NULL</code> and <code>&lt;&gt; NULL</code> never match, so use IS NULL and IS NOT NULL. NOT IN against a list that contains a NULL returns nothing.",
+    "<b>Type and key mismatches.</b> DECIMAL(4,2) can't hold 125.00, TINYINT UNSIGNED stops at 255, and a foreign key must match the parent's integer size and sign (INT vs INT UNSIGNED fails). MODIFY and CHANGE drop NOT NULL, UNSIGNED and DEFAULT unless you restate them.",
+    "<b>Output that doesn't match the ask.</b> Extra or missing columns, columns in a different order, a missing alias, or no ORDER BY when the question asks for an order can fail a test case even when the logic is right.",
+    "<b>Quoting.</b> Strings and dates take single quotes and numbers take none. NULL is a keyword, not 'NULL'. In default MySQL, double quotes make a string, so writing a column name in double quotes in a SELECT list prints that text instead of the column's values.",
+    "<b>Trusting SQLZoo's leniency.</b> SQLZoo accepts sloppy capitalization and missing semicolons, and a Jun 2026 passer found a few of its exercises broken. Practice the course's formatting anyway."
+  ],
+  "resources": [
+    {
+      "label": "WGU's zyBook and labs for D427 (in the course)",
+      "kind": "official",
+      "note": "The course text with hands-on MySQL labs. Type every lab statement yourself; writing SQL is what the OA asks for."
+    },
+    {
+      "label": "Pre-assessment (in the course)",
+      "kind": "practice",
+      "note": "Students report it has the OA's question types and the same built-in reference sheet. Take it open-note first and run every query, then retake it closed-book."
+    },
+    {
+      "label": "SQL reference sheet (inside the PA and OA)",
+      "kind": "official",
+      "note": "Students report it's built into both assessments; learn where each statement's syntax sits during the PA. It shows syntax, not answers, so you still need to know which statement solves the problem."
+    },
+    {
+      "label": "SQLZoo",
+      "url": "https://sqlzoo.net/",
+      "kind": "practice",
+      "note": "Free interactive SQL tutorials. A Jun 2026 perfect-score passer drilled its JOIN and self-join sections; it's lax about capitalization and semicolons, and a few exercises are broken."
+    },
+    {
+      "label": "SQLBolt",
+      "url": "https://sqlbolt.com/",
+      "kind": "practice",
+      "note": "Short interactive lessons from SELECT through joins, aggregates and table changes. May 2025 commenters say it helped."
+    },
+    {
+      "label": "W3Schools SQL tutorial",
+      "url": "https://www.w3schools.com/sql/default.asp",
+      "kind": "practice",
+      "note": "A May 2025 passer used it for syntax: quick pages with a try-it editor. Some pages show other databases' syntax, so confirm MySQL specifics in the MySQL manual."
+    },
+    {
+      "label": "MySQL 8.4 Reference Manual: SQL statements",
+      "url": "https://dev.mysql.com/doc/refman/8.4/en/sql-statements.html",
+      "kind": "official",
+      "note": "The authority on CREATE, ALTER, INSERT, UPDATE, DELETE, SELECT, views and indexes, with exact syntax and edge cases."
+    },
+    {
+      "label": "MySQL Community Server and MySQL Workbench",
+      "url": "https://dev.mysql.com/downloads/",
+      "kind": "tool",
+      "note": "Free downloads for a local practice server and a graphical editor. Build this guide's bike-share tables and break them on purpose."
+    },
+    {
+      "label": "DB Fiddle",
+      "url": "https://www.db-fiddle.com/",
+      "kind": "tool",
+      "note": "Free browser playground with MySQL, handy for quick experiments without installing anything."
+    },
+    {
+      "label": "MySQL Sakila sample database",
+      "url": "https://dev.mysql.com/doc/sakila/en/",
+      "kind": "practice",
+      "note": "Oracle's free DVD-rental sample schema with many related tables. Practice three- and four-table joins, GROUP BY reports and views on realistic data."
+    },
+    {
+      "label": "DataCamp SQL courses",
+      "kind": "practice",
+      "note": "Paid interactive courses that May 2025 commenters say helped. Optional if the free tools above are enough."
+    },
+    {
+      "label": "Course instructors",
+      "kind": "practice",
+      "note": "Instructors can walk through queries you can't get right and share extra practice material on request."
+    }
+  ],
+  "community": {
+    "summary": "Both posts are pass reports: the newest (Jun 2026) earned a perfect score, and the May 2025 poster passed the new version. Since the May 1, 2025 revamp, students report about 25 questions, mostly SQL you write and run, with the same syntax reference sheet built into the PA and OA; a Jun 2026 commenter says the OA mirrors the PA's question types with different data and that most people finish in 30–60 minutes. For the Jun 2026 passer, joins, self-joins included, were the hardest part. The top advice is to take the PA open-note, write standard, readable SQL, and make every query answer the question in general rather than for the sample rows, because passing Run Test Cases doesn't guarantee credit. ALTER vs UPDATE trips people up, and one May 2025 taker saw no subqueries or complex nested joins.",
+    "coverage": "2 posts, May 2025 – Jun 2026, r/WGU",
+    "posts": [
+      {
+        "title": "D427 Data Management - Applications Passed With Perfect Score",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1uq5i89/d427_data_management_applications_passed_with/",
+        "date": "Jun 2026",
+        "takeaway": "Run Test Cases can pass a query that still loses credit, so write queries that answer the question in general, such as a SUM over every matching row instead of the one row the sample has. Write standard, readable SQL with clauses on separate lines and semicolons. Joins were the hardest part; the poster practiced on SQLZoo, self-joins included (it's lax about capitalization and semicolons, and a few exercises are broken), and used a calculator to check large numbers. A commenter says the OA mirrors the PA's question types with different data, a reference sheet is provided, and most people finish in 30–60 minutes."
+      },
+      {
+        "title": "D427 Data Management - Applications New Version Passed in 2 hours",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1kt41e6/d427_data_management_applications_new_version/",
+        "date": "May 2025",
+        "takeaway": "The course was revamped on May 1, 2025. Take the PA open-note and look up what you don't know; the coding questions let you run and check your SQL, and the same syntax reference sheet is in the PA and the OA. Know column data types, INNER, LEFT and RIGHT joins, signed vs unsigned numbers, entities and attributes, aggregate functions and foreign keys. About 25 questions, most of them writing SQL; W3Schools helped with syntax. Comments: ALTER vs UPDATE trips people up, subqueries and complex nested joins didn't appear, and SQLBolt and DataCamp helped others."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611, published Jun 30, 2026 (PDF): D427 description, competencies, CUs and prerequisite", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "MySQL 8.4 Reference Manual: Integer types (ranges, signed and unsigned)", "url": "https://dev.mysql.com/doc/refman/8.4/en/integer-types.html" },
+    { "label": "MySQL 8.4 Reference Manual: Numeric data type syntax (DECIMAL limits, BOOLEAN, deprecations)", "url": "https://dev.mysql.com/doc/refman/8.4/en/numeric-type-syntax.html" },
+    { "label": "MySQL 8.4 Reference Manual: The DATE, DATETIME and TIMESTAMP types", "url": "https://dev.mysql.com/doc/refman/8.4/en/datetime.html" },
+    { "label": "MySQL 8.4 Reference Manual: FOREIGN KEY constraints", "url": "https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html" },
+    { "label": "MySQL 8.4 Reference Manual: ALTER TABLE (CHANGE, MODIFY, RENAME COLUMN)", "url": "https://dev.mysql.com/doc/refman/8.4/en/alter-table.html" },
+    { "label": "MySQL 8.4 Reference Manual: Using AUTO_INCREMENT", "url": "https://dev.mysql.com/doc/refman/8.4/en/example-auto-increment.html" },
+    { "label": "MySQL 8.4 Reference Manual: SELECT statement (clause order, LIMIT, aliases)", "url": "https://dev.mysql.com/doc/refman/8.4/en/select.html" },
+    { "label": "MySQL 8.4 Reference Manual: String comparison functions (LIKE)", "url": "https://dev.mysql.com/doc/refman/8.4/en/string-comparison-functions.html" },
+    { "label": "MySQL 8.4 Reference Manual: JOIN clause", "url": "https://dev.mysql.com/doc/refman/8.4/en/join.html" },
+    { "label": "MySQL 8.4 Reference Manual: Aggregate function descriptions", "url": "https://dev.mysql.com/doc/refman/8.4/en/aggregate-functions.html" },
+    { "label": "MySQL 8.4 Reference Manual: MySQL handling of GROUP BY (ONLY_FULL_GROUP_BY)", "url": "https://dev.mysql.com/doc/refman/8.4/en/group-by-handling.html" },
+    { "label": "MySQL 8.4 Reference Manual: CREATE VIEW", "url": "https://dev.mysql.com/doc/refman/8.4/en/create-view.html" },
+    { "label": "MySQL 8.4 Reference Manual: CREATE INDEX", "url": "https://dev.mysql.com/doc/refman/8.4/en/create-index.html" },
+    { "label": "Wikipedia: NoSQL (database types and trade-offs)", "url": "https://en.wikipedia.org/wiki/NoSQL" }
+  ],
+  "caveats": [
+    "Version: students date the revamp to May 1, 2025, and WGU publishes no changelog. The description and competencies here come from the current program guide (catalog 202611, published Jun 30, 2026).",
+    "The question count (about 25), the 30–60 minute finishing times and how Run Test Cases relates to grading come from student posts, not WGU. The time limit and passing score aren't published.",
+    "Reddit couldn't be opened directly for this research, so the community section relies on condensed notes from two posts (May 2025 and Jun 2026). Post dates are approximate.",
+    "The MySQL version behind the course labs and the OA isn't published. Facts here follow the MySQL 8.4 manual and nearly all hold for 8.0 as well, but a few details differ by version; CHECK constraints, for example, are enforced only from 8.0.16.",
+    "No student report describes how the competency on recommending databases and DBMSs is tested, so the database-choice topic covers the general concepts rather than a known item style.",
+    "The practice questions are original and use this guide's own bike-share tables. They're multiple choice, while most real OA items have you type and run SQL, so practice writing every answer as well."
+  ]
+}

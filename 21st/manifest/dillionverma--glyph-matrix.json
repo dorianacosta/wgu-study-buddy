@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@dillionverma/components/glyph-matrix",
+  "title": "Glyph Matrix | Community Components | 21st",
+  "license": "MIT License",
+  "published": "9/23/2026",
+  "dependencies": "next-themes",
+  "promptFile": "21st/prompts/dillionverma--glyph-matrix.md",
+  "chars": 5969,
+  "sha256": "fa41e50a6d731945104327bbf88733c5c0accb21182d1160916466ac462f86a2",
+  "sha256Of": "file bytes",
+  "capturedSha256": "b32d2336b25c4b8b96351f3339a3cbde2aa0c060d5e1d4c563e3e7a6839d63ae",
+  "verified": true,
+  "notes": "Prompt captured from the page's Copy prompt menu, 'Optimized for: Claude Code' option. Source listed on Info tab: magicui.design/r/glyph-matrix. Prompt contains non-ASCII characters (em dash in a doc comment; middle dot and bullet in the default glyphs string), saved as UTF-8.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (5969) is the text's length in UTF-16 code units and equals the file's."
+}

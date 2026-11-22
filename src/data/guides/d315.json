@@ -1,0 +1,600 @@
+{
+  "code": "D315",
+  "summary": "D315 is the BSCS's first networking and security course: network types and topologies, the OSI and TCP/IP models, devices, IP addressing, protocols and ports, then security basics (the CIA triad, common attacks, firewalls, VPNs, wireless and cloud security, access control) and governance, compliance and business continuity. You pass one proctored objective assessment of multiple-choice-style questions; one student reports a 66-question OA finished in about 30 minutes, and the PA reportedly has about 60. Two r/WGU passers report quick passes: one with no networking background passed within four study sessions (Mar 2026), and another passed in 24 hours (May 2025).",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple-choice style)",
+    "format": "Multiple-choice style · one student's OA had 66 questions (the PA reportedly has about 60) · three course sections · proctored online · time limit and passing score not published",
+    "details": [
+      "WGU's B.S. Computer Science guidebook (catalog 202611) lists three competencies after course planning: identify basic network systems and concepts related to networking technologies; apply network security concepts for business continuity, data access and confidentiality; and identify solutions for compliance with security guidance. D315 sits in term 3 of the guidebook's standard path, though your own degree plan may place it elsewhere.",
+      "Students describe three sections, each ending in a quiz, and report that the PA has about 60 questions in three blocks matching them. This guide's plan groups the material as networking (Days 1-4), security fundamentals, attacks and secure design (Days 5-6), and wireless, cloud, access control, governance and continuity (Days 7-8); follow your course's own section order where it differs.",
+      "Length and time: a commenter on the May 2025 thread said their OA had 66 questions and took about 30 minutes. WGU doesn't publish the question count, time limit or passing score.",
+      "Difficulty: the May 2025 poster took the PA only after scoring 90% or more on every section quiz and found the OA very similar to the PA in style and difficulty. That's one student's experience, so don't skip lessons the quizzes don't stress.",
+      "Materials (students report): a course text, the section quizzes, and recorded instructor-led lesson videos for D315 Version 2 that are linked from the course Announcements. Instructors email extra practice quizzes on request.",
+      "Expect scenario questions that ask you to pick the right layer, device, protocol, port, attack or control. WGU calls its objective assessments multiple-choice style, and its <a href=\"https://wgu.edu/wgu-style-guide/objective-assessment-development.html\">item-writing guide</a> also allows multiple-select (choose two or more) and matching items. Neither D315 post says which item types this OA uses, so read each item's instructions; neither reports configuration tasks or typed commands."
+    ],
+    "tips": [
+      "Use the section quizzes as gates: the May 2025 passer took the PA only after scoring 90+ on every quiz and the instructor's extra quizzes, then found the OA very similar.",
+      "Watch the recorded instructor videos; the May 2025 passer watched them at 2x and says they point out keywords to watch for in questions.",
+      "Learn the OSI layers in both directions with a mnemonic (bottom up: Please Do Not Throw Sausage Pizza Away), then attach a PDU, devices and protocols to each layer.",
+      "Know the CIA triad cold, with one attack and one control for each part. The May 2025 passer singles it out along with the OSI model.",
+      "Teach it back: the Mar 2026 passer learned each idea three ways (on a whiteboard, by explaining it to someone, then on a paper study guide) and fed missed questions back into an AI quiz.",
+      "Make flashcards only for what keeps slipping, such as ports, secure protocol replacements, private address ranges and RTO vs RPO. The May 2025 passer made a few Anki cards for weak spots.",
+      "Ask your instructor for the extra practice quizzes, and use the PA coaching report to pick which section to redo before the OA."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your Course Planning Tool report with your instructor and build a personalized course plan together (listed first in the program guide).",
+    "The learner applies network security concepts for business continuity, data access, and confidentiality.",
+    "The learner identifies basic network systems and concepts related to networking technologies.",
+    "The learner identifies solutions for compliance with security guidance."
+  ],
+  "topics": [
+    {
+      "title": "Network types, topologies and media",
+      "eli5": "A network is computers talking over shared roads. A LAN is your neighborhood, a WAN connects cities, the topology is the shape of the road map, and the media are the roads themselves: copper, glass or radio.",
+      "detail": "Networks are named by reach: a <b>PAN</b> (personal area, such as Bluetooth around one person), <b>LAN</b> (one building or site; a <b>WLAN</b> is a wireless LAN), <b>CAN</b> (a campus), <b>MAN</b> (a city), <b>WAN</b> (distant sites, such as the internet or leased lines) and <b>SAN</b> (a dedicated high-speed storage network). Physical topologies describe the wiring: <b>bus</b> (one shared cable, so one break takes everyone down), <b>ring</b> (each device links to two neighbors), <b>star</b> (everything connects to a central switch, as in most Ethernet LANs), <b>mesh</b> (redundant links; a full mesh of n nodes needs n(n − 1)/2 links) and <b>hybrid</b>. The logical topology is how data actually flows, which can differ from the wiring. <b>Client-server</b> networks centralize services and control, while <b>peer-to-peer</b> nodes both share and consume. For media, <b>twisted pair</b> copper with RJ45 connectors carries most LAN traffic (Cat 5e for 1 Gbps, Cat 6 for 10 Gbps up to about 55 m, Cat 6a for 10 Gbps to 100 m, with Ethernet copper runs limited to 100 m), <b>fiber</b> carries light, ignores electromagnetic interference and is hard to tap (single-mode for long distances, multimode for shorter runs), and <b>coaxial</b> cable still delivers cable internet. Ethernet is IEEE 802.3 and Wi-Fi is IEEE 802.11: 802.11b and g use 2.4 GHz, 802.11a and ac use 5 GHz, 802.11n (Wi-Fi 4) uses both, Wi-Fi 6 (802.11ax) uses 2.4 and 5 GHz with 6E adding 6 GHz, and Wi-Fi 7 (802.11be) spans all three bands.",
+      "points": [
+        "Star: central switch, single point of failure at the center · mesh: most redundant, most cabling · bus: one cable, one break stops everything",
+        "Full mesh links = n(n − 1)/2, so five sites need 10 links",
+        "Copper Ethernet: 100 m maximum run · fiber: single-mode for long haul, multimode inside buildings",
+        "2.4 GHz reaches farther through walls; 5 and 6 GHz are faster with less interference but shorter range",
+        "Intranet (internal only), extranet (shared with partners), internet (public)"
+      ]
+    },
+    {
+      "title": "The OSI and TCP/IP models",
+      "eli5": "The OSI model is a seven-floor building for sending data. On the way down, each floor wraps the message in its own envelope; on the way up at the other end, each floor opens one.",
+      "detail": "The <b>OSI reference model</b> (ISO/IEC 7498-1) has seven layers: 1 <b>Physical</b> (bits as electrical, light or radio signals), 2 <b>Data Link</b> (frames and MAC addresses on the local network; Ethernet, Wi-Fi, switches), 3 <b>Network</b> (packets, IP addresses and routing; routers), 4 <b>Transport</b> (segments or datagrams, port numbers, TCP and UDP), 5 <b>Session</b> (setting up, managing and ending sessions), 6 <b>Presentation</b> (data formats, compression and encryption) and 7 <b>Application</b> (the network services programs use, such as HTTP, DNS and SMTP). <b>Encapsulation</b> adds a header at each layer on the way down (data → segment → packet → frame → bits), and the receiver strips them on the way up. The <b>TCP/IP model</b> in RFC 1122 has four layers: Application (OSI 5-7), Transport (4), Internet (3) and Link (1-2); many books call the Link layer Network Access or Network Interface (still OSI 1-2), and five-layer versions split it into Data Link and Physical. Questions often describe a symptom, device or address and ask which layer it belongs to.",
+      "points": [
+        "Bottom up: Please Do Not Throw Sausage Pizza Away · top down: All People Seem To Need Data Processing",
+        "PDUs: bits (1) · frames (2) · packets (3) · segments for TCP or datagrams for UDP (4) · data (5-7)",
+        "Devices: cables, hubs, repeaters (1) · switches, bridges, NICs, access points (2) · routers and layer 3 switches (3); firewalls filter at 3-4, and next-generation firewalls up to 7",
+        "Addresses: MAC at layer 2 · IP at layer 3 · port at layer 4",
+        "TLS is usually placed at layer 6 (some sources say 4-7), and ARP links layer 3 addresses to layer 2 addresses"
+      ]
+    },
+    {
+      "title": "Network devices",
+      "eli5": "A hub shouts every message to everyone, a switch hands it only to the right desk, and a router passes notes between different buildings.",
+      "detail": "A <b>hub</b> (layer 1) repeats every bit out every port, so all its devices share one collision domain. A <b>switch</b> (layer 2) learns which MAC address sits on which port, keeps that in its MAC address table, and forwards frames only where they need to go, so each port is its own collision domain; all ports are still one broadcast domain until you create <b>VLANs</b> (IEEE 802.1Q). A <b>router</b> (layer 3) connects different IP networks, chooses paths from its routing table and separates broadcast domains; your <b>default gateway</b> is the router interface your device sends off-network traffic to. Other devices: <b>access points</b> bridge Wi-Fi clients onto the wired LAN, <b>wireless LAN controllers</b> manage many access points, <b>modems</b> convert between your network and the provider's line, <b>repeaters</b> regenerate signals, <b>bridges</b> join two segments, <b>firewalls</b> filter traffic by policy, <b>IDS and IPS</b> sensors watch for attacks, <b>load balancers</b> spread requests across servers, and <b>proxy servers</b> make requests on behalf of clients (forward proxy) or sit in front of servers (reverse proxy). Every connected device has a <b>NIC</b> with a MAC address.",
+      "points": [
+        "Hub: one collision domain for all ports · switch: one collision domain per port, one broadcast domain per VLAN · router: separate broadcast domain on each interface",
+        "Switches forward by MAC address; routers forward by IP address",
+        "A layer 3 switch routes between VLANs at switching speed",
+        "Unified threat management (UTM) appliances combine a firewall, IPS, VPN and content filtering in one box",
+        "Power over Ethernet (PoE) powers access points, phones and cameras through the network cable"
+      ]
+    },
+    {
+      "title": "IPv4 addressing, subnets and NAT",
+      "eli5": "An IP address is a mailing address with two parts: the street (the network) and the house number (the host). The subnet mask tells you where the street name stops.",
+      "detail": "An <b>IPv4</b> address is 32 bits written as four decimal octets, such as 192.168.10.25. The <b>subnet mask</b>, or CIDR prefix, says how many leading bits identify the network: /24 is 255.255.255.0 and leaves 8 host bits, so 2⁸ = 256 addresses and 254 usable hosts, because the first address names the network and the last is the broadcast address. In general, usable hosts = 2^(32 − prefix) − 2. RFC 1918 sets aside three <b>private</b> ranges that aren't routed on the internet: 10.0.0.0/8, 172.16.0.0/12 (172.16.0.0 through 172.31.255.255) and 192.168.0.0/16. 127.0.0.0/8 is <b>loopback</b> (127.0.0.1 is the machine itself), and 169.254.0.0/16 is <b>link-local</b>, which Windows calls APIPA and assigns itself when no DHCP server answers. <b>NAT</b> lets many private addresses share one public address, and port address translation (PAT) tells the connections apart by port number. The old classful scheme (A 1-126, B 128-191, C 192-223, D multicast, E experimental) gave way to CIDR, but questions still use the class names.",
+      "points": [
+        "/24 = 255.255.255.0 → 254 hosts · /25 → 126 · /26 = 255.255.255.192 → 62 · /27 → 30 · /30 → 2 (point-to-point links)",
+        "Private: 10/8, 172.16/12, 192.168/16 · loopback: 127/8 · APIPA: 169.254/16, a sign that DHCP failed",
+        "The default gateway is the router's address on your subnet; with a wrong gateway, local traffic works and remote traffic fails",
+        "NAT hides internal addresses and stretches IPv4 space, but it isn't a substitute for a firewall",
+        "Unicast (one host), broadcast (everyone on the subnet), multicast (a group, 224.0.0.0/4), anycast (the nearest of several)"
+      ]
+    },
+    {
+      "title": "IPv6, MAC addresses and ARP",
+      "eli5": "IPv6 is the much longer address system that means we won't run out. A MAC address is the name built into a network card, and ARP is a computer calling out who has this IP address? on the local network.",
+      "detail": "<b>IPv6</b> addresses are 128 bits written as eight groups of four hex digits, such as 2001:0db8:0000:0000:0000:ff00:0042:8329. You can drop leading zeros in each group and replace one run of all-zero groups with <code>::</code>, but only once, giving 2001:db8::ff00:42:8329. RFC 4291 defines <code>::1</code> as loopback and <code>fe80::/10</code> as link-local (every IPv6 interface has one); global unicast addresses currently come from <code>2000::/3</code>, and <code>fc00::/7</code> is unique local, the private-network equivalent. IPv6 has no broadcast (it uses multicast), can configure itself with SLAAC or DHCPv6, and uses the Neighbor Discovery Protocol instead of ARP. A <b>MAC address</b> is 48 bits written as 12 hex digits, such as 00:1A:2B:3C:4D:5E, and its first 24 bits are the vendor's organizationally unique identifier (OUI). On IPv4 networks, <b>ARP</b> finds the MAC address for an IP address by broadcasting a request and caching the reply. ARP has no authentication, which is why forged replies (ARP spoofing) work.",
+      "points": [
+        "IPv4: 32 bits, dotted decimal · IPv6: 128 bits, hex with colons · MAC: 48 bits, hex",
+        "<code>::</code> can appear only once in an IPv6 address",
+        "fe80::/10 link-local · ::1 loopback · 2000::/3 global unicast · fc00::/7 unique local",
+        "ARP maps IP to MAC on the local network; DNS maps names to IP addresses",
+        "At each router hop the frame's MAC addresses change while the source and destination IP addresses stay the same (unless NAT rewrites them)"
+      ]
+    },
+    {
+      "title": "TCP, UDP, ports and core services",
+      "eli5": "TCP is a phone call: you connect first and confirm you heard everything. UDP is a postcard: fast, but nobody checks it arrived. Port numbers are apartment numbers that tell a computer which program gets the message.",
+      "detail": "<b>TCP</b> (RFC 9293) is connection-oriented and reliable: a three-way handshake (SYN, SYN-ACK, ACK) opens the connection, sequence numbers and acknowledgments keep data in order and trigger retransmission, and windowing controls the flow. <b>UDP</b> (RFC 768) is connectionless, with an 8-byte header and no delivery guarantee, so it suits DNS queries, DHCP, voice and video calls, streaming and online games. IANA divides ports into system (well-known) ports 0-1023, user (registered) ports 1024-49151 and dynamic (private) ports 49152-65535, which clients use as temporary source ports. <b>DNS</b> resolves names using record types such as A (IPv4 address), AAAA (IPv6 address), CNAME (alias), MX (mail server), NS (name server), PTR (reverse lookup) and TXT (text, used for email authentication records such as SPF). <b>DHCP</b> hands out an IP address, subnet mask, default gateway and DNS servers in four steps, Discover, Offer, Request and Acknowledge (DORA), over UDP ports 67 and 68. <b>ICMP</b> carries error and diagnostic messages, such as the echo request and reply that ping uses, and has no port numbers.",
+      "points": [
+        "TCP: reliable and ordered (web, email, file transfer, SSH) · UDP: fast, best effort (DNS queries, DHCP, VoIP, streaming)",
+        "DHCP DORA: Discover → Offer → Request → Acknowledge",
+        "DNS uses UDP 53 for most queries and TCP 53 for zone transfers and large answers",
+        "HTTP/3 runs over QUIC, which uses UDP port 443",
+        "TCP ends a connection with FIN and ACK; a RST aborts it"
+      ]
+    },
+    {
+      "title": "Network commands and troubleshooting",
+      "eli5": "ping asks are you there?, traceroute asks which roads did my message take?, and nslookup asks the phone book for a number.",
+      "detail": "<code>ping</code> sends ICMP echo requests to test reachability and round-trip time. <code>tracert</code> (Windows) or <code>traceroute</code> (Linux and macOS) lists each router hop by sending packets with increasing time-to-live (TTL) values, which shows where a path slows down or stops. <code>ipconfig</code> (Windows) shows addressing, and <code>ipconfig /all</code> adds the MAC address and the DHCP and DNS servers; <code>/release</code> and <code>/renew</code> redo DHCP, and <code>/flushdns</code> clears the DNS cache. On Linux, <code>ip addr</code> (or the older <code>ifconfig</code>) shows each interface's addresses and MAC address, <code>ip route</code> shows the default gateway, and <code>resolvectl status</code> (or <code>/etc/resolv.conf</code>) lists the DNS servers. <code>nslookup</code> and <code>dig</code> query DNS directly, <code>netstat</code> (or <code>ss</code> on Linux) lists connections and listening ports, <code>arp -a</code> shows the ARP cache, and <code>pathping</code> on Windows combines a traceroute with packet-loss statistics. Wireshark and tcpdump capture packets, and Nmap scans for hosts and open ports. A common troubleshooting method runs: identify the problem, form a theory, test it, plan and carry out a fix, verify that everything works, then document what you found. Work up the layers: link lights and cables first, then IP settings, then the gateway, then DNS.",
+      "points": [
+        "Can ping 8.8.8.8 but can't open sites by name → a DNS problem (check with nslookup) · can't ping the gateway → a local problem",
+        "A 169.254.x.x address in ipconfig → the device never reached a DHCP server",
+        "tracert and traceroute use TTL to reveal each hop along the path",
+        "<code>netstat -an</code> or <code>ss -tuln</code> lists listening ports; an unexpected listener can be a sign of malware",
+        "Scan only networks you own or have written permission to test"
+      ]
+    },
+    {
+      "title": "Security fundamentals: CIA, AAA and core principles",
+      "eli5": "Security keeps data secret, correct and available. It makes people prove who they are, gives them only what they need, and keeps a record of what they did.",
+      "detail": "FIPS 199 defines the <b>CIA triad</b> from federal law: <b>confidentiality</b> preserves authorized restrictions on access and disclosure, <b>integrity</b> guards against improper modification or destruction, and <b>availability</b> ensures timely and reliable access to and use of information. Encryption and access control serve confidentiality, hashing and digital signatures serve integrity, and redundancy, backups and DoS protection serve availability. <b>AAA</b> is authentication (prove your identity), authorization (receive permissions) and accounting (log what you did), provided on networks by RADIUS (UDP 1812 and 1813, common for Wi-Fi and VPN logins) or TACACS+ (TCP 49, which encrypts the whole session and is common for device administration). <b>Non-repudiation</b> keeps someone from credibly denying an action, usually through digital signatures and logs. NIST describes <b>least privilege</b> as limiting users and processes to the minimum access their tasks require; <b>separation of duties</b> splits sensitive tasks between people; <b>defense in depth</b> layers controls so one failure isn't fatal; and <b>zero trust</b> (NIST SP 800-207) removes implicit trust based on network location, so every request is authenticated and authorized. Risk combines a <b>threat</b> (something that could cause harm), a <b>vulnerability</b> (a weakness it could exploit) and the likely impact.",
+      "points": [
+        "Confidentiality → encryption, access control · integrity → hashing, signatures, change control · availability → redundancy, backups, patching, DDoS protection",
+        "AAA: authentication → authorization → accounting",
+        "RADIUS: UDP, encrypts only the password · TACACS+: TCP 49, encrypts the whole payload and separates the three A's",
+        "Zero trust: never trust, always verify, with small segments and continuous checks",
+        "Control types: technical, administrative (managerial), physical · functions: preventive, detective, corrective, deterrent, compensating"
+      ]
+    },
+    {
+      "title": "Threats and attacks",
+      "eli5": "Attackers trick people, plant bad programs, flood networks or slip into the middle of a conversation. Naming the trick tells you which defense to reach for.",
+      "detail": "Malware: a <b>virus</b> attaches to a file and needs a user to run it, a <b>worm</b> spreads across networks on its own, a <b>trojan</b> poses as legitimate software, <b>ransomware</b> encrypts data and demands payment (and often steals it first), <b>spyware</b> and <b>keyloggers</b> watch the user, a <b>rootkit</b> hides itself with high privileges, a <b>botnet</b> is a group of infected machines under an attacker's command and control, and a <b>logic bomb</b> waits for a trigger. Network attacks: <b>DoS</b> (one source) and <b>DDoS</b> (many sources, usually a botnet) exhaust resources, as a SYN flood does; an <b>on-path</b> (man-in-the-middle) attacker relays traffic so they can read or alter it, often after <b>ARP spoofing</b> on the LAN; <b>DNS poisoning</b> sends a correct name to a malicious address; <b>MAC flooding</b> overflows a switch's address table so it floods frames out every port; <b>rogue access points</b> and <b>evil twins</b> bypass or imitate the real Wi-Fi; and <b>replay attacks</b> resend captured data. Password attacks include brute force, dictionary attacks, password spraying (a few common passwords tried against many accounts) and credential stuffing (stolen username and password pairs tried on other sites). Social engineering covers phishing, spear phishing, whaling, vishing, smishing, pretexting, baiting, tailgating and shoulder surfing. Application attacks include SQL injection, cross-site scripting (XSS) and buffer overflows, and a <b>zero-day</b> exploits a flaw that has no patch yet.",
+      "points": [
+        "Worm: spreads itself · virus: needs a host file and a user · trojan: disguised as something useful · ransomware: encrypts for payment",
+        "DoS and DDoS → availability · sniffing and on-path → confidentiality (and integrity if traffic is altered) · spoofing → authenticity",
+        "ARP spoofing → on-path position on the LAN · DNS poisoning → the right name leads to the wrong site · MAC flooding → the switch behaves like a hub",
+        "Password spraying avoids account lockouts and credential stuffing exploits reused passwords; MFA and unique passwords defend against both",
+        "Phishing (email) · spear phishing (targeted) · whaling (executives) · vishing (voice) · smishing (text messages)"
+      ]
+    },
+    {
+      "title": "Secure network design: firewalls, DMZs, VPNs and IDS/IPS",
+      "eli5": "Put guards at the doors between networks, keep the public waiting room separate from the back office, and send private mail through a sealed tunnel.",
+      "detail": "NIST SP 800-41 Rev. 1 describes a <b>firewall</b> as hardware or software that controls the traffic flowing between networks or hosts with different security postures. Types: <b>packet filters</b> (stateless; they check addresses, ports and protocol against ACL rules), <b>stateful inspection</b> firewalls (track connections and allow the return traffic), <b>application-level proxies</b> (understand the application protocol), <b>next-generation firewalls</b> (add application awareness, user identity and intrusion prevention), <b>web application firewalls</b> (block attacks on web apps such as SQL injection and XSS) and <b>host-based firewalls</b> on each computer. Rules are read top down, and anything not explicitly allowed falls to an implicit deny. A <b>DMZ</b> (screened subnet) is a perimeter segment between the internet and the internal network for servers outsiders must reach, such as web and mail servers. <b>Segmentation</b> with VLANs and subnets limits how far an intruder can move, and an air gap separates a network physically. <b>VPNs</b> build encrypted tunnels across untrusted networks: site-to-site VPNs join offices and remote-access VPNs connect users; IPsec works at layer 3 (tunnel mode protects the whole packet, transport mode only the payload) and TLS VPNs run through a browser or client app; split tunneling sends only company traffic through the tunnel. An <b>IDS</b> detects and alerts, an <b>IPS</b> sits inline and blocks (NIST SP 800-94), a <b>SIEM</b> collects and correlates logs, <b>network access control</b> (often IEEE 802.1X) checks devices before admitting them, and a <b>honeypot</b> lures attackers away from real systems. Harden every device: change default credentials, disable unused ports and services, patch firmware and replace cleartext protocols.",
+      "points": [
+        "Secure replacements: Telnet 23 → SSH 22 · FTP 20/21 → SFTP 22 or FTPS 989/990 · HTTP 80 → HTTPS 443 · LDAP 389 → LDAPS 636 · SNMPv1/v2c → SNMPv3",
+        "Firewall rules: most specific first, implicit deny at the end",
+        "DMZ: public-facing servers · internal LAN: never directly reachable from the internet",
+        "IPsec: AH authenticates packets, ESP encrypts and authenticates them; tunnel mode is the usual choice for site-to-site VPNs",
+        "Encryption basics: symmetric (AES, one shared key, fast) · asymmetric (RSA, ECC, public and private key pair) · hashing (SHA-256, integrity)"
+      ]
+    },
+    {
+      "title": "Wireless, cloud and access control",
+      "eli5": "Wi-Fi is a conversation in the air, so it needs a strong lock. The cloud is renting someone else's computers, and you still answer for what you put there. Access control decides who gets which keys.",
+      "detail": "Wi-Fi security moved from <b>WEP</b> (RC4, broken) to <b>WPA</b> (TKIP, a stopgap) to <b>WPA2</b> (AES-CCMP, IEEE 802.11i) to <b>WPA3</b>, which replaces the pre-shared key handshake with SAE to resist offline password guessing and requires Protected Management Frames; the Wi-Fi Alliance says WPA3 is mandatory for Wi-Fi CERTIFIED devices. <b>Personal</b> mode uses one shared passphrase, while <b>Enterprise</b> mode uses 802.1X with a RADIUS server so each user signs in with their own credentials. Hiding the SSID and filtering MAC addresses are weak on their own, WPS PINs can be brute-forced, and wireless site surveys find rogue access points. NIST SP 800-145 defines cloud computing by five essential characteristics (on-demand self-service, broad network access, resource pooling, rapid elasticity and measured service), three service models and four deployment models (public, private, community and hybrid). In <b>IaaS</b> you manage the operating system and everything above it, in <b>PaaS</b> you manage your applications and data, and in <b>SaaS</b> you manage only your data, users and settings. Under the <b>shared responsibility model</b>, the provider secures the underlying cloud and the customer always owns its data, identities and access settings, which is why misconfiguration causes so many cloud breaches. Access control models: <b>DAC</b> (the owner decides), <b>MAC</b> (labels and clearances), <b>RBAC</b> (job roles), <b>rule-based</b> (rules that apply to everyone, such as firewall ACLs) and <b>ABAC</b> (attributes of the user, resource and environment, per NIST SP 800-162), backed by MFA (something you know, have or are) and single sign-on.",
+      "points": [
+        "WEP → WPA (TKIP) → WPA2 (AES-CCMP) → WPA3 (SAE, Protected Management Frames)",
+        "Personal: one shared passphrase · Enterprise: 802.1X and RADIUS with per-user credentials",
+        "IaaS: you manage the OS, apps and data · PaaS: apps and data · SaaS: data, users and settings",
+        "Hypervisors: type 1 runs on bare metal (data centers) · type 2 runs on a host OS (VirtualBox on a laptop)",
+        "DAC: owner · MAC: labels · RBAC: role · ABAC: attributes · rule-based: same rules for all"
+      ]
+    },
+    {
+      "title": "Governance, compliance and business continuity",
+      "eli5": "Governance is the rulebook, compliance is proving you follow the laws that apply to you, and business continuity is the plan for keeping the lights on when disaster strikes.",
+      "detail": "Governance documents form a hierarchy: <b>policies</b> are management's high-level, mandatory statements (such as an acceptable use policy), <b>standards</b> are mandatory specifics (all laptops use full-disk encryption), <b>procedures</b> are step-by-step instructions, and <b>guidelines</b> are recommended but optional. Frameworks: the <b>NIST Cybersecurity Framework 2.0</b> (Feb 2024) organizes outcomes into six functions (Govern, Identify, Protect, Detect, Respond and Recover), <b>ISO/IEC 27001</b> specifies a certifiable information security management system, and the CIS Controls give a prioritized list of safeguards. Laws and standards follow the data: HIPAA (health information), PCI DSS (payment card data, an industry standard enforced by contract), GDPR (personal data of people in the EU, wherever the company is), SOX (public companies' financial reporting), GLBA (financial institutions' customer data), FERPA (student records) and FISMA (federal agencies). For continuity, a <b>business impact analysis (BIA)</b> ranks critical processes and sets recovery targets. NIST SP 800-34 Rev. 1 defines the <b>recovery time objective (RTO)</b> as how long a system can stay in recovery before the mission suffers, and the <b>recovery point objective (RPO)</b> as the point in time to which data must be recovered, which sets how much data loss is tolerable. A <b>business continuity plan (BCP)</b> keeps critical functions running, a <b>disaster recovery plan (DRP)</b> restores IT, and recovery sites range from <b>hot</b> (ready almost at once) to <b>warm</b> (equipment in place, data needs loading) to <b>cold</b> (space and power only). Backups are full, incremental (changes since the last backup of any kind: quick to make, slower to restore) or differential (changes since the last full backup: restore the full plus the latest differential), and the common 3-2-1 rule keeps three copies on two kinds of media with one offsite. Redundancy (RAID, UPS units, generators, clustering, load balancing) keeps services available.",
+      "points": [
+        "Policy (what and why) → standard (mandatory specifics) → procedure (how, step by step) → guideline (optional advice)",
+        "RTO: time to restore · RPO: acceptable data loss · MTD: longest tolerable outage · MTBF: reliability · MTTR: time to repair",
+        "Restore: the full backup plus every incremental since it, or the full plus only the latest differential",
+        "RAID 0: striping, no redundancy · RAID 1: mirroring · RAID 5: striping with parity (3+ disks, survives one failure) · RAID 10 (1+0): a stripe of mirrors, with data striped across mirrored pairs (4+ disks)",
+        "Hot site: fastest and costliest · cold site: cheapest and slowest"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "OSI layers", "value": "7 Application · 6 Presentation · 5 Session · 4 Transport · 3 Network · 2 Data Link · 1 Physical", "note": "Bottom up: Please Do Not Throw Sausage Pizza Away · top down: All People Seem To Need Data Processing" },
+    { "label": "PDUs", "value": "Data (layers 5-7) · segment (TCP) or datagram (UDP) (4) · packet (3) · frame (2) · bits (1)" },
+    { "label": "TCP/IP model (RFC 1122)", "value": "Application (OSI 5-7) · Transport (4) · Internet (3) · Link (1-2)", "note": "Link is also called Network Access or Network Interface; five-layer versions split it into Data Link and Physical" },
+    { "label": "Devices by layer", "value": "Hub, repeater, cable (1) · switch, bridge, access point, NIC (2) · router, layer 3 switch (3)" },
+    { "label": "Collision and broadcast domains", "value": "Hub: one shared collision domain · switch: one collision domain per port · routers and VLANs separate broadcast domains" },
+    { "label": "TCP vs UDP", "value": "TCP: connection-oriented, reliable, ordered, 20-byte minimum header · UDP: connectionless, best effort, 8-byte header" },
+    { "label": "TCP connection", "value": "Open: SYN → SYN-ACK → ACK · close: FIN and ACK · abort: RST" },
+    { "label": "Ports: remote access and files", "value": "FTP 20/21 · SSH, SFTP, SCP 22 · Telnet 23 · TFTP 69 (UDP) · SMB 445 · RDP 3389" },
+    { "label": "Ports: web and mail", "value": "HTTP 80 · HTTPS 443 · SMTP 25 (587 for submission) · POP3 110 (995 secure) · IMAP 143 (993 secure)" },
+    { "label": "Ports: network services", "value": "DNS 53 · DHCP 67/68 (UDP) · Kerberos 88 · NTP 123 (UDP) · SNMP 161/162 (UDP) · LDAP 389 · LDAPS 636 · syslog 514 (UDP) · RADIUS 1812/1813 · TACACS+ 49" },
+    { "label": "Port ranges (IANA)", "value": "System (well-known) 0-1023 · user (registered) 1024-49151 · dynamic (private) 49152-65535" },
+    { "label": "Special IPv4 ranges", "value": "Private (RFC 1918): 10.0.0.0/8 · 172.16.0.0/12 · 192.168.0.0/16 · loopback 127.0.0.0/8 · APIPA 169.254.0.0/16", "note": "172.16-172.31 only; 172.32.x.x is public" },
+    { "label": "CIDR math", "value": "Usable hosts = 2^(32 − prefix) − 2: /24 → 254 · /25 → 126 · /26 → 62 · /27 → 30 · /28 → 14 · /30 → 2" },
+    { "label": "Classful ranges (legacy)", "value": "A 1-126 (/8) · B 128-191 (/16) · C 192-223 (/24) · D 224-239 multicast · E 240-255 experimental" },
+    { "label": "IPv6", "value": "128 bits, eight hex groups; <code>::</code> once · ::1 loopback · fe80::/10 link-local · 2000::/3 global unicast · fc00::/7 unique local", "note": "No broadcast; Neighbor Discovery replaces ARP" },
+    { "label": "MAC and ARP", "value": "MAC: 48 bits, 12 hex digits, first 24 bits = vendor OUI · ARP: finds the MAC address for an IPv4 address on the local network" },
+    { "label": "DNS records", "value": "A (IPv4) · AAAA (IPv6) · CNAME (alias) · MX (mail) · NS (name server) · PTR (reverse) · TXT (text, such as SPF) · SOA (zone authority)" },
+    { "label": "DHCP", "value": "Discover → Offer → Request → Acknowledge (DORA), UDP 67 server and 68 client", "note": "Provides IP address, mask, default gateway and DNS servers" },
+    { "label": "Commands", "value": "<code>ping</code> · <code>tracert</code>/<code>traceroute</code> · <code>ipconfig /all</code> · <code>ip addr</code> · <code>ip route</code> · <code>nslookup</code>/<code>dig</code> · <code>netstat</code>/<code>ss</code> · <code>arp -a</code> · <code>pathping</code>" },
+    { "label": "Cabling", "value": "Cat 5e: 1 Gbps · Cat 6: 10 Gbps to about 55 m · Cat 6a: 10 Gbps to 100 m · copper Ethernet: 100 m max · fiber: single-mode long, multimode short" },
+    { "label": "Wi-Fi", "value": "802.11n = Wi-Fi 4 · 802.11ac = Wi-Fi 5 · 802.11ax = Wi-Fi 6/6E · 802.11be = Wi-Fi 7 · security: WEP → WPA → WPA2 (AES) → WPA3 (SAE)", "note": "Enterprise mode = 802.1X with RADIUS" },
+    { "label": "CIA triad (FIPS 199)", "value": "Confidentiality: authorized access and disclosure only · integrity: no improper change or destruction · availability: timely, reliable access", "note": "Encryption → C · hashing → I · backups and redundancy → A" },
+    { "label": "AAA", "value": "Authentication → authorization → accounting · RADIUS (UDP 1812/1813) · TACACS+ (TCP 49)" },
+    { "label": "Control types", "value": "Technical · administrative · physical · and by function: preventive · detective · corrective · deterrent · compensating" },
+    { "label": "Firewall types", "value": "Packet filter (stateless) · stateful inspection · application proxy · next-generation (NGFW) · web application (WAF) · host-based", "note": "Rules read top down, ending in an implicit deny" },
+    { "label": "Cloud (NIST SP 800-145)", "value": "Service: IaaS · PaaS · SaaS · deployment: public · private · community · hybrid", "note": "The customer always secures its own data and identities" },
+    { "label": "Continuity metrics (NIST SP 800-34)", "value": "RTO: how long recovery may take · RPO: the point in time data must be restored to (data-loss window) · MTD: longest tolerable outage" },
+    { "label": "Backups and sites", "value": "Full · incremental (since the last backup) · differential (since the last full) · 3-2-1 rule · hot, warm and cold sites" },
+    { "label": "Governance documents", "value": "Policy → standard → procedure → guideline (only guidelines are optional)" },
+    { "label": "Compliance map", "value": "HIPAA: health · PCI DSS: card data (industry standard) · GDPR: personal data of people in the EU · SOX: public-company finances · GLBA: financial institutions · FERPA: student records · FISMA: federal agencies", "note": "NIST CSF 2.0: Govern, Identify, Protect, Detect, Respond, Recover" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Setup, then network types, topologies and media",
+      "tasks": [
+        "Review your Course Planning Tool report with your instructor, then find the D315 recorded lesson videos linked from the course Announcements.",
+        "Section 1 start: network types, topologies, client-server vs peer-to-peer, cabling and Wi-Fi standards. Watch the matching video at a speed you can follow and take notes.",
+        "Already work in IT? You can probably fold Days 2-8 into two or three sessions."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "The OSI and TCP/IP models and network devices",
+      "tasks": [
+        "Learn the seven layers in both directions, then attach a PDU, a device and two protocols to each one.",
+        "Draw encapsulation on a whiteboard, from data down to bits and back up.",
+        "Hubs, switches, routers, access points, firewalls and proxies; collision and broadcast domains; VLANs."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Addressing: IPv4, subnets, NAT, IPv6, MAC and ARP",
+      "tasks": [
+        "Private, loopback and APIPA ranges, masks and CIDR prefixes, the usable-hosts formula and the default gateway.",
+        "IPv6 format and shortening rules, link-local and loopback addresses, MAC addresses and ARP.",
+        "On your own computer, find the IP address, mask, gateway, DNS servers and MAC address. On Windows, <code>ipconfig /all</code> shows all five. On Linux, <code>ip addr</code> shows the address, prefix and MAC, <code>ip route</code> shows the gateway, and <code>resolvectl status</code> (or <code>/etc/resolv.conf</code>) shows the DNS servers. On macOS, use <code>ifconfig</code> (it shows the mask in hex: 0xffffff00 is 255.255.255.0), <code>netstat -rn</code> and <code>scutil --dns</code>."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Protocols, ports and commands, then the Section 1 quiz",
+      "tasks": [
+        "TCP vs UDP, the three-way handshake, the port list and the secure replacement for each cleartext protocol.",
+        "DNS record types, DHCP DORA, ICMP, and what ping, tracert, nslookup, netstat and arp each show.",
+        "Take the Section 1 quiz and aim for 90% or more before moving on."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Security fundamentals and threats",
+      "tasks": [
+        "The CIA triad with one attack and one control for each part; AAA, non-repudiation, least privilege, defense in depth and zero trust.",
+        "Malware types, social engineering types and password attacks: write a one-line scenario for each and name it."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Network attacks and defenses, then the Section 2 quiz",
+      "tasks": [
+        "DoS and DDoS, on-path attacks, ARP spoofing, DNS poisoning, MAC flooding, rogue access points and evil twins.",
+        "Firewall types, DMZs, segmentation, VPNs and IPsec, IDS vs IPS, SIEM, NAC and device hardening.",
+        "Take the Section 2 quiz and aim for 90% or more."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Wireless, cloud and access control",
+      "tasks": [
+        "WEP to WPA3, Personal vs Enterprise mode, and why hiding the SSID isn't security.",
+        "NIST's cloud service and deployment models and the shared responsibility model.",
+        "DAC, MAC, RBAC, rule-based and ABAC, plus MFA factors and single sign-on."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Governance, compliance and continuity, then the Section 3 quiz",
+      "tasks": [
+        "Policy, standard, procedure and guideline; NIST CSF 2.0 and ISO/IEC 27001; a table of which law covers which data.",
+        "BIA, RTO, RPO and MTD; BCP vs DRP; hot, warm and cold sites; full, incremental and differential backups; RAID levels.",
+        "Take the Section 3 quiz and aim for 90% or more."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Pre-assessment and the extra quizzes",
+      "tasks": [
+        "Take the PA under exam conditions and note which of the three blocks cost you the most.",
+        "Email your instructor for the extra practice quizzes one student mentions, and redo the quiz for your weakest section.",
+        "Put every missed concept into flashcards or an AI quiz session, and explain each one aloud until it's easy."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Final review and the OA",
+      "tasks": [
+        "Explain the OSI model and the CIA triad from memory, on a whiteboard or to another person.",
+        "Run through the port, address-range and continuity flashcards one last time.",
+        "Schedule and take the OA, reading each question for its keywords (connectionless, inline, per-user, data loss) before you look at the options."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "After a desk was moved, a user's PC reports that the network cable is unplugged, and the switch port's link light is off. A technician replaces a crushed patch cable and everything works again. At which OSI layer was the fault?",
+      "choices": [
+        "Layer 1, Physical",
+        "Layer 2, Data Link",
+        "Layer 3, Network",
+        "Layer 4, Transport"
+      ],
+      "answer": "Layer 1, Physical",
+      "why": "Cables, connectors, signals and link lights belong to the Physical layer, which moves raw bits. Layer 2 problems involve frames and MAC addresses (such as a switch port in the wrong VLAN), layer 3 involves IP addressing and routing (such as a wrong default gateway), and layer 4 involves ports and TCP or UDP connections (such as a blocked port). Troubleshooting from the bottom up catches physical faults first."
+    },
+    {
+      "q": "A company runs Sales and Engineering on one flat network across the same switches, and broadcast traffic is slowing everyone down. It wants separate broadcast domains without buying new switches. What should it do?",
+      "choices": [
+        "Replace the switches with hubs",
+        "Create a VLAN for each department and route between them",
+        "Give every PC a static IP address",
+        "Add a wireless access point for each department"
+      ],
+      "answer": "Create a VLAN for each department and route between them",
+      "why": "A switch keeps all its ports in one broadcast domain until you divide it with VLANs (IEEE 802.1Q). Each VLAN becomes its own broadcast domain, and a router or layer 3 switch carries traffic between them, which is also a place to filter it. Hubs would make things worse by putting everyone in one collision domain, static addresses don't reduce broadcasts, and extra access points just add devices to the same network."
+    },
+    {
+      "q": "A video-conferencing app would rather lose a few packets than pause the call while they're resent. Which transport protocol suits it, and why?",
+      "choices": [
+        "TCP, because its handshake guarantees delivery",
+        "TCP, because windowing lets it skip late packets",
+        "UDP, because it doesn't retransmit lost data",
+        "UDP, because it acknowledges packets faster than TCP"
+      ],
+      "answer": "UDP, because it doesn't retransmit lost data",
+      "why": "Real-time voice and video favor UDP: no handshake, no acknowledgments and no retransmission, so a late packet is simply skipped instead of stalling the stream. TCP's reliability comes from sequencing, acknowledgments and retransmission (the handshake only opens the connection), which suits web pages, email and file transfers but makes a call pause while lost data is resent. TCP's windowing only controls how much data is in flight; it never skips lost data, and UDP sends no acknowledgments at all."
+    },
+    {
+      "q": "A firewall administrator must allow only encrypted command-line administration of the company's Linux servers from the IT subnet. Which port should the rule permit?",
+      "choices": [
+        "TCP 23",
+        "TCP 3389",
+        "UDP 161",
+        "TCP 22"
+      ],
+      "answer": "TCP 22",
+      "why": "SSH runs on TCP 22 and encrypts the whole session, including the login. Telnet (TCP 23) gives the same command-line access in cleartext, so it should stay blocked. TCP 3389 is RDP, Windows' graphical remote desktop, and UDP 161 is SNMP, which monitors and manages devices. SFTP and SCP also use port 22 because they run over SSH."
+    },
+    {
+      "q": "A Windows laptop can't reach the internet. <code>ipconfig</code> shows the address 169.254.37.12 with the mask 255.255.0.0. What is the most likely cause?",
+      "choices": [
+        "No DHCP server answered, so it self-assigned an APIPA address",
+        "The DHCP server gave it a private address, which can't reach the internet",
+        "The DNS server is down, so names can't be resolved",
+        "The laptop has an IPv6 address instead of an IPv4 address"
+      ],
+      "answer": "No DHCP server answered, so it self-assigned an APIPA address",
+      "why": "169.254.0.0/16 is the IPv4 link-local range, which Windows calls APIPA and uses when no DHCP server answers. Check the cable or Wi-Fi connection and the DHCP server, then run <code>ipconfig /renew</code>. A private address from DHCP (10.x, 172.16-31.x or 192.168.x) works fine behind NAT, a DNS outage wouldn't change the address, and the address shown is IPv4."
+    },
+    {
+      "q": "Which of these addresses is a private (RFC 1918) address that isn't routed on the public internet?",
+      "choices": [
+        "172.32.10.5",
+        "192.169.1.20",
+        "172.20.14.5",
+        "11.0.0.1"
+      ],
+      "answer": "172.20.14.5",
+      "why": "The RFC 1918 ranges are 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16. The 172.16.0.0/12 block runs from 172.16.0.0 to 172.31.255.255, so 172.20.14.5 is private, while 172.32.10.5 sits just outside it and is public. 192.169.1.20 isn't in 192.168.0.0/16, and 11.0.0.1 isn't in 10.0.0.0/8, so both of those are public too."
+    },
+    {
+      "q": "Users can open an internal web server by typing its IP address, but they get an error when they type its name. Which command best checks what's going wrong?",
+      "choices": [
+        "<code>tracert</code>, to list each router hop to the server",
+        "<code>nslookup</code>, to query DNS for the server's name",
+        "<code>arp -a</code>, to show the local ARP cache",
+        "<code>ipconfig /release</code>, to give up the DHCP lease"
+      ],
+      "answer": "<code>nslookup</code>, to query DNS for the server's name",
+      "why": "Reaching the server by IP proves the network path works, so the fault is name resolution, and <code>nslookup</code> (or <code>dig</code>) asks DNS directly what the name resolves to. <code>tracert</code> traces a path that already works, <code>arp -a</code> shows IP-to-MAC mappings on the local network, and releasing the DHCP lease would just disconnect the PC. The usual causes are a missing or wrong DNS record or a wrong DNS server in the client's settings."
+    },
+    {
+      "q": "Ransomware encrypts a clinic's scheduling database, and staff can't open any appointments until it's restored. Which part of the CIA triad is primarily affected?",
+      "choices": [
+        "Confidentiality",
+        "Integrity",
+        "Non-repudiation",
+        "Availability"
+      ],
+      "answer": "Availability",
+      "why": "The defining harm is that authorized users can't reach their data when they need it, which is availability (in FIPS 199's terms, timely and reliable access). Tested offline backups and a recovery plan are the main defenses. Many ransomware groups also steal data before encrypting it, which adds a confidentiality breach, and the encryption does change the files, but the question asks what is primarily affected. Non-repudiation isn't part of the triad."
+    },
+    {
+      "q": "On the office LAN, an attacker's laptop keeps sending unsolicited replies telling other PCs that the default gateway's IP address belongs to the laptop's MAC address, so their outbound traffic flows through it. What is this attack?",
+      "choices": [
+        "ARP spoofing (poisoning)",
+        "DNS cache poisoning",
+        "MAC flooding",
+        "A distributed denial-of-service attack"
+      ],
+      "answer": "ARP spoofing (poisoning)",
+      "why": "ARP has no authentication, so a forged reply can map the gateway's IP address to the attacker's MAC address in other hosts' ARP caches. Their traffic then flows through the attacker, an on-path (man-in-the-middle) position for sniffing or altering it. DNS cache poisoning corrupts name-to-address answers, MAC flooding overflows a switch's address table so it floods frames out every port, and a DDoS floods a target from many sources. Defenses include dynamic ARP inspection on switches and encrypted protocols."
+    },
+    {
+      "q": "A company hosts its public website on its own server and wants internet users to reach it while keeping them away from the internal file servers. Where should the web server go?",
+      "choices": [
+        "On the internal LAN, with a port forwarded through the firewall",
+        "In a DMZ (screened subnet), firewalled off from the LAN",
+        "Outside the firewall, directly on the internet connection",
+        "On the internal LAN, reachable only through the staff VPN"
+      ],
+      "answer": "In a DMZ (screened subnet), firewalled off from the LAN",
+      "why": "A DMZ is a perimeter segment between the internet and the internal network: outsiders get restricted access to the servers placed there, and the firewall blocks traffic from the DMZ into the LAN, so a compromised web server doesn't hand over the internal network. Forwarding a port to a server on the LAN puts an internet-facing machine inside, a server outside the firewall has no protection at all, and a VPN-only server can't serve the public."
+    },
+    {
+      "q": "A small clinic's Wi-Fi uses WPA2-Personal with one passphrase every employee knows. The clinic wants each person to sign in with their own credentials so it can revoke access when someone leaves. What should it move to?",
+      "choices": [
+        "WPA3-Personal with a longer passphrase",
+        "WEP with a 128-bit key",
+        "Hiding the SSID and filtering MAC addresses",
+        "WPA3-Enterprise using 802.1X and a RADIUS server"
+      ],
+      "answer": "WPA3-Enterprise using 802.1X and a RADIUS server",
+      "why": "Enterprise mode authenticates each user through 802.1X against a RADIUS server, often tied to the staff directory, so disabling one account removes that person's Wi-Fi access without changing anything for everyone else. WPA3-Personal is stronger than WPA2-Personal but still relies on one shared passphrase. WEP is broken, and a hidden SSID or a MAC filter is easy to bypass because both are visible to anyone capturing traffic."
+    },
+    {
+      "q": "A startup wants to deploy its web application code without managing servers or operating systems; the provider should run the hardware, the OS and the runtime. Which cloud service model fits?",
+      "choices": [
+        "Infrastructure as a service (IaaS)",
+        "Platform as a service (PaaS)",
+        "Software as a service (SaaS)",
+        "A private on-premises cloud"
+      ],
+      "answer": "Platform as a service (PaaS)",
+      "why": "In PaaS the provider runs the infrastructure, operating system and runtime, and the customer deploys and manages its own applications and data (NIST SP 800-145). IaaS would leave the startup patching operating systems on virtual machines, and SaaS delivers a finished application the customer only configures and uses. A private cloud is a deployment model, not a service model, and here it would mean running the servers themselves. Under shared responsibility, the startup still secures its code, data and user access."
+    },
+    {
+      "q": "After a business impact analysis, an online store decides it can afford to lose at most 15 minutes of order data in an outage. Which metric did it just set, and what does that drive?",
+      "choices": [
+        "Recovery time objective (RTO), which sets how fast systems must be back online",
+        "Mean time between failures (MTBF), which measures hardware reliability",
+        "Recovery point objective (RPO), which sets how often data must be backed up or replicated",
+        "Maximum tolerable downtime (MTD), which sets how long the business can be offline"
+      ],
+      "answer": "Recovery point objective (RPO), which sets how often data must be backed up or replicated",
+      "why": "NIST SP 800-34 defines the RPO as the point in time to which data must be recovered after an outage, so a 15-minute RPO means backing up or replicating at least every 15 minutes. The RTO is about how long restoring service may take, not how much data is lost. MTBF measures how long equipment typically runs between failures, and MTD is the longest outage the business can survive, which the RTO has to fit inside."
+    },
+    {
+      "q": "When a new accountant joins, the help desk adds her to the Accounting group and she automatically gets the ledger application, the finance file share and the expense system. When she transfers to Sales, those permissions go away. Which access control model is this?",
+      "choices": [
+        "Role-based access control (RBAC)",
+        "Discretionary access control (DAC)",
+        "Mandatory access control (MAC)",
+        "Attribute-based access control (ABAC)"
+      ],
+      "answer": "Role-based access control (RBAC)",
+      "why": "Permissions attach to the role (Accounting), and users receive them through membership, which makes onboarding and transfers simple and supports least privilege. In DAC, each resource's owner would grant access person by person; MAC uses classification labels and clearances; and ABAC would weigh several attributes, such as device, location or time, in addition to department."
+    },
+    {
+      "q": "A software company based in Texas launches a fitness app and signs up users in France and Germany. Which regulation most directly governs how it collects and protects those users' personal data?",
+      "choices": [
+        "HIPAA",
+        "FERPA",
+        "GDPR",
+        "GLBA"
+      ],
+      "answer": "GDPR",
+      "why": "The EU's General Data Protection Regulation applies to organizations anywhere that offer goods or services to people in the EU or monitor their behavior, so the Texas company is covered for its French and German users. HIPAA applies to covered entities such as health plans and providers and their business associates, which a consumer fitness app usually isn't. FERPA protects student education records, and GLBA covers financial institutions' customer data."
+    }
+  ],
+  "pitfalls": [
+    "<b>Flipping the OSI stack.</b> Layer 1 is Physical and layer 7 is Application. Learn the mnemonic in both directions and practice naming the layer from a device, address or symptom.",
+    "<b>Device and layer mix-ups.</b> Hubs are layer 1, switches layer 2 (MAC addresses) and routers layer 3 (IP addresses). A switch doesn't split broadcast domains until you add VLANs.",
+    "<b>Port look-alikes.</b> 22 SSH vs 23 Telnet, 20/21 FTP vs 69 TFTP, 161 SNMP vs 162 SNMP traps, 389 LDAP vs 636 LDAPS, plus 3389 RDP and 445 SMB. Learn each cleartext protocol together with its secure replacement.",
+    "<b>Address-range traps.</b> Only 172.16 through 172.31 is private in the 172 block, 169.254.x.x means DHCP failed, and 127.0.0.1 is the machine itself, not the gateway.",
+    "<b>Choosing TCP for everything.</b> Real-time and quick query traffic (VoIP, streaming, DNS queries, DHCP) uses UDP; traffic that must arrive complete and in order (web pages, email, file transfers) uses TCP.",
+    "<b>CIA mismatches.</b> Outages, DoS attacks and ransomware lockouts are availability, tampering is integrity and eavesdropping is confidentiality. Encryption protects confidentiality, hashing protects integrity, and backups and redundancy protect availability.",
+    "<b>Weak Wi-Fi fixes.</b> Hiding the SSID and filtering MAC addresses aren't real security, WEP and WPA with TKIP are broken, and Personal mode means one shared passphrase; Enterprise mode (802.1X) gives per-user logins.",
+    "<b>RTO vs RPO, incremental vs differential.</b> RTO is about downtime, RPO about data loss. Incremental backups are quick to make but need every increment to restore; a differential restore needs only the last full backup plus the latest differential.",
+    "<b>Leaning on one pass report.</b> The May 2025 passer found the OA close to the PA, but that's one experience, and the governance and compliance terms are easy to skim. Cover every lesson. Older material labeled C172 (an earlier WGU course with the same name) may not match the current version."
+  ],
+  "resources": [
+    {
+      "label": "D315 course lessons and section quizzes (in the course)",
+      "kind": "official",
+      "note": "Students describe three sections, each with a quiz. The May 2025 passer treated 90% or more on every quiz as the signal to take the PA."
+    },
+    {
+      "label": "D315 Version 2 recorded instructor-led lessons (in the course)",
+      "kind": "video",
+      "note": "Linked from the course Announcements, per the May 2025 passer, who watched them at 2x instead of reading the text. A Mar 2026 commenter says they only watched the three recorded videos and took the practice exam and the quizzes."
+    },
+    {
+      "label": "Pre-assessment and coaching report (in the course)",
+      "kind": "practice",
+      "note": "Students report about 60 questions in three blocks matching the sections, and the May 2025 passer found the OA very similar. Use the coaching report to choose which section to redo."
+    },
+    {
+      "label": "Instructor's extra practice quizzes (by email, on request)",
+      "kind": "practice",
+      "note": "The May 2025 passer asked the instructor for extra quizzes after each section and scored 90+ on them before the PA."
+    },
+    {
+      "label": "WGU Connect course community",
+      "kind": "community",
+      "note": "From the course page: Course Community → Join WGU Connect → Resources, for announcements, instructor tips and links to recorded sessions."
+    },
+    {
+      "label": "Professor Messer's free Network+ N10-009 course",
+      "url": "https://www.professormesser.com/network-plus/n10-009/n10-009-video/n10-009-training-course/",
+      "kind": "video",
+      "note": "Free videos that go deeper than D315. Section 1 (networking concepts) and Section 4 (network security) cover most of the course; watch only what you need."
+    },
+    {
+      "label": "Cisco Networking Academy: Networking Basics",
+      "url": "https://www.netacad.com/courses/networking-basics",
+      "kind": "practice",
+      "note": "A free, self-paced intro course from Cisco with labs in its Packet Tracer simulator, useful if you have no networking background and want hands-on practice."
+    },
+    {
+      "label": "IANA Service Name and Transport Protocol Port Number Registry",
+      "url": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml",
+      "kind": "official",
+      "note": "The authoritative port list. You only need the dozen or so common ports in the key facts, but this settles any disagreement between study sources."
+    },
+    {
+      "label": "NIST CSRC Glossary",
+      "url": "https://csrc.nist.gov/glossary",
+      "kind": "official",
+      "note": "NIST's searchable glossary of security terms such as confidentiality, firewall, DMZ, least privilege, RTO and RPO. Each entry names the NIST or CNSS publication it comes from; NIST says the entries aren't official definitions, so cite that publication rather than the glossary."
+    },
+    {
+      "label": "NIST Cybersecurity Framework 2.0",
+      "url": "https://www.nist.gov/cyberframework",
+      "kind": "official",
+      "note": "The six functions (Govern, Identify, Protect, Detect, Respond, Recover) anchor the governance and compliance section."
+    },
+    {
+      "label": "Wireshark",
+      "url": "https://www.wireshark.org/",
+      "kind": "tool",
+      "note": "Free packet analyzer. Capture your own traffic to see a DNS query, a DHCP exchange and a TCP handshake; it makes the OSI layers concrete."
+    },
+    {
+      "label": "Anki",
+      "url": "https://apps.ankiweb.net/",
+      "kind": "tool",
+      "note": "Free spaced-repetition flashcards. The May 2025 passer made a few cards for weak spots; ports and address ranges are good candidates."
+    },
+    {
+      "label": "An AI chatbot as a tutor",
+      "kind": "tool",
+      "note": "The Mar 2026 passer, who had no networking background, used ChatGPT to teach and quiz from a study guide and fed missed questions back in. Ask it to explain why each wrong option is wrong, and check its answers against your course material."
+    }
+  ],
+  "community": {
+    "summary": "Both linked threads report passing D315 quickly. The newest (Mar 2026) poster, a Data Analytics student with no networking background, passed after three 1-2.5 hour sessions plus a review of missed questions, using ChatGPT to teach and quiz from a study guide and learning each idea three ways (on a whiteboard, by explaining it to someone, then on a paper study guide); commenters there share an OSI mnemonic, and one says they only watched the three recorded videos and took the practice exam and the quizzes. The May 2025 poster skipped the text, watched the D315 Version 2 recorded instructor lessons at 2x, scored 90+ on every section quiz and the instructor's extra quizzes, found the OA very similar to the PA in style and difficulty, and says to know the CIA triad and the OSI model well. Commenters on that thread report about 60 PA questions in three blocks and a 66-question OA finished in about 30 minutes.",
+    "coverage": "2 posts, May 2025 – Mar 2026, r/WGU",
+    "posts": [
+      {
+        "title": "Passed D315 within 4 study sessions - with no prior understanding",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1rizujv/",
+        "date": "Mar 2026",
+        "takeaway": "A Data Analytics student with no networking background used ChatGPT to teach and quiz from a study guide in three 1-2.5 hour sessions, then fed missed questions back for review. Each concept was learned three ways: on a whiteboard, by explaining it to someone, then on a paper study guide. Commenters share the OSI mnemonic (Please Do Not Throw Sausage Pizza Away), and one says they only watched the three recorded videos and took the practice exam and the quizzes."
+      },
+      {
+        "title": "How I Passed D315 Network and Security - Foundations in 24 Hours",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1kppp6e/how_i_passed_d315_network_and_security/",
+        "date": "May 2025",
+        "takeaway": "Skipped the course text and watched the D315 Version 2 recorded instructor-led videos, linked from the course Announcements, at 2x. After each section, took the section quiz plus extra quizzes the instructor emailed on request, and sat the PA only after scoring 90+ on all of them; the OA was very similar in style and difficulty. Know the CIA triad and OSI model well. Commenters report about 60 PA questions in three blocks and a 66-question OA done in about 30 minutes."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (PDF; D315 description, competencies, 3 CU, term 3 of the standard path)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "ISO/IEC 7498-1: OSI Basic Reference Model", "url": "https://www.iso.org/standard/20269.html" },
+    { "label": "RFC 1122: Requirements for Internet Hosts (TCP/IP layers)", "url": "https://www.rfc-editor.org/rfc/rfc1122" },
+    { "label": "RFC 9293: Transmission Control Protocol (TCP)", "url": "https://www.rfc-editor.org/rfc/rfc9293" },
+    { "label": "RFC 768: User Datagram Protocol (UDP)", "url": "https://www.rfc-editor.org/rfc/rfc768" },
+    { "label": "RFC 1918: Address Allocation for Private Internets", "url": "https://www.rfc-editor.org/rfc/rfc1918" },
+    { "label": "RFC 4291: IP Version 6 Addressing Architecture", "url": "https://www.rfc-editor.org/rfc/rfc4291" },
+    { "label": "IANA: Service Name and Transport Protocol Port Number Registry (port ranges and assignments)", "url": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" },
+    { "label": "NIST FIPS 199: Standards for Security Categorization (confidentiality, integrity, availability)", "url": "https://csrc.nist.gov/pubs/fips/199/final" },
+    { "label": "NIST SP 800-41 Rev. 1: Guidelines on Firewalls and Firewall Policy", "url": "https://csrc.nist.gov/pubs/sp/800/41/r1/final" },
+    { "label": "NIST SP 800-145: The NIST Definition of Cloud Computing", "url": "https://csrc.nist.gov/pubs/sp/800/145/final" },
+    { "label": "NIST SP 800-34 Rev. 1: Contingency Planning Guide (BIA, RTO, RPO)", "url": "https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final" },
+    { "label": "NIST SP 800-207: Zero Trust Architecture", "url": "https://csrc.nist.gov/pubs/sp/800/207/final" },
+    { "label": "Wi-Fi Alliance: Wi-Fi security (WPA3 requirements)", "url": "https://www.wi-fi.org/discover-wi-fi/security" },
+    { "label": "NIST Cybersecurity Framework (CSF 2.0)", "url": "https://www.nist.gov/cyberframework" }
+  ],
+  "caveats": [
+    "The course's lessons, quizzes and recorded videos sit behind the WGU login, so the three-section structure and the Version 2 materials come from student reports. This guide's topics follow WGU's competencies and public networking and security standards; if your course page shows a newer version, follow it.",
+    "Assessment numbers (about 60 PA questions in three blocks, and a 66-question OA finished in about 30 minutes) come from individual commenters on the May 2025 thread. WGU doesn't publish D315's question count, time limit or passing score.",
+    "The claim that the OA closely matches the PA comes from a single May 2025 passer; the Mar 2026 thread doesn't compare them. Treat it as encouraging, not guaranteed.",
+    "No post says whether the OA asks for subnet calculations or command output. The CIDR math and commands in this guide are background that makes scenario questions easier, not confirmed exam content.",
+    "Only two linked posts were available, and their dates are approximate, based on Reddit's relative ages.",
+    "The practice questions are original, written from the competencies and public standards; none comes from the PA, the OA or the course quizzes."
+  ]
+}

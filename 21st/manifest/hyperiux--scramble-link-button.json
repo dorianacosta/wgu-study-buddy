@@ -1,0 +1,11 @@
+{
+  "url": "https://21st.dev/@hyperiux/components/scramble-link-button",
+  "title": "Scramble Link Button | Community Components | 21st",
+  "author": "hyperiux (Hyperiux Vault)",
+  "license": "MIT License",
+  "published": "9/2/2026",
+  "dependencies": ["lucide-react"],
+  "sha256": "bae553a8a9242efe3f9f93aaf5845327fae3a8ae0966fe9668e8b906238ed6d2",
+  "verified": true,
+  "note": "Prompt captured with Change copy action > Claude Code (tab viewport 1280x800, clipboard writeText hooked in the page, nothing reached the system clipboard). 8,547 characters / 8,547 bytes (pure ASCII). The page's SHA-256 of the captured string equals the SHA-256 of the saved file byte for byte, no normalization. Text moved out of the page as a JSON-escaped string, so blank lines are exact. Info tab: Dependencies lucide-react (already in the app); Tags Button, Link, Text Animation, Underline, Scramble; License MIT License; Published 9/2/2026. Renders a real <a href> whose label scrambles into a-z0-9 glyphs on mouse enter (and on tap below 1025px) then resolves; the scrambling span carries aria-label with the real label; prefers-reduced-motion skips the scramble and the underline/arrow transitions. Defaults to watch: hoverColor #ff6b00 (set it to the theme's primary) and a vw-based font size (text-[1.1vw], max-lg 3vw, max-md 4.2vw) that the app should override with className."
+}

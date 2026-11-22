@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@aceternity/components/glowing-effect",
+  "title": "Glowing Effect | Community Components | 21st",
+  "license": "MIT License",
+  "published": "2/15/2025",
+  "dependencies": "motion, lucide-react",
+  "promptFile": "21st/prompts/aceternity--glowing-effect.md",
+  "chars": 10744,
+  "sha256": "b97a0270a9660a6a569024c260108059d8c6d6ac2fec6585b2b2f69ebd30b416",
+  "sha256Of": "file bytes",
+  "capturedSha256": "745867334814e52a3bfcf99d81909cc7b8ba97c8719ef6be0b9a49c849750243",
+  "verified": true,
+  "notes": "Page redirected to https://21st.dev/@manuarora700/components/glowing-effect (Aceternity UI by Manu Arora). Captured via Copy prompt > Change copy action > Optimized for: Claude Code; the tab viewport was set to 1440x900 because the narrow pane hid the desktop copy menu. Source listed on Info tab: ui.aceternity.com/components/glowing-effect. Raw byte sha256 of the saved file also equals the page copy (b97a0270a9660a6a569024c260108059d8c6d6ac2fec6585b2b2f69ebd30b416); file ends with the same trailing newline as the copied text.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 4 line ends (line 4 (2 spaces), line 10 (1 space), line 163 (1 space), line 169 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (10744) is the text's length in UTF-16 code units and equals the file's."
+}

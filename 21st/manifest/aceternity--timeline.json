@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@aceternity/components/timeline",
+  "title": "Timeline | Community Components | 21st",
+  "license": "MIT License",
+  "published": "12/3/2024",
+  "dependencies": "framer-motion",
+  "promptFile": "21st/prompts/aceternity--timeline.md",
+  "chars": 13074,
+  "sha256": "1747cc952457493b7612121bc43146e59a8ecfd500e7baf98abbd10980f8638b",
+  "sha256Of": "file bytes",
+  "capturedSha256": "3f25b1b59e434592654bc0d0e409ccb2f6c74f5ef0df33f1e0d780067b852fa8",
+  "verified": true,
+  "notes": "Page redirected to https://21st.dev/@manuarora700/components/timeline (Aceternity UI by Manu Arora). Captured via Copy prompt > Change copy action > Optimized for: Claude Code (tab viewport 1440x900 so the desktop copy menu is shown). Source listed on Info tab: ui.aceternity.com/components/timeline. The demo uses next/image with cdn.21st.dev image URLs. Raw byte sha256 of the saved file also equals the page copy (1747cc952457493b7612121bc43146e59a8ecfd500e7baf98abbd10980f8638b).",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (13074) is the text's length in UTF-16 code units and equals the file's."
+}

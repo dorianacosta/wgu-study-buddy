@@ -1,0 +1,686 @@
+{
+  "code": "D683",
+  "summary": "D683 is a 3-CU performance-assessment course where you plan, justify and build a working machine-learning product for a business problem you choose. Students in 2025-2026 report two tasks: a proposal form your instructor must sign (plus a proprietary-information form), then a Python project on a dataset you pick, often from Kaggle, with runnable code, a README and metrics that beat a baseline. Most 2026 posts call it lighter than D682, with reported effort from about 16-21 logged hours to about a week, so the real work is keeping the scope small, evaluating without leakage and making your code run on someone else's machine.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (signed proposal + working ML product)",
+    "format": "2 tasks (reported) · proposal signed by your instructor · Python ML project with README · graded by evaluators",
+    "details": [
+      "<b>Official:</b> D683 Advanced AI and ML (ICSC 3113, 3 CUs) is a hands-on project course that ends with a fully functional AI/ML product for a real-world business problem. Performance assessments are graded by anonymous evaluators, who send back instructional feedback when work isn't passing yet.",
+      "<b>Two tasks</b> (reported 2025-2026): Task 1 is the project proposal and Task 2 is the working ML project. The task prompts and rubrics are only visible inside the course.",
+      "<b>Task 1:</b> a proposal form you email to your course instructor, who must approve and sign it before it goes to evaluation, plus a separate proprietary-information form (Jun 2026 report). A Feb 2025 student reported 1-2 days for the instructor's approval and 1-3 days for evaluation; a Feb 2026 poster describes repeated rounds of edits.",
+      "<b>Task 2:</b> a Python ML project on a dataset you choose (often from Kaggle), with code the evaluator can run, a README, comments and metrics compared against a baseline. 2025 reports describe submitting through the course's WGU GitLab repository; the Jun 2026 author reported no write-ups and no visualizations.",
+      "<b>Scope that passed (Jun 2026):</b> one main Python file and one CSV, command-line prompts plus a simple Gradio form, 4-5 regression algorithms compared, 1-2 optimization techniques, 3-4 hyperparameters tuned, one cross-validation technique beyond the train/test split, 3 metrics and roughly a 35% improvement over a self-chosen baseline. The author felt it was still more than needed.",
+      "<b>Time:</b> about 16 logged hours (taken Apr 2025, per a Jun 2025 blog) and 21 hours (Aug 2026 graduate) up to about a week (Dec 2025). Proposal sign-off and the evaluation queue add calendar days.",
+      "<b>Prerequisite:</b> none is listed for D683 itself, but students say D682's workflow is the best preparation, and the program places D683 in its final block with D682 and D687."
+    ],
+    "tips": [
+      "Email the Task 1 proposal in your first few days; the sign-off loop is the main bottleneck, and you can build the model while you wait.",
+      "Pick a small, clean public dataset with an obvious target column. The Jun 2026 author called their dataset, with millions of rows and many weak features, a bad choice under time pressure.",
+      "Spell out every SMART letter and name the target column, the metric, the baseline and the improvement you're aiming for.",
+      "Make the code run on a stranger's machine: <code>requirements.txt</code>, relative paths, a fixed <code>random_state</code> and a README with versions and run commands. Test it in a fresh clone before you submit.",
+      "Answer the rubric literally, in its order, with plain headings, and fill in every field of the proposal form. A 2025 graduate describes grading where any deviation from the prompt counts as a miss.",
+      "If an evaluator asks for something outside the rubric, either fix it or appeal; appeals were reported to take about 3-4 days.",
+      "Plan D682, D683 and D687 together: reuse your D682 workflow here, and your D683 proposal as a starting point for D687 (confirm with the D687 instructor which project to carry forward)."
+    ]
+  },
+  "competencies": [
+    "Create a design, development and execution plan for an ML/AI project.",
+    "Describe which type of analytic method will be used to meet a defined project's purpose and goals.",
+    "Design and develop a fully functional ML/AI product that meets the needs of a business problem or an organization."
+  ],
+  "topics": [
+    {
+      "title": "Task 1: the proposal and SMART goals",
+      "eli5": "The proposal is your promise of what you'll build and how anyone can tell it worked, like a recipe card the head chef signs before you start cooking.",
+      "detail": "Students in 2026 report that Task 1 is a proposal form you email to your course instructor, who must approve and sign it before it goes to evaluation, and you also submit a separate proprietary-information form. Expect at least one round of edits: a Feb 2026 poster reportedly said getting approval felt like an English class, with nitpicks on format, tone and missing detail. Gemini's summary of 2025 posts lists vague SMART goals and proposals that never named the dataset's target column as reasons for send-backs. Write every goal so a stranger could check it: the target variable, the metric, the baseline it must beat, by how much, and by when.",
+      "points": [
+        "SMART = Specific, Measurable, Achievable, Relevant, Time-bound; address each letter on purpose.",
+        "Name the dataset, its source and license, the target column, and whether the problem is regression or classification.",
+        "State the baseline and the margin, for example test RMSE at least 20% below a mean-predicting baseline.",
+        "Keep the scope small: one problem, one dataset, a handful of models, and a short list of what's out of scope.",
+        "Send it early: a 2025 student reported 1-2 days for the instructor's approval, then 1-3 days for evaluation, and you can build Task 2 while you wait."
+      ]
+    },
+    {
+      "title": "Choosing a dataset",
+      "eli5": "Pick ingredients that come already washed and chopped: a small, tidy public dataset lets you spend your time on the model instead of on cleanup.",
+      "detail": "In D683 you choose the dataset, and students commonly pull one from Kaggle. The Jun 2026 tips author chose a dataset with millions of rows and many weakly predictive features, enjoyed it, and still called it a bad choice under time pressure. Look for one table with a clear target column, documented features that plausibly relate to it, few missing values and an explicit license. Public data probably also keeps the proprietary-information form simple, though what the form asks isn't public; the same author wondered why anyone would use proprietary data at all.",
+      "points": [
+        "Good signs: one CSV, a clear numeric or categorical target, thousands (not millions) of rows, and a data dictionary.",
+        "Red flags: no license, no target, heavy missingness, or columns that give away the answer (IDs, dates recorded after the outcome).",
+        "Make sure evaluators can get the data: ship the file in the repo or document a one-step download.",
+        "Record the source URL, author, version and access date for the README and any citation.",
+        "Avoid employer or customer data unless you have explicit permission to use it."
+      ]
+    },
+    {
+      "title": "Matching the analytic method to the goal",
+      "eli5": "First decide what kind of question you're asking: 'how much?' is regression, 'which one?' is classification, and 'what natural groups exist?' is clustering.",
+      "detail": "The second official competency asks you to describe which type of analytic method meets the project's purpose and goals. Trace a straight line from the business goal to the problem type to the model family to the metric: a numeric target means supervised regression, a categorical target means supervised classification, and no labels means unsupervised methods such as clustering. Then justify the candidate algorithms by your data (size, feature types, nonlinearity, need for interpretability) and justify the metric by the business cost of each kind of error. Students describe D683 as a standard ML-model workflow with classical libraries such as scikit-learn, not a generative-AI build.",
+      "points": [
+        "Numeric target (price, minutes, demand): regression, scored with MAE, RMSE and R².",
+        "Category target (churn, fraud, pass/fail): classification, scored with precision, recall, F1 and ROC-AUC plus a confusion matrix.",
+        "No labels (customer segments): clustering, judged by cluster quality and whether the groups make business sense.",
+        "Every method gets a naive baseline: the mean or median for regression, the most frequent class for classification.",
+        "The Jun 2026 tips author framed a regression problem, compared 4-5 algorithms and kept one."
+      ]
+    },
+    {
+      "title": "Exploring and cleaning the data",
+      "eli5": "Before you teach a model anything, look under the hood: what's in the data, what's missing and what's broken.",
+      "detail": "Exploratory data analysis (EDA) checks the shape of the table, column types, missing values, duplicates, the target's distribution and obvious outliers. It's also where you audit for leakage: drop columns that would only be known after the outcome (a cancellation date when predicting cancellation) and pure identifier columns. Keep every cleaning step in code rather than editing the CSV by hand, so the evaluator's run reproduces it. The Jun 2026 author shipped no visualizations, while a 2025 summary listed metrics with visuals, so add plots when your rubric asks for them or when they explain a decision.",
+      "points": [
+        "pandas first look: <code>df.shape</code>, <code>df.info()</code>, <code>df.describe()</code>, <code>df.isna().sum()</code>, <code>df.duplicated().sum()</code>.",
+        "Check the target: class balance for classification, skew and outliers for regression.",
+        "Drop leaky columns and pure IDs, and note why in a comment.",
+        "Plan imputation per column (median for skewed numbers, most frequent for categories) and do it inside the pipeline, not on the full dataset.",
+        "Write down each cleaning decision for the README."
+      ]
+    },
+    {
+      "title": "Preprocessing pipelines and leakage",
+      "eli5": "A pipeline is an assembly line: every batch of data passes the same stations in the same order, so training, testing and live predictions never drift apart.",
+      "detail": "Leakage means building the model with information that wouldn't be available at prediction time, and it makes scores look better than they really are. scikit-learn's rule is to split into train and test first and never call <code>fit</code> on test data: <code>fit_transform</code> on the training set, <code>transform</code> on the test set. A <code>Pipeline</code>, with a <code>ColumnTransformer</code> for mixed numeric and categorical columns, enforces this automatically inside every cross-validation fold and hyperparameter search. Saving the whole fitted pipeline also prevents the mirror-image bug of feeding unscaled inputs to the model in your prediction UI.",
+      "points": [
+        "Split first; fit scalers, imputers, encoders and feature selectors on training data only.",
+        "<code>ColumnTransformer</code>: scale numeric columns and one-hot encode categorical ones in one step.",
+        "Standardization <code>z = (x − μ) / σ</code> uses the training μ and σ, even for test rows and new inputs.",
+        "One-hot encode nominal categories; coding them as 0, 1, 2 implies a false order to linear models.",
+        "Search parameters inside a pipeline use double underscores, for example <code>model__max_depth</code>."
+      ]
+    },
+    {
+      "title": "Baselines and comparing models",
+      "eli5": "A baseline is the 'just guess the average' score; your model is only worth something if it clearly beats that guess.",
+      "detail": "scikit-learn's <code>DummyRegressor</code> (mean, median, quantile or constant) and <code>DummyClassifier</code> (most_frequent, prior, stratified, uniform or constant) ignore the inputs and give you a floor to beat. Compare several algorithms with different strengths, such as linear regression, a regularized linear model, a decision tree, a random forest and gradient boosting, inside the same preprocessing pipeline and scored on the same cross-validation folds. Choose the winner on cross-validation scores, never on the test set. The Jun 2026 tips author compared 4-5 regression algorithms, reported 3 metrics and stopped at roughly a 35% improvement over a baseline they chose.",
+      "points": [
+        "Percent improvement for an error metric = (baseline − model) / baseline × 100.",
+        "Use identical folds for every model: the same integer <code>cv</code>, or one shuffling splitter with a fixed integer <code>random_state</code>.",
+        "Report mean ± standard deviation across folds, not just the best fold.",
+        "Regression candidates: <code>LinearRegression</code>, <code>Ridge</code>, <code>Lasso</code>, <code>RandomForestRegressor</code>, <code>GradientBoostingRegressor</code>.",
+        "Scale-sensitive models (regularized linear models, SVMs, k-NN, neural nets) need scaling; tree models mostly don't."
+      ]
+    },
+    {
+      "title": "Cross-validation",
+      "eli5": "Instead of one practice test, cross-validation gives the model several practice tests on different slices of the training data and averages the grades.",
+      "detail": "In k-fold cross-validation you split the training set into k folds, train on k−1 of them, validate on the one left out, repeat k times and average the scores. scikit-learn's default is 5 folds; with an integer <code>cv</code> and a classifier it uses <code>StratifiedKFold</code>, which keeps class proportions similar in each fold. <code>KFold</code> doesn't shuffle unless you pass <code>shuffle=True</code> (add a <code>random_state</code> so the folds repeat). For time-ordered data use <code>TimeSeriesSplit</code>, which always validates on rows that come after the training rows. Keep a test set held out for one final evaluation.",
+      "points": [
+        "<code>cross_val_score</code> returns one score per fold; <code>cross_validate</code> can return several metrics plus fit and score times.",
+        "A training score far above the validation score signals overfitting (high variance); both low signals underfitting (high bias).",
+        "The Jun 2026 author used one cross-validation technique beyond the basic train/test split.",
+        "Never tune against the test set; that leaks test information and inflates the final score.",
+        "Shuffling time-ordered data before splitting leaks the future into training."
+      ]
+    },
+    {
+      "title": "Hyperparameter tuning and optimization",
+      "eli5": "Hyperparameters are the knobs you set before training, like oven temperature and baking time; tuning means trying settings and keeping the one that does best on practice tests.",
+      "detail": "Parameters such as regression weights are learned during training, while hyperparameters such as tree depth, number of trees, <code>alpha</code> or the learning rate are set before it. <code>GridSearchCV</code> scores every combination with cross-validation, so its cost is candidates × folds fits plus one refit; <code>RandomizedSearchCV</code> samples <code>n_iter</code> candidates (default 10), so its budget doesn't grow with the grid. A 2025 D683 walkthrough favored randomized search to avoid runs that take hours, and the Jun 2026 author tuned 3-4 hyperparameters with 1-2 simple optimization techniques. Training itself is optimization too: gradient descent steps the weights against the loss gradient, and backpropagation computes those gradients in neural networks, which a Sep 2026 commenter said to review for D682 and D683.",
+      "points": [
+        "<code>GridSearchCV</code> fits = product of the grid sizes × folds, plus 1 refit (default <code>refit=True</code>).",
+        "<code>RandomizedSearchCV(n_iter=20, cv=5)</code> = 100 cross-validation fits plus 1 refit, however large the search space.",
+        "Results live in <code>best_params_</code>, <code>best_score_</code> and <code>best_estimator_</code>.",
+        "Regularization knobs: larger <code>alpha</code> is stronger in <code>Ridge</code> and <code>Lasso</code>; smaller <code>C</code> is stronger in <code>LogisticRegression</code>.",
+        "Gradient descent: <code>w ← w − η · ∂L/∂w</code>; a learning rate η that's too large overshoots and diverges."
+      ]
+    },
+    {
+      "title": "Choosing and reporting metrics",
+      "eli5": "A metric is the scoreboard: pick the one that keeps score the way the business cares about, and always post the baseline's score next to yours.",
+      "detail": "For regression, MAE is the average absolute miss and RMSE is the square root of the average squared miss (both in the target's units, with RMSE punishing big misses more), while R² is the share of variance explained, where predicting the mean scores 0 and a worse model goes negative. For classification, accuracy misleads on imbalanced data, so add precision (how many flagged cases were right), recall (how many real cases you caught) and F1, plus ROC-AUC when you have probability scores. scikit-learn scorers follow a 'higher is better' rule, so error metrics appear as <code>neg_mean_absolute_error</code> or <code>neg_root_mean_squared_error</code> and come back negative. Report the final metrics once, on the untouched test set, beside the baseline and your SMART target.",
+      "points": [
+        "<code>MAE = (1/n) Σ |y − ŷ|</code>; <code>RMSE = √((1/n) Σ (y − ŷ)²)</code>; <code>R² = 1 − SS<sub>res</sub> / SS<sub>tot</sub></code>.",
+        "Precision <code>TP / (TP + FP)</code>, recall <code>TP / (TP + FN)</code>, F1 <code>2PR / (P + R)</code>.",
+        "Use <code>root_mean_squared_error</code> (scikit-learn 1.4+); the current <code>mean_squared_error</code> has no <code>squared=</code> argument, so older tutorials that pass it break.",
+        "Three metrics is what the Jun 2026 author reported; tie at least one directly to your SMART goal.",
+        "Flip the sign of <code>neg_*</code> cross-validation scores before you report them."
+      ]
+    },
+    {
+      "title": "A simple prediction interface",
+      "eli5": "The 'product' just needs a front door: a way for someone to type in values and get a prediction back.",
+      "detail": "The third official competency asks for a fully functional ML/AI product that meets a business need. The Jun 2026 author's version ran from the command line with a couple of prompts and then opened a simple local Gradio form that took inputs and returned a prediction, and they noted that other Python UI libraries would work as well. Keep it thin: load the saved pipeline, collect and validate inputs, call <code>predict</code>, and show the result with units. Because the saved pipeline includes preprocessing, new inputs get exactly the same treatment as the training data.",
+      "points": [
+        "CLI: <code>input()</code> prompts or <code>argparse</code> flags, for example separate train and predict modes.",
+        "Gradio: <code>gr.Interface(fn=predict, inputs=[...], outputs=...)</code>, then <code>.launch()</code> serves a local web form.",
+        "Streamlit is an alternative, started with <code>streamlit run app.py</code>.",
+        "Save with <code>joblib.dump</code> and reload with <code>joblib.load</code>; load pickle-based files only from trusted sources.",
+        "scikit-learn doesn't support loading a model saved under a different scikit-learn version, so pin versions or retrain on first run.",
+        "Put the UI library in <code>requirements.txt</code>; missing dependencies are a reported reason for returns."
+      ]
+    },
+    {
+      "title": "Reproducible code: requirements, paths, seeds",
+      "eli5": "Your project has to work on the evaluator's computer, not just yours, so pack everything it needs and leave clear directions.",
+      "detail": "Code that won't run for evaluators is the most consistent technical return reason in the reports: a 2025 student needed three submissions because of dependency problems, and 2025 summaries mention hard-coded file paths and READMEs missing versions or run steps. Work in a virtual environment, record exact versions with <code>python -m pip freeze &gt; requirements.txt</code>, and build file paths relative to the script. Pass an integer <code>random_state</code> to the split, any shuffling cross-validation splitter and each model so the numbers in your README repeat. Before you submit, clone the repo into an empty folder, create a fresh environment, install from the requirements file and run everything end to end.",
+      "points": [
+        "<code>python -m venv .venv</code>, activate it, install your packages, then freeze them to <code>requirements.txt</code>.",
+        "Evaluators install with <code>python -m pip install -r requirements.txt</code>; run that exact command yourself in a clean environment.",
+        "No absolute paths like <code>C:\\Users\\you\\Desktop\\data.csv</code>; use <code>Path(__file__).resolve().parent / 'data' / 'data.csv'</code>.",
+        "Seeds: <code>train_test_split(..., random_state=42)</code>, <code>KFold(n_splits=5, shuffle=True, random_state=42)</code>, <code>RandomForestRegressor(random_state=42)</code>.",
+        "Ship the data (or a documented download step) and anything the UI loads."
+      ]
+    },
+    {
+      "title": "Documenting results and submitting",
+      "eli5": "Your README is the receipt: it shows what you promised in the proposal, what you actually got, and how anyone can check it.",
+      "detail": "The Jun 2026 author reported no separate write-ups in D683, so the README and code comments carry the explanation; extensive comments and a thorough README were part of what they submitted. Restate each SMART goal next to the measured result, show the baseline and final metrics in one small table, and name the model and tuned hyperparameters that won. Be honest about limits, such as a goal you missed or a feature you couldn't use. 2025 reports describe committing to the course's GitLab repository, some on a working branch, so follow your task's submission steps exactly.",
+      "points": [
+        "Results table: the baseline, each candidate's cross-validation mean ± std, and the final model's test metrics.",
+        "One line per SMART goal: target, achieved value, met or not met.",
+        "Report the winning settings from <code>best_params_</code> and why that model won.",
+        "Comment the code by stage: load, clean, split, pipeline, compare, tune, evaluate, save, predict.",
+        "Cite the dataset consistently, and use APA style if the rubric asks for it (plain headings, no numbering)."
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "SMART goal", "value": "Specific, Measurable, Achievable, Relevant, Time-bound", "note": "Address each letter; vague goals were a reported 2025 reason for send-backs." },
+    { "label": "Problem type to method", "value": "numeric target → regression; category → classification; no labels → clustering", "note": "Competency 2: business goal → method → metric." },
+    { "label": "Percent improvement (error metric)", "value": "<code>(baseline − model) / baseline × 100</code>", "note": "For R², report the absolute gain instead; a mean-predicting baseline scores 0." },
+    { "label": "MAE", "value": "<code>(1/n) Σ |y − ŷ|</code>", "note": "Average miss, in the target's units." },
+    { "label": "MSE and RMSE", "value": "<code>MSE = (1/n) Σ (y − ŷ)²</code>; <code>RMSE = √MSE</code>", "note": "RMSE is in target units and punishes big misses more than MAE." },
+    { "label": "R²", "value": "<code>1 − SS<sub>res</sub> / SS<sub>tot</sub></code>", "note": "Best is 1.0; always predicting the mean scores 0; a worse model goes negative." },
+    { "label": "Precision and recall", "value": "<code>TP / (TP + FP)</code> and <code>TP / (TP + FN)</code>", "note": "Favor recall when misses are costly, precision when false alarms are." },
+    { "label": "F1", "value": "<code>2PR / (P + R) = 2TP / (2TP + FP + FN)</code>" },
+    { "label": "Accuracy", "value": "<code>(TP + TN) / (TP + TN + FP + FN)</code>", "note": "Misleading on imbalanced classes; compare it with the majority-class baseline." },
+    { "label": "ROC-AUC", "value": "chance a random positive is scored above a random negative; 0.5 = random, 1.0 = perfect", "note": "Needs <code>predict_proba</code> or decision scores, not 0/1 labels." },
+    { "label": "Dummy baselines", "value": "<code>DummyRegressor(strategy='mean')</code>, <code>DummyClassifier(strategy='most_frequent')</code>", "note": "They ignore the inputs; your model has to beat them." },
+    { "label": "Train/test split", "value": "<code>train_test_split(X, y, test_size=0.2, random_state=42)</code>", "note": "Defaults: 25% test, shuffled, no fixed seed; add <code>stratify=y</code> for classes." },
+    { "label": "Leakage rule", "value": "split first; <code>fit_transform</code> on train, <code>transform</code> on test, or wrap everything in a <code>Pipeline</code>" },
+    { "label": "Standardization", "value": "<code>z = (x − μ) / σ</code> using the training μ and σ" },
+    { "label": "k-fold cross-validation", "value": "train on k−1 folds, validate on 1, repeat k times, report mean ± std", "note": "Default is 5 folds; classifiers get <code>StratifiedKFold</code>; <code>KFold</code> doesn't shuffle unless told to." },
+    { "label": "Time-ordered data", "value": "<code>TimeSeriesSplit</code>", "note": "Validates only on later rows; don't shuffle time series." },
+    { "label": "GridSearchCV cost", "value": "candidates × folds fits, plus 1 refit", "note": "<code>refit=True</code> is the default." },
+    { "label": "RandomizedSearchCV cost", "value": "<code>n_iter</code> × folds fits, plus 1 refit", "note": "<code>n_iter</code> defaults to 10; the budget doesn't grow with the grid." },
+    { "label": "Pipeline parameter names", "value": "<code>step__param</code>, for example <code>model__max_depth</code>" },
+    { "label": "Scorer names", "value": "<code>neg_mean_absolute_error</code>, <code>neg_root_mean_squared_error</code>, <code>r2</code>", "note": "Errors are negated so higher is always better; flip the sign to report them." },
+    { "label": "RMSE function", "value": "<code>root_mean_squared_error(y_true, y_pred)</code>", "note": "Added in scikit-learn 1.4; <code>mean_squared_error</code> no longer takes <code>squared=</code>." },
+    { "label": "Regularization knobs", "value": "<code>Ridge</code>/<code>Lasso</code>: larger <code>alpha</code> = stronger; <code>LogisticRegression</code>: smaller <code>C</code> = stronger" },
+    { "label": "Parameter vs hyperparameter", "value": "learned during training (weights) vs set before training (depth, alpha, learning rate)" },
+    { "label": "Virtual environment and requirements", "value": "<code>python -m venv .venv</code>; <code>python -m pip freeze &gt; requirements.txt</code>; <code>python -m pip install -r requirements.txt</code>", "note": "Activate with <code>source .venv/bin/activate</code> (macOS/Linux) or <code>.venv\\Scripts\\activate</code> (Windows)." },
+    { "label": "Relative data path", "value": "<code>Path(__file__).resolve().parent / 'data' / 'file.csv'</code>", "note": "From <code>pathlib</code>; works on any machine and OS." },
+    { "label": "Save and load a model", "value": "<code>joblib.dump(pipe, 'model.joblib')</code> / <code>joblib.load('model.joblib')</code>", "note": "Load only trusted files, with the same scikit-learn version that saved them." },
+    { "label": "Gradient descent", "value": "<code>w ← w − η · ∂L/∂w</code>", "note": "Too large a learning rate overshoots and diverges; too small is slow." },
+    { "label": "Activations", "value": "sigmoid <code>1 / (1 + e<sup>−x</sup>)</code>; ReLU <code>max(0, x)</code>", "note": "Nonlinear activations let stacked layers model nonlinear patterns." },
+    { "label": "APA headings", "value": "Level 1: centered, bold, title case; Level 2: flush left, bold, title case; no numbers or letters in headings", "note": "Only matters if your rubric asks for APA; don't label the opening section Introduction." }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Read the tasks and build your checklist",
+      "tasks": [
+        "Open both tasks, the proposal form and the proprietary-information form, and save PDFs of the rubrics.",
+        "Turn every rubric row and form field into a checklist you'll tick off before each submission.",
+        "Note how each piece is submitted (email to the instructor, the course repository, the task portal).",
+        "Skim your D682 code and notes; students describe D683 as a lighter rerun of that workflow."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Pick the problem and the dataset",
+      "tasks": [
+        "Shortlist 2-3 public datasets with a clear target column and license (Kaggle is the common source).",
+        "Load each one and check rows, columns, missing values and the target's type.",
+        "Choose the simplest one, decide regression or classification, and name your baseline."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Write and send the Task 1 proposal",
+      "tasks": [
+        "Problem statement, stakeholders, and why ML fits the problem.",
+        "SMART goals with the target column, metric, baseline, improvement target and deadline.",
+        "Scope, tools (Python, pandas, scikit-learn, a UI library), milestones and risks.",
+        "Email the proposal to your instructor for a signature, and complete the proprietary-information form too (the Jun 2026 author says it must also be submitted)."
+      ]
+    },
+    {
+      "day": "Days 4-5",
+      "focus": "Set up the project while you wait",
+      "tasks": [
+        "Clone the course repository and create a working branch if the instructions ask for one.",
+        "Create a virtual environment, install packages and write <code>requirements.txt</code>.",
+        "Load the CSV with a relative path; write commented EDA and cleaning code.",
+        "Hold out a test split and score a <code>DummyRegressor</code> or <code>DummyClassifier</code> baseline."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Revise and submit Task 1",
+      "tasks": [
+        "Apply every instructor comment exactly, including format and tone notes.",
+        "Re-email for the signature, then submit Task 1 the way the course instructions say.",
+        "Expect more than one round; keep building Task 2 in the meantime."
+      ]
+    },
+    {
+      "day": "Days 7-8",
+      "focus": "Build the pipeline and compare models",
+      "tasks": [
+        "Pipeline: imputer and scaler or encoder (via <code>ColumnTransformer</code>) plus the model.",
+        "Compare 4-5 algorithms with the same k-fold cross-validation on the training set; log mean ± std.",
+        "Leave the test set untouched."
+      ]
+    },
+    {
+      "day": "Days 9-10",
+      "focus": "Tune, then evaluate once",
+      "tasks": [
+        "Tune 3-4 hyperparameters of the best 1-2 models; <code>RandomizedSearchCV</code> keeps run time down.",
+        "Score the final model once on the test set with 3 metrics and compute the percent improvement over the baseline.",
+        "Save the fitted pipeline with <code>joblib</code>."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Add the product interface",
+      "tasks": [
+        "Command-line prompts or flags for training and predicting.",
+        "A simple Gradio or Streamlit form that loads the saved pipeline and returns a prediction with units.",
+        "Validate inputs (ranges, allowed categories) and handle bad input gracefully."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "README and comments",
+      "tasks": [
+        "Summary, dataset source and license, Python version, OS and hardware.",
+        "Setup and run commands, expected output, and how to open the UI.",
+        "Results table against the baseline and each SMART goal, plus limitations."
+      ]
+    },
+    {
+      "day": "Day 13",
+      "focus": "Clean-machine test and push",
+      "tasks": [
+        "Clone into a new folder, make a fresh virtual environment, install from <code>requirements.txt</code> and run everything.",
+        "Fix any path, version or missing-file error and rerun until it works on the first try.",
+        "Commit with clear messages and push."
+      ]
+    },
+    {
+      "day": "Day 14",
+      "focus": "Self-review and submit Task 2",
+      "tasks": [
+        "Tick every rubric row against your checklist.",
+        "Check that every SMART goal has a measured result next to it.",
+        "Submit Task 2."
+      ]
+    },
+    {
+      "day": "Days 15-18",
+      "focus": "Evaluation window and revisions",
+      "tasks": [
+        "Start D687 Task 1 while you wait; reusing the D683 proposal is common, but confirm with the D687 instructor.",
+        "If the task comes back, fix exactly what the evaluator lists and resubmit.",
+        "If a request isn't in the rubric, decide whether to just fix it or appeal (reported to take about 3-4 days)."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which goal statement would best survive a SMART-goal review on a D683 proposal?",
+      "choices": [
+        "Build an accurate machine learning model that helps the company price homes better.",
+        "Try several algorithms on the housing data and keep whichever one seems to work best.",
+        "By the Task 2 submission date, predict sale price on a held-out test set with an RMSE at least 20% lower than a mean-price baseline, so agents can set listing prices faster.",
+        "Reach 100% accuracy on the training data so the model never makes a mistake."
+      ],
+      "answer": "By the Task 2 submission date, predict sale price on a held-out test set with an RMSE at least 20% lower than a mean-price baseline, so agents can set listing prices faster.",
+      "why": "It's Specific (sale price, held-out test set), Measurable (RMSE at least 20% below a named baseline), Achievable (a modest gain over a naive baseline), Relevant (faster, better listing prices) and Time-bound (the submission date). The first two have no metric, baseline or deadline. The last one targets training data, which rewards overfitting, and uses a classification metric for a numeric target."
+    },
+    {
+      "q": "A clinic has two years of appointment records, including how many minutes each patient waited, and wants to estimate the wait for future appointments. Which analytic method fits best?",
+      "choices": [
+        "Supervised classification",
+        "Supervised regression",
+        "Unsupervised clustering",
+        "Reinforcement learning"
+      ],
+      "answer": "Supervised regression",
+      "why": "The target (minutes waited) is recorded for past rows, so the problem is supervised, and it's a number, so it's regression, scored with MAE, RMSE or R². Classification would need categories such as long wait yes/no, clustering has no target at all, and reinforcement learning learns actions from rewards. Because the records are time-ordered, validate on later appointments, for example with <code>TimeSeriesSplit</code>."
+    },
+    {
+      "q": "You have about two weeks for D683 alongside other courses. Which dataset is the safest choice?",
+      "choices": [
+        "A customer table exported from your employer's database",
+        "A scraped dataset with millions of rows, no license and dozens of weakly related features",
+        "A set of product reviews with no outcome column, for a supervised prediction goal",
+        "A public dataset with a clear license, a labeled target column and about 10,000 mostly complete rows"
+      ],
+      "answer": "A public dataset with a clear license, a labeled target column and about 10,000 mostly complete rows",
+      "why": "It's legal to use, has a label to learn from, and is small and clean enough to iterate on quickly. Employer data brings permission and proprietary-data questions (Task 1 reportedly includes a proprietary-information form). Millions of rows with weak features is what the Jun 2026 tips author called a bad choice under time pressure, and a missing license is a problem on its own. Without an outcome column, a supervised goal has nothing to predict."
+    },
+    {
+      "q": "You run <code>StandardScaler().fit_transform(X)</code> on every row, then call <code>train_test_split</code>, train a model and get an excellent test score. What's wrong?",
+      "choices": [
+        "The scaler learned the mean and standard deviation from rows that ended up in the test set, so the test score is optimistic",
+        "StandardScaler can only be applied after the model is trained",
+        "Scaling is never useful, so the step only wastes time",
+        "train_test_split cannot accept scaled data"
+      ],
+      "answer": "The scaler learned the mean and standard deviation from rows that ended up in the test set, so the test score is optimistic",
+      "why": "Test rows influenced the preprocessing, which is data leakage: the model benefits from information it wouldn't have at prediction time. scikit-learn's rule is to split first, <code>fit_transform</code> on the training set and only <code>transform</code> the test set, or put the scaler and model in a <code>Pipeline</code> so every cross-validation fold and search refits the scaler on its own training portion. With plain scaling the inflation may be small, but with steps like feature selection it can be dramatic: in scikit-learn's random-data example, selecting features before the split gave 0.76 accuracy where the honest answer was about 0.5."
+    },
+    {
+      "q": "Your data is daily store sales from 2022 to 2025, and the model must forecast future days. Which cross-validation splitter fits best?",
+      "choices": [
+        "<code>KFold(n_splits=5, shuffle=True)</code>",
+        "<code>TimeSeriesSplit</code>",
+        "<code>StratifiedKFold(n_splits=5)</code>",
+        "<code>LeaveOneOut()</code>"
+      ],
+      "answer": "<code>TimeSeriesSplit</code>",
+      "why": "<code>TimeSeriesSplit</code> always trains on earlier rows and validates on later ones, which mirrors real forecasting. Shuffled <code>KFold</code> lets future days into the training folds and inflates the score. <code>StratifiedKFold</code> balances class labels, which a numeric sales target doesn't have, and <code>LeaveOneOut</code> is expensive and also ignores time order."
+    },
+    {
+      "q": "A <code>GridSearchCV</code> with <code>cv=5</code> searches <code>n_estimators</code> in [100, 200, 300], <code>max_depth</code> in [None, 10, 20] and <code>min_samples_leaf</code> in [1, 2, 4, 8]. How many model fits does the cross-validated search run, not counting the final refit?",
+      "choices": [
+        "36",
+        "50",
+        "180",
+        "900"
+      ],
+      "answer": "180",
+      "why": "Candidates = 3 × 3 × 4 = 36. Each candidate is trained once per fold: 36 × 5 = 180 fits. With the default <code>refit=True</code>, one more fit on the whole training set makes 181. 50 comes from adding the list sizes (3 + 3 + 4 = 10, times 5) instead of multiplying them. For comparison, <code>RandomizedSearchCV(n_iter=20, cv=5)</code> runs 20 × 5 = 100 fits no matter how large the search space is."
+    },
+    {
+      "q": "Your mean-predicting baseline has a test RMSE of $50,000, and your tuned model's test RMSE is $32,500. What's the percent improvement over the baseline?",
+      "choices": [
+        "17.5%",
+        "35%",
+        "53.8%",
+        "65%"
+      ],
+      "answer": "35%",
+      "why": "Improvement = (baseline − model) / baseline = (50,000 − 32,500) / 50,000 = 17,500 / 50,000 = 0.35, or 35%. 53.8% divides the gap by the model's RMSE (17,500 / 32,500), 65% is just the ratio 32,500 / 50,000, and 17.5 is the raw gap in thousands of dollars. The Jun 2026 tips author stopped at roughly this level of improvement."
+    },
+    {
+      "q": "True values are y = [10, 12, 15, 20] and the model predicts ŷ = [11, 12, 13, 22]. Compute MAE, RMSE and R².",
+      "answer": "MAE = 1.25, RMSE = 1.5, R² ≈ 0.84",
+      "why": "Residuals y − ŷ = [−1, 0, 2, −2]. MAE = (1 + 0 + 2 + 2) / 4 = 5 / 4 = 1.25. MSE = (1 + 0 + 4 + 4) / 4 = 9 / 4 = 2.25, so RMSE = √2.25 = 1.5. The mean of y is 57 / 4 = 14.25, so SS<sub>tot</sub> = (−4.25)² + (−2.25)² + 0.75² + 5.75² = 18.0625 + 5.0625 + 0.5625 + 33.0625 = 56.75, and SS<sub>res</sub> = 9. R² = 1 − 9 / 56.75 ≈ 1 − 0.159 = 0.841. RMSE is larger than MAE because squaring gives the two misses of 2 extra weight."
+    },
+    {
+      "q": "A churn classifier is tested on 1,000 customers: TP = 45, FN = 15, FP = 30, TN = 910. Which set of metrics is correct?",
+      "choices": [
+        "Precision 0.75, recall 0.60, F1 ≈ 0.67",
+        "Precision 0.955, recall 0.75, F1 ≈ 0.84",
+        "Precision 0.60, recall 0.75, F1 ≈ 0.67",
+        "Precision 0.60, recall 0.94, F1 ≈ 0.73"
+      ],
+      "answer": "Precision 0.60, recall 0.75, F1 ≈ 0.67",
+      "why": "Precision = TP / (TP + FP) = 45 / 75 = 0.60. Recall = TP / (TP + FN) = 45 / 60 = 0.75. F1 = 2TP / (2TP + FP + FN) = 90 / 135 ≈ 0.667. Accuracy is (45 + 910) / 1,000 = 0.955, but always predicting no churn already scores 940 / 1,000 = 0.94, which is why accuracy alone hides how the model handles the rare class. One distractor swaps precision and recall, another uses accuracy as if it were precision, and the last treats the 0.94 baseline accuracy as recall."
+    },
+    {
+      "q": "Stakeholders want your regression model's typical error in dollars, and they care most about avoiding occasional very large misses. Which metric should lead your report?",
+      "choices": [
+        "MAE",
+        "R²",
+        "Accuracy",
+        "RMSE"
+      ],
+      "answer": "RMSE",
+      "why": "RMSE is in the target's units, and because errors are squared before averaging, large misses count more than they do in MAE. MAE is also in dollars but weights every miss linearly, R² is unitless (the share of variance explained), and accuracy is a classification metric. A typical report leads with RMSE and adds MAE and R² as the other two metrics."
+    },
+    {
+      "q": "The evaluator runs your project and gets <code>FileNotFoundError</code> for <code>C:\\Users\\you\\Desktop\\housing.csv</code>. What's the best fix?",
+      "choices": [
+        "Keep the CSV in the repo and build its path relative to the script with <code>pathlib</code>",
+        "Ask the evaluator to create the same folder on their computer",
+        "Switch the path to your laptop's Linux-style home folder instead",
+        "Rename the file to <code>data.csv</code> and keep the absolute path"
+      ],
+      "answer": "Keep the CSV in the repo and build its path relative to the script with <code>pathlib</code>",
+      "why": "Hard-coded absolute paths are a reported reason D683 code failed for evaluators. Put the data in the repo (or document a one-step download) and build the path from the script's own location, for example <code>Path(__file__).resolve().parent / 'data' / 'housing.csv'</code>. Every other option still depends on folders that exist only on your machine."
+    },
+    {
+      "q": "List what your README needs so an evaluator can run your D683 project and check it against your proposal.",
+      "answer": "A short project summary; the dataset's source, license and location; the Python version and the OS and hardware you used; setup steps (create a virtual environment, then <code>python -m pip install -r requirements.txt</code>); the exact commands to train, predict and open the UI; what output to expect; and a results table comparing the model with the baseline for each SMART goal.",
+      "why": "Gemini's summary of 2025 posts lists READMEs missing Python and library versions, hardware details or run instructions among the reasons D683 work came back, and the Jun 2026 author called a thorough README part of what they submitted. Versions matter because scikit-learn doesn't support loading a model saved under a different version. If a stranger can follow the README on a fresh machine and reproduce your numbers, you've covered the most common reproducibility returns."
+    }
+  ],
+  "pitfalls": [
+    "Picking a huge or messy dataset. The Jun 2026 tips author chose millions of rows with many weakly predictive features and called it a bad choice under time pressure.",
+    "Vague SMART goals: not addressing every letter, or never naming the target column. Both are reported 2025 reasons proposals came back.",
+    "Treating the instructor's sign-off as a formality. A Feb 2026 poster describes repeated send-backs over format, tone and missing detail, so proofread and complete every field before you email it.",
+    "Code that only runs on your machine: packages missing from <code>requirements.txt</code>, absolute paths like <code>C:\\Users\\...</code>, or a README without versions and run steps. A 2025 student needed three submissions because of dependency problems.",
+    "Leakage: scaling, imputing or selecting features on the full dataset before splitting, or choosing hyperparameters by test-set score. The numbers look great and mean nothing.",
+    "Reporting accuracy alone on imbalanced classes, or any metric without the baseline's score beside it.",
+    "Over-building. 2026 reports describe passing without visualizations, object-oriented design or an elaborate app, and the Jun 2026 author felt even their modest project was more than needed.",
+    "Formatting returns: evaluators in this course block have sent work back for headings that don't match the rubric, rubric-numbered sub-headings and missing APA formatting (reported mostly for D682 and D687). Use plain headings in rubric order, and APA when the rubric lists it.",
+    "Following guides for the retired C964 capstone or WGU's graduate AI courses; their requirements differ from D683's.",
+    "Copying a past student's project. Public D683 repos exist, but submitting someone else's work is an academic-integrity violation, so build your own."
+  ],
+  "resources": [
+    {
+      "label": "Course of study, task rubrics and the proposal forms",
+      "kind": "official",
+      "note": "The real task wording lives inside the course and isn't public; save the rubric PDFs on day 1 and email your course instructor with questions."
+    },
+    {
+      "label": "Russell & Norvig AI textbook (linked in the course)",
+      "kind": "official",
+      "note": "Students report it's the course text across D429, D682 and D683; review gradient descent and backpropagation."
+    },
+    {
+      "label": "scikit-learn: Common pitfalls and recommended practices",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+      "kind": "official",
+      "note": "Leakage, inconsistent preprocessing and <code>random_state</code>, with short examples."
+    },
+    {
+      "label": "scikit-learn: Cross-validation",
+      "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+      "kind": "official",
+      "note": "k-fold, stratified folds, <code>TimeSeriesSplit</code> and <code>cross_validate</code>."
+    },
+    {
+      "label": "scikit-learn: Tuning the hyper-parameters of an estimator",
+      "url": "https://scikit-learn.org/stable/modules/grid_search.html",
+      "kind": "official",
+      "note": "<code>GridSearchCV</code>, <code>RandomizedSearchCV</code> and successive halving."
+    },
+    {
+      "label": "scikit-learn: Metrics and scoring",
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "kind": "official",
+      "note": "Metric definitions, scorer names and the Dummy baseline estimators."
+    },
+    {
+      "label": "Python tutorial: Virtual Environments and Packages",
+      "url": "https://docs.python.org/3/tutorial/venv.html",
+      "kind": "official",
+      "note": "<code>venv</code>, <code>pip freeze</code> into <code>requirements.txt</code>, and <code>pip install -r</code>."
+    },
+    {
+      "label": "APA Style: Heading levels template (student paper)",
+      "url": "https://apastyle.apa.org/instructional-aids/heading-template-student-paper.pdf",
+      "kind": "official",
+      "note": "Plain, unnumbered headings; useful if your rubric asks for APA."
+    },
+    {
+      "label": "Google Machine Learning Crash Course: Accuracy, recall, precision",
+      "url": "https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall",
+      "kind": "practice",
+      "note": "Plain-language lesson on classification metrics and thresholds."
+    },
+    {
+      "label": "Kaggle Datasets",
+      "kind": "tool",
+      "note": "Where many students find their D683 dataset; check each dataset's license, size and column documentation before you commit."
+    },
+    {
+      "label": "Gradio",
+      "kind": "tool",
+      "note": "Python library for a quick local web form that takes inputs and returns a prediction; the Jun 2026 tips author used it. Streamlit or a plain command-line interface work too."
+    },
+    {
+      "label": "W3Schools, GeeksforGeeks and scikit-learn.org",
+      "kind": "community",
+      "note": "What the Jun 2026 tips author said was enough to understand most of the AI material in D682, D683 and D687."
+    }
+  ],
+  "community": {
+    "summary": "The 2026 posts agree that D683 is the lighter sibling of D682: the same Python ML workflow, but you choose the dataset and there are no write-ups. Task 1 is a proposal form your instructor must sign, plus a proprietary-information form, and the back-and-forth on that proposal is the main delay; one Feb 2026 poster compared it to an English class. Task 2 can be a modest scikit-learn project: the Jun 2026 tips author compared 4-5 regression models, tuned 3-4 hyperparameters, used cross-validation, reported 3 metrics against a baseline and wrapped it in command-line prompts plus a Gradio form. Students recommend taking D682, D683 and D687 together and reusing work across them; one Aug 2026 graduate logged 21 hours for D683, and a Dec 2025 review put it at about a week.",
+    "coverage": "18 posts, Jan 2025 – Sep 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "What the difficulty level of these courses? I need to finish them by Nov 30th so that I can graduate.",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1w3wb27/what_the_difficulty_level_of_these_courses_i_need/",
+        "date": "Sep 2026",
+        "takeaway": "A commenter says the AI textbook carries through D682 and D683: review gradient descent and backpropagation, though you don't need to be a mathematician."
+      },
+      {
+        "title": "Officially a WGU CS Grad",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vcw2rh/officially_a_wgu_cs_grad/",
+        "date": "Aug 2026",
+        "takeaway": "A graduate logged 21 hours for D683 (18 for D682, 32 for D687) and found the course materials of little help for the assessment. Their order: D682, then D683 Task 1, then D687 Tasks 1-2, building D683 Task 2 during the D687 review wait."
+      },
+      {
+        "title": "D682, D683, D687, what is the preferred order?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1v6fd9k/d682_d683_d687_what_is_the_preferred_order/",
+        "date": "Jul 2026",
+        "takeaway": "The poster planned to do D683 first as a template; a commenter's D682 instructor advised taking D683 right after D682."
+      },
+      {
+        "title": "Finished bachelor in 2 terms, graduation post",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1uowkw4/finished_bachelor_in_2_terms_graduation_post/",
+        "date": "Jul 2026",
+        "takeaway": "An experienced developer named D682 among the most frustrating classes; Gemini's summary says the post calls D683 much easier, essentially a two-task rerun of the D682 workflow."
+      },
+      {
+        "title": "One last term left",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u6t73u/one_last_term_left/",
+        "date": "Jun 2026",
+        "takeaway": "A commenter describes D682 feeding D683, which feeds the capstone-like D687, and found the chain easy to stay focused through."
+      },
+      {
+        "title": "D682, D683, D687 Tips for each course",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u2cyb7/d682_d683_d687_tips_for_each_course/",
+        "date": "Jun 2026",
+        "takeaway": "The most detailed D683 account: Task 1 is a proposal form emailed to the instructor for a signature plus a proprietary-information form, and Task 2 can be one Python file on a simple, clean dataset you choose. The author's passing scope was CLI prompts plus a Gradio form, 4-5 regression algorithms, cross-validation, 3 metrics and about 35% over a self-chosen baseline; take D682, D683 and D687 together."
+      },
+      {
+        "title": "Instructor says very few ppl fail d429 OA. Failed 3rd attempt tonight",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rkbrue/instructor_says_very_few_ppl_fail_d429_oa_failed/",
+        "date": "Mar 2026",
+        "takeaway": "A commenter finished D682 and D683 between D429 exam attempts, crediting a hands-on learning style and GeeksforGeeks."
+      },
+      {
+        "title": "D683",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1re0p73/d683/",
+        "date": "Feb 2026",
+        "takeaway": "Gemini summary: getting Task 1 approved by the instructor felt like an English class, with heavy nitpicking of format, tone and missing detail."
+      },
+      {
+        "title": "D683 Advanced AI random question",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1r25pb3/d683_advanced_ai_random_question/",
+        "date": "Feb 2026",
+        "takeaway": "Gemini summary: Task 1 must be emailed to the course instructor for approval and a signature before it goes to evaluation."
+      },
+      {
+        "title": "Did they remove capstone from BSCS?",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1ql85i7/did_they_remove_capstone_from_bscs/",
+        "date": "Jan 2026",
+        "takeaway": "Commenters treat D683 as the nearest thing to the old coding capstone, but one says that right after D682 the D683 project is small and not capstone-level."
+      },
+      {
+        "title": "WGU BSCS Review",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1pz1imk/wgu_bscs_review/",
+        "date": "Dec 2025",
+        "takeaway": "Gemini summary: D683 felt like D682 with more creative freedom and took about a week; the poster read an outside ML book first because the official material felt thin."
+      },
+      {
+        "title": "Finished in 1 term",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1m0lzvh/finished_in_1_term/",
+        "date": "Jul 2025",
+        "takeaway": "Gemini summary: D683 took heavy outside research and three submissions because of dependency problems, and the poster reused the D683 project for D687."
+      },
+      {
+        "title": "D683",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1k4nutg/d683/",
+        "date": "Apr 2025",
+        "takeaway": "Gemini summary: a walkthrough of the code stages (preprocessing, several models, saving them, metrics, k-fold cross-validation, tuning) that stresses exact SMART-goal wording, Git branching and RandomizedSearchCV over slow grid searches."
+      },
+      {
+        "title": "D682 D683 and D429 PA/OA Tips",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1jlc4o6/d682_d683_and_d429_paoa_tips/",
+        "date": "Mar 2025",
+        "takeaway": "An early post: instructions were unclear and resources scarce. Gemini's summary adds that you should keep D683 simple with a public, pre-cleaned dataset and answer each rubric question specifically."
+      },
+      {
+        "title": "Recent Grad's thoughts on new BCCS program",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1jdvvnt/recent_grads_thoughts_on_new_bccs_program/",
+        "date": "Mar 2025",
+        "takeaway": "Gemini summary: D683 is more practical and less frustrating than D682, especially right after it; use a Kaggle dataset and follow the rubric strictly."
+      },
+      {
+        "title": "Advanced AI and ML – D683",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1jcyvlt/advanced_ai_and_ml_d683/",
+        "date": "Mar 2025",
+        "takeaway": "Gemini summary: commenters say the course is a standard ML-model workflow, not building generative AI."
+      },
+      {
+        "title": "D682 AI optimization - any tips?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1il881u/",
+        "date": "Feb 2025",
+        "takeaway": "D683 was much easier than D682: a topic proposal form instead of a report, with instructor approval in 1-2 days and evaluation in 1-3 days."
+      },
+      {
+        "title": "New (2025) CS Program Completion (more in comments...)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1i674zv/",
+        "date": "Jan 2025",
+        "takeaway": "The first public account of the new courses: D683 work goes through the course's GitLab repository, you get to pick an interesting dataset, and the Task 2 rubric had no item B7."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU BSCS Program Guidebook (D683 description, competencies and how evaluators grade)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026 (D683, ICSC 3113, 3 CUs; D797 in the accelerated track)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "scikit-learn: Common pitfalls and recommended practices", "url": "https://scikit-learn.org/stable/common_pitfalls.html" },
+    { "label": "scikit-learn: Cross-validation", "url": "https://scikit-learn.org/stable/modules/cross_validation.html" },
+    { "label": "scikit-learn: Tuning the hyper-parameters of an estimator", "url": "https://scikit-learn.org/stable/modules/grid_search.html" },
+    { "label": "scikit-learn: RandomizedSearchCV (defaults for n_iter, cv and refit)", "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html" },
+    { "label": "scikit-learn: train_test_split (defaults)", "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html" },
+    { "label": "scikit-learn: Metrics and scoring", "url": "https://scikit-learn.org/stable/modules/model_evaluation.html" },
+    { "label": "scikit-learn: root_mean_squared_error", "url": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.root_mean_squared_error.html" },
+    { "label": "scikit-learn: Pipelines and composite estimators", "url": "https://scikit-learn.org/stable/modules/compose.html" },
+    { "label": "scikit-learn: Model persistence", "url": "https://scikit-learn.org/stable/model_persistence.html" },
+    { "label": "Python tutorial: Virtual Environments and Packages", "url": "https://docs.python.org/3/tutorial/venv.html" },
+    { "label": "APA Style: Heading levels template, student paper (7th ed.)", "url": "https://apastyle.apa.org/instructional-aids/heading-template-student-paper.pdf" },
+    { "label": "stunlock.gg: My Thoughts on WGU and Online Schools (Jun 2025 graduate blog)", "url": "https://stunlock.gg/posts/undergrad/" },
+    { "label": "r/WGU_CompSci: D682, D683, D687 Tips for each course (Jun 2026)", "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u2cyb7/d682_d683_d687_tips_for_each_course/" }
+  ],
+  "caveats": [
+    "Task structure, forms, timing and the scope benchmark all come from student reports (2025-2026), not a public rubric; WGU publishes only the course description and competencies. Follow the live task prompts and rubrics wherever they differ from this guide.",
+    "Some posts listed here were summarized through Google Gemini and not opened directly; their takeaways start with or mention Gemini's summary. Treat those details as leads to confirm in the course.",
+    "Visualizations: a 2025 summary listed metrics with visuals among the code stages, while the Jun 2026 author shipped none. The newer report wins here, but add plots if your rubric asks for them.",
+    "Effort: most 2026 posts call D683 much lighter than D682, yet one Aug 2026 graduate logged 21 hours for D683 versus 18 for D682. Reported effort runs from about 16-21 logged hours to about a week, plus waiting time for sign-off and evaluation.",
+    "Which project D687 builds on is unsettled: the Jun 2026 tips post reuses the D683 proposal, while a Sep 2026 comment says D687 continues the D682 model. Ask your D687 instructor before you plan around reuse.",
+    "A Jan 2025 post noted that the Task 2 rubric skipped an item number (there was no B7); quirks like that may have been fixed since.",
+    "If you're in the accelerated BSCS-to-MSCS track, the catalog lists the graduate course D797 in place of D683."
+  ]
+}

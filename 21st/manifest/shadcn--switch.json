@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/switch",
+  "title": "Switch | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-switch",
+  "promptFile": "21st/prompts/shadcn--switch.md",
+  "chars": 2892,
+  "sha256": "92746463d717f8d53bd797b227d16361e9305f252adc92f1a19a3d4a0e54ea5e",
+  "sha256Of": "file bytes",
+  "capturedSha256": "aca266e7a562439d928db206809f7e27d16476c0bd7dbf20ebb2dc71038c4385",
+  "verified": true,
+  "notes": "Copied via Change copy action > Claude Code (tab viewport emulated at 1440x900 so the desktop copy menu was visible). The prompt also bundles shadcn/label and its NPM list is: @radix-ui/react-switch, @radix-ui/react-label, class-variance-authority. Verified on first write.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2892) is the text's length in UTF-16 code units and equals the file's."
+}

@@ -1,0 +1,607 @@
+{
+  "code": "D333",
+  "summary": "Students report that D333 Ethics in Technology (3 CUs) has no exam: you write two short papers that evaluators grade against a rubric, and a Jun 2025 guide says one applies ethical frameworks to a technology scenario and the other applies professional codes of ethics to a workplace scenario. A Jun 2025 commenter says the switch from an objective assessment came around May 2025, and time estimates are modest: about 9 hours for a Jun 2026 passer and 8 to 24 hours in the Jun 2025 guide. Both posts advise answering every prompt directly, with in-text citations to the course material.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment: two written tasks (reported), evaluator-graded",
+    "format": "2 written tasks · roughly 2–3 pages each (reported) · APA citations · Similarity Checker · no exam",
+    "details": [
+      "<b>What you submit:</b> two short papers, not an exam, according to both posts. Jun 2025 comments say D333 switched from an objective assessment to this performance assessment around May 2025, and that some WGU Academy versions of the course still used the older exam then. A Jun 2026 passer describes each task as about 6–8 paragraphs, and a Jun 2025 guide calls them 2–3 page papers.",
+      "<b>Task 1 (reported):</b> a Jun 2025 guide says you choose a scenario involving a technology ethics issue, answer the task's prompts about it, and apply one or more of the ethical frameworks the course teaches.",
+      "<b>Task 2 (reported):</b> the same guide describes ethics in a professional setting, where you apply the professional codes of ethics on a website the task links. Neither post says which code it is (ACM, IEEE or another body), so analyze the one your task names.",
+      "<b>Grading:</b> evaluators score each task against its rubric and return it with feedback when a part is missing. A Jun 2026 passer submitted each task as soon as it was finished and got results in about 2 days. WGU doesn't publish the prompts, page limits or rubric wording; they're on the task pages inside the course.",
+      "<b>Integrity rules (official):</b> WGU's catalog requires you to credit every source, including WGU course materials and your own earlier work, and to submit files the Similarity Checker can scan. It also bars inappropriate use of AI-generated content unless the task instructions allow it. WGU gives every student a Grammarly for Education license. A Jun 2026 passer believes the similarity report should stay under about 30%, but that number isn't official.",
+      "<b>Course facts:</b> 3 CUs, no prerequisites, term 9 of the BSCS standard path (catalog 202611; WGU's catalog lists it as HUMN 1101). WGU's public BSCS transfer guidelines (catalog 11-2026) list D333 as a general-education course that one 3-unit college course in ethical issues regarding technology can satisfy, and say courses in that group can also be satisfied by an associate's or bachelor's degree. A Jun 2025 guide says Sophia or Study.com credit doesn't transfer in for D333, so check your own transfer evaluation."
+    ],
+    "tips": [
+      "Start in WGU Connect (course page → Course Community → Join WGU Connect → Resources) and watch \"Task 1 Tips and Tricks\" and \"Task 2 Tips and Tricks\". A Jun 2026 passer says they name the course sections each task needs. Commenters say the links move around, so ask your instructor if you can't find them.",
+      "Paste each task's prompts into your document as headings and answer each one directly in a paragraph or two. A Jun 2025 commenter had a task returned for covering several prompts in one paragraph.",
+      "Name the framework, define it in a sentence or two with a citation, then apply it to the scenario: who is affected, what each option does to them, and what the framework recommends.",
+      "In Task 2, cite code principles by number and title (for example ACM 1.6 Respect privacy) and say what each one requires the professional to do in the scenario.",
+      "Cite the course material after every paragraph, even when you paraphrase, and end with an APA reference list. A Jun 2025 post says this is the top tip in the course's own task guide.",
+      "Write in your own words and keep quotes to a few words so the similarity report stays low. Don't let AI write the paper: the Jun 2026 passer warns against it and says Grammarly's refinements are fine.",
+      "Read only the course sections each prompt needs, when you need them. The Jun 2026 passer finished in about 9 hours over 3 days this way.",
+      "Before you submit, match every rubric row to a heading. The Jun 2026 passer mentions a new content checker that previews rubric alignment, so use it if your task page offers one."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and build a personalized course plan together.",
+    "The learner describes ethical issues regarding data privacy, accuracy, access, and security.",
+    "The learner explains professional ethical codes and their role in guiding professional behavior.",
+    "The learner identifies interventions for personal bias and related legal concerns.",
+    "The learner implements ethical decision-making frameworks in the information age."
+  ],
+  "topics": [
+    {
+      "title": "Ethics, morals, law and what makes a dilemma",
+      "eli5": "Laws are the rules you can be punished for breaking. Ethics is the bigger question of what you should do, even when nobody is checking.",
+      "detail": "Morals are a person's or group's beliefs about right and wrong. Ethics is the systematic study and justification of those beliefs, and professional ethics applies it to a role such as software engineer or security analyst. Law and ethics overlap but aren't the same: plenty of legal acts are unethical, such as collecting data that a privacy policy technically discloses but users would never expect, and some ethical acts, such as certain kinds of whistleblowing or civil disobedience, have been illegal. A real ethical dilemma is a conflict between two or more defensible obligations, such as user privacy against public safety, or loyalty to an employer against honesty to customers. A temptation is different: it's right against wrong. Good analysis starts by naming the issue, the facts, the stakeholders (everyone affected, not only the decision maker) and the realistic options. Ethical relativism holds that right and wrong depend on culture or the individual; applied-ethics courses usually treat it as a description of disagreement, then use frameworks to reason across those differences.",
+      "points": [
+        "Dilemma = right vs right (two duties collide) · temptation = right vs wrong",
+        "Legal isn't the same as ethical: compliance is the floor, not the ceiling",
+        "Stakeholders: users, people affected who never signed up, employees, the company, society and the environment",
+        "Write the issue as a question, such as \"Should the app sell precise location data to advertisers?\"",
+        "Corporate social responsibility: duties a company takes on beyond profit and legal minimums"
+      ]
+    },
+    {
+      "title": "Consequentialism and utilitarianism",
+      "eli5": "Pick the choice that does the most good and the least harm for everyone it touches, counting every person's good equally.",
+      "detail": "Consequentialist theories judge actions only by their results. Utilitarianism, the best-known version, says the right action produces the greatest net well-being (benefits minus harms) for everyone affected, with each person counted equally. Jeremy Bentham measured pleasure and pain by quantity, while John Stuart Mill argued that some pleasures are higher in quality than others. Act utilitarianism asks which single action gives the best result in this case. Rule utilitarianism asks which general rule would give the best results if everyone followed it, which blocks some troubling one-off conclusions: a rule letting engineers secretly read users' messages whenever it seemed useful would destroy trust in every messaging service. Utilitarianism is impartial and practical, and it fits cost-benefit and risk analysis. Its weaknesses are that consequences are hard to predict and measure, and a simple sum can justify sacrificing a minority for the majority, which is why rights and justice lenses are used to check it. Ethical egoism (do what's best for yourself) also judges by consequences, but it isn't impartial, so courses present it as a contrast rather than a framework to apply.",
+      "points": [
+        "The question it asks: which option gives the best balance of benefits over harms for everyone affected, now and later?",
+        "Act vs rule: the best act in this case vs the best rule if everyone followed it",
+        "How to apply it: list stakeholders, list each option's benefits and harms for each, weigh how likely and how large they are, and choose the best net outcome",
+        "Weak spots: it relies on predictions and can excuse serious harm to a few",
+        "Tech example: shipping a patch that slows old phones slightly but closes an exploit affecting millions"
+      ]
+    },
+    {
+      "title": "Deontology and rights",
+      "eli5": "Some things are wrong even when they'd work out well, like lying or using people, so you keep your duties and respect everyone's rights.",
+      "detail": "Deontological (duty-based) ethics judges actions by whether they respect moral duties and rules, not by their results. Immanuel Kant's categorical imperative has two famous formulations. The first says to act only on a principle you could will to be a universal law: if everyone falsified test reports, test reports would mean nothing. The second says to treat humanity, in yourself and others, never merely as a means but always also as an end: a cancellation flow designed to trick users into staying subscribed treats them merely as a means to revenue. W. D. Ross added prima facie duties, such as fidelity, non-maleficence, justice and beneficence, that have to be weighed when they conflict. The rights approach, a lens of its own in the Markkula Center's framework, says the best option is the one that best respects the moral rights of everyone affected, such as the rights to privacy, to the truth, to consent and to not be harmed. Deontology protects individuals and explains why consent and honesty matter even when breaking them would pay off. Its weaknesses: duties can conflict (keep a confidentiality promise or warn someone at risk?), and following rules rigidly can ignore disastrous outcomes.",
+      "points": [
+        "Universal-law test: could everyone act on this rule without it collapsing?",
+        "Humanity test: does this use people as tools without their informed consent?",
+        "Rights you can name: privacy, informed consent, truth, safety, free expression, due process",
+        "Negative rights (to be left alone) vs positive rights (to be provided something, such as access)",
+        "The Markkula Center's rights lens draws on Kant, Ross's duties and the golden rule"
+      ]
+    },
+    {
+      "title": "Virtue ethics and care ethics",
+      "eli5": "Instead of asking which rule applies, ask what a good, honest, caring person would do here, and who is depending on you.",
+      "detail": "Virtue ethics, rooted in Aristotle, focuses on character. A virtuous person reliably acts from traits such as honesty, courage, justice, temperance and compassion, and uses practical wisdom (phronesis) to find the right action in a particular situation. Aristotle described many virtues as a mean between two vices, one of deficiency and one of excess: courage sits between cowardice and recklessness, and truthfulness between false modesty and boastfulness. Applied to technology, virtue ethics asks what habits a product builds in its users and builders, and what kind of professional you become by making a choice. Care ethics, developed by Carol Gilligan, Nel Noddings and Virginia Held, puts relationships, empathy and responsibility to people who are vulnerable or dependent ahead of abstract rules. It asks how a decision affects the relationships and needs of the particular people involved. Critics say both give less precise guidance than rules or calculations, so papers often pair one of them with another lens.",
+      "points": [
+        "Virtue question: what would a person of good character do, and what will this choice make me?",
+        "Golden mean: courage lies between cowardice and recklessness",
+        "Professional virtues: honesty, competence, diligence, integrity and the courage to report problems",
+        "Care question: who is vulnerable or depends on this decision, and what do they need?",
+        "Tech example: an app for older adults designed with patients' and caregivers' input instead of engagement metrics"
+      ]
+    },
+    {
+      "title": "Justice, fairness, the common good and the social contract",
+      "eli5": "Fair rules are the ones you'd agree to before you knew whether you'd end up rich or poor, powerful or ignored.",
+      "detail": "The justice or fairness lens asks whether benefits, burdens and risks are distributed fairly and whether each person gets what they're owed. It covers distributive justice (who gets what), procedural justice (fair processes) and compensatory justice (making up for harm). John Rawls asked what principles people would choose behind a \"veil of ignorance\" that hides their own race, wealth, talents and social position. He argued they'd choose equal basic liberties for everyone, fair equality of opportunity, and the difference principle, which allows inequalities only when they benefit the least advantaged. The common good lens looks at shared conditions everyone depends on, such as trustworthy information, public safety and secure infrastructure, and warns against choices that help individuals while wearing those conditions down. Social contract theory (Hobbes, Locke, Rousseau and later contractualists) grounds morality in rules that rational people would agree to for living together, so it fits questions about government surveillance, platform rules and terms of service. The ACM Code echoes the justice lens: when interests conflict, the needs of the less advantaged deserve more attention and priority.",
+      "points": [
+        "Rawls's test: would you accept this system if you didn't know which side of it you'd land on?",
+        "Distributive, procedural and compensatory justice",
+        "Common good: shared resources such as a reliable information ecosystem, public health and secure infrastructure",
+        "Social contract: rules everyone could reasonably agree to, with legitimacy that comes from consent",
+        "Tech example: who bears the errors of a facial-recognition system, and did they ever agree to it?"
+      ]
+    },
+    {
+      "title": "A step-by-step ethical decision process",
+      "eli5": "An ethical decision works like debugging: define the problem, gather the facts, try several fixes, pick one, then check whether it worked.",
+      "detail": "The competency on ethical decision-making frameworks asks you to implement one, not just name theories. The Markkula Center for Applied Ethics publishes a widely used five-step process. First, identify the ethical issues: could the choice harm someone, and does it involve more than what's legal or efficient? Second, get the facts: what's known and unknown, who the stakeholders are, and what options exist. Third, evaluate alternative actions through six lenses: rights, justice, utilitarian, common good, virtue and care ethics. Fourth, choose an option for action and test it, for example by asking how a respected person, or the public, would react if they knew. Fifth, implement your decision and reflect on the outcome. In a written task this becomes a paragraph structure: state the issue and stakeholders, describe the options, apply the named framework to each option, recommend one, and explain its trade-offs and how you'd reduce the harm it still causes. The ACM Code says the same about itself: it isn't an algorithm that outputs answers, but a basis for reasoned judgment.",
+      "points": [
+        "1 Identify the ethical issues · 2 Get the facts · 3 Evaluate alternative actions · 4 Choose an option and test it · 5 Implement and reflect",
+        "The six Markkula lenses: rights, justice, utilitarian, common good, virtue, care ethics",
+        "Publicity test: would you be comfortable if your decision and your reasons were made public?",
+        "Show your reasoning: the options, the framework applied to each, the recommendation and how you'd mitigate harm",
+        "Use the framework the prompt names; if you get to choose, pick one you can apply to every stakeholder"
+      ]
+    },
+    {
+      "title": "Professional codes of ethics",
+      "eli5": "A code of ethics is a profession's promise to the public, in writing: here's what you can expect from us, and here's what we expect from each other.",
+      "detail": "Professional codes turn ethical principles into expectations for a role. They guide decisions in gray areas, set a standard others can hold you to, build public trust, back up professionals who refuse unethical instructions, and give associations a basis for discipline. Most are enforced through membership or certification rather than by law. The ACM Code of Ethics and Professional Conduct, adopted June 22, 2018, has four sections: general ethical principles (1.1–1.7), professional responsibilities (2.1–2.9), professional leadership principles (3.1–3.7) and compliance with the Code (4.1–4.2). It treats the public good as the paramount consideration. The IEEE Code of Ethics (IEEE Policy 7.8, revised in June 2020) has three sections: integrity and responsible conduct, treating people fairly and avoiding harm, and helping colleagues uphold the code. Its first item puts the safety, health and welfare of the public first, and it also asks members to protect others' privacy and promptly disclose dangers. The joint ACM and IEEE Computer Society Software Engineering Code (version 5.2, 1999) lists eight principles from Public to Self, and ISC2's code for security certification holders has four canons. Codes have limits: principles can conflict, the wording is broad, and no code makes the decision for you, so you still apply judgment and explain it.",
+      "points": [
+        "What codes do: guide decisions, create accountability, build public trust, protect people who speak up, and support discipline",
+        "ACM: the public good is paramount, and the Code is not an algorithm for solving ethical problems",
+        "IEEE Section III: help colleagues follow the code and never retaliate against someone who reports a violation",
+        "Software Engineering Code order: Public, Client and Employer, Product, Judgment, Management, Profession, Colleagues, Self",
+        "ISC2 canons: protect society · act honorably and legally · serve principals competently · advance the profession",
+        "When principles conflict, say which one wins and why; in the ACM Code, the public good wins"
+      ]
+    },
+    {
+      "title": "Privacy, accuracy, property, access and security",
+      "eli5": "Information ethics boils down to five questions: who may know it, is it right, who owns it, who can get to it, and is it protected?",
+      "detail": "Richard Mason's 1986 PAPA framework named four ethical issues of the information age. Privacy asks what information about yourself you must reveal, and under what safeguards. Accuracy asks who is responsible for information being correct, and who is accountable when errors hurt people. Property asks who owns information and what a fair exchange for it is. Accessibility asks what information a person or organization has a right to obtain, and on what terms. D333's data-privacy competency adds security, usually framed as the CIA triad of confidentiality, integrity and availability. Privacy practice often follows the Fair Information Practice Principles: notice, choice and consent, purpose limitation, data minimization, data quality, individual access and correction, security and accountability. U.S. privacy law is sectoral, with HIPAA for health information, FERPA for education records, COPPA for children under 13 online, GLBA for financial institutions and the FCRA for credit reports. The EU's GDPR, which has applied since May 25, 2018, covers personal data broadly and allows fines of up to €20 million or 4% of global annual turnover, whichever is higher. California's CCPA, as amended by the CPRA, gives residents rights to know, delete and correct their data and to opt out of its sale or sharing. Surveillance questions involve governments (the Fourth Amendment limits searches), employers (monitoring work devices and accounts) and companies (tracking, data brokers, facial recognition).",
+      "points": [
+        "PAPA: Privacy, Accuracy, Property, Accessibility (Mason, 1986); a 2020 extension adds behavioral surveillance, interpretation and governance for big data",
+        "CIA triad: confidentiality, integrity, availability",
+        "Aggregation: harmless data points combined can reveal sensitive facts, such as religion or health from location history",
+        "Informed consent needs real understanding, not just a click on a 40-page policy",
+        "Accuracy harms: mixed-up credit or tenant records, watch-list mistakes, stale data feeding automated decisions"
+      ]
+    },
+    {
+      "title": "Hacking, cybersecurity and data manipulation",
+      "eli5": "Breaking into a computer is like walking into someone's house: even if the door was unlocked, you still needed permission.",
+      "detail": "Hacker labels describe intent and authorization. White hats test systems with permission (penetration testers, bug-bounty hunters), black hats break in for gain or to cause harm, and gray hats break in without permission but without malicious intent, which is still unauthorized access. Hacktivism uses intrusion or disruption for political causes. The Computer Fraud and Abuse Act (1986, 18 U.S.C. § 1030) makes it a crime to access a computer without authorization or to exceed authorized access. In <i>Van Buren v. United States</i> (2021), the Supreme Court read \"exceeds authorized access\" narrowly: it means entering parts of a system that are off-limits to you, not misusing data you're allowed to see. DOJ's May 2022 charging policy tells prosecutors to decline cases of good-faith security research, meaning access solely to test, investigate or fix a security flaw, carried out to avoid harm, with the results used mainly to improve security; probing for flaws to extort the owner doesn't qualify. Coordinated vulnerability disclosure means reporting a flaw privately to the vendor and giving it time to fix the problem before publishing. Data manipulation covers attacks on integrity, such as altering records or ransomware that encrypts data, and deceptive practices: fabricating or falsifying results, cherry-picking data, misleading charts, deepfakes, and interface designs that steer users against their interests (dark patterns).",
+      "points": [
+        "ACM 2.8: access systems only when authorized or compelled by the public good; a publicly reachable system isn't automatically authorized",
+        "ACM 2.9: design systems that are robustly and usably secure, then keep monitoring, patching and accepting vulnerability reports",
+        "ACM 1.3: making deliberately false claims or fabricating or falsifying data violates the Code",
+        "Disclosure options: private report to the vendor, coordinated disclosure through a coordinator such as CERT/CC or CISA, or full public disclosure",
+        "Ransomware dilemma: paying funds criminals and may not restore the data, but refusing can harm patients or customers"
+      ]
+    },
+    {
+      "title": "Plagiarism, piracy and intellectual property",
+      "eli5": "Plagiarism is lying about who made something. Piracy is copying or using something you don't have permission or a license for.",
+      "detail": "Intellectual property law protects creations of the mind. Copyright protects original expression fixed in a tangible form (code, text, music, images) automatically, generally for the author's life plus 70 years. Patents protect new, useful and non-obvious inventions for 20 years from filing, in exchange for public disclosure. Trade secrets protect valuable confidential information for as long as it stays secret, and trademarks protect brand names and logos for as long as they're used. Fair use (17 U.S.C. § 107) allows some unlicensed use, judged case by case on four factors: the purpose and character of the use (including whether it's transformative or commercial), the nature of the work, the amount and substantiality of the part used, and the effect on the market for the original. There's no safe word count. The DMCA (1998) bans circumventing copy protection (§ 1201) and gives platforms a safe harbor if they follow notice-and-takedown (§ 512). Plagiarism is an ethical and academic offense, presenting someone else's work or ideas as your own, and it isn't the same as infringement: copying a public-domain text without credit is plagiarism but not infringement, while copying a whole copyrighted book with perfect citations can still infringe. Software piracy, open-source license violations and AI-generated content all raise these questions, and WGU's own rules require you to credit every source, including the course materials.",
+      "points": [
+        "Copyright: life + 70 years · patent: 20 years from filing · trade secret: while it stays secret · trademark: while in use",
+        "Fair use factors: purpose and character, nature of the work, amount used, market effect",
+        "Citing a source prevents plagiarism but doesn't give you permission to copy it",
+        "Open-source licenses are permissions with conditions: copyleft (GPL) vs permissive (MIT, BSD, Apache)",
+        "ACM 1.5: respect the work required to produce new ideas, inventions, creative works and computing artifacts"
+      ]
+    },
+    {
+      "title": "Social media, free expression and the digital divide",
+      "eli5": "Platforms decide what billions of people see, and many people can't get online well at all, so both what's shown and who's left out are ethical questions.",
+      "detail": "The First Amendment limits government censorship, not moderation by private companies, so a platform removing a post is usually a business and ethical decision rather than a constitutional violation. Section 230 of the Communications Decency Act (1996) says online services generally aren't treated as the publisher of what their users post, and it protects good-faith moderation, which is how platforms can host and remove content at scale. Ethical issues on social media include misinformation, hate speech and harassment, cyberbullying, recommendation algorithms that reward outrage or build filter bubbles, effects on teens' mental health, undisclosed paid endorsements, and the privacy of what users share. Many states have anti-SLAPP laws that let defendants quickly dismiss strategic lawsuits meant to silence criticism. The digital divide is the gap between people who can benefit from digital technology and people who can't. First-level gaps are about access (devices and affordable broadband, often in rural, low-income or older households), second-level gaps are about skills and use (digital literacy), and third-level gaps are about outcomes (who actually gains jobs, health care and education from being online). Accessibility for people with disabilities, such as following the W3C's Web Content Accessibility Guidelines (WCAG), is part of closing it, and ACM 1.1 asks computing professionals to consider whether their work will be broadly accessible.",
+      "points": [
+        "First Amendment: restrains government, not private platforms",
+        "Section 230: platforms aren't treated as publishers of users' posts, and good-faith moderation is protected",
+        "Digital divide levels: access, then skills and use, then outcomes",
+        "Design question: who is shut out by cost, disability, language or connectivity?",
+        "Engagement-maximizing feeds raise both utilitarian questions (total harm) and virtue questions (what habits they build)"
+      ]
+    },
+    {
+      "title": "AI, personal bias and responsible innovation",
+      "eli5": "AI learns from our past, including our unfair habits, so people have to check it for bias before it makes decisions about other people.",
+      "detail": "Bias gets into technology through people as well as data. NIST's SP 1270 (2022) sorts AI bias into three categories: systemic (built into institutions and history), statistical and computational (unrepresentative data, flawed proxies) and human (cognitive biases such as confirmation bias, anchoring and automation bias, where people over-trust machine output). Well-known cases include Amazon's experimental recruiting tool, scrapped after it was found to downgrade résumés containing the word \"women's\" (reported by Reuters in 2018), ProPublica's 2016 finding that the COMPAS risk score falsely labeled Black defendants high risk more often than white defendants, and the 2018 Gender Shades study, which found commercial facial-analysis systems made far more errors on darker-skinned women. Interventions for personal and team bias include structured decisions with criteria set in advance, blind or anonymized review, diverse teams and outside reviewers, checklists and pre-mortems, testing outcomes by group (bias audits), and documenting data sources and limits. The legal concerns come mainly from anti-discrimination law, such as Title VII of the Civil Rights Act for employment plus laws on age, disability, housing and credit: both intentional discrimination (disparate treatment) and neutral-looking practices with unjustified unequal effects (disparate impact) can be unlawful. Federal enforcement has pulled back: a 2025 executive order (EO 14281) told agencies to deprioritize disparate-impact enforcement, and a June 2026 Justice Department legal opinion called the EEOC's disparate-impact guidelines unconstitutional. Title VII's text hasn't changed, though, and private lawsuits and state and local laws still apply. Newer rules add duties, such as New York City's Local Law 144, which since July 2023 has required bias audits of automated hiring tools. Responsible innovation means anticipating harms before launch through privacy by design, impact assessments, human oversight, honesty about where AI is used, and NIST's AI Risk Management Framework.",
+      "points": [
+        "NIST bias categories: systemic, statistical/computational, human-cognitive",
+        "Disparate treatment = intentional · disparate impact = neutral practice, unjustified unequal effect on a protected group",
+        "Bias interventions: criteria set in advance, blind review, diverse reviewers, audits by group, documentation",
+        "NIST AI RMF 1.0 (Jan 2023): Govern, Map, Measure, Manage",
+        "Leaving a protected attribute out of a model doesn't make it fair: proxies such as ZIP code or graduation year can stand in for race or age",
+        "Generative AI questions: authorship and plagiarism, deepfakes, consent for training data, and disclosing AI use"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Course basics", "value": "3 CUs · performance assessment with 2 written tasks · no prerequisites · BSCS term 9 (catalog 202611)", "note": "A Jun 2025 comment says the switch from an exam to two tasks came around May 2025" },
+    { "label": "Official competencies", "value": "Data privacy, accuracy, access and security · professional ethical codes · interventions for personal bias and legal concerns · ethical decision-making frameworks" },
+    { "label": "WGU integrity rules", "value": "Credit every source, including WGU course materials · submit files the Similarity Checker can scan · no inappropriate use of AI-generated content unless the task allows it", "note": "WGU provides Grammarly for Education; the \"under about 30% similarity\" figure is one student's belief, not policy" },
+    { "label": "Utilitarianism", "value": "Right action = greatest net well-being for everyone affected · Bentham: quantity of pleasure · Mill: higher vs lower pleasures", "note": "Act: best single act · Rule: best general rule if everyone followed it" },
+    { "label": "Kant's categorical imperative", "value": "Universal law: act only on a principle you could will everyone to follow · Humanity: never treat people merely as a means" },
+    { "label": "Rights lens", "value": "Choose the option that best respects everyone's moral rights: privacy, truth, consent, safety, free expression", "note": "Negative rights (to be left alone) vs positive rights (to be provided something)" },
+    { "label": "Virtue ethics", "value": "Aristotle: act from good character, guided by practical wisdom (phronesis) · virtue as a mean, e.g., courage between cowardice and recklessness" },
+    { "label": "Care ethics", "value": "Gilligan, Noddings, Held: relationships, empathy and responsibility to people who are vulnerable or dependent" },
+    { "label": "Justice (Rawls)", "value": "Veil of ignorance → equal basic liberties, fair equality of opportunity, and the difference principle (inequalities must benefit the least advantaged)" },
+    { "label": "Common good and social contract", "value": "Common good: protect shared conditions everyone relies on · Social contract (Hobbes, Locke, Rousseau): rules rational people would agree to" },
+    { "label": "Markkula decision steps", "value": "1 Identify the ethical issues · 2 Get the facts · 3 Evaluate alternative actions · 4 Choose an option for action and test it · 5 Implement your decision and reflect on the outcome" },
+    { "label": "Markkula's six lenses", "value": "Rights · Justice · Utilitarian · Common Good · Virtue · Care Ethics", "note": "Santa Clara University's framework, last revised Nov 2021" },
+    { "label": "ACM Code structure", "value": "1.1–1.7 general ethical principles · 2.1–2.9 professional responsibilities · 3.1–3.7 leadership principles · 4.1–4.2 compliance", "note": "Adopted June 22, 2018; the public good is the paramount consideration" },
+    { "label": "ACM 1.1–1.7", "value": "1.1 contribute to society and human well-being · 1.2 avoid harm · 1.3 be honest and trustworthy · 1.4 be fair and don't discriminate · 1.5 respect the work behind ideas and artifacts · 1.6 respect privacy · 1.7 honor confidentiality" },
+    { "label": "ACM 2.x worth knowing", "value": "2.5 thorough evaluations, including risk analysis · 2.6 work only in areas of competence · 2.8 access only when authorized or compelled by the public good · 2.9 robustly and usably secure systems", "note": "1.2's guidance: report signs of risk; if leaders won't act, it may be necessary to blow the whistle, after carefully assessing the situation" },
+    { "label": "IEEE Code (Policy 7.8)", "value": "10 items in 3 sections: I integrity and responsible conduct (1–6) · II fairness, no harassment, no harm (7–9) · III help colleagues uphold the code (10)", "note": "Revised June 2020; item 1 puts the public's safety, health and welfare first and covers privacy" },
+    { "label": "Software Engineering Code (v5.2)", "value": "8 principles: Public · Client and Employer · Product · Judgment · Management · Profession · Colleagues · Self", "note": "ACM and IEEE Computer Society, 1999; Public comes first" },
+    { "label": "ISC2 canons", "value": "I protect society, the common good, public trust and the infrastructure · II act honorably, honestly, justly, responsibly and legally · III serve principals diligently and competently · IV advance and protect the profession" },
+    { "label": "PAPA (Mason, 1986)", "value": "Privacy · Accuracy · Property · Accessibility", "note": "D333's competency adds security: confidentiality, integrity, availability (CIA)" },
+    { "label": "U.S. privacy laws", "value": "HIPAA (1996) health · FERPA (1974) education records · COPPA (1998) children under 13 online · GLBA (1999) financial · FCRA (1970) credit reports", "note": "U.S. law is sectoral; California's CCPA/CPRA is the broadest state law" },
+    { "label": "GDPR", "value": "EU, applies since May 25, 2018 (adopted 2016) · covers personal data broadly · fines up to €20 million or 4% of worldwide annual turnover, whichever is higher" },
+    { "label": "CFAA", "value": "18 U.S.C. § 1030 (1986): accessing a computer without authorization or exceeding authorized access", "note": "<i>Van Buren</i> (2021) narrowed \"exceeds\"; DOJ's May 2022 policy says to decline good-faith security research" },
+    { "label": "Intellectual property terms", "value": "Copyright: life + 70 years · utility patent: 20 years from filing · trade secret: as long as it's secret · trademark: as long as it's used" },
+    { "label": "Fair use (17 U.S.C. § 107)", "value": "Purpose and character · nature of the work · amount and substantiality · effect on the market", "note": "Case by case, no safe word count; the DMCA adds anti-circumvention (§ 1201) and notice-and-takedown (§ 512)" },
+    { "label": "Speech online", "value": "The First Amendment limits government, not private platforms · Section 230 (1996): platforms aren't treated as publishers of users' posts, and good-faith moderation is protected" },
+    { "label": "Discrimination concepts", "value": "Disparate treatment = intentional · disparate impact = neutral practice with an unjustified unequal effect on a protected group", "note": "NYC Local Law 144 has required bias audits of automated hiring tools since July 2023" },
+    { "label": "NIST AI RMF 1.0 (Jan 2023)", "value": "Govern · Map · Measure · Manage", "note": "Trustworthy AI: valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, fair with harmful bias managed · NIST says AI RMF 1.0 is being revised under the White House AI Action Plan, so check nist.gov for a newer version before citing it" },
+    { "label": "NIST bias categories (SP 1270)", "value": "Systemic · statistical/computational · human-cognitive" },
+    { "label": "Digital divide levels", "value": "1st: access (devices, affordable broadband) · 2nd: skills and use · 3rd: outcomes" },
+    { "label": "APA 7 in-text citations", "value": "Parenthetical (Author, Year) · narrative Author (Year) · add a page or paragraph number for direct quotes · every in-text citation matches a reference-list entry", "note": "Use n.d. when a source has no date" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Orientation and task setup",
+      "tasks": [
+        "Discuss your course planning tool report with your instructor, and ask for the course's task guide if you can't find it in the announcements.",
+        "Read both task prompts and rubrics, then paste each task's prompts into its own document as headings.",
+        "Watch \"Task 1 Tips and Tricks\" and \"Task 2 Tips and Tricks\" in WGU Connect (course page → Course Community → Join WGU Connect → Resources) and note which course sections each task points to.",
+        "Start a reference list with the APA entry for the course material."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Frameworks I: consequences, duties and rights",
+      "tasks": [
+        "Read the course sections on utilitarianism, Kantian deontology and rights.",
+        "Summarize each in two sentences in your own words with a citation, plus one strength and one weakness.",
+        "Practice on a news story, such as a company hiding a data breach: one paragraph applying each framework."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Frameworks II: virtue, care, justice and the decision process",
+      "tasks": [
+        "Read the course sections on virtue ethics, care ethics, justice and fairness, the common good and social contract theory, whichever your course teaches.",
+        "Learn the five Markkula steps and try the publicity test on yesterday's news story.",
+        "Do this guide's practice questions and log any framework you mixed up."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Task 1: choose the scenario and gather the facts",
+      "tasks": [
+        "Pick the scenario you can analyze most concretely, then list its stakeholders, facts, unknowns and realistic options.",
+        "Write the ethical issue as a question and tie it to a course topic (privacy, hacking, data manipulation, IP, AI, social media or the digital divide).",
+        "Choose the framework or frameworks the prompts require and outline one or two paragraphs per prompt."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Task 1: draft",
+      "tasks": [
+        "Answer each prompt directly under its own heading.",
+        "For each framework: define it briefly with a citation, apply it to each option and stakeholder, and state what it recommends.",
+        "Put an in-text citation at the end of every paragraph that uses course material."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Task 1: revise and submit",
+      "tasks": [
+        "Match every rubric row to a heading and split any paragraph that answers two prompts.",
+        "Use Grammarly for grammar only, and replace long quotes with paraphrases plus citations.",
+        "Submit Task 1 and start Task 2 while it's graded (about 2 days in a Jun 2026 report)."
+      ]
+    },
+    {
+      "day": "Day 7",
+      "focus": "Task 2: read the linked code of ethics",
+      "tasks": [
+        "Open the code the task links and learn its structure (ACM: sections 1–4 · IEEE: sections I–III).",
+        "List the 3–5 principles that fit the professional scenario, with their numbers and titles.",
+        "Note where principles conflict and which takes priority (the ACM Code says the public good)."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Task 2: draft",
+      "tasks": [
+        "Answer each prompt under its own heading, naming principles by number and explaining what each requires of the professional.",
+        "Explain the code's role: how it guides behavior, protects the public and backs up someone who raises concerns.",
+        "Cite the code as its own reference alongside the course material."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Task 2: revise and submit",
+      "tasks": [
+        "Do a rubric check, paraphrase anything quoted at length, and finish the APA reference list.",
+        "Submit Task 2. If Task 1 came back, fix exactly the rubric rows the evaluator flagged and resubmit."
+      ]
+    },
+    {
+      "day": "Days 10-12",
+      "focus": "Buffer for returns",
+      "tasks": [
+        "Read evaluator comments row by row and revise what's flagged, plus anywhere else the same problem appears.",
+        "If feedback is unclear, ask your instructor to look at the returned section before you resubmit."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A city is deciding whether to install license-plate cameras. The analyst tallies fewer stolen cars and faster missing-child alerts against privacy costs to every driver and the risk of data misuse, then recommends whichever option gives the best overall balance. Which framework is the analyst using?",
+      "choices": [
+        "Kantian deontology",
+        "Utilitarianism",
+        "Virtue ethics",
+        "Care ethics"
+      ],
+      "answer": "Utilitarianism",
+      "why": "Weighing total benefits against total harms across everyone affected and choosing the best net outcome is utilitarian (consequentialist) reasoning. A Kantian would ask whether recording every driver respects them as ends and could be made a universal rule, whatever the totals. Virtue ethics asks what a person of good character would do, and care ethics focuses on relationships and the needs of vulnerable people rather than on sums."
+    },
+    {
+      "q": "A streaming service makes canceling take nine screens and hides the final button, knowing many users will give up. Which objection is specifically <b>Kantian</b>?",
+      "choices": [
+        "It lowers total customer happiness more than it raises revenue",
+        "A virtuous company wouldn't build a habit of greed",
+        "People behind a veil of ignorance would never agree to it",
+        "It treats users merely as a means to revenue"
+      ],
+      "answer": "It treats users merely as a means to revenue",
+      "why": "Kant's humanity formulation forbids treating people merely as means, and manipulating a choice bypasses the user's rational consent. The happiness tally is utilitarian, the greed point is virtue ethics, and the veil of ignorance is Rawls's justice test. All four lenses can condemn the design, but only the last answer uses Kant's reasoning."
+    },
+    {
+      "q": "An engineer could quietly read one customer's private messages to confirm a suspected small fraud, and in this single case the result might be good. Which question would a <b>rule</b> utilitarian ask?",
+      "choices": [
+        "What if every engineer read private messages whenever they suspected fraud?",
+        "Will reading these particular messages produce more benefit than harm today?",
+        "Would a person of good character be willing to do this?",
+        "Does any law explicitly forbid reading the messages?"
+      ],
+      "answer": "What if every engineer read private messages whenever they suspected fraud?",
+      "why": "Rule utilitarianism judges the general rule an act falls under by the consequences of everyone following it. A rule allowing secret access would erode trust in every messaging service, so the act fails even if this one case turns out well. The second choice is act utilitarianism, the third is virtue ethics, and legality isn't an ethical framework at all."
+    },
+    {
+      "q": "A team designing a loan-approval model is asked to imagine they don't know whether they'll be a wealthy applicant, a first-generation borrower or someone with a thin credit file, and to choose rules they'd accept from any of those positions. Which idea is this?",
+      "choices": [
+        "Aristotle's golden mean",
+        "Ethical egoism",
+        "Rawls's veil of ignorance",
+        "Kant's universal-law test"
+      ],
+      "answer": "Rawls's veil of ignorance",
+      "why": "Rawls's veil of ignorance asks people to choose principles without knowing their own place in society, which pushes them toward rules that are fair to the least advantaged (his difference principle). The golden mean is Aristotle's idea of virtue as a balance between extremes, ethical egoism is self-interest, and Kant's universal-law test asks whether everyone could act on your principle, not which social position you might end up in."
+    },
+    {
+      "q": "According to Aristotle, the virtue of courage lies between which two extremes?",
+      "choices": [
+        "Cowardice and recklessness",
+        "Honesty and loyalty",
+        "Pleasure and pain",
+        "Duty and consequence"
+      ],
+      "answer": "Cowardice and recklessness",
+      "why": "Aristotle described many virtues as a mean between a vice of deficiency and a vice of excess. Courage is the mean concerning fear and confidence: fearing too much and daring too little is cowardice, and daring too much is recklessness (rashness). At work, the courageous professional raises a real safety concern through proper channels instead of staying silent or making public accusations before checking the facts. Honesty and loyalty are both virtues (which can conflict), and the other pairs aren't Aristotle's extremes."
+    },
+    {
+      "q": "Designing a medication-reminder app for older adults, a developer interviews patients and the relatives who look after them, and puts the needs of the most dependent users ahead of engagement metrics. Which framework best describes this approach?",
+      "choices": [
+        "Ethical relativism",
+        "Care ethics",
+        "Rule utilitarianism",
+        "Social contract theory"
+      ],
+      "answer": "Care ethics",
+      "why": "Care ethics centers relationships, empathy and responsibility to people who are vulnerable or dependent, which is exactly what the developer is doing. Relativism says right and wrong depend on culture, rule utilitarianism judges rules by their overall consequences, and social contract theory grounds morality in what rational people would agree to."
+    },
+    {
+      "q": "In the Markkula Center's framework for ethical decision making, which step comes right after you get the facts (stakeholders, unknowns and options)?",
+      "choices": [
+        "Implement your decision and reflect on the outcome",
+        "Identify the ethical issues",
+        "Evaluate the alternative actions through several ethical lenses",
+        "Choose an option and test it, for example by imagining it made public"
+      ],
+      "answer": "Evaluate the alternative actions through several ethical lenses",
+      "why": "The five steps run: identify the ethical issues, get the facts, evaluate alternative actions (through the rights, justice, utilitarian, common good, virtue and care lenses), choose an option for action and test it, then implement your decision and reflect on the outcome. Identifying the issues comes first, and choosing and testing comes only after you've evaluated the alternatives. Writing your analysis in the same order gives an evaluator the full chain of reasoning: issue, facts, options, framework, decision."
+    },
+    {
+      "q": "A developer notices that a competitor's customer database is reachable on the internet without a password and logs in \"just to see how bad it is.\" Which ACM Code principle most directly addresses this?",
+      "choices": [
+        "1.5 Respect the work required to produce new ideas, inventions, creative works, and computing artifacts",
+        "2.6 Perform work only in areas of competence",
+        "3.6 Use care when modifying or retiring systems",
+        "2.8 Access computing and communication resources only when authorized or when compelled by the public good"
+      ],
+      "answer": "2.8 Access computing and communication resources only when authorized or when compelled by the public good",
+      "why": "Principle 2.8's guidance says you need a reasonable belief that access is authorized, and that a system being publicly accessible isn't enough on its own to imply authorization. The ethical move is to stay out and report the exposure, for example through the company's security contact. 1.5 is about intellectual property, 2.6 about competence and 3.6 about retiring systems."
+    },
+    {
+      "q": "A QA engineer finds that a medical device's software can deliver a wrong dose and reports it, but leadership ships anyway. What does the ACM Code's guidance on avoiding harm (1.2) say about the next step?",
+      "choices": [
+        "Assess the situation; blowing the whistle may be necessary if leaders won't act",
+        "Reporting is management's job once it has been told, so the engineer's duty is finished",
+        "Publish the flaw's technical details immediately so users can protect themselves",
+        "Quietly patch the code in production without telling anyone"
+      ],
+      "answer": "Assess the situation; blowing the whistle may be necessary if leaders won't act",
+      "why": "Principle 1.2 says computing professionals should report signs of system risks that could cause harm, and that if leaders don't act it may be necessary to blow the whistle. It also warns that careless reporting can itself cause harm, so you assess the situation first. Staying silent abandons the duty to avoid harm, dumping technical details publicly can endanger patients, and a secret production change violates honesty (1.3) and professional review (2.4)."
+    },
+    {
+      "q": "A tenant-screening company's report mixes up two people with the same name, and an applicant is denied an apartment because of someone else's eviction. Which of Mason's PAPA issues is most directly at stake?",
+      "choices": [
+        "Property",
+        "Accuracy",
+        "Accessibility",
+        "Privacy"
+      ],
+      "answer": "Accuracy",
+      "why": "Accuracy asks who is responsible for information being correct and who is accountable when errors hurt people, which is the core problem here and why laws such as the FCRA let people dispute errors in consumer reports. Privacy is about what information is collected and disclosed, property about who owns it, and accessibility about who has a right to obtain it. Privacy is involved too, but the harm comes from the error."
+    },
+    {
+      "q": "A student copies three paragraphs from an 1890 essay that is now in the public domain into a paper, without quotation marks or a citation. Which statement is correct?",
+      "choices": [
+        "It's copyright infringement but not plagiarism",
+        "It's neither, because public-domain text is free to use",
+        "It's both plagiarism and copyright infringement",
+        "It's plagiarism but not copyright infringement"
+      ],
+      "answer": "It's plagiarism but not copyright infringement",
+      "why": "A public-domain work has no copyright left to infringe, so copying it is legal, but presenting someone else's words as your own is still plagiarism, an ethical and academic violation. The reverse also happens: copying a whole copyrighted book with perfect citations avoids plagiarism but can still infringe. WGU's rules also require crediting every source."
+    },
+    {
+      "q": "A social network removes a user's post for breaking its harassment policy. The user says the company violated their First Amendment rights. Which response is most accurate?",
+      "choices": [
+        "The company broke the law, because removing any lawful speech violates the First Amendment",
+        "Section 230 makes the company legally responsible for every post its users publish",
+        "The First Amendment limits government, not private companies like this one",
+        "Platforms may remove posts only after a court order"
+      ],
+      "answer": "The First Amendment limits government, not private companies like this one",
+      "why": "The First Amendment limits government censorship, so a private platform enforcing its own rules generally doesn't violate it. Section 230 (1996) does roughly the opposite of the second choice: platforms generally aren't treated as the publisher of users' posts, and good-faith moderation is protected. No court order is needed. Whether a removal was fair and consistent is still a real ethical question, even when it's legal."
+    },
+    {
+      "q": "Under DOJ's 2022 CFAA charging policy, which activity is the clearest example of good-faith security research that prosecutors should decline to charge?",
+      "choices": [
+        "Scanning a company's servers without permission, then demanding payment to keep the flaw quiet",
+        "Testing a flaw solely to help fix it, avoiding harm, and using results to improve security",
+        "Using a former employer's still-active password to download customer lists",
+        "Flooding a company's website with traffic to protest its policies"
+      ],
+      "answer": "Testing a flaw solely to help fix it, avoiding harm, and using results to improve security",
+      "why": "DOJ defines good-faith security research as access solely to test, investigate or correct a security flaw, carried out to avoid harm, with the results used mainly to improve security. Probing for flaws to extort the owner is explicitly not good faith, a former employer's credentials give unauthorized access for gain, and a protest denial-of-service attack (hacktivism) still damages systems. Ethically, ACM 2.8 also expects authorization unless the public good compels otherwise."
+    },
+    {
+      "q": "A hiring algorithm never uses race as an input, but an audit shows it rejects Black applicants at twice the rate of similarly qualified white applicants, apparently because it penalizes certain ZIP codes. The company can't show the gap is job-related. What is the main legal concern?",
+      "choices": [
+        "Disparate treatment, because the system was deliberately designed to screen out Black applicants",
+        "Copyright infringement, because the model was trained on applicants' résumés",
+        "None, because race is never one of the model's inputs",
+        "Disparate impact: a neutral-looking practice with an unjustified unequal effect"
+      ],
+      "answer": "Disparate impact: a neutral-looking practice with an unjustified unequal effect",
+      "why": "Disparate impact covers neutral rules or tools that disproportionately harm a protected group without adequate justification, and proxies such as ZIP code can encode race even when race is left out. Under Title VII, once that kind of gap is shown, the employer has to prove the practice is job-related and consistent with business necessity, which this company can't do. Disparate treatment requires intentional differential treatment, which nothing here shows. Leaving out a protected attribute doesn't make a model fair, which is why audits test outcomes by group and why New York City's Local Law 144 requires bias audits of automated hiring tools."
+    },
+    {
+      "q": "A team lead worries that personal bias is creeping into promotion decisions. Which intervention is best supported as a way to reduce it?",
+      "choices": [
+        "Trust each manager's gut sense of who \"fits the culture\"",
+        "Drop all written criteria so managers can judge each person holistically",
+        "Set job-related criteria in advance and use more than one reviewer",
+        "Promote only people referred by current leaders"
+      ],
+      "answer": "Set job-related criteria in advance and use more than one reviewer",
+      "why": "Structured decisions, with criteria agreed before anyone is reviewed, consistent scoring and multiple reviewers, leave less room for confirmation bias, affinity bias and halo effects. Gut-feel culture fit, unstructured judgment and referral-only promotion all amplify the biases of whoever is deciding, and they can also create disparate-impact problems."
+    }
+  ],
+  "pitfalls": [
+    "<b>Several prompts in one paragraph.</b> A Jun 2025 commenter had a task returned for this. Give every prompt its own heading and answer it directly.",
+    "<b>Defining a framework without applying it.</b> A paragraph that explains utilitarianism in general doesn't show the competency. Apply it to the scenario's stakeholders and options, then say what it recommends.",
+    "<b>Missing citations.</b> WGU's integrity rules require crediting every source, including WGU course materials. A Jun 2025 post passes on the task guide's advice: an in-text citation after every paragraph that uses course material, plus an APA reference list.",
+    "<b>Quoting at length.</b> Long passages from the course or a code push up the similarity report. Paraphrase, cite, and keep quotes to a few words.",
+    "<b>Letting AI write it.</b> WGU's policy bars inappropriate use of AI-generated content unless the task allows it. The Jun 2026 passer had no AI-check problems and advises against using AI to write the papers, though Grammarly's refinements are fine.",
+    "<b>Treating legal as ethical.</b> \"It's legal\" or \"the privacy policy disclosed it\" doesn't settle an ethics prompt. Say what the framework or code requires beyond compliance.",
+    "<b>Vague code references.</b> \"The ACM Code says to be ethical\" shows nothing. Name the principle by number and title, say what it asks, and connect it to the professional's action.",
+    "<b>Analyzing the wrong code.</b> The ACM, IEEE, Software Engineering and ISC2 codes differ in structure and emphasis, so analyze the one Task 2 links.",
+    "<b>One-sided analysis.</b> A recommendation is more convincing once you've shown the stakeholders, at least two options and the trade-offs. Say what harm your choice still causes and how to reduce it.",
+    "<b>Studying for an exam that no longer exists.</b> Exam-style flashcards and practice tests for D333 won't help you write the papers, since students report the course dropped its exam in 2025, and some of them contain assessment content you shouldn't use."
+  ],
+  "resources": [
+    {
+      "label": "WGU Connect: Task 1 and Task 2 Tips and Tricks",
+      "kind": "official",
+      "note": "Course page → Course Community → Join WGU Connect → Resources. A Jun 2026 passer says these videos name the course sections each task needs. Commenters say the links move, so ask your instructor if you can't find them."
+    },
+    {
+      "label": "The course's task guide",
+      "kind": "official",
+      "note": "A Jun 2025 guide says it's linked from the course announcements or tips pages (or ask your instructor) and that its top tip is to cite the course material after every paragraph."
+    },
+    {
+      "label": "ACM Code of Ethics and Professional Conduct",
+      "url": "https://www.acm.org/code-of-ethics",
+      "kind": "official",
+      "note": "The 2018 code, with guidance under every principle. If Task 2 links it, cite principles by number and use the guidance text to explain them."
+    },
+    {
+      "label": "IEEE Code of Ethics",
+      "url": "https://www.ieee.org/about/corporate/governance/p7-8.html",
+      "kind": "official",
+      "note": "Ten items in three sections (revised June 2020), short enough to read in five minutes."
+    },
+    {
+      "label": "ACM/IEEE-CS Software Engineering Code of Ethics",
+      "url": "https://www.acm.org/code-of-ethics/software-engineering-code",
+      "kind": "official",
+      "note": "Eight principles with Public first; a natural fit for a scenario about a software team or product."
+    },
+    {
+      "label": "ISC2 Code of Ethics",
+      "url": "https://www.isc2.org/ethics",
+      "kind": "official",
+      "note": "Four canons plus the complaint process; useful for security and privacy scenarios."
+    },
+    {
+      "label": "Markkula Center: A Framework for Ethical Decision Making",
+      "url": "https://www.scu.edu/ethics/ethics-resources/a-framework-for-ethical-decision-making/",
+      "kind": "tool",
+      "note": "The six lenses and five steps, with the questions to ask at each step. Works well as an outline for a framework paragraph."
+    },
+    {
+      "label": "Markkula Center: Ethical Lenses for technology practice",
+      "url": "https://www.scu.edu/ethics-in-technology-practice/ethical-lenses/",
+      "kind": "tool",
+      "note": "Each lens rewritten with questions for people who build technology, plus a note on non-Western perspectives."
+    },
+    {
+      "label": "Stanford Encyclopedia of Philosophy: Privacy and Information Technology",
+      "url": "https://plato.stanford.edu/entries/it-privacy/",
+      "kind": "tool",
+      "note": "Free scholarly background on privacy, personal data, social media, big data and surveillance (revised Oct 2024). Check whether your task allows outside sources before citing it."
+    },
+    {
+      "label": "Purdue OWL: APA in-text citations",
+      "url": "https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/in_text_citations_the_basics.html",
+      "kind": "tool",
+      "note": "Parenthetical vs narrative citations and page numbers for quotes, in APA 7."
+    },
+    {
+      "label": "Grammarly for Education",
+      "kind": "tool",
+      "note": "WGU's catalog says every student gets a license. Use it for grammar and clarity, not to generate content."
+    },
+    {
+      "label": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "kind": "official",
+      "note": "For an AI scenario, its four functions and seven trustworthiness traits give you precise words for risks and mitigations. NIST says AI RMF 1.0 is being revised under the White House AI Action Plan, so check for a newer version before citing it."
+    },
+    {
+      "label": "Your course instructor",
+      "kind": "official",
+      "note": "Instructors can point you to the tips videos, the task guide and the sections each prompt needs. Ask before resubmitting if feedback is unclear."
+    }
+  ],
+  "community": {
+    "summary": "Both posts give modest time estimates: about 9 hours over 3 days for a Jun 2026 passer, and 8 to 24 hours in a Jun 2025 guide that calls it a good early course. Both point students to the official task guidance (the WGU Connect tips videos or the course's task guide) and advise answering each prompt directly with in-text citations to the course material; the newer post adds reading only the sections each task needs. It also reports grading in about 2 days and no trouble with similarity or AI checks, and warns against using AI to write the papers. Coverage is thin, so check the course announcements for changes.",
+    "coverage": "2 posts, Jun 2025 – Jun 2026, r/WGU",
+    "posts": [
+      {
+        "title": "D333 Summary - Ethics in Technology - How I passed in 3 days",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1uag84h/d333_summary_ethics_in_technology_how_i_passed_in/",
+        "date": "Jun 2026",
+        "takeaway": "About 9 hours over 3 days. Watch the WGU Connect \"Task 1 Tips and Tricks\" and \"Task 2 Tips and Tricks\" videos first, paste the prompts into a document, answer each in a paragraph or two with in-text citations, read only the sections each task needs, and submit each task when it's done; grading took about 2 days. The poster had no similarity or AI-check problems, says not to use AI to write the papers (Grammarly's refinements are fine), and believes the similarity report should stay under about 30%. Commenters note the tips links move around."
+      },
+      {
+        "title": "D333 Ethics in Technology - My Ultimate Guide",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1le9kdg/d333_ethics_in_technology_my_ultimate_guide/",
+        "date": "Jun 2025",
+        "takeaway": "Two 2-3 page papers: Task 1 applies course frameworks to a technology-ethics scenario, and Task 2 applies professional codes of ethics from a site the task links. About 8-24 hours, a good early course, and Sophia or Study.com credit doesn't transfer in. Get the course's task guide (announcements or course tips, or ask the instructor); its top tip is to cite the course material after every paragraph and add an APA reference list. Comments: answer each rubric part separately (one student had to revise), the course switched from an OA to this PA around May 2025, and some WGU Academy versions still used the OA."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Institutional Catalog, November 2026 (BSCS 202611 course list, D333 description, academic integrity, AI and Similarity Checker rules, Grammarly license)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU: B.S. Cybersecurity and Information Assurance Program Guidebook, catalog 202610, published Jun 2026 (D333 competencies)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCSIA.pdf" },
+    { "label": "WGU Transfer Evaluation Guidelines: BS Computer Science, catalog 11-2026 (D333 transfer requirement)", "url": "https://partners.wgu.edu/general-transfer-guideline-bachelor-dynamic?collegeCode=IT&programId=261" },
+    { "label": "ACM Code of Ethics and Professional Conduct (adopted June 22, 2018)", "url": "https://www.acm.org/code-of-ethics" },
+    { "label": "ACM/IEEE-CS Software Engineering Code of Ethics and Professional Practice (v5.2)", "url": "https://www.acm.org/code-of-ethics/software-engineering-code" },
+    { "label": "IEEE Code of Ethics (IEEE Policy 7.8, incorporating revisions through June 2020)", "url": "https://www.ieee.org/about/corporate/governance/p7-8.html" },
+    { "label": "ISC2 Code of Ethics (canons and complaint procedures)", "url": "https://www.isc2.org/ethics" },
+    { "label": "Markkula Center for Applied Ethics: A Framework for Ethical Decision Making (revised Nov 2021)", "url": "https://www.scu.edu/ethics/ethics-resources/a-framework-for-ethical-decision-making/" },
+    { "label": "Markkula Center: Ethical Lenses, technology practice (Vallor, Raicu and Green)", "url": "https://www.scu.edu/ethics-in-technology-practice/ethical-lenses/" },
+    { "label": "Young, Smith and Zheng (2020): Call Me BIG PAPA, extending Mason's 1986 PAPA framework (JMWAIS)", "url": "https://aisel.aisnet.org/jmwais/vol2020/iss2/3" },
+    { "label": "U.S. Copyright Office: Fair Use Index (the four factors)", "url": "https://www.copyright.gov/fair-use/" },
+    { "label": "DOJ Justice Manual 9-48.000: CFAA charging policy and good-faith security research (May 2022)", "url": "https://www.justice.gov/jm/jm-9-48000-computer-fraud" },
+    { "label": "DOJ Office of Legal Counsel: Constitutionality of Disparate-Impact Liability Under Title VII (Jun 9, 2026)", "url": "https://www.justice.gov/olc/opinion/constitutionality-disparate-impact-liability-under-title-vii" },
+    { "label": "NIST: AI Risk Management Framework (AI RMF 1.0, Jan 2023)", "url": "https://www.nist.gov/itl/ai-risk-management-framework" },
+    { "label": "NIST SP 1270: Towards a Standard for Identifying and Managing Bias in Artificial Intelligence (2022)", "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.1270.pdf" }
+  ],
+  "caveats": [
+    "WGU's task prompts and rubrics are behind the student login. The Task 1 and Task 2 descriptions here come from student posts, mainly a Jun 2025 guide, so check the scenario options, the frameworks required and which code of ethics Task 2 links against your own task pages.",
+    "The switch from an exam to two tasks (around May 2025), the 2-day grading time, the 30% similarity figure and the claim that Sophia or Study.com credit doesn't transfer each come from a single student report, not from WGU policy.",
+    "The competency wording comes from WGU's Cybersecurity and Information Assurance guidebook (catalog 202610, published Jun 2026), which lists the same D333 course, because the BSCS guidebook PDF is image-only. The CUs, term placement, description and integrity rules come from WGU's November 2026 catalog.",
+    "Public sources don't show which frameworks the D333 course material teaches or how it defines them. This guide covers the standard set (utilitarian, deontological and rights, virtue, care, justice and common good, social contract) and the Markkula Center's steps; in your papers, use the course's own definitions and cite them.",
+    "The legal points (CFAA, Section 230, fair use, privacy and anti-discrimination law) are U.S.-focused summaries for ethics study, not legal advice. State privacy and AI laws keep changing, and so does federal enforcement of disparate-impact rules, so check for newer developments.",
+    "Only two community posts were available. Their dates are approximate, converted from Reddit's \"N months ago\", and Reddit couldn't be opened for this guide, so the takeaways come from condensed notes. The practice questions are original concept checks; the real assessment is two essays, not a quiz."
+  ]
+}

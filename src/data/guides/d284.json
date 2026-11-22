@@ -1,0 +1,578 @@
+{
+  "code": "D284",
+  "summary": "D284 is a software engineering course with no coding: you learn process models, requirements engineering, design concepts and software quality, then show them in one performance assessment: by student accounts, a written proposal in which you act as project lead recommending a CRM system for a mid-sized company, either a configurable off-the-shelf product or a custom build. The proposal draws on the whole course, from scope and requirements to a development methodology, design visuals and test cases. A 2024 first-try passer wrote it in about two days, while a 2025 student was returned three times over visuals that didn't match the CRM.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment: a written CRM system proposal (reported), evaluator-graded",
+    "format": "1 written task (reported) · a CRM proposal built on WGU's requirements document and design template (one 2024 passer's ran 14 pages) · rubric-graded, no exam",
+    "details": [
+      "<b>The task (reported):</b> in general terms (your task page has the exact requirements), you act as the project lead proposing a customer relationship management (CRM) system for a medium-sized company, and you choose between a customizable commercial off-the-shelf (COTS) product and a custom build. WGU provides a CRM requirements document and a design template to work from. The proposal describes the project and its environment, states its requirements, compares development methodologies and picks one, illustrates features with visuals, and gives test cases.",
+      "<b>Length and grading:</b> a 2024 passer's paper ran 14 pages and took about two days, and 2025 commenters say a few hours is possible once the structure is clear. Evaluators grade against the rubric and return the paper with feedback when an item falls short (WGU's general PA process); one 2025 student was returned three times over visuals that didn't match the CRM.",
+      "<b>Course facts:</b> BSCS 202412 (Jan 2026 catalog) lists D284 (4 CU) in term 7. B.S. Software Engineering (202610) and B.S. AI Engineering (202607) also list it."
+    ],
+    "tips": [
+      "Build your outline from the rubric's letters and use them as headings, so the evaluator finds each item exactly where they expect it.",
+      "Keep the CRM requirements document and the design template open while you write. Reuse their names and wording, and label every requirement (BR1, UR1, FR1, NFR1) so your visuals and test cases can point back to it.",
+      "Make the visuals match the text: the same feature names, fields and steps as your requirements, and a short explanation under each.",
+      "Watch the instructor webinar recordings and read the common fail points document in the course resources before drafting; they show what evaluators check most often.",
+      "Write test cases someone else could run without asking you anything: preconditions, numbered steps, specific data and an observable expected result.",
+      "Justify instead of just describing. Tie each reason for your methodology to facts in the scenario, and compare COTS and custom on cost, time, fit and risk.",
+      "Fix Grammarly's correctness suggestions before you submit, and cite any source you quote or paraphrase.",
+      "If evaluator feedback contradicts the written requirements or guidance your instructor gave you, students describe appealing, with the instructor's emails as evidence."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your course planning tool report with your instructor and create your personalized course plan together (listed first in the program guidebook).",
+    "The learner analyzes the objectives, scope, and organizational impact of software systems.",
+    "The learner creates test cases for quality assurance as part of software development processes.",
+    "The learner determines optimal software design for given requirements.",
+    "The learner identifies the costs and impact of design changes to software systems."
+  ],
+  "topics": [
+    {
+      "title": "Software engineering and the generic process framework",
+      "eli5": "Software engineering is building software the way engineers build bridges: with a plan, a process and checks at every stage instead of just starting to code.",
+      "detail": "D284 covers no programming; it's about the discipline around the code. The catalog says a generic process framework provides the groundwork for formal process models. In Pressman's widely used textbook, that framework is five activities: communication (understand stakeholders and gather requirements), planning (estimates, schedule, risks and resources), modeling (analysis and design models that clarify requirements and the design), construction (code generation and testing) and deployment (delivery, support and feedback). Umbrella activities run across all five: project tracking and control, risk management, quality assurance, technical reviews, measurement, configuration management, reusability management and work-product preparation. Each process model arranges the same activities differently: waterfall runs them once in sequence, while incremental, iterative and agile models repeat them in short cycles. OpenStax's free textbook frames the same idea as four phases (inception, elaboration, construction and deployment), so terminology varies between sources; use your course material's terms in your paper.",
+      "points": [
+        "Framework activities: communication · planning · modeling · construction · deployment",
+        "Umbrella activities apply throughout: risk management, quality assurance, technical reviews, configuration management and measurement",
+        "\"Disciplined\" means repeatable: defined steps, reviewed work products and controlled changes",
+        "The PA casts you as the project lead, so think in these activities: whom you talk to, what you plan, what you model, how you test and how you deliver"
+      ]
+    },
+    {
+      "title": "Prescriptive process models: waterfall to the Unified Process",
+      "eli5": "Process models are recipes for running a project: some say do every step once in order, and others say cook a little, taste it and adjust.",
+      "detail": "Prescriptive models define an ordered set of activities and work products. Waterfall runs requirements, design, implementation, testing and deployment in sequence, and each phase ends with documents and a sign-off before the next starts. It suits stable, well-understood requirements and heavy documentation needs, but changes are costly and working software arrives late. The V-model pairs each development stage with a test level: requirements with acceptance testing, system design with system testing, architecture with integration testing and module design with unit testing. The incremental model delivers the system in usable pieces, core features first, so users get value early. Prototyping builds quick mock-ups to pin down unclear requirements, and rapid application development (RAD) compresses the schedule with prototypes, reusable components and heavy user involvement. Boehm's spiral model repeats cycles of setting objectives, analyzing and reducing risks, developing and testing, and planning the next round, which fits large or high-risk projects. The Unified Process runs iterations through four phases: inception, elaboration, construction and transition (Pressman's textbook adds a fifth, production, covering ongoing use and support).",
+      "points": [
+        "Waterfall: predictable and documentation-heavy, weak at absorbing change",
+        "V-model: plan each test level while you write the matching specification",
+        "Incremental: each increment is a working subset, such as contacts first, then the sales pipeline, then reporting",
+        "Spiral: risk drives each loop; choose it when a wrong guess would be expensive",
+        "Unified Process phases: inception → elaboration → construction → transition"
+      ]
+    },
+    {
+      "title": "Agile, Scrum and Kanban",
+      "eli5": "Agile teams build software in small slices, show each slice to the customer and steer by what they learn, like driving with your eyes on the road instead of only on the map.",
+      "detail": "The 2001 Agile Manifesto values individuals and interactions over processes and tools, working software over comprehensive documentation, customer collaboration over contract negotiation, and responding to change over following a plan, while still valuing the items on the right. Its twelve principles include delivering working software frequently, welcoming changing requirements and having business people and developers work together daily. The 2020 Scrum Guide defines three accountabilities: a Product Owner who maximizes value and orders the Product Backlog, a Scrum Master who makes the team effective by coaching and removing impediments, and Developers who build each Increment. It also defines five events (the Sprint, one month or less, containing Sprint Planning, a 15-minute Daily Scrum, the Sprint Review and the Sprint Retrospective) and three artifacts, each with a commitment: the Product Backlog with the Product Goal, the Sprint Backlog with the Sprint Goal, and the Increment with the Definition of Done. Kanban visualizes work on a board, limits work in progress (WIP) and manages flow, with no fixed iterations or prescribed roles. Extreme Programming (XP) adds engineering practices such as pair programming, test-driven development and continuous integration.",
+      "points": [
+        "Scrum timeboxes for a one-month Sprint: Planning up to 8 hours, Review up to 4, Retrospective up to 3, Daily Scrum 15 minutes",
+        "User story format: As a &lt;role&gt;, I want &lt;capability&gt;, so that &lt;benefit&gt;",
+        "Agile still plans and documents; it plans over shorter horizons and keeps the documentation that's useful",
+        "Kanban fits steady streams of small work, such as configuration requests after a CRM goes live",
+        "Extreme Programming (XP) adds engineering practices such as pair programming, test-driven development and continuous integration"
+      ]
+    },
+    {
+      "title": "Comparing and choosing an SDLC methodology",
+      "eli5": "Choosing a methodology is like choosing a vehicle: a train is great when the track is fixed, and a car is better when you expect detours.",
+      "detail": "A methodology choice is only as strong as its comparison: weigh the candidates side by side, then choose one and justify it for this CRM project. A strong comparison applies the same criteria to each, ideally in a small table: how each handles changing requirements, when working software first reaches users, how much up-front planning and documentation it needs, how it manages risk, how involved the customer must be, what team size and experience it assumes, and how it fits the delivery approach (configuring a COTS product or building a custom one). The justification then ties the choice to facts in the scenario instead of general praise. Unclear or evolving user needs and a business that wants early value favor iterative or agile delivery, while fixed requirements, a fixed-price contract or regulatory sign-offs favor waterfall or the V-model. Hybrids are common, such as a short up-front requirements and architecture phase followed by sprints, and naming a weakness of your choice along with how you'll manage it shows judgment.",
+      "points": [
+        "Criteria to compare: requirement stability · risk · time to first release · documentation · customer involvement · team skills · cost predictability",
+        "COTS rollouts are often configured in iterations so stakeholders can review each configured module",
+        "State the choice in one sentence first, then give two or three reasons drawn from the scenario",
+        "Name one weakness and its mitigation, such as scope creep in agile handled by a prioritized backlog"
+      ]
+    },
+    {
+      "title": "CRM systems and the build-or-buy decision",
+      "eli5": "A CRM is a company's shared memory of every customer: who they are, what they bought, what they asked for and what should happen next.",
+      "detail": "Customer relationship management (CRM) software centralizes customer and prospect records and the history of every interaction. Typical modules are contact and account management, the sales pipeline (leads, opportunities and forecasts), marketing automation, customer service cases or tickets, reporting and dashboards, and integrations with email, calendars, accounting and other systems. The reported task makes you choose between a commercial off-the-shelf (COTS) product, which NIST defines as ready-made hardware or software available for purchase by the public, configured and extended for the company, and a custom system built to fit. COTS usually wins on time to launch, up-front cost, vendor-maintained security and upgrades, and proven features, but it brings ongoing subscription costs, limits on customization, dependence on the vendor's roadmap and possible lock-in. A custom build fits unusual processes exactly and keeps ownership in-house, but it costs more, takes longer and leaves maintenance, security and hosting to the company. Compare total cost of ownership over several years, not just the first invoice: licenses or development, implementation, customization, integration, data migration, training, support and upgrades.",
+      "points": [
+        "Configuration (settings and fields the product supports) is cheaper and safer than customization (custom code), which can complicate upgrades",
+        "Most COTS CRMs are sold as software as a service, so the vendor hosts and updates them",
+        "A gap analysis drives the decision: which requirements the product meets out of the box, which need configuration and which need custom work",
+        "Data migration from spreadsheets or an old system is a project of its own: cleanup, field mapping, trial loads and a cutover plan",
+        "Three CRM types are often named: operational (sales, service and marketing processes), analytical (insight from customer data) and collaborative (customer data shared across teams)"
+      ]
+    },
+    {
+      "title": "Purpose, problems, goals, objectives and scope",
+      "eli5": "Before you build anything, you write down why you're building it, what's broken today, how you'll know it worked and where the project stops.",
+      "detail": "The proposal's opening sections answer the first competency: the objectives, scope and organizational impact of the system. The purpose says why the project exists in business terms. Problem statements describe today's pain points, such as scattered spreadsheets, duplicate records, missed follow-ups or no view of the sales pipeline, and each one is paired with how the proposed system addresses it. Goals are broad outcomes, such as better customer retention, while objectives are specific, measurable steps toward a goal, best written in SMART form: specific, measurable, achievable, relevant and time-bound. Scope lists what the project will deliver (in scope) and what it explicitly won't (out of scope); a clear out-of-scope list prevents scope creep and sets expectations. Prerequisites are conditions that must be in place before or during the project, such as hardware, network capacity, licenses, accounts, data cleanup or staff availability, and giving each one a date turns the list into a plan. Assumptions (believed true but unverified) and constraints (fixed limits such as budget, deadline or regulations) complete the picture.",
+      "points": [
+        "Goal: improve customer retention · objective: raise the repeat-purchase rate from 30% to 40% within 12 months of launch",
+        "Pair each problem with its fix: the problem → who it hurts → how the CRM solves it",
+        "Out of scope lists real nearby work you won't do (a new website, payroll, a mobile app), not filler",
+        "A prerequisites table can carry the item, its type, an owner and a target date"
+      ]
+    },
+    {
+      "title": "Environment, hosting and architecture",
+      "eli5": "The environment is the system's address and toolbox: where it lives, which devices and browsers people use to reach it, and what it's built with.",
+      "detail": "An environment section describes everything around the system. On the client side, list the operating systems and browsers staff will use, typically current Windows and macOS versions with current Chrome, Edge, Firefox or Safari, plus any mobile access. Hosting follows NIST's cloud definitions. In software as a service (SaaS), the provider runs the application and everything beneath it; in platform as a service (PaaS), the provider runs the platform and you deploy your own code; and in infrastructure as a service (IaaS), you rent servers, storage and networks and manage the operating system and everything above it. On-premises hosting puts the servers in the company's own facility, and NIST's cloud deployment models are public, private, community and hybrid. A custom CRM is usually described as a three-tier architecture: a front end or presentation tier (HTML, CSS and a JavaScript framework), a back end or application tier (for example Java with Spring, C# with .NET, or Node.js) and a data tier (a relational database such as PostgreSQL, MySQL or SQL Server), connected through APIs. Name the languages, the IDEs (IntelliJ IDEA, Visual Studio or VS Code, for example) and version control such as Git. A COTS CRM still has an environment: the vendor's hosting, the browsers it supports, its configuration tools and any extension language it offers.",
+      "points": [
+        "Reported tip: take the hosting details from the requirements document",
+        "SaaS: the vendor runs the application and everything beneath it, and you manage your users, data and settings · PaaS: you manage your code and data · IaaS: you manage the OS and up · on-premises: you manage it all",
+        "Name versions where they matter, such as a supported-browser list, and justify each choice in a sentence",
+        "Separate development, test and production environments so changes are tried before they reach users"
+      ]
+    },
+    {
+      "title": "Requirements engineering: types and how to write them",
+      "eli5": "Requirements are the promises a system makes, written so plainly that anyone can check whether each promise was kept.",
+      "detail": "The IIBA's BABOK Guide (version 3) sorts requirements into four groups. Business requirements state the goals and outcomes that explain why the change is happening. Stakeholder requirements state what particular people or groups need, bridging business and solution requirements; many courses call these user requirements. Solution requirements describe the system: functional requirements say what it must do (its behavior and the information it manages), and non-functional requirements say how well it must do it or under what conditions. Transition requirements are temporary needs for moving from the current state to the future state, such as data conversion and training. Requirements engineering runs through elicitation (interviews, workshops, observation, surveys and document analysis), analysis, specification, validation (are these the right requirements?) and change management. Good requirements are necessary, unambiguous, singular (one need each), feasible, verifiable and traceable, and are conventionally written as \"The system shall …\". Labeling each one (BR1, UR1, FR1, NFR1) lets later sections, visuals and test cases point back to it.",
+      "points": [
+        "Business: increase repeat sales · user: reps need one view of each customer's history · functional: the system shall log calls and emails against a contact · non-functional: the history page shall load within 2 seconds",
+        "Verifiable means a test can pass or fail it; \"user-friendly\" can't be tested until you define how it's measured",
+        "Reported tip: label each requirement and mirror the requirements document's wording in its subsection",
+        "A traceability matrix maps each requirement to the design elements and test cases that cover it"
+      ]
+    },
+    {
+      "title": "Non-functional requirements and quality attributes",
+      "eli5": "Functional requirements say what the system does, and non-functional requirements say how fast, how safe and how dependable it is while doing it.",
+      "detail": "ISO/IEC 25010, the product quality model, is a ready-made checklist for non-functional requirements. Its current edition names nine characteristics: functional suitability, performance efficiency, compatibility, interaction capability (formerly usability), reliability, security, maintainability, flexibility (formerly portability) and safety. Each non-functional requirement should name a measurable target and the conditions it applies under. Examples: response time (95% of searches return within 2 seconds with 200 concurrent users), availability (99.9% monthly uptime, excluding scheduled maintenance), security (role-based access, all traffic encrypted with TLS, no passwords stored in plain text), recoverability (restore from backup within 4 hours, losing no more than 1 hour of data), compatibility (works in the current versions of Chrome, Edge, Firefox and Safari), accessibility (meets WCAG 2.2 level AA) and scalability (handles 50% user growth without redesign). Compliance needs, such as privacy laws that govern customer data, often become non-functional requirements too.",
+      "points": [
+        "Reliability's subcharacteristics in the current model: faultlessness, availability, fault tolerance and recoverability",
+        "Security's subcharacteristics: confidentiality, integrity, non-repudiation, accountability, authenticity and resistance",
+        "99.9% availability allows about 43 minutes of downtime in a 30-day month; 99.99% allows about 4",
+        "State the target and how you'd measure it; a non-functional requirement with no number can't be tested"
+      ]
+    },
+    {
+      "title": "Design concepts and visual models",
+      "eli5": "Design is deciding how the pieces fit before you build them, and diagrams are the blueprints that let other people check your thinking.",
+      "detail": "Core design concepts include abstraction (hide detail behind a simpler idea), modularity (split the system into parts), information hiding and encapsulation (each module keeps its internals private), separation of concerns, high cohesion (each module does one job well), low coupling (modules depend on each other as little as possible) and stepwise refinement from high-level to detailed design. Determining the optimal design means choosing the option that best meets the requirements within the constraints, and saying why. Visual models make a design checkable. UML 2.5.1 groups its diagrams into structure diagrams (class, component, deployment and package, among others) and behavior diagrams (use case, activity, state machine, and interaction diagrams such as sequence diagrams). A flowchart shows a process with standard symbols, and a wireframe or mockup shows a screen's layout and controls. Each visual should depict a feature from your requirements, use the same names as the text, and come with a short explanation of what it shows, which requirement it supports and how a user moves through it.",
+      "points": [
+        "Use case diagram: who uses the system for what · activity diagram or flowchart: the steps and decisions in one workflow · sequence diagram: which parts exchange which messages, in order · class diagram: data and relationships",
+        "Flowchart symbols: oval for start and end, rectangle for a process step, diamond for a decision, parallelogram for input or output, arrows for flow",
+        "Wireframe = low-fidelity layout · mockup = static, realistic visual · prototype = clickable",
+        "Reported: explain each visual; a 2025 student's returns came from visuals that didn't match the CRM described",
+        "Free tools: diagrams.net (draw.io) for flowcharts and UML, Figma for screen mockups"
+      ]
+    },
+    {
+      "title": "Test cases and software quality",
+      "eli5": "A test case is a recipe for checking one promise: exactly what to set up, what to do and what should happen, so anyone can repeat it and get the same answer.",
+      "detail": "Software quality assurance is the planned set of activities that builds confidence a product meets its requirements, and testing is one of them. A test case should be replicable by someone who has never seen the system, with an ID, the requirement it verifies, preconditions (account, role, existing data), numbered steps, specific test data, the expected result, and places for the actual result and a pass or fail. Test levels run from unit testing (one component) through integration testing (components working together) and system testing (the whole system against its requirements) to acceptance testing, where users or the customer confirm it meets their needs (user acceptance testing, or UAT). Black-box techniques choose efficient inputs. Equivalence partitioning tests one representative value from each class of inputs that should behave the same, and boundary value analysis tests values at and just beyond each edge of a valid range. Write positive tests (valid input succeeds) and negative tests (invalid input is rejected with a clear message), and trace every test to a requirement label.",
+      "points": [
+        "Test case fields: ID · requirement · preconditions · steps · test data · expected result · actual result · pass or fail",
+        "Valid range 1–100: boundary tests 0, 1, 100 and 101; partition representatives such as −5, 50 and 150",
+        "Reported tip: keep tests replicable, give expected results and leave out stress tests",
+        "Expected results must be observable, such as \"a confirmation appears and the record shows in the list\", not \"it works\""
+      ]
+    },
+    {
+      "title": "Costs and impact of design changes",
+      "eli5": "Moving a wall on a blueprint costs an eraser; moving it after the house is built costs a wrecking crew.",
+      "detail": "One competency asks you to identify the costs and impact of design changes. A late change forces rework in every artifact built on the old decision (requirements, design, code, tests, documentation and training material) plus retesting and redeployment, and once the system is live it can also affect real data and real users. That's why defects and changes caught in requirements and design reviews are far cheaper to fix than the same problems found in production. Impact analysis traces a proposed change through the traceability matrix to everything it touches, then estimates effort, cost, schedule and risk. Change control routes the request to a decision-maker, often a change control board, before work starts, and configuration management keeps versions of every artifact so changes stay controlled and reversible. In a COTS CRM, customizations that stray from the vendor's standard features raise the cost of every future upgrade, and shortcuts in any system create technical debt that's repaid later as extra rework.",
+      "points": [
+        "Impact analysis asks what changes, which requirements, designs, tests and users are affected, and what it costs in time and money",
+        "Agile lowers the cost of change with small increments and automated tests, but it doesn't make change free",
+        "Configure before you customize; heavy custom code in a COTS product can break on upgrades",
+        "Regression testing after each change confirms that what used to work still works"
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Assessment", "value": "1 written proposal (reported): a CRM for a mid-sized company, COTS or custom, built on WGU's requirements document and design template", "note": "A 2024 passer's paper ran 14 pages" },
+    { "label": "Course", "value": "4 CU · term 7 in BSCS 202412 · no coding", "note": "Also listed in B.S. Software Engineering (202610) and B.S. AI Engineering (202607)" },
+    { "label": "Total cost of ownership", "value": "licenses or development · implementation · customization · integration · data migration · training · support · upgrades", "note": "Compare COTS and custom over several years, not just the first invoice" },
+    { "label": "Generic process framework", "value": "communication · planning · modeling · construction · deployment", "note": "Pressman's five framework activities; OpenStax uses inception, elaboration, construction, deployment" },
+    { "label": "Umbrella activities", "value": "project tracking and control · risk management · quality assurance · technical reviews · measurement · configuration management · reusability management · work-product preparation", "note": "Pressman's eight; OpenStax 9.2 names a different six, including architecture management and software security engineering" },
+    { "label": "Waterfall", "value": "requirements → design → implementation → testing → deployment, once, with sign-off between phases", "note": "Best with stable requirements; change is expensive" },
+    { "label": "V-model pairs", "value": "requirements ↔ acceptance testing · system design ↔ system testing · architecture ↔ integration testing · module design ↔ unit testing" },
+    { "label": "Spiral (Boehm)", "value": "Each loop: set objectives → analyze and reduce risks → develop and test → plan the next loop", "note": "Risk-driven; suits large or high-risk projects" },
+    { "label": "Unified Process phases", "value": "inception · elaboration · construction · transition", "note": "Each phase runs one or more iterations; Pressman's textbook adds a fifth, production" },
+    { "label": "Agile Manifesto (2001)", "value": "individuals and interactions over processes and tools · working software over comprehensive documentation · customer collaboration over contract negotiation · responding to change over following a plan" },
+    { "label": "Scrum (2020 guide)", "value": "Accountabilities: Product Owner, Scrum Master, Developers · Events: Sprint, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective · Artifacts: Product Backlog, Sprint Backlog, Increment", "note": "Commitments: Product Goal, Sprint Goal, Definition of Done" },
+    { "label": "Scrum timeboxes", "value": "Sprint ≤ 1 month · Planning ≤ 8 h · Daily Scrum 15 min · Review ≤ 4 h · Retrospective ≤ 3 h", "note": "Maxima for a one-month Sprint; for shorter Sprints, Planning, Review and Retrospective are usually shorter, and the Daily Scrum stays 15 minutes" },
+    { "label": "Kanban", "value": "Visualize the work on a board · limit work in progress (WIP) · manage flow", "note": "No fixed iterations or prescribed roles" },
+    { "label": "Requirement types (BABOK v3)", "value": "Business = why · stakeholder (user) = what people need · solution = how, split into functional and non-functional · transition = temporary needs for the changeover", "note": "Transition examples: data conversion, training" },
+    { "label": "Functional vs non-functional", "value": "Functional: what the system does (\"shall log a call\") · non-functional: how well or under what conditions (\"within 2 seconds for 95% of requests\")" },
+    { "label": "A good requirement is", "value": "necessary · unambiguous · singular · feasible · verifiable · traceable", "note": "Written as \"The system shall …\" with a label such as FR3" },
+    { "label": "SMART", "value": "specific · measurable · achievable · relevant · time-bound", "note": "Goals are broad outcomes; objectives are SMART steps toward them" },
+    { "label": "Scope", "value": "In scope = what the project delivers · out of scope = related work it explicitly won't do", "note": "Prevents scope creep" },
+    { "label": "COTS (NIST)", "value": "Ready-made hardware or software available for purchase by the public", "note": "Configure first; customize sparingly" },
+    { "label": "Cloud service models (NIST SP 800-145)", "value": "SaaS: provider runs the application · PaaS: you deploy your code on the provider's platform · IaaS: you manage the OS and up on rented infrastructure", "note": "Deployment models: public, private, community, hybrid" },
+    { "label": "Three-tier architecture", "value": "presentation (front end) · application (back end, business logic) · data (database)", "note": "Connected through APIs" },
+    { "label": "ISO/IEC 25010 quality characteristics", "value": "functional suitability · performance efficiency · compatibility · interaction capability · reliability · security · maintainability · flexibility · safety", "note": "Interaction capability was usability; flexibility was portability" },
+    { "label": "Availability math", "value": "99% ≈ 7.2 hours down per 30-day month · 99.9% ≈ 43 minutes · 99.99% ≈ 4.3 minutes" },
+    { "label": "Cohesion and coupling", "value": "Aim for high cohesion inside each module and low coupling between modules" },
+    { "label": "Which diagram?", "value": "Use case: actors and goals · activity or flowchart: workflow steps and decisions · sequence: messages over time · class: data and relationships · wireframe or mockup: a screen" },
+    { "label": "Flowchart symbols", "value": "oval = start or end · rectangle = process · diamond = decision · parallelogram = input or output · arrows = flow" },
+    { "label": "Test case fields", "value": "ID · requirement · preconditions · steps · test data · expected result · actual result · pass or fail" },
+    { "label": "Test levels", "value": "unit → integration → system → acceptance (UAT)" },
+    { "label": "Boundary value analysis", "value": "Valid range 1–100 → test 0, 1, 100, 101", "note": "Equivalence partitioning: one value from each class, such as −5, 50, 150" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Orientation and the task documents",
+      "tasks": [
+        "Discuss your course planning tool report with your instructor and confirm you have the current task directions.",
+        "Read the task, the rubric, the CRM requirements document and the design template; turn every rubric line into a heading in a blank outline.",
+        "Find the instructor webinar recordings and the common fail points document in the course resources, and skim the fail points."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Process frameworks and models",
+      "tasks": [
+        "Learn the five framework activities and the umbrella activities from the course material.",
+        "Compare waterfall, the V-model, incremental, prototyping, spiral and the Unified Process on requirement stability, risk and time to first release.",
+        "Read the Agile Manifesto's values and principles and the Scrum Guide's roles, events and artifacts."
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "CRM basics and the COTS-or-custom decision",
+      "tasks": [
+        "List what a CRM does (contacts, pipeline, marketing, service, reporting, integrations) and map each item in the requirements document to one of those areas.",
+        "Weigh COTS against custom for this scenario on cost, time, fit, risk and maintenance, then decide and write two sentences on why.",
+        "Watch the first instructor webinar recording."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Draft the project: purpose, problems, goals and objectives",
+      "tasks": [
+        "Write the introduction and purpose in business terms.",
+        "Pair each current problem with how the CRM solves it.",
+        "Write the goals, then a SMART objective for each one."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Draft the project: prerequisites, scope and environment",
+      "tasks": [
+        "Build the prerequisites table, giving each item a type, an owner and a target date.",
+        "List in-scope and out-of-scope items, making the out-of-scope list real nearby work.",
+        "Describe where the CRM will run and what it's built with, taking the hosting details from the requirements document."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Requirements",
+      "tasks": [
+        "Write the business, user, functional and non-functional requirements, mirroring the requirements document's wording.",
+        "Label every requirement (BR1, UR1, FR1, NFR1) and give each non-functional requirement a measurable target.",
+        "Check each requirement against the list: necessary, unambiguous, singular, feasible, verifiable."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Compare methodologies and choose one",
+      "tasks": [
+        "Compare SDLC methodologies on the same criteria, ideally in a small table.",
+        "Choose one and justify it with reasons from the scenario, naming one weakness and how you'll manage it."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Visuals",
+      "tasks": [
+        "Pick features from your requirements to show, for example a screen mockup of one and a flowchart of another.",
+        "Draw them in diagrams.net or Figma using exactly the names and steps from your text.",
+        "Write a short explanation under each: what it shows, which requirement it supports and how a user moves through it."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Test cases",
+      "tasks": [
+        "Write replicable test cases with IDs, the requirement each verifies, preconditions, steps, specific data and expected results.",
+        "Cover at least one negative case and one boundary value, and leave out stress tests."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Review and submit",
+      "tasks": [
+        "Walk the rubric line by line and check that each item has its own clearly labeled answer.",
+        "Check that every visual and test case points to a labeled requirement and uses the same names.",
+        "Fix Grammarly's correctness issues, cite any sources you used, and submit."
+      ]
+    },
+    {
+      "day": "Days 12-14",
+      "focus": "Buffer for a revision",
+      "tasks": [
+        "If the paper comes back, fix exactly the items the evaluator names and resubmit.",
+        "If the feedback is unclear or contradicts your instructor's guidance, book an instructor appointment before resubmitting."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which statement is a non-functional requirement for the CRM?",
+      "choices": [
+        "The system shall let a sales rep log a phone call and its outcome against a customer record.",
+        "The system shall open a customer record within 2 seconds for 95% of requests with 200 concurrent users.",
+        "The company wants to increase repeat-customer revenue by 10% within a year of the CRM's launch.",
+        "Sales managers need to see each rep's open deals, with their expected close dates, in one place."
+      ],
+      "answer": "The system shall open a customer record within 2 seconds for 95% of requests with 200 concurrent users.",
+      "why": "A non-functional requirement states a quality or constraint, here performance, with a measurable target and the condition it applies under (200 concurrent users). Logging a call is a function the system performs, so it's a functional requirement. Raising repeat revenue explains why the company is investing, which makes it a business requirement, and what sales managers need is a stakeholder (user) requirement that later becomes functional requirements."
+    },
+    {
+      "q": "In the BABOK Guide's classification, which type of requirement explains why the organization is starting the project at all?",
+      "choices": [
+        "Stakeholder requirements",
+        "Functional requirements",
+        "Business requirements",
+        "Transition requirements"
+      ],
+      "answer": "Business requirements",
+      "why": "Business requirements are the goals, objectives and outcomes behind the change: the why. Stakeholder requirements say what particular people or groups need, functional requirements describe what the solution must do, and transition requirements cover temporary needs for the changeover, such as data conversion and training, that disappear once the change is complete."
+    },
+    {
+      "q": "A draft requirement reads: \"The CRM should be user-friendly and fast.\" What's the main problem with it?",
+      "choices": [
+        "It can't be verified, since user-friendly and fast have no measurable target",
+        "It's really a functional requirement, so it belongs under a different heading",
+        "It uses \"should\", and a binding requirement has to say \"will\" instead",
+        "It names a specific technology, which requirements are supposed to avoid"
+      ],
+      "answer": "It can't be verified, since user-friendly and fast have no measurable target",
+      "why": "A requirement has to be verifiable: a test must be able to pass or fail it. Rewrite it as separate, measurable statements, such as a response-time target under a stated load and a usability target like the share of new users who complete a task unaided. It also bundles two needs into one, which breaks the singular rule. Swapping \"should\" for \"will\" wouldn't fix it: by convention a binding requirement says \"shall\", and even then the statement would stay untestable. Ease of use and speed are qualities, so this is a non-functional requirement, and it names no technology."
+    },
+    {
+      "q": "Which project is the best fit for a waterfall or V-model approach?",
+      "choices": [
+        "A regulated payroll module with fixed, documented requirements and sign-off at each phase",
+        "A new mobile app whose features will be shaped by weekly feedback from its first users",
+        "A first-of-its-kind product with high technical risk, where early prototypes must prove the idea",
+        "A startup's first release that must reach users in four weeks and will change often after that"
+      ],
+      "answer": "A regulated payroll module with fixed, documented requirements and sign-off at each phase",
+      "why": "Sequential models work best when requirements are stable and well understood and the organization needs documents and approvals at each phase, as regulated work often does; the V-model adds a planned test level for each specification. Feedback-driven features and fast, changing releases call for agile or incremental delivery, and high technical risk with prototypes points to the spiral model or prototyping."
+    },
+    {
+      "q": "What sets Boehm's spiral model apart from other process models?",
+      "choices": [
+        "It completes each phase once, in strict order, with a sign-off before the next one starts",
+        "It works in fixed timeboxes of one month or less, pulling its work from a Product Backlog",
+        "It manages a continuous flow of work items on a board, with limits on work in progress",
+        "It repeats loops that each set objectives and reduce the biggest risks before building"
+      ],
+      "answer": "It repeats loops that each set objectives and reduce the biggest risks before building",
+      "why": "The spiral model is risk-driven: every loop sets objectives, identifies and reduces the biggest risks (often with a prototype), develops and tests, then plans the next loop, which suits large or high-risk projects. Completing each phase once in order with sign-offs describes waterfall, fixed timeboxes fed from a Product Backlog describe Scrum, and limiting work in progress on a continuous flow describes Kanban."
+    },
+    {
+      "q": "In Scrum, who is accountable for ordering the Product Backlog?",
+      "choices": [
+        "The Product Owner",
+        "The Scrum Master",
+        "The Developers",
+        "The project manager"
+      ],
+      "answer": "The Product Owner",
+      "why": "The 2020 Scrum Guide makes the Product Owner accountable for maximizing the product's value and for managing the Product Backlog, including ordering it; others can help, but the Product Owner stays accountable. The Scrum Master is accountable for the Scrum Team's effectiveness, and the Developers are accountable for the Sprint Backlog, their plan for the Sprint. The whole Scrum Team is accountable for creating a valuable, useful Increment each Sprint, and Scrum defines no project manager role."
+    },
+    {
+      "q": "Which of these is a SMART objective for the CRM project?",
+      "choices": [
+        "Raise customer satisfaction as high as possible across every sales region",
+        "Buy the highest-rated CRM on the market and roll it out to every department",
+        "Cut the average ticket resolution time from 48 to 24 hours within six months of launch",
+        "Give the sales team better tools within six months of launch so they can close more deals"
+      ],
+      "answer": "Cut the average ticket resolution time from 48 to 24 hours within six months of launch",
+      "why": "It's specific (average support-ticket resolution time), measurable (48 to 24 hours), plausibly achievable, relevant to a CRM's service module and time-bound (six months after launch). Better tools within six months has a deadline but no measurable target, satisfaction \"as high as possible\" has neither a target nor a deadline, and buying the highest-rated CRM is a choice of solution, not an objective."
+    },
+    {
+      "q": "The CRM project covers contact management, the sales pipeline and support tickets. Which item belongs on the out-of-scope list?",
+      "choices": [
+        "Importing existing customer records into the CRM",
+        "Training sales staff on the new pipeline screens",
+        "Role-based access so reps see only their own accounts",
+        "Replacing the company's payroll system"
+      ],
+      "answer": "Replacing the company's payroll system",
+      "why": "Out of scope lists related work the project explicitly won't do, and payroll is a separate system the CRM doesn't touch. Importing existing records (data migration) and training staff are transition work the rollout needs, and role-based access is a security requirement of the CRM itself, so all three belong in scope."
+    },
+    {
+      "q": "Which is a typical advantage of a COTS CRM over a custom-built one?",
+      "choices": [
+        "Complete control over every feature, over the source code and over the release schedule",
+        "Faster deployment and lower up-front cost, since the core features already exist",
+        "No subscription or license fees at any point over the system's whole lifetime",
+        "A perfect fit for unusual business processes with no configuration work at all"
+      ],
+      "answer": "Faster deployment and lower up-front cost, since the core features already exist",
+      "why": "Commercial off-the-shelf products come with proven features, vendor-managed security and upgrades, and short setup times. In exchange you usually pay ongoing subscription or license fees, accept limits on customization, depend on the vendor's roadmap and still need configuration to fit your processes. Full control over features, source code and release timing is the main argument for a custom build."
+    },
+    {
+      "q": "Under NIST's cloud definitions, a CRM that staff use in a web browser while the vendor runs the servers, the platform and the application itself is which service model?",
+      "choices": [
+        "Infrastructure as a service (IaaS)",
+        "Platform as a service (PaaS)",
+        "On-premises hosting",
+        "Software as a service (SaaS)"
+      ],
+      "answer": "Software as a service (SaaS)",
+      "why": "In SaaS the provider runs the application and everything beneath it, and the customer uses and configures it, which describes most COTS CRMs. With PaaS you deploy your own application onto the provider's platform, and with IaaS you rent servers, storage and networks and manage the operating system and up. On-premises means the company runs everything in its own facility, and NIST doesn't count it as a cloud service model."
+    },
+    {
+      "q": "Which test case is replicable?",
+      "choices": [
+        "Precondition: user rep01 is logged in with the Sales role. Steps: open the Customers list, pick any customer you like, type a short note of your own and click Save. Expected: the notes feature works correctly for whichever customer you picked.",
+        "Precondition: user rep01 is logged in with the Sales role, and customer Acme Corp exists. Steps: open Customers, select Acme Corp, add the note \"Follow up Friday\" and click Save. Expected: the note appears first in Acme Corp's activity list with today's date.",
+        "Precondition: none. Steps: keep adding new users and new customer notes as fast as you can until the system slows down or fails. Expected: the system holds up under the heavy load for as long as it possibly can.",
+        "Precondition: several sales reps have used the notes feature for at least a week. Steps: ask each rep whether they like the feature and what they would change. Expected: most of the reps say they are happy with the new notes feature."
+      ],
+      "answer": "Precondition: user rep01 is logged in with the Sales role, and customer Acme Corp exists. Steps: open Customers, select Acme Corp, add the note \"Follow up Friday\" and click Save. Expected: the note appears first in Acme Corp's activity list with today's date.",
+      "why": "A replicable test case states the starting state, including the data it needs, then exact steps, specific test data and an observable expected result, so anyone who runs it gets the same pass or fail. Picking any customer and expecting the feature to \"work correctly\" leaves the data and the outcome up to the tester. Adding users and notes until the system fails is a stress test, which students advise leaving out, and asking reps whether they like a feature is feedback gathering, not a test with a defined outcome."
+    },
+    {
+      "q": "A discount field accepts whole numbers from 0 to 50. Using boundary value analysis, which set of inputs tests the boundaries?",
+      "choices": [
+        "0, 25 and 50",
+        "−1, 0, 50 and 51",
+        "10, 20, 30 and 40",
+        "−100 and 100"
+      ],
+      "answer": "−1, 0, 50 and 51",
+      "why": "Boundary value analysis tests each edge of the valid range and the nearest invalid values just outside it, because off-by-one mistakes cluster there: −1 and 51 should be rejected, while 0 and 50 should be accepted. 0, 25 and 50 skips the invalid neighbors, the values from 10 to 40 sit inside one partition, and −100 and 100 are far from both edges."
+    },
+    {
+      "q": "In Pressman's generic process framework, which activity covers building analysis and design models such as UML diagrams?",
+      "choices": [
+        "Communication",
+        "Construction",
+        "Deployment",
+        "Modeling"
+      ],
+      "answer": "Modeling",
+      "why": "Modeling creates analysis models that clarify requirements and design models that describe the architecture, components and interfaces, including UML diagrams. Communication gathers requirements from stakeholders, construction covers code generation and testing, and deployment delivers the software and gathers feedback. Planning, the fifth activity, sets the schedule, estimates and risks."
+    },
+    {
+      "q": "Which visual best shows the steps and decision points in converting a sales lead into a customer?",
+      "choices": [
+        "A class diagram",
+        "A deployment diagram",
+        "An activity diagram or flowchart",
+        "An entity-relationship diagram"
+      ],
+      "answer": "An activity diagram or flowchart",
+      "why": "Activity diagrams and flowcharts show a workflow as ordered steps with decisions and branches, such as whether a lead qualifies. Class and entity-relationship diagrams show data structures and relationships, not steps over time, and a deployment diagram shows which software runs on which hardware or nodes."
+    },
+    {
+      "q": "Why does a requirement change usually cost more when it's discovered after the CRM is deployed than during requirements analysis?",
+      "choices": [
+        "Everything built on the old requirement, from design to training, must be reworked and retested",
+        "Most process models forbid any change to requirements once the requirements phase has been signed off",
+        "COTS vendors charge a fixed fee for every change request, and that fee goes up after launch",
+        "It doesn't; in an agile project a change costs about the same at every stage of the work"
+      ],
+      "answer": "Everything built on the old requirement, from design to training, must be reworked and retested",
+      "why": "Every artifact built on a decision has to change when the decision does, so late changes multiply the rework, the retesting and the risk, and after launch they also touch live data and real users. No model forbids change; models differ in how they control it. Vendor pricing varies and isn't the reason the cost rises. Agile lowers the cost of change with small increments and automated tests, but a late change still costs more than catching it early."
+    }
+  ],
+  "pitfalls": [
+    "<b>Visuals that don't match the proposal.</b> A 2025 student was returned three times because the diagrams didn't match the CRM described. Use the same feature names, fields and steps as your requirements, and explain each visual.",
+    "<b>Ignoring the provided documents.</b> The requirements document and design template define the scenario. The reported advice is to mirror their wording, label each requirement in its subsection and pull hosting details from the requirements document.",
+    "<b>Coming up short on counts.</b> Count what your rubric asks for in each list, such as prerequisites, goals and objectives, and meet it; a commenter's paper came back over a missing prerequisite.",
+    "<b>Blurring goals and objectives.</b> Goals are broad outcomes, while objectives are measurable and time-bound. An objective without a number or a date will read as a goal.",
+    "<b>Non-functional requirements with no numbers.</b> \"Secure\", \"fast\" and \"easy to use\" can't be tested. Give each one a target, such as a response time, an uptime percentage or a WCAG level, plus the conditions it applies under.",
+    "<b>Generic methodology arguments.</b> Saying agile is flexible isn't a justification. Compare the candidates on the same criteria and tie your choice to the scenario's facts.",
+    "<b>Test cases nobody else could run.</b> Missing preconditions, steps, data or expected results make a test case unreplicable, and students advise leaving stress tests out.",
+    "<b>Visuals of the wrong kind.</b> Pick a diagram that fits what it shows, such as a screen mockup for a layout and a flowchart for a process, and explain each one.",
+    "<b>Writing more than the rubric asks.</b> Recent replies say to keep it simple and cover exactly what the rubric asks. Extra material gives an evaluator more to question without earning credit."
+  ],
+  "resources": [
+    {
+      "label": "Task directions, rubric, CRM requirements document and design template (course page)",
+      "kind": "official",
+      "note": "The source of truth. Build your outline from the rubric's letters and reuse the requirements document's wording."
+    },
+    {
+      "label": "Instructor webinar recordings and the common fail points document (course resources)",
+      "kind": "video",
+      "note": "Recommended by a 2024 passer; the fail points document shows the most frequent reasons papers come back."
+    },
+    {
+      "label": "OpenStax: Introduction to Computer Science, 9.2 Software Engineering Process",
+      "url": "https://openstax.org/books/introduction-computer-science/pages/9-2-software-engineering-process",
+      "kind": "tool",
+      "note": "A free textbook chapter on generic activities, waterfall, the V-model, incremental, spiral, the Unified Process, agile and Scrum, with design principles nearby."
+    },
+    {
+      "label": "The Scrum Guide (2020)",
+      "url": "https://scrumguides.org/scrum-guide.html",
+      "kind": "official",
+      "note": "The short official definition of Scrum's accountabilities, events, artifacts and commitments."
+    },
+    {
+      "label": "Manifesto for Agile Software Development",
+      "url": "https://agilemanifesto.org/",
+      "kind": "official",
+      "note": "The four values, with the twelve principles one click away; quote them sparingly in your methodology comparison."
+    },
+    {
+      "label": "IIBA requirement types infographic (BABOK Guide v3)",
+      "url": "https://www.iiba.org/contentassets/38e412c7b77d456297d953de5bf5ca61/requirement-types-infograph.pdf",
+      "kind": "official",
+      "note": "One page defining business, stakeholder, solution (functional and non-functional) and transition requirements, with examples and traceability."
+    },
+    {
+      "label": "NIST SP 800-145: The NIST Definition of Cloud Computing",
+      "url": "https://csrc.nist.gov/pubs/sp/800/145/final",
+      "kind": "official",
+      "note": "The standard definitions of SaaS, PaaS and IaaS and of public, private, community and hybrid clouds, for the hosting part of the environment section."
+    },
+    {
+      "label": "ISO/IEC 25010 product quality model (iso25000.com overview)",
+      "url": "https://iso25000.com/index.php/en/iso-25000-standards/iso-25010",
+      "kind": "tool",
+      "note": "The nine quality characteristics and their subcharacteristics, a ready checklist for non-functional requirements."
+    },
+    {
+      "label": "IBM Think: What is CRM?",
+      "url": "https://www.ibm.com/think/topics/crm",
+      "kind": "tool",
+      "note": "A vendor's plain-language tour of CRM capabilities and of operational, analytical and collaborative CRM; useful for problem statements and feature lists."
+    },
+    {
+      "label": "diagrams.net (draw.io)",
+      "url": "https://www.drawio.com/",
+      "kind": "tool",
+      "note": "Free flowchart and UML editor that runs in the browser or as a desktop app."
+    },
+    {
+      "label": "Figma",
+      "url": "https://www.figma.com/",
+      "kind": "tool",
+      "note": "Its free plan works well for a simple GUI mockup or wireframe of one CRM screen."
+    },
+    {
+      "label": "Grammarly",
+      "kind": "tool",
+      "note": "A 2024 passer recommends fixing its correctness suggestions before you submit."
+    }
+  ],
+  "community": {
+    "summary": "Students' advice is consistent: follow the rubric letter by letter, mirror the requirements document and label every requirement. Experiences vary widely. An Apr 2024 first-try passer wrote 14 pages in about two days, and 2025 commenters say it can take only a few hours once the structure is clear, while a 2025 student was returned three times over visuals that didn't match the CRM even after instructors approved the content. The advice in that thread: keep it simple, cover exactly what the rubric asks, and if feedback contradicts the written requirements or instructor guidance, appeal with the emails.",
+    "coverage": "An Apr 2024 r/WGU_CompSci post and a 2025 r/WGU_CompSci thread, neither linked here",
+    "posts": []
+  },
+  "sources": [
+    { "label": "WGU Institutional Catalog, November 2026 (D284 description; BSCS 202611, BSSWE 202610 and BSAIE 202607 course lists)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "WGU Institutional Catalog, January 2026 (BSCS 202412 lists D284, 4 CU, term 7)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-january-2026.pdf" },
+    { "label": "WGU: B.S. Software Engineering Program Guidebook, catalog 202610 (D284 competencies)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSSWE.pdf" },
+    { "label": "WGU: B.S. Computer Science Program Guidebook, catalog 202611 (course list)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "The Scrum Guide, November 2020", "url": "https://scrumguides.org/scrum-guide.html" },
+    { "label": "Manifesto for Agile Software Development (2001)", "url": "https://agilemanifesto.org/" },
+    { "label": "IIBA: requirement types infographic, based on the BABOK Guide v3 (2021)", "url": "https://www.iiba.org/contentassets/38e412c7b77d456297d953de5bf5ca61/requirement-types-infograph.pdf" },
+    { "label": "NIST SP 800-145: The NIST Definition of Cloud Computing", "url": "https://csrc.nist.gov/pubs/sp/800/145/final" },
+    { "label": "NIST CSRC glossary: commercial off-the-shelf (COTS)", "url": "https://csrc.nist.gov/glossary/term/commercial_off_the_shelf" },
+    { "label": "ISO 25000 portal: ISO/IEC 25010 product quality model", "url": "https://iso25000.com/index.php/en/iso-25000-standards/iso-25010" },
+    { "label": "OpenStax: Introduction to Computer Science, 9.2 Software Engineering Process", "url": "https://openstax.org/books/introduction-computer-science/pages/9-2-software-engineering-process" },
+    { "label": "OMG: Unified Modeling Language 2.5.1", "url": "https://www.omg.org/spec/UML/2.5.1/About-UML" },
+    { "label": "ISTQB: Certified Tester Foundation Level v4.0 (test levels and test design techniques)", "url": "https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/" },
+    { "label": "IBM Think: What is CRM? (capabilities and CRM types)", "url": "https://www.ibm.com/think/topics/crm" }
+  ],
+  "caveats": [
+    "Students who start on WGU's newest BSCS version (202611, from the Nov 2026 catalog) see E074 Agile for Software Engineering in this slot instead; this guide covers D284.",
+    "The task summary here comes from an Apr 2024 student post and a 2025 thread. WGU's task directions and rubric are behind the login and may have been revised since, so follow your own task page wherever it differs from this guide.",
+    "Return reasons are anecdotal. The three-returns story comes from one 2025 post that had no link in the research notes, and a search by its title didn't find it, so it isn't listed under community posts.",
+    "Reddit couldn't be opened directly for this research, so post details come from condensed notes, and dates are approximate (converted from Reddit's relative timestamps).",
+    "Terminology varies between sources: Pressman's five framework activities versus OpenStax's four phases, and user versus stakeholder requirements. Use the terms in your course materials and rubric.",
+    "The practice questions are original concept checks written for this guide. The PA has no multiple-choice items; the questions test the ideas the proposal relies on."
+  ]
+}

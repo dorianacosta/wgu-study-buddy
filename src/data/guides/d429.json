@@ -1,0 +1,795 @@
+{
+  "code": "D429",
+  "summary": "D429 is a 2-CU objective-assessment course that surveys AI breadth: agents and task environments, knowledge representation and reasoning, probability, data preparation and EDA, machine learning, NLP and ethics, taught from WGU's course pages and Russell and Norvig's <i>Artificial Intelligence: A Modern Approach</i> (AIMA). Students report it's much harder than its CU value suggests, because the exam is vocabulary-heavy and asks you to apply terms to real-world scenarios. Learn every key term well enough to explain it with an example, give the data and EDA material real time, and use the pre-assessment as a readiness check rather than something to memorize.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple choice)",
+    "format": "About 59 questions + 2 survey items (one May 2026 report) · proctored · time limit and cut score not published",
+    "details": [
+      "Students report a vocabulary-heavy, scenario-based exam. One Aug 2026 test-taker estimated key terms at about 70% of it, with items asking which real-world example fits an environment type, how two terms differ, or what a definition's drawback is.",
+      "One May 2026 report counted 59 questions plus 2 survey items at the end and passed at roughly 75%. No public source gives the time limit or the cut score, so check the timer when the exam opens.",
+      "Reported emphasis from one Aug 2026 attempt: exploratory data analysis (EDA) and environment types came up most, then data types and their drawbacks, ontologies and the primary goals of AI and ML, with a little on chart types, Kaggle and quantization. Treat this as a hint about weight, not a blueprint.",
+      "Pre-assessment (PA) vs OA: an Apr 2026 writeup found the PA, OA and end-of-course practice test closely alike, but newer reports (May and Aug 2026) say the OA covers material the PA doesn't, so understand the ideas rather than memorizing the PA. An Oct 2026 student also found the OA's wording more academic than the course pages.",
+      "Course materials (students report): WGU-built course pages and a key-terms list, an ebook of a newer AIMA edition, videos, recorded instructor cohort sessions, the PA and an end-of-course practice test. Readings reportedly cover AIMA Ch. 1–2 and then jump to Ch. 10.",
+      "After a failed attempt you get a coaching report (reported). One Oct 2026 student had to prepare three 45-minute PowerPoint presentations, one per competency, before a 4th attempt. WGU's official retake policy text wasn't found.",
+      "No prerequisite is listed, but students report the course intro email recommends Intro to Statistics and Data Structures and Algorithms II first. D682 AI Optimization lists D429 as its prerequisite in the WGU catalog."
+    ],
+    "tips": [
+      "Finish D429 early: D682 lists it as a prerequisite, and the same AIMA textbook reportedly carries into D682 and D683.",
+      "Learn each key term four ways: a one-line definition, a real-world example, a non-example, and how it differs from its closest neighbor (episodic vs sequential, goal-based vs utility-based, knowledge vs belief).",
+      "On scenario items, find the one dimension being tested (observability? episodes? timing?) and judge only that. When two answers are both true, pick the more specific one, such as utility-based over goal-based when trade-offs appear.",
+      "Use the PA as a gate, not a script: pass it with margin, then the end-of-course practice test, and for every PA item explain why each wrong option is wrong.",
+      "Have an AI chatbot or NotebookLM write new, reworded scenario questions from the course key-terms list. Several 2026 passers credit this, and it beats memorizing PA wording.",
+      "Don't skip the data material because it looks like statistics rather than AI: EDA, data types and charts were the largest reported block.",
+      "Test rested and pace yourself. One student blamed a narrow PA fail on testing around 11 PM, and another said multiple-choice burnout made them rush.",
+      "One student with some AI background finished in about a day, while others report about 5 to 10 days. If you compress the plan, keep the PA, review and OA ending."
+    ]
+  },
+  "competencies": [
+    "<b>Administrative:</b> review your course planning tool report with your instructor and build a personalized study plan together.",
+    "<b>Types of AI:</b> describe the types of AI used for decision-making in real-world applications.",
+    "<b>Data for AI/ML:</b> identify suitable data sources and explain the data collection, data wrangling and data cleaning techniques used to implement the AI/ML data model.",
+    "<b>Reasoning vs knowledge:</b> identify the difference between reasoning and knowledge in AI through a step-by-step representation."
+  ],
+  "topics": [
+    {
+      "title": "What AI is: goals, types and history",
+      "eli5": "AI is the effort to build systems that sense what's going on and choose good actions. Machine learning is the part of AI where the system gets better by learning from data instead of being told every rule.",
+      "detail": "Russell and Norvig frame AI as the study of agents that receive percepts from an environment and act on it, with the goal of acting rationally. They contrast four approaches: acting humanly (the Turing test), thinking humanly (cognitive modeling), thinking rationally (the 'laws of thought', i.e., logic) and acting rationally (the rational-agent approach the book adopts). Machine learning is the subset of AI that improves at a task with experience and aims to generalize to unseen data; deep learning is the subset of ML that uses many-layered neural networks, and generative AI and large language models are deep-learning systems. Today's AI is narrow (built for specific tasks); artificial general intelligence that matches people across tasks doesn't exist.",
+      "points": [
+        "Competency A asks you to describe types of AI used for real-world decisions: rule-based expert systems, search and planning, probabilistic (decision-theoretic) systems, supervised and unsupervised ML, reinforcement learning and generative AI. Know one example, one strength and one limitation of each.",
+        "Primary goal of ML (Mitchell's definition): a program learns from experience <i>E</i> on tasks <i>T</i>, measured by <i>P</i>, if its performance on <i>T</i>, as measured by <i>P</i>, improves with <i>E</i>.",
+        "Trade-offs: expert systems are transparent but brittle and costly to fill with expert rules; ML needs (often labeled) data and can inherit bias; generative AI is flexible but can hallucinate.",
+        "Nesting: AI ⊃ machine learning ⊃ deep learning; LLMs such as GPT are generative pretrained transformers.",
+        "History anchors: 1950 Turing's imitation game; 1956 Dartmouth workshop names the field; AI winters in the 1970s and late 1980s; 1997 Deep Blue beats Kasparov; 2012 AlexNet starts the deep-learning boom; 2017 the Transformer; 2022 ChatGPT."
+      ]
+    },
+    {
+      "title": "Agents, PEAS and task environments",
+      "eli5": "Before you build an AI, describe its job: how it's graded, where it works, what it can do and what it can sense. Then describe its world, such as whether it can see everything and whether anything changes while it thinks.",
+      "detail": "An agent perceives through sensors and acts through actuators; its percept sequence is everything it has sensed so far, the agent function maps percept sequences to actions, and the agent program implements that function. A task environment is specified with PEAS: Performance measure, Environment, Actuators, Sensors. Environments are then classified on independent dimensions: fully vs partially observable, single vs multiagent, deterministic vs stochastic (nondeterministic), episodic vs sequential, static vs semidynamic vs dynamic, discrete vs continuous, and known vs unknown. Students report about 8 OA items on environment types in one 2026 attempt, mostly matching real-world examples to a property.",
+      "points": [
+        "<b>Observable:</b> can the sensors see everything relevant right now? Poker (hidden cards) is partially observable; a crossword is fully observable.",
+        "<b>Episodic vs sequential:</b> episodic decisions don't affect later ones (labeling each image on an inspection line); sequential ones do (chess, driving, a crossword).",
+        "<b>Static / semidynamic / dynamic:</b> a dynamic world changes while the agent thinks (taxi driving); semidynamic means the world stays put but the score changes with time (chess with a clock).",
+        "<b>Deterministic vs stochastic:</b> is the next state fully set by the current state and action? Stochastic means outcomes are uncertain and described with probabilities.",
+        "<b>Known vs unknown</b> is about the rules (does the agent know what its actions do?), not about what it can see: a fully observable environment can still be unknown.",
+        "<b>Multiagent</b> can be competitive (chess) or partly cooperative: taxi drivers cooperate to avoid collisions but compete for parking spaces."
+      ]
+    },
+    {
+      "title": "Agent types, rationality and search",
+      "eli5": "A thermostat just reacts, a GPS plans a route to a goal, and a smart dispatcher weighs many goals at once to find the best trade-off. Those are different kinds of agents, from simplest to smartest.",
+      "detail": "AIMA describes four basic agent programs plus learning. A simple reflex agent applies condition-action rules to the current percept only; a model-based reflex agent keeps internal state about parts of the world it can't currently see; a goal-based agent considers future action sequences that reach a goal, usually found by search or planning; and a utility-based agent chooses the action with maximum expected utility, which handles trade-offs and uncertainty. Any of these can become a learning agent that improves from feedback. A rational agent picks the action expected to maximize its performance measure given its percept sequence and built-in knowledge, so rational doesn't mean all-knowing. Students report the readings skip AIMA Ch. 3–8, which hold the search algorithms, so treat search as background.",
+      "points": [
+        "<b>Simple reflex:</b> if-then rules on the current percept; works well only when the environment is fully observable (a thermostat).",
+        "<b>Model-based reflex:</b> internal state built from a transition model (how the world changes) and a sensor model (how percepts reflect it), such as a robot vacuum remembering which rooms are clean.",
+        "<b>Goal-based vs utility-based:</b> a goal is pass/fail, while utility ranks outcomes. When a scenario mentions trade-offs or degrees of preference, pick utility-based.",
+        "<b>Learning agent parts:</b> performance element (acts), critic (feedback against a performance standard), learning element (makes improvements), problem generator (suggests exploratory actions).",
+        "<b>Maximum expected utility:</b> <code>EU(a) = Σ<sub>s</sub> P(s | a) · U(s)</code>; choose the action with the largest EU.",
+        "<b>Search background:</b> BFS and uniform-cost search are uninformed; greedy best-first orders by <code>h(n)</code> alone and isn't optimal; A* orders by <code>f(n) = g(n) + h(n)</code> and is optimal when <code>h</code> is admissible (never overestimates the remaining cost)."
+      ]
+    },
+    {
+      "title": "Knowledge vs reasoning: logic and inference",
+      "eli5": "Knowledge is what's written in the notebook; reasoning is the step-by-step work of figuring out something new from what's written there.",
+      "detail": "A knowledge-based agent keeps a knowledge base (KB) of sentences in a formal language plus an inference procedure: TELL adds sentences and ASK queries what the KB entails. Propositional logic works with whole true/false statements joined by connectives (¬, ∧, ∨, ⇒, ⇔); first-order logic adds objects, predicates, functions and the quantifiers ∀ (for all) and ∃ (there exists), so one sentence can cover every member of a category. Forward chaining is data-driven (apply rules to known facts until the goal appears), and backward chaining is goal-driven (start from the query and work back to known facts). Default, or nonmonotonic, reasoning draws conclusions that new facts can withdraw, such as assuming a bird flies until you learn it's a penguin.",
+      "points": [
+        "Competency C: the stored facts, rules and categories are <b>knowledge</b>; each inference step that produces a new sentence is <b>reasoning</b>. Be ready to label the lines of a short derivation.",
+        "Modus ponens: from <code>P</code> and <code>P ⇒ Q</code>, infer <code>Q</code>.",
+        "First-order example: <code>∀x Thermometer(x) ⇒ Sensor(x)</code> plus <code>Thermometer(T100)</code> gives <code>Sensor(T100)</code>.",
+        "Declarative knowledge states what is true; procedural knowledge encodes how to do something.",
+        "Nonmonotonic reasoning: adding a fact can retract a conclusion, and a truth-maintenance system tracks justifications so beliefs can be revised.",
+        "Reading tip: the assigned Ch. 10 is written in the first-order logic of Ch. 8, which the readings reportedly skip, so learn the notation basics above before you read it."
+      ]
+    },
+    {
+      "title": "Ontologies, categories and modal logic",
+      "eli5": "An ontology is a shared dictionary and family tree for a subject: it names the kinds of things, says how they relate, and lets each kind inherit facts from its parent.",
+      "detail": "An ontology is a formal specification of a domain's concepts (categories), their properties and the relationships among them; ontological engineering builds these, with a general upper ontology (physical objects, events, abstract objects) above domain-specific ones. A taxonomy is a subclass hierarchy, and inheritance means members and subclasses pick up the properties of their parent categories. Semantic networks draw categories and objects as linked nodes, and description logics efficiently decide subsumption (is one category inside another?) and underlie the web ontology language OWL. Modal logic adds operators for mental states: <code>K<sub>A</sub>(P)</code> means 'A knows P' and <code>B<sub>A</sub>(P)</code> means 'A believes P', and under possible-worlds semantics A knows P only if P is true in every world A considers possible.",
+      "points": [
+        "Membership vs subclass: <code>T100 ∈ Thermometers</code> (an object in a category) vs <code>Thermometers ⊂ Sensors</code> (a category inside a category).",
+        "Disjoint: no shared members. Exhaustive decomposition: every member belongs to at least one subcategory. Partition: both at once.",
+        "Knowledge implies truth; belief doesn't. You can believe something false, but you can't know it.",
+        "Referential opacity: Lois can know Superman flies without knowing Clark Kent flies, so you can't swap equal names inside 'knows'.",
+        "Events: the event calculus tracks fluents (properties that change over time) and the events that start or stop them.",
+        "Students report about 3 ontology items in one 2026 attempt, including ontology engineering."
+      ]
+    },
+    {
+      "title": "Probability: Bayes' rule, naive Bayes and open-universe models",
+      "eli5": "Bayes' rule is how you update a guess when evidence shows up: start with how common something is, then adjust by how well the evidence fits it.",
+      "detail": "Conditional probability is <code>P(a | b) = P(a ∧ b) / P(b)</code>, and the product rule rearranges it to <code>P(a ∧ b) = P(a | b) · P(b)</code>. Bayes' rule turns a causal probability into a diagnostic one, <code>P(cause | effect) = P(effect | cause) · P(cause) / P(effect)</code>, where <code>P(effect)</code> comes from summing over every possible cause. Naive Bayes assumes the evidence variables are conditionally independent given the class, so it multiplies the prior by each feature's likelihood; despite that simplification it works well for spam filtering and document classification. Open-universe probability models drop the closed-world assumptions that you know which objects exist and which names refer to the same one, which matters for record linkage, tracking and fake-account detection.",
+      "points": [
+        "Base-rate effect: when a condition is rare, most positive results can be false alarms even with an accurate test.",
+        "Naive Bayes decision: compute <code>P(C) · ∏ P(e<sub>i</sub> | C)</code> for each class, pick the largest, and divide by the sum of the scores when you need the actual probability.",
+        "Laplace (add-one) smoothing keeps a word never seen in a class from zeroing out the whole product.",
+        "Existence uncertainty: how many objects are there? Identity uncertainty: which observations or names are the same object?",
+        "Number statements and number variables (such as <code>#Customer</code>) describe how many objects exist; a Sybil attack (one actor, many fake identities) is a classic identity-uncertainty problem."
+      ]
+    },
+    {
+      "title": "Data for AI: sources, wrangling and cleaning",
+      "eli5": "Data prep is like cooking: get the right ingredients (sources), chop and arrange them (wrangling), and throw out what's spoiled (cleaning) before you cook anything.",
+      "detail": "Competency B asks you to pick suitable data sources and explain collection, wrangling and cleaning. Sources include internal databases and logs, sensors and IoT devices, APIs, open datasets such as Kaggle or government portals, web scraping (check terms of service and privacy), surveys and experiments, purchased data and synthetic data; judge each on relevance, representativeness, volume, quality, label quality, licensing, consent and bias. Wrangling (munging) reshapes raw data into a usable structure through parsing, merging, pivoting, type conversion and encoding. Cleaning fixes quality problems: missing values, duplicates, outliers, sentinel values such as 999 meaning 'unknown', inconsistent units or spellings, and impossible values.",
+      "points": [
+        "<b>Kaggle:</b> an online data-science community with public datasets, competitions ranked on leaderboards, shared notebooks and discussions. Students report an OA item on its role.",
+        "<b>Missing values:</b> drop rows or columns, or impute with the mean, median, mode or a model. The median resists outliers, and a missing-indicator column records that a value was missing.",
+        "<b>Data types and drawbacks:</b> nominal (no order; one-hot encoding can explode the column count), ordinal (ordered but unequal gaps), continuous (sensitive to scale and outliers), counts (often skewed), unstructured text, images and audio (high-dimensional, costly to label), time series (random shuffling leaks the future).",
+        "Structured (tables) vs semi-structured (JSON, XML) vs unstructured (free text, images).",
+        "Pipeline order: frame the problem, collect and assess data, explore and visualize, train and select a model, check trust and explainability, then deploy and monitor (AIMA §19.9; CRISP-DM is the industry version)."
+      ]
+    },
+    {
+      "title": "EDA, charts and transformations",
+      "eli5": "EDA means looking over your data with summaries and charts before building anything, the way you'd inspect a used car before buying it. Transformations then reshape the numbers so models can use them more easily.",
+      "detail": "Exploratory data analysis summarizes a dataset's main characteristics, often visually, before formal modeling: center (mean, median, mode), spread (range, variance, standard deviation, IQR), shape (skewness) and relationships (correlation). Choose the chart by the question: a histogram shows one numeric variable's distribution, a bar chart compares categories, a box plot shows median, quartiles and outliers, a scatter plot shows the relationship between two numeric variables, a line chart shows a trend over time, and a heatmap shows a correlation matrix. Common transformations are min-max normalization to [0, 1], z-score standardization to mean 0 and standard deviation 1, binning continuous values into categories, and power transforms that reduce skew. The Box-Cox transform is <code>(y<sup>λ</sup> − 1) / λ</code> for λ ≠ 0 and <code>ln y</code> for λ = 0; it needs strictly positive data, and λ is usually chosen by maximum likelihood so the result looks as close to normal as possible.",
+      "points": [
+        "Box-Cox λ: <b>1</b> gives <code>y − 1</code>, a shift with the same shape; <b>0.5</b> gives <code>2(√y − 1)</code>, square-root-like, mild skew reduction; <b>0</b> gives <code>ln y</code>, strong skew reduction; <b>−1</b> is reciprocal-like; <b>2</b> squares and adds right skew.",
+        "Box-Cox requires y > 0. For zeros or negatives, use Yeo-Johnson, the default method of scikit-learn's <code>PowerTransformer</code>.",
+        "Mean vs median: one extreme value drags the mean but barely moves the median; in right-skewed data the mean usually sits above the median.",
+        "Binning (equal-width or equal-frequency) reduces noise but throws away detail.",
+        "Quantization stores model weights and activations at lower precision, such as int8 instead of float32, cutting memory about 4× and speeding inference, sometimes at a small accuracy cost.",
+        "Students report EDA as the biggest block in one 2026 attempt, with a little on chart choice."
+      ]
+    },
+    {
+      "title": "Machine learning: learning types, rewards and evaluation",
+      "eli5": "Supervised learning is studying with an answer key, unsupervised learning is sorting a pile of photos into groups with no labels, and reinforcement learning is learning a game by trial and error from points won and lost.",
+      "detail": "Supervised learning trains on labeled input-output pairs: classification predicts a category and regression predicts a number. Unsupervised learning finds structure in unlabeled data, such as clusters; semi-supervised learning combines a few labels with many unlabeled examples, and weak supervision learns from noisy or heuristic labels. Reinforcement learning learns a policy from rewards and penalties: sparse rewards (only at the end, such as win or lose) make it hard to tell which actions earned the result, so designers add dense intermediate rewards (reward shaping), while inverse reinforcement learning works backward from an expert's behavior to infer the reward function. Models are judged on data held out from training: overfitting shows low training error but high test error, and underfitting shows high error on both.",
+      "points": [
+        "Split data into training, validation and test sets (or cross-validate), and never tune on the test set.",
+        "<code>Precision = TP / (TP + FP)</code> (how many flagged items are real); <code>Recall = TP / (TP + FN)</code> (how many real items were caught). Accuracy misleads when one class is rare.",
+        "RL vocabulary: state, action, reward, policy π, return, value function, exploration vs exploitation, model-based vs model-free (Q-learning).",
+        "Inverse RL infers the reward function from expert demonstrations; imitation learning (behavioral cloning) copies the expert's policy directly with supervised learning. AIMA groups both under apprenticeship learning.",
+        "Deep learning: neural networks with many layers, trained by gradient descent with backpropagation."
+      ]
+    },
+    {
+      "title": "NLP, embeddings and generative AI",
+      "eli5": "Computers can't read words, so NLP chops text into tokens and turns them into numbers. Word embeddings put words on a map where words used in similar ways sit close together.",
+      "detail": "A corpus is a body of text; tokenization splits it into tokens (words or sub-words), and the vocabulary is the set of distinct types. A bag-of-words model counts words and ignores their order, while an n-gram model predicts each word from the previous n − 1 words. Word embeddings are dense vectors learned from the contexts words appear in, so similar words land close together and some relationships show up as vector offsets (the classic example is king − man + woman ≈ queen). Transformers use self-attention so each token can weigh every other token in parallel, and large language models such as GPT are generative pretrained transformers that predict the next token.",
+      "points": [
+        "Tokens vs types: 'the cat saw the dog' has 5 tokens and 4 types; n tokens give n − 1 bigrams.",
+        "One-hot word vectors are sparse and make every pair of words equally different; embeddings are dense and capture similarity (usually measured with cosine similarity).",
+        "Naive Bayes text classification: <code>P(class | words) ∝ P(class) · ∏ P(word | class)</code>, with smoothing for unseen words.",
+        "Pretraining and transfer learning: a large model is trained on general text, then fine-tuned or prompted for a specific task.",
+        "Generative AI risks: hallucination, bias, privacy and copyright problems, deepfakes and misinformation."
+      ]
+    },
+    {
+      "title": "Python tools and spotting code issues",
+      "eli5": "Each library is a tool in the box: NumPy does math on arrays, pandas handles spreadsheet-style tables, pyplot draws charts, scikit-learn has ready-made ML models, and PyTorch builds and trains neural networks.",
+      "detail": "NumPy provides fast n-dimensional arrays and vectorized math, and most of the other libraries build on it. pandas adds the DataFrame for labeled, tabular data: loading (<code>read_csv</code>), cleaning (<code>dropna</code>, <code>fillna</code>, <code>drop_duplicates</code>) and summarizing (<code>describe</code>, <code>groupby</code>). matplotlib's pyplot module draws charts (<code>plt.hist</code>, <code>plt.scatter</code>, <code>plt.boxplot</code>, <code>plt.plot</code>); scikit-learn supplies classic ML models, preprocessing and metrics behind a shared <code>fit</code> / <code>predict</code> / <code>transform</code> interface; and PyTorch provides GPU-ready tensors, automatic differentiation and neural-network layers for deep learning. The official description includes spotting problems in code, so learn the classic mistakes, especially data leakage.",
+      "points": [
+        "Data leakage: fitting a scaler, imputer or feature selector on all the data before splitting. scikit-learn's rule is to split first, never call <code>fit</code> on test data, and use a <code>Pipeline</code> to keep the steps in order.",
+        "Apply the same fitted preprocessing to new data: <code>fit_transform</code> on the training set, <code>transform</code> on the test set.",
+        "Evaluating on the training data, or reporting only accuracy on imbalanced classes.",
+        "Label-encoding a nominal column implies a false order; use one-hot encoding instead.",
+        "pandas returns a new object by default: <code>df.fillna(0)</code> on its own line doesn't change <code>df</code>, so assign the result.",
+        "Shuffling time-series rows before splitting lets the model peek at the future."
+      ]
+    },
+    {
+      "title": "Ethics, bias, privacy and security",
+      "eli5": "An AI learns from the past, so if the past was unfair, the AI can repeat that unfairness at scale unless someone checks for it.",
+      "detail": "The official course description names bias, ethical issues and security concerns. Bias can enter at every stage: historical bias (the data accurately reflects past inequity), representation or sampling bias (some groups are underrepresented), measurement bias (proxy labels or features), and evaluation or deployment bias; algorithmic bias is the resulting systematic, unfair error. Removing a protected attribute ('fairness through unawareness') fails when proxies such as ZIP code remain, so fairness is checked with criteria such as demographic parity (equal approval rates across groups) or equal opportunity (equal true-positive rates). Trustworthy-AI terms include transparency (what the system does and what happened), explainability (how a specific decision was reached), interpretability (whether people can understand why, as with inspecting a decision tree) and accountability (who answers for the outcome); sources word these differently, so read the options carefully.",
+      "points": [
+        "Privacy: 'anonymous' data can be re-identified by combining quasi-identifiers such as ZIP code, birth date and sex. k-anonymity makes each record match at least k − 1 others; differential privacy adds calibrated noise so one person's presence barely changes the output.",
+        "Surveillance: biometric surveillance such as public face recognition raises consent concerns, and its error rates have differed across demographic groups.",
+        "Genetic privacy: DNA reveals information about relatives too, and you can't change it like a password.",
+        "Security threats: adversarial examples, data poisoning, model inversion and membership inference, prompt injection, deepfakes, and Sybil attacks on reputation systems.",
+        "Matching reading: AIMA Ch. 27 (Philosophy, Ethics, and Safety of AI)."
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "PEAS",
+      "value": "<b>P</b>erformance measure, <b>E</b>nvironment, <b>A</b>ctuators, <b>S</b>ensors",
+      "note": "Self-driving taxi: P = safe, fast, legal trips; E = roads, traffic, pedestrians; A = steering, accelerator, brakes; S = cameras, LiDAR, GPS."
+    },
+    {
+      "label": "Environment dimensions",
+      "value": "Fully vs partially observable · single vs multiagent · deterministic vs stochastic · episodic vs sequential · static vs semidynamic vs dynamic · discrete vs continuous · known vs unknown"
+    },
+    {
+      "label": "Semidynamic",
+      "value": "The world doesn't change while the agent thinks, but its performance score does",
+      "note": "Textbook case: chess played with a clock."
+    },
+    {
+      "label": "Episodic vs sequential",
+      "value": "Episodic: each decision stands alone (label each part on a line). Sequential: a choice affects later ones (chess, driving)."
+    },
+    {
+      "label": "Agent types",
+      "value": "Simple reflex → model-based reflex → goal-based → utility-based; any can be a learning agent",
+      "note": "Learning agent parts: performance element, critic, learning element, problem generator."
+    },
+    {
+      "label": "Rational agent",
+      "value": "Picks the action expected to maximize its performance measure, given its percept sequence and built-in knowledge",
+      "note": "Rational doesn't mean omniscient."
+    },
+    {
+      "label": "Maximum expected utility",
+      "value": "<code>EU(a) = Σ<sub>s</sub> P(s | a) · U(s)</code>; choose the action with the largest EU"
+    },
+    {
+      "label": "Bayes' rule",
+      "value": "<code>P(H | E) = P(E | H) · P(H) / P(E)</code>",
+      "note": "Total probability: <code>P(E) = P(E | H)·P(H) + P(E | ¬H)·P(¬H)</code>"
+    },
+    {
+      "label": "Naive Bayes",
+      "value": "<code>P(C | e<sub>1</sub>…e<sub>n</sub>) ∝ P(C) · ∏ P(e<sub>i</sub> | C)</code>",
+      "note": "Assumes the features are conditionally independent given the class."
+    },
+    {
+      "label": "Laplace (add-one) smoothing",
+      "value": "<code>P(w | c) = (count(w, c) + 1) / (N<sub>c</sub> + V)</code>",
+      "note": "N<sub>c</sub> = word count in class c, V = vocabulary size. Prevents zero probabilities."
+    },
+    {
+      "label": "Modus ponens",
+      "value": "From <code>P</code> and <code>P ⇒ Q</code>, infer <code>Q</code>"
+    },
+    {
+      "label": "Knowledge vs belief (modal logic)",
+      "value": "<code>K<sub>A</sub>(P)</code> holds only if P is true in every world A considers possible; knowledge implies truth, belief doesn't"
+    },
+    {
+      "label": "Ontology",
+      "value": "Formal specification of a domain's categories, properties and relationships; an upper ontology sits above domain ontologies",
+      "note": "Taxonomy = subclass hierarchy; members and subclasses inherit properties."
+    },
+    {
+      "label": "Open-universe models",
+      "value": "Existence uncertainty (how many objects?) and identity uncertainty (which observations are the same object?)",
+      "note": "A Sybil attack, one actor with many fake identities, is an identity-uncertainty problem."
+    },
+    {
+      "label": "Box-Cox transform",
+      "value": "<code>y(λ) = (y<sup>λ</sup> − 1) / λ</code> for λ ≠ 0; <code>ln y</code> for λ = 0",
+      "note": "Needs y > 0. λ is chosen by maximum likelihood (the most normal-looking result)."
+    },
+    {
+      "label": "Box-Cox λ cases",
+      "value": "λ = 1: shift only (<code>y − 1</code>) · λ = 0.5: square-root-like · λ = 0: natural log · λ = −1: reciprocal-like",
+      "note": "Lower λ compresses a long right tail more strongly."
+    },
+    {
+      "label": "Min-max normalization",
+      "value": "<code>x' = (x − min) / (max − min)</code> → range [0, 1]",
+      "note": "An outlier squashes everything else, because min and max set the scale."
+    },
+    {
+      "label": "Standardization (z-score)",
+      "value": "<code>z = (x − μ) / σ</code> → mean 0, standard deviation 1"
+    },
+    {
+      "label": "IQR outlier rule",
+      "value": "Outlier if below <code>Q1 − 1.5·IQR</code> or above <code>Q3 + 1.5·IQR</code>, where <code>IQR = Q3 − Q1</code>"
+    },
+    {
+      "label": "Chart picker",
+      "value": "Histogram: one numeric distribution · bar: compare categories · box plot: median, quartiles, outliers · scatter: two numeric variables · line: trend over time · heatmap: correlation matrix"
+    },
+    {
+      "label": "Precision and recall",
+      "value": "<code>Precision = TP / (TP + FP)</code> · <code>Recall = TP / (TP + FN)</code>"
+    },
+    {
+      "label": "Accuracy and F1",
+      "value": "<code>Accuracy = (TP + TN) / total</code> · <code>F1 = 2PR / (P + R)</code>",
+      "note": "Accuracy misleads when one class is rare."
+    },
+    {
+      "label": "Sparse vs dense rewards",
+      "value": "Sparse: feedback only rarely (win or lose at the end). Dense (shaped): intermediate rewards for progress.",
+      "note": "Inverse RL infers the reward function from expert behavior."
+    },
+    {
+      "label": "A* search (background)",
+      "value": "<code>f(n) = g(n) + h(n)</code>; optimal when <code>h</code> is admissible (never overestimates)",
+      "note": "Readings reportedly skip AIMA Ch. 3–8, so this is background."
+    },
+    {
+      "label": "Quantization",
+      "value": "float32 (4 bytes) → int8 (1 byte) per weight: about 4× less memory",
+      "note": "Faster, cheaper inference, with a possible small accuracy loss."
+    },
+    {
+      "label": "Python library map",
+      "value": "NumPy: arrays and math · pandas: DataFrames and cleaning · matplotlib.pyplot: charts · scikit-learn: classic ML, preprocessing, metrics · PyTorch: tensors, autograd, deep learning"
+    },
+    {
+      "label": "Tokens and n-grams",
+      "value": "A sentence of n tokens has n − 1 bigrams; types are the distinct words",
+      "note": "Bag-of-words keeps the counts and drops the order."
+    },
+    {
+      "label": "AI nesting",
+      "value": "AI ⊃ machine learning ⊃ deep learning; LLMs are generative pretrained transformers"
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Set up and baseline (about 2 h)",
+      "tasks": [
+        "Read the instructor's welcome email and finish the course planning tool with your instructor (the course's administrative competency).",
+        "Skim the course key-terms list and the three content competencies: types of AI, data for AI/ML, and knowledge vs reasoning.",
+        "Optional: take the pre-assessment cold to find weak spots and save the coaching report. Ask your instructor first whether PA retakes are limited.",
+        "Start a confusable-pairs list: episodic/sequential, static/semidynamic/dynamic, goal-based/utility-based, knowledge/belief."
+      ]
+    },
+    {
+      "day": "Days 2-3",
+      "focus": "Competency A: AI foundations, agents and environments (about 2 h a day)",
+      "tasks": [
+        "Read AIMA Ch. 1–2 and the matching course pages.",
+        "Classify 15 everyday systems on every environment dimension: observable, agents, deterministic, episodic, static, discrete, known.",
+        "Write PEAS for three systems and label each with an agent type.",
+        "Make cards for the AI ⊃ ML ⊃ deep learning nesting, narrow vs general AI, the primary goals of AI and ML, and a short history timeline."
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Competency C: knowledge representation and reasoning (about 2 h)",
+      "tasks": [
+        "Read AIMA Ch. 10: ontological engineering, categories and objects, events, mental objects and modal logic, reasoning systems, default reasoning.",
+        "Write two step-by-step derivations from a small knowledge base and label each line as knowledge or reasoning.",
+        "Drill membership vs subclass, inheritance, disjoint vs exhaustive, possible worlds, and knowledge vs belief."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Probability and decisions (about 2 h)",
+      "tasks": [
+        "Work Bayes' rule problems by hand, including a rare-condition test with a false-positive rate.",
+        "Score a two-word naive Bayes spam example, then redo it with Laplace smoothing.",
+        "Compute expected utility for two options and pick the maximum-expected-utility action.",
+        "Learn the open-universe vocabulary: existence vs identity uncertainty, number statements, Sybil attacks."
+      ]
+    },
+    {
+      "day": "Days 6-7",
+      "focus": "Competency B: data sources, cleaning, EDA and transformations (about 2 h a day)",
+      "tasks": [
+        "Cover data sources and suitability, Kaggle, wrangling vs cleaning, missing values and imputation, duplicates, outliers and the IQR rule.",
+        "Learn the data types and their drawbacks: nominal, ordinal, continuous, count, unstructured, time series.",
+        "Compute mean, median, mode and IQR by hand for a small set with an outlier, and pick the right chart for five different questions.",
+        "Memorize the Box-Cox λ cases and why the data must be positive; learn what binning and quantization do."
+      ]
+    },
+    {
+      "day": "Day 8",
+      "focus": "Machine learning, RL, NLP and Python tools (about 2 h)",
+      "tasks": [
+        "Supervised vs unsupervised vs semi-supervised vs reinforcement learning; classification vs regression vs clustering; overfitting vs underfitting.",
+        "Compute precision, recall, F1 and accuracy from a confusion matrix.",
+        "RL: sparse vs dense (shaped) rewards, inverse RL, exploration vs exploitation.",
+        "NLP: corpus, tokens, n-grams, bag-of-words, embeddings, transformers, LLMs. Match tasks to NumPy, pandas, pyplot, scikit-learn and PyTorch, and review the data-leakage mistakes."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Ethics and a full vocabulary pass (about 2 h)",
+      "tasks": [
+        "Bias sources, fairness criteria, transparency vs explainability vs interpretability, privacy and re-identification, surveillance, security threats.",
+        "Have an AI chatbot write 20 new, reworded scenario questions from your key-terms list and explain each answer.",
+        "Do this guide's practice questions without notes and add every miss to your confusable-pairs list."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "Pre-assessment (about 2-3 h)",
+      "tasks": [
+        "Take the PA under exam conditions, rested, in one sitting.",
+        "Aim for a comfortable pass, not a bare one.",
+        "For every miss and every guess, write why the right answer is right and why each wrong option is wrong."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Review misses and take the practice test (about 2-3 h)",
+      "tasks": [
+        "Re-study the competencies the coaching report flags.",
+        "Take the end-of-course practice test and review it the same way as the PA.",
+        "Watch the recorded cohort session for your weakest area."
+      ]
+    },
+    {
+      "day": "Day 12",
+      "focus": "Final review and the OA",
+      "tasks": [
+        "Spend 60 to 90 minutes on confusable pairs, the environment drill and the formulas, then take a break.",
+        "Take the OA in a rested window, not late at night. Flag long items and come back to them.",
+        "If the PA wasn't a comfortable pass, reschedule and loop Days 2 to 9 on the weak competencies instead."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Which of these task environments is <b>episodic</b>?",
+      "choices": [
+        "A poker bot playing a full tournament",
+        "A taxi agent driving passengers across a city in heavy traffic",
+        "A camera system labeling each package photo as damaged or not",
+        "A program solving a crossword puzzle one entry at a time"
+      ],
+      "answer": "A camera system labeling each package photo as damaged or not",
+      "why": "In an episodic environment each decision is a separate episode that doesn't affect later ones: labeling one package photo doesn't change how the next one should be labeled. Poker, driving and crosswords are <b>sequential</b>, because each move or entry changes the situation for later decisions (a crossword answer constrains the words that cross it)."
+    },
+    {
+      "q": "An AI agent plays a timed spelling game. The word on screen never changes while the agent thinks, but the points for that word drop every second until it answers. On the static/dynamic dimension, this task environment is:",
+      "choices": [
+        "Static",
+        "Semidynamic",
+        "Dynamic",
+        "Sequential"
+      ],
+      "answer": "Semidynamic",
+      "why": "The environment itself doesn't change while the agent deliberates, but the performance score does, which is AIMA's definition of <b>semidynamic</b> (chess with a clock is the textbook case). <b>Dynamic</b> would need the world itself to change during deliberation, and <b>static</b> would mean neither the world nor the score depends on time. <b>Sequential</b> answers a different question (episodic vs sequential)."
+    },
+    {
+      "q": "Which system is best described as a <b>utility-based</b> agent?",
+      "choices": [
+        "A thermostat that turns the heat on whenever the temperature reads below 68°F",
+        "A lane-keeping system that keeps estimating where the lane lines are while glare hides them, then steers by fixed rules",
+        "A warehouse robot that searches for any sequence of moves that reaches the loading dock",
+        "A home battery controller that weighs power prices, the weather forecast and battery wear"
+      ],
+      "answer": "A home battery controller that weighs power prices, the weather forecast and battery wear",
+      "why": "A utility-based agent scores outcomes and chooses the action with the highest expected utility. The battery controller does that when it weighs prices, forecasts and wear to pick the best action each hour. The thermostat is a <b>simple reflex</b> agent (a rule on the current percept). The lane-keeper is <b>model-based reflex</b>: it tracks state it can't currently see, then applies rules. The warehouse robot is <b>goal-based</b>: any plan that reaches the dock counts as success, with no ranking of better or worse outcomes."
+    },
+    {
+      "q": "A knowledge base holds three sentences: (1) every drone is an aircraft; (2) every aircraft must be registered; (3) Falcon-7 is a drone. Which option correctly separates knowledge from reasoning?",
+      "choices": [
+        "Sentence 3 is reasoning rather than knowledge, because it is about one specific object",
+        "Sentences 1–3 are knowledge; deriving 'Falcon-7 must be registered' is reasoning",
+        "'Every aircraft is a drone' follows from sentence 1, so Falcon-7 must be registered",
+        "Nothing follows, because no single sentence mentions both Falcon-7 and registration"
+      ],
+      "answer": "Sentences 1–3 are knowledge; deriving 'Falcon-7 must be registered' is reasoning",
+      "why": "Knowledge is what's stored (facts, rules, categories); reasoning is the inference that derives something new.<br>Step 1: from (3) and (1), Falcon-7 is an aircraft.<br>Step 2: from that and (2), Falcon-7 must be registered.<br>Each step is modus ponens applied down the category hierarchy (inheritance). The 'every aircraft is a drone' option reverses an implication: 'every drone is an aircraft' doesn't mean every aircraft is a drone. The 'nothing follows' option ignores chaining, and sentence 3 is a stored fact, not an inference."
+    },
+    {
+      "q": "A store's product ontology says: Smartphone ⊂ Electronics; Pixel-X ∈ Smartphone; Electronics and Groceries are disjoint. Which statement is correct?",
+      "choices": [
+        "Both statements are subclass relations between categories",
+        "Disjoint means every product must be either Electronics or Groceries",
+        "∈ is membership, ⊂ is a subclass relation, and Pixel-X inherits Electronics' properties",
+        "Pixel-X could also belong to Groceries, because disjoint categories may share members"
+      ],
+      "answer": "∈ is membership, ⊂ is a subclass relation, and Pixel-X inherits Electronics' properties",
+      "why": "∈ links an object to a category (membership); ⊂ links a category to a broader one (subclass). Inheritance passes Electronics' properties down to Smartphone and then to Pixel-X. <b>Disjoint</b> means no shared members, so Pixel-X can't be a grocery item. 'Every product is one or the other' describes an <b>exhaustive decomposition</b>, and a decomposition that is both disjoint and exhaustive is a <b>partition</b>."
+    },
+    {
+      "q": "Maya considers two worlds possible. In w1 the exam is Monday in Room 4; in w2 it is Monday in Room 6. In the actual world it is Monday in Room 4. Under possible-worlds semantics, which is correct?",
+      "choices": [
+        "Maya knows the exam is Monday in Room 4, because that is true in the actual world",
+        "Maya knows neither fact, because she considers more than one world possible",
+        "Maya knows both facts, because each is true in at least one world she considers possible",
+        "Maya knows the exam is on Monday, but she doesn't know it is in Room 4"
+      ],
+      "answer": "Maya knows the exam is on Monday, but she doesn't know it is in Room 4",
+      "why": "<code>K<sub>Maya</sub>(P)</code> holds only when P is true in <b>every</b> world Maya considers possible. 'Monday' holds in both w1 and w2, so she knows it. 'Room 4' fails in w2, so she doesn't know it, even though it happens to be true. Truth in one world, or in the actual world alone, isn't enough for knowledge."
+    },
+    {
+      "q": "A part inspector flags 90% of defective parts and also flags 10% of good parts. Only 2% of parts are defective. A part gets flagged. What is the probability it is actually defective?",
+      "choices": [
+        "About 90%",
+        "About 1.8%",
+        "About 15.5%",
+        "About 10%"
+      ],
+      "answer": "About 15.5%",
+      "why": "Bayes' rule: <code>P(D | F) = P(F | D) · P(D) / P(F)</code>.<br>Step 1, total probability of a flag: <code>P(F) = 0.90 × 0.02 + 0.10 × 0.98 = 0.018 + 0.098 = 0.116</code>.<br>Step 2: <code>P(D | F) = 0.018 / 0.116 ≈ 0.155</code>, about 15.5%.<br>90% confuses P(flag | defective) with P(defective | flag), 1.8% is the joint probability P(flag and defective), and 10% is the false-positive rate. Because defects are rare, most flags are false alarms (the base-rate effect)."
+    },
+    {
+      "q": "A naive Bayes spam filter has P(spam) = 0.3 and P(ham) = 0.7. Word likelihoods: P(winner | spam) = 0.2, P(winner | ham) = 0.01, P(meeting | spam) = 0.05, P(meeting | ham) = 0.1. A message contains exactly these two words. What does the filter conclude?",
+      "choices": [
+        "Ham, with P(ham | message) ≈ 0.70",
+        "Spam, with P(spam | message) ≈ 0.81",
+        "Spam, with P(spam | message) ≈ 0.30",
+        "It can't decide without P(winner and meeting | spam)"
+      ],
+      "answer": "Spam, with P(spam | message) ≈ 0.81",
+      "why": "Naive Bayes multiplies the prior by each word's likelihood, assuming the words are independent given the class.<br>Spam score: <code>0.3 × 0.2 × 0.05 = 0.003</code>.<br>Ham score: <code>0.7 × 0.01 × 0.1 = 0.0007</code>.<br>Normalize: <code>0.003 / (0.003 + 0.0007) = 0.003 / 0.0037 ≈ 0.81</code>.<br>0.70 and 0.30 are just the priors, and the joint word probability isn't needed because the naive independence assumption replaces it with a product."
+    },
+    {
+      "q": "Survey commute times (minutes) are 12, 15, 15, 18, 20 and 240, where 240 is a likely typo, and one response is missing. Which value is the most robust choice to impute for the missing response?",
+      "choices": [
+        "The median, 16.5 minutes",
+        "The mean, about 53.3 minutes",
+        "The maximum, 240 minutes",
+        "Zero minutes, since the value is missing"
+      ],
+      "answer": "The median, 16.5 minutes",
+      "why": "Sorted: 12, 15, 15, 18, 20, 240. Median = average of the middle two = <code>(15 + 18) / 2 = 16.5</code>. Mean = <code>320 / 6 ≈ 53.3</code>, dragged up by the single 240. The median barely moves when one extreme value appears, so it's the robust choice with skew or outliers. Also investigate the 240 itself: with Q1 = 15 and Q3 = 20 (median-of-halves method), IQR = 5 and the upper fence is <code>20 + 1.5 × 5 = 27.5</code>, so 240 is an outlier."
+    },
+    {
+      "q": "A 'city' column holds Denver, Austin and Boston. A teammate encodes them as 1, 2 and 3 and feeds that column to a linear model. What is the main problem?",
+      "choices": [
+        "Nominal data can never be used in machine learning",
+        "Standardizing the codes to mean 0 and standard deviation 1 would fix the problem",
+        "The model will treat the codes as amounts with an order that doesn't exist",
+        "There is no problem, because integer codes and one-hot vectors carry the same information for every model"
+      ],
+      "answer": "The model will treat the codes as amounts with an order that doesn't exist",
+      "why": "City is <b>nominal</b>: categories with no order. Integer codes make a linear model treat Boston as 'more' than Austin and Denver, a false ordering. One-hot encoding avoids this by giving each city its own 0/1 column; its own drawback is that many categories mean many columns. Standardizing the codes keeps the false order, and ordinal codes are appropriate only when a real order exists (small, medium, large)."
+    },
+    {
+      "q": "You apply a Box-Cox transform to strictly positive, right-skewed income data. Which statement about λ is correct?",
+      "choices": [
+        "λ = 1 gives the natural log, and λ = 0 leaves the data unchanged",
+        "λ = 0.5 squares each value, which reduces the long right tail",
+        "Box-Cox works the same way on data that contains zeros or negative values",
+        "λ = 0 gives the natural log, and λ = 1 only shifts the data"
+      ],
+      "answer": "λ = 0 gives the natural log, and λ = 1 only shifts the data",
+      "why": "Box-Cox is <code>(y<sup>λ</sup> − 1) / λ</code> for λ ≠ 0 and <code>ln y</code> for λ = 0. At λ = 1 it's <code>y − 1</code>, a shift with the same shape. At λ = 0.5 it's <code>2(√y − 1)</code>, a rescaled square root that mildly reduces right skew; λ = 0 (the log) reduces it more strongly. Squaring (λ = 2) would add right skew, not reduce it.<br>Example with y = 9: λ = 1 gives 8; λ = 0.5 gives <code>(3 − 1) / 0.5 = 4</code>; λ = 0 gives <code>ln 9 ≈ 2.20</code>.<br>Box-Cox needs strictly positive data; Yeo-Johnson handles zeros and negatives."
+    },
+    {
+      "q": "A fraud model screens 2,000 loan applications, 50 of which are actually fraudulent. It flags 80 applications, and 40 of those are fraud. Compute its precision, recall and accuracy, and compare its accuracy with a model that never flags anything.",
+      "answer": "Precision = 0.50, recall = 0.80, accuracy = 0.975. A model that never flags anything also scores 0.975 accuracy, with recall 0.",
+      "why": "Counts: TP = 40, FP = 80 − 40 = 40, FN = 50 − 40 = 10, TN = 2000 − 40 − 40 − 10 = 1910.<br>Precision = <code>TP / (TP + FP) = 40 / 80 = 0.50</code>.<br>Recall = <code>TP / (TP + FN) = 40 / 50 = 0.80</code>.<br>Accuracy = <code>(TP + TN) / total = (40 + 1910) / 2000 = 0.975</code>.<br>F1 = <code>2 × 0.5 × 0.8 / (0.5 + 0.8) ≈ 0.615</code>.<br>The never-flag model gets TN = 1950 and FN = 50, so its accuracy is <code>1950 / 2000 = 0.975</code> too. Same accuracy, but one catches 80% of fraud and the other catches none, which is why accuracy misleads on imbalanced data."
+    },
+    {
+      "q": "A game-playing agent gets +1 for a win, −1 for a loss and 0 for every move before the game ends. Which statement is correct?",
+      "choices": [
+        "The reward is dense, because the agent receives a value (0) after every move",
+        "The reward is sparse, which makes it hard to tell which moves earned the win",
+        "Sparse rewards speed up learning because there is less noise to filter out",
+        "Reward shaping means inferring the reward function from expert demonstrations"
+      ],
+      "answer": "The reward is sparse, which makes it hard to tell which moves earned the win",
+      "why": "Feedback that arrives only at the end is <b>sparse</b>: the agent can't tell which of its many moves earned the win (the credit-assignment problem). A common fix is <b>reward shaping</b>: adding small rewards for progress makes the feedback <b>dense</b>. A 0 on every move carries no information, so it doesn't make the reward dense. Inferring a reward function from an expert's behavior is <b>inverse reinforcement learning</b>, not shaping."
+    },
+    {
+      "q": "You need to load a CSV of monthly sales into a table, fill in missing values, and draw the monthly totals as a line chart. Which pair of libraries does this most directly?",
+      "choices": [
+        "pandas and matplotlib",
+        "PyTorch and NumPy",
+        "scikit-learn and PyTorch",
+        "NumPy and scikit-learn"
+      ],
+      "answer": "pandas and matplotlib",
+      "why": "pandas reads the CSV into a DataFrame (<code>pd.read_csv</code>) and fills gaps (<code>df.fillna(...)</code>); matplotlib's pyplot module draws the chart (<code>plt.plot</code>). NumPy is the array math underneath, scikit-learn is for classic ML models and preprocessing, and PyTorch is for building and training neural networks with tensors and automatic differentiation. None of those three draws charts."
+    },
+    {
+      "q": "A lender removes race from its credit model, yet approval rates still differ sharply by race because ZIP code and shopping history stand in for it. This best illustrates:",
+      "choices": [
+        "Fairness through unawareness failing because of proxy features",
+        "Differential privacy protecting applicants",
+        "A Sybil attack on the credit model",
+        "Underfitting, because dropping race left the model too few features"
+      ],
+      "answer": "Fairness through unawareness failing because of proxy features",
+      "why": "Dropping a protected attribute ('fairness through unawareness') doesn't remove bias when other features act as proxies for it, and the historical lending data the model learns from already reflects past inequity (historical bias). Checking outcomes by group, such as approval rates or true-positive rates, is how the problem gets caught. Differential privacy protects individuals' data, a Sybil attack is one actor posing as many identities, and underfitting is a model too simple to fit the data."
+    }
+  ],
+  "pitfalls": [
+    "Treating it as an easy 2-CU course. Several 2026 posts warn the CU value misleads: one passer said to treat it like a 4-CU course, and another compared its difficulty to OS or Computer Architecture.",
+    "Memorizing the pre-assessment. Newer reports say the OA covers material the PA doesn't, and some PA-like items keep the same wrong choices but change the correct answer. Learn why each option is right or wrong.",
+    "Skipping the data and EDA material because it looks like statistics rather than AI. One Aug 2026 attempt had about 10 EDA items, 4 on data types and 2 on charts.",
+    "Mixing up near-synonyms: semidynamic vs dynamic, episodic vs sequential, unknown vs partially observable, goal-based vs utility-based, knowledge vs belief, ontology vs taxonomy, wrangling vs cleaning, normalization vs standardization.",
+    "Confusing P(evidence | cause) with P(cause | evidence) and ignoring the base rate in Bayes questions.",
+    "Box-Cox traps: λ = 0 is the log (not 'no change'), λ = 1 only shifts the data by 1, and the data must be strictly positive.",
+    "Trusting accuracy on imbalanced data. A model that never flags the rare class can still score very high accuracy, so check precision and recall.",
+    "Getting lost in the textbook. Students report the readings jump from AIMA Ch. 2 to Ch. 10, and an older print edition was called dated; use the newer ebook linked in the course.",
+    "Testing tired or rushing. A narrow PA fail at about 11 PM and multiple-choice burnout both show up in 2026 posts.",
+    "Sites that sell 'actual OA' question banks are unverified and an academic-integrity risk. Stick to the course PA, the practice test and questions you generate from the key terms."
+  ],
+  "resources": [
+    {
+      "label": "WGU course pages and key-terms list (in the course)",
+      "kind": "official",
+      "note": "The main resource, per the instructor's welcome email (reported). Work through the key-terms list until you can explain each term with an example."
+    },
+    {
+      "label": "Artificial Intelligence: A Modern Approach, ebook linked in the course",
+      "kind": "official",
+      "note": "Students report the course links a newer edition (likely the 4th). Assigned readings reportedly cover Ch. 1–2, then Ch. 10."
+    },
+    {
+      "label": "AIMA table of contents",
+      "url": "https://aima.cs.berkeley.edu/contents.html",
+      "kind": "official",
+      "note": "Map of the chapters that match reported OA topics: 1–2 (agents), 10 (knowledge representation), 12 and 15 (uncertainty), 19 (learning), 22 (RL), 23–24 (NLP), 27 (ethics)."
+    },
+    {
+      "label": "Pre-assessment and end-of-course practice test (in the course)",
+      "kind": "practice",
+      "note": "Use them as a readiness gate. Review every miss and guess, and use the coaching report to target weak competencies."
+    },
+    {
+      "label": "Recorded cohort sessions and course videos (in the course)",
+      "kind": "video",
+      "note": "Peers recommended the cohort recordings after a narrow PA fail, and one passer regretted skipping them."
+    },
+    {
+      "label": "scikit-learn user guide: Preprocessing data",
+      "url": "https://scikit-learn.org/stable/modules/preprocessing.html",
+      "kind": "tool",
+      "note": "Scaling, one-hot vs ordinal encoding, binning, and the Box-Cox and Yeo-Johnson power transforms with their formulas."
+    },
+    {
+      "label": "scikit-learn: Common pitfalls and recommended practices",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+      "kind": "tool",
+      "note": "Data leakage and inconsistent preprocessing, the classic spot-the-issue code mistakes."
+    },
+    {
+      "label": "scikit-learn user guide: Naive Bayes",
+      "url": "https://scikit-learn.org/stable/modules/naive_bayes.html",
+      "kind": "tool",
+      "note": "The independence assumption, the text-classification variants and Laplace smoothing."
+    },
+    {
+      "label": "Google Machine Learning Crash Course: accuracy, precision, recall",
+      "url": "https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall",
+      "kind": "tool",
+      "note": "Confusion-matrix metrics and why accuracy misleads on imbalanced data."
+    },
+    {
+      "label": "AI chatbot or NotebookLM quizzing",
+      "kind": "tool",
+      "note": "2026 passers had ChatGPT, Claude or Gemini write new, reworded scenario questions from the key terms, and used NotebookLM over the course readings."
+    }
+  ],
+  "community": {
+    "summary": "2026 posts agree that D429 is much harder than its 2 CUs suggest: the OA is vocabulary-heavy and scenario-based, ranging over agents and environment types, data and EDA, ontology and logic, probability, ML, NLP and ethics. The newest reports (May to Oct 2026) say the pre-assessment is necessary but not sufficient, because the OA covers material the PA doesn't and words questions more academically than the course pages. Passers report anywhere from 1 day (with AI background) to about 10 days of study, and the common method is to read the assigned material, drill the key terms as real-world scenarios, and have an AI chatbot write new practice questions. Several students needed 2 to 4 attempts, and the Oct 2026 post describes extra instructor requirements before a 4th.",
+    "coverage": "12 posts, Mar 2025 – Oct 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "D429",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1x7l27z/d429/",
+        "date": "Oct 2026",
+        "takeaway": "Before a 4th attempt the student had to prepare three 45-minute PowerPoint presentations, one per competency, and found the OA's wording more technical and academic than the course pages. Replies say OA questions come from AIMA, the readings skip Ch. 3–8, and AI quizzes built from the coursework helped."
+      },
+      {
+        "title": "D429 Introduction to AI for Computer Scientist",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vwtitv/d429_introduction_to_ai_for_computer_scientist/",
+        "date": "Aug 2026",
+        "takeaway": "Passed after about 10 days and says to treat it like a 4-CU course. Counted roughly 10 EDA items, 8 on environment types, 4 on data types, 3 on ontology, 3 on goals of AI and ML, 2 on charts, plus Kaggle and quantization; about 7 items resembled the PA but with a different correct answer."
+      },
+      {
+        "title": "BSCS finished in one term!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1utlzoa/bscs_finished_in_one_term/",
+        "date": "Jul 2026",
+        "takeaway": "A one-term graduate listed Intro to AI and AI Optimization among their favorite courses and praised the textbook."
+      },
+      {
+        "title": "For D429 - Intro to AI for Comp Scientists, how necessary is Intro to Stats and Data Structures II?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1urc94x/for_d429_intro_to_ai_for_comp_scientists_how/",
+        "date": "Jul 2026",
+        "takeaway": "No prerequisites are listed, but the course intro email reportedly recommends Intro to Statistics and Data Structures and Algorithms II first."
+      },
+      {
+        "title": "D429",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u8kr4i/d429/",
+        "date": "Jun 2026",
+        "takeaway": "Confirms the book is Russell and Norvig's AIMA; the course links a newer-edition ebook, and the same book carries into D682 and D683. A commenter posted a detailed OA topic list, from agents and modal logic to open-universe models, Kaggle, EDA and privacy."
+      },
+      {
+        "title": "D429 Into to AI Complete + Tips",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1t4rezp/d429_into_to_ai_complete_tips/",
+        "date": "May 2026",
+        "takeaway": "59 questions plus 2 survey items; passed at roughly 75% after about 5 days at 2+ hours a day. The OA covered material the PA didn't, and breadth (AI concepts, statistics, logic, data science, ethics) is the challenge."
+      },
+      {
+        "title": "Introduction to AI for Computer Scientists - D429 Writeup",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1sz3t2p/introduction_to_ai_for_computer_scientists_d429/",
+        "date": "Apr 2026",
+        "takeaway": "With some AI background, the writer found it fairly straightforward after about a day of study, with the PA, OA and practice test closely alike. The textbook is dense and oddly sequenced, so skim and look up concepts as needed."
+      },
+      {
+        "title": "Looking for tips on D429, failed the PA last night by a hair",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1sti0m4/looking_for_tips_on_d429_failed_the_pa_last_night/",
+        "date": "Apr 2026",
+        "takeaway": "Narrowly failed the PA while exhausted around 11 PM. Peers pointed to the recorded cohort sessions, and one commenter found the OA unlike the PA."
+      },
+      {
+        "title": "Instructor says very few ppl fail d429 OA. Failed 3rd attempt tonight",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rkbrue/instructor_says_very_few_ppl_fail_d429_oa_failed/",
+        "date": "Mar 2026",
+        "takeaway": "After the poster's 3rd failed attempt, commenters said some OA questions felt vague or weren't in the resources. The top-voted advice was to wait until you can pass the PA; others suggested quizzing with ChatGPT and NotebookLM, and one student passed on attempt 2 after doing D682 and D683 first."
+      },
+      {
+        "title": "Instructor says very few ppl fail d429 OA. Failed 3rd attempt tonight",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1rkbrpw/",
+        "date": "Mar 2026",
+        "takeaway": "The original r/WGU version of the same post: the student felt confident going in and asked what instructors expect before a 4th attempt."
+      },
+      {
+        "title": "D429 - Introduction to AI for Computer Scientists GUIDE",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1poo21n/d429_introduction_to_ai_for_computer_scientists/",
+        "date": "Dec 2025",
+        "takeaway": "Passed at the exemplary level in about 5 days by mastering the PA's terms, and warns the OA is harder. Key topics: environment and agent types, maximum expected utility, embeddings and ontologies, RL and inverse RL, dense vs sparse rewards, Bayes and naive Bayes, Python libraries and Box-Cox λ."
+      },
+      {
+        "title": "D682 D683 and D429 PA/OA Tips",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1jlc4o6/d682_d683_and_d429_paoa_tips/",
+        "date": "Mar 2025",
+        "takeaway": "From when the course was new: instructions felt unclear and resources were scarce. 2026 posts describe a key-terms list, a practice test and cohort recordings."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU Institutional Catalog, November 2026 (D429 description, credits, placement; D682 prerequisite)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf"
+    },
+    {
+      "label": "WGU B.S. Computer Science Program Guidebook, catalog version 202611 (competencies)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU B.S. Computer Science program page (course description)",
+      "url": "https://www.wgu.edu/online-it-degrees/computer-science.html"
+    },
+    {
+      "label": "WGU Institutional Catalog, January 2025 (D429 in program version 202412; C951 gone)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2025/catalog-january2025.pdf"
+    },
+    {
+      "label": "Russell and Norvig, Artificial Intelligence: A Modern Approach, table of contents",
+      "url": "https://aima.cs.berkeley.edu/contents.html"
+    },
+    {
+      "label": "scikit-learn: PowerTransformer (Box-Cox needs strictly positive data; Yeo-Johnson default)",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PowerTransformer.html"
+    },
+    {
+      "label": "scikit-learn user guide: Preprocessing data",
+      "url": "https://scikit-learn.org/stable/modules/preprocessing.html"
+    },
+    {
+      "label": "scikit-learn: Common pitfalls and recommended practices",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html"
+    },
+    {
+      "label": "scikit-learn user guide: Naive Bayes",
+      "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+    },
+    {
+      "label": "NIST/SEMATECH e-Handbook of Statistical Methods: Box-Cox normality plot",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda336.htm"
+    },
+    {
+      "label": "Google Machine Learning Crash Course: accuracy, precision, recall",
+      "url": "https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall"
+    },
+    {
+      "label": "Hugging Face Optimum: quantization concept guide",
+      "url": "https://huggingface.co/docs/optimum/concept_guides/quantization"
+    }
+  ],
+  "caveats": [
+    "The OA's time limit, cut score and official question count aren't public. The 59 questions plus 2 survey items and the roughly 75% pass come from one May 2026 report, and exam forms may differ.",
+    "Reports disagree on how closely the PA matches the OA. An Apr 2026 writeup found them nearly identical, while newer posts (May, Aug and Oct 2026) report off-PA topics, swapped correct answers and more academic wording. This guide follows the newer reports.",
+    "Topic emphasis comes from student recollections (Dec 2025, Jun 2026, Aug 2026), not a WGU blueprint, and the per-topic counts come from a single attempt.",
+    "The textbook details are community-reported: students say the course links a newer AIMA ebook (likely the 4th edition) and that readings skip Ch. 3–8, so search algorithms appear here only as background.",
+    "The Python-library topic (NumPy, pandas, pyplot, PyTorch) comes from a Dec 2025 guide. No 2026 post confirms whether code snippets appear on the OA, although the course description mentions spotting problems in code.",
+    "The 4th-attempt presentation requirement and an instructor's remark that few students fail are single-student reports; WGU's official retake policy wasn't found.",
+    "D429 entered the BSCS program in late 2024, in the same revision that dropped the 3-CU C951 Introduction to Artificial Intelligence. WGU doesn't call it a replacement, and study materials made for C951 target a different course."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "url": "https://21st.dev/@shadcn/components/badge",
+  "title": "Badge | Community Components | 21st",
+  "license": "",
+  "published": "",
+  "dependencies": "",
+  "promptFile": "21st/prompts/shadcn--badge.md",
+  "chars": 0,
+  "sha256": "",
+  "verified": false,
+  "notes": "NOT COLLECTED. The page body renders 21st.dev's '404 Page not found' screen (no main content, no Info tab, no Copy prompt menu), even though the document title, canonical URL and meta description for the component exist. Tried 4 loads over several minutes (including /badge/default, which redirects back to this URL), at a 1280x800 emulated viewport and at the default viewport; all returned the 404 screen. No prompt was captured and the prompt file was NOT written."
+}

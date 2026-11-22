@@ -1,0 +1,896 @@
+{
+  "code": "C960",
+  "summary": "C960 Discrete Mathematics II (4 CUs, catalog number MATH 2810) covers algorithms and Big-O, number theory and RSA, recursion and induction, counting, discrete probability, and finite-state machines, graded by one proctored multiple-choice objective assessment. 2026 passers call it one of the hardest BSCS courses and say steady hand-worked practice with WGU's own Unit Review Forms, worksheets, course planning tool and pre-assessment, plus early instructor help, is what works. Follow the plan below and book the OA with a few weeks to spare before your term ends.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Objective assessment (proctored, multiple choice)",
+    "format": "Multiple choice, 4 options (reported) · about 2.5 hours (reported) · question count and cut score not published",
+    "details": [
+      "One proctored objective assessment (OA) and no performance task, plus a pre-assessment (PA) for practice. 2026 reports comparing them are mixed: some found the OA about the same as or easier than the practice material, more found it a little harder or worded differently.",
+      "Time: 2026 students report a standard window of about 2.5 hours, which matches an older 150-minute figure. Students with extended time report longer windows (one had 5 hours).",
+      "Question count: no 2026 source gives one. The newest figure is 55 questions (a 2024 third-party write-up), and the 2021 guidebook (as cited in a student's notes) listed 72. A 2026 passer believes the course was updated around mid-2025, so treat both numbers as rough.",
+      "Questions are four-option multiple choice and mix the units together, so it's hard to tell which chapter a question comes from (reported). Students also report more than one version of the OA, with a retake sometimes feeling trickier.",
+      "No cut score is published. The score report reportedly shows results by competency, and 2026 failures were often narrow (missed by about 3 to 5 questions), so every unit counts.",
+      "Calculator: WGU's July 2026 catalog bars any device or material not approved in advance, and the research found no C960-specific calculator list. Students report using a TI-84 Plus with its built-in <code>nCr</code>, <code>nPr</code>, <code>!</code>, <code>gcd(</code> and <code>remainder(</code> (mod). A 2026 comment says add-on programs aren't allowed, while a couple of other 2026 posters say they used them, so plan on built-ins only and confirm with your instructor.",
+      "Retakes: students report that after a failed attempt you complete extra worksheets or quizzes (Review Forms A for weak chapters) and get instructor approval before the next attempt, and that a readiness check comes before a third attempt.",
+      "Deadline: per WGU's catalog, a course not passed by the end of the term is recorded as Not Passed, including when the OA was never attempted.",
+      "Online proctoring runs through Meazure Learning and the Guardian Browser. The 2026 catalog requires a personal computer running Windows 10+ or macOS 13+ (no Chromebooks, Linux or virtual machines), one monitor, and no headphones."
+    ],
+    "tips": [
+      "Make the Unit Review Forms (in the course's Supplemental Resources) your core practice: an instructor reportedly told students they are the most aligned with the OA. Do each one unaided and rework every miss.",
+      "Also work the supplemental worksheets on WGU Connect and the course planning tool's questions; one 2026 passer says the planning tool had OA-style questions that weren't on the PA.",
+      "Treat the PA as a gate, not the goal: pass it comfortably and be able to explain every miss before you schedule the OA.",
+      "Use the answer choices: multiply each candidate <code>d</code> by <code>e</code> mod <code>φ(n)</code>, plug choices into congruences, trace every string through the machine, and test closed forms on three terms.",
+      "Do quick items (DFA and NFA traces, definitions) first, flag long extended-Euclid, modular-exponentiation and Bayes items, and check the clock at the one-third and two-thirds marks.",
+      "Use a large whiteboard (about 12 × 14 in) with spare fine-tip markers: a 2026 student ran out of space and had to guess through the end.",
+      "Book 1:1 instructor sessions with your missed PA items before your first attempt; 2026 passers say live sessions and cohorts are what made counting, probability and Bayes click, and one found instructors more helpful than AI."
+    ]
+  },
+  "competencies": [
+    "Course planning: review your course planning tool report with an instructor and build a personalized course plan.",
+    "Analyze linear algorithms and their big-O estimates.",
+    "Analyze the use of number theory in cryptography.",
+    "Analyze the recursive elements of algorithms using the applicable principles of induction.",
+    "Solve problems using counting principles.",
+    "Analyze math problems using discrete probability or Bayesian methods.",
+    "Determine computational models using deterministic and nondeterministic finite-state machines."
+  ],
+  "topics": [
+    {
+      "title": "Algorithms, recursion tracing and worst-case complexity",
+      "eli5": "An algorithm is a recipe, and Big-O describes how its work grows as the input grows, the way cooking for 1,000 guests scales compared with cooking for 10. Tracing just means following the recipe by hand and writing down every value.",
+      "detail": "<code>f(n)</code> is <code>O(g(n))</code> when there are constants <code>c &gt; 0</code> and <code>n<sub>0</sub></code> with <code>|f(n)| ≤ c·|g(n)|</code> for every <code>n ≥ n<sub>0</sub></code>; Ω flips the inequality, and Θ means both hold. For a worst-case bound, count how often the innermost step runs: nested loops multiply, a counter that halves or doubles runs about <code>log<sub>2</sub> n</code> times, and a triangular loop (<code>j</code> from 1 to <code>i</code>) runs <code>n(n + 1)/2</code> times. Keep the dominant term and drop constants and lower-order terms. For recursive pseudocode, start at the base cases and build a table of values upward, one call at a time. A 2026 passer says algorithm questions ask for an output rather than for writing code.",
+      "points": [
+        "Growth order: <code>1 &lt; log n &lt; √n &lt; n &lt; n log n &lt; n² &lt; n³ &lt; 2<sup>n</sup> &lt; n!</code>",
+        "Worst cases: linear search <code>Θ(n)</code>, binary search <code>Θ(log n)</code> (sorted input only), bubble, insertion and selection sort <code>Θ(n²)</code>, merge sort <code>Θ(n log n)</code>",
+        "Nested loops multiply; loops that run one after another add, so the bigger one wins",
+        "Before tracing, note the base cases and the first index the function accepts; an unusual starting index is a reported trap",
+        "If asked for the tightest bound, give Θ of the dominant term, not a loose bound like <code>O(n!)</code>"
+      ]
+    },
+    {
+      "title": "Modular arithmetic and base conversion",
+      "eli5": "Mod is clock arithmetic: 15 o'clock on a 12-hour clock is 3 o'clock, so you keep only the remainder. Changing bases is like making change with coins worth 1, 7, 49 and 343 instead of 1, 10 and 100.",
+      "detail": "The division algorithm says that for any integer <code>a</code> and positive <code>d</code> there is exactly one way to write <code>a = d·q + r</code> with <code>0 ≤ r &lt; d</code>; then <code>a div d = q</code> and <code>a mod d = r</code>, so a remainder is never negative (<code>−23 = 7·(−4) + 5</code>, so <code>−23 mod 7 = 5</code>). <code>a ≡ b (mod m)</code> means <code>m</code> divides <code>a − b</code>, and you may reduce mod <code>m</code> after every addition or multiplication. To convert from base <code>b</code> to decimal, multiply each digit by its power of <code>b</code> and add. To convert decimal to base <code>b</code>, divide by <code>b</code> repeatedly and read the remainders from last to first, writing 10 as A and 11 as B in base 12. Between two non-decimal bases, such as base 7 to base 12, go through decimal.",
+      "points": [
+        "<code>a mod m = a − m·⌊a/m⌋</code>; with a negative <code>a</code>, add multiples of <code>m</code> until you land in 0 to <code>m − 1</code>",
+        "<code>(a + b) mod m = ((a mod m) + (b mod m)) mod m</code>, and the same works for products",
+        "Binary to hex: group bits in fours from the right; binary to octal: groups of three",
+        "Check any conversion by converting back to decimal",
+        "A 2026 passer's skills checklist includes arbitrary bases, such as base 7 to base 12"
+      ]
+    },
+    {
+      "title": "GCD, Euclid's algorithm and modular inverses",
+      "eli5": "Euclid's algorithm finds the largest number that divides two numbers by repeatedly swapping the bigger one for a remainder, like trimming a rectangle into squares until nothing is left over. Running the steps backward finds the number that undoes multiplication on a clock.",
+      "detail": "<code>gcd(a, b) = gcd(b, a mod b)</code>; repeat until the remainder is 0, and the last nonzero remainder is the gcd. Extended Euclid works back up those equations to write <code>gcd(a, m) = s·a + t·m</code> (Bézout's identity). When <code>gcd(a, m) = 1</code>, <code>s mod m</code> is the inverse of <code>a</code> modulo <code>m</code>; when the gcd is bigger than 1, no inverse exists. A linear congruence <code>a·x ≡ b (mod m)</code> with <code>gcd(a, m) = 1</code> is solved by <code>x ≡ a⁻¹·b (mod m)</code>. 2026 passers say Euclid-based items are common and extended Euclid is the slowest, so drill the back-substitution until it's automatic.",
+      "points": [
+        "Write each step as <code>bigger = q·smaller + r</code>; when you back-substitute, solve each line for its remainder",
+        "Normalize a negative coefficient: <code>−5 mod 43 = 38</code>",
+        "Always check <code>a·a⁻¹ mod m = 1</code>; it's also the fastest way to test four answer choices",
+        "<code>lcm(a, b) = a·b / gcd(a, b)</code>",
+        "Instructor videos on the Euclidean algorithm are on WGU Connect (reported)"
+      ]
+    },
+    {
+      "title": "Fast modular exponentiation and RSA",
+      "eli5": "RSA is a padlock anyone can snap shut (the public key) but only the key holder can open (the private key). Fast exponentiation is the shortcut that raises numbers to huge powers on a clock without the numbers ever getting big.",
+      "detail": "To compute <code>a<sup>k</sup> mod m</code>, write <code>k</code> in binary, build <code>a, a², a⁴, a⁸, …</code> by squaring and reducing mod <code>m</code> each time, then multiply only the powers whose bits are 1, reducing as you go. RSA key generation: choose primes <code>p</code> and <code>q</code>, set <code>n = p·q</code> and <code>φ(n) = (p − 1)(q − 1)</code>, pick <code>e</code> with <code>gcd(e, φ(n)) = 1</code>, and compute <code>d = e⁻¹ mod φ(n)</code> with extended Euclid. The public key is <code>(n, e)</code> and the private key is <code>d</code>. Encrypt with <code>c = m<sup>e</sup> mod n</code> and decrypt with <code>m = c<sup>d</sup> mod n</code>. RSA's security rests on factoring being hard: anyone who can factor <code>n</code> into <code>p</code> and <code>q</code> can compute <code>φ(n)</code> and then <code>d</code>, and no efficient way to factor large <code>n</code> is known.",
+      "points": [
+        "<code>d</code> is the inverse of <code>e</code> mod <code>φ(n)</code>, never mod <code>n</code>",
+        "To pick <code>d</code> from four choices, multiply each by <code>e</code> and reduce mod <code>φ(n)</code>; only the right one gives 1",
+        "Don't type a huge power into a calculator: it keeps only about 14 significant digits, so reduce after every multiplication",
+        "Exponent 45 = 32 + 8 + 4 + 1, so <code>a<sup>45</sup> = a<sup>32</sup>·a<sup>8</sup>·a<sup>4</sup>·a</code>",
+        "Sanity check: decrypting your ciphertext must give back the original message",
+        "One 2026 passer had two RSA private-key questions on a single OA"
+      ]
+    },
+    {
+      "title": "Proofs and induction",
+      "eli5": "Induction is a domino argument: show the first domino falls, then show that any falling domino knocks over the next one, and all of them fall.",
+      "detail": "A direct proof assumes the hypothesis and reasons straight to the conclusion. A proof by contrapositive proves 'not q implies not p' in place of 'p implies q', and a proof by contradiction assumes the statement is false and derives something impossible. Weak induction proves a base case <code>P(b)</code>, assumes <code>P(k)</code> (the inductive hypothesis) and uses it to prove <code>P(k + 1)</code>; strong induction may assume every case from <code>P(b)</code> through <code>P(k)</code>. Because the OA is multiple choice, expect to recognize the right base case, hypothesis or next expression rather than write a whole proof. For 'what must you show for <code>P(k + 1)</code>?', substitute <code>k + 1</code> for every <code>n</code> in the formula, then check that the <code>P(k)</code> expression plus the next term simplifies to it.",
+      "points": [
+        "Base case: plug in the smallest <code>n</code> the claim covers, which isn't always 0 or 1",
+        "Right side of <code>P(k + 1)</code>: replace every <code>n</code> with <code>(k + 1)</code> and simplify carefully, e.g. <code>3(k + 1) − 1 = 3k + 2</code>",
+        "Left side of <code>P(k + 1)</code> = left side of <code>P(k)</code> plus the <code>(k + 1)</code>th term",
+        "The contrapositive <code>¬q → ¬p</code> is equivalent to <code>p → q</code>; the converse <code>q → p</code> is not",
+        "A 2026 passer's checklist names direct proofs and induction; contrapositive and contradiction carry over from Discrete Math I"
+      ]
+    },
+    {
+      "title": "Recursive definitions and recurrences",
+      "eli5": "A recurrence describes each term using the ones before it, like 'this year's savings = twice last year's, plus $3'. Unrolling means substituting backward until you reach the starting value and spotting the pattern.",
+      "detail": "An arithmetic sequence adds a constant <code>d</code> each step (<code>a<sub>n</sub> = a<sub>n−1</sub> + d</code>, so <code>a<sub>n</sub> = a<sub>0</sub> + n·d</code>), and a geometric sequence multiplies by a constant <code>r</code> (<code>a<sub>n</sub> = r·a<sub>n−1</sub></code>, so <code>a<sub>n</sub> = a<sub>0</sub>·r<sup>n</sup></code>). To solve a recurrence by unrolling (iteration), substitute the rule into itself a few times, write the pattern after <code>i</code> steps, and stop at the initial condition. For <code>a<sub>n</sub> = c·a<sub>n−1</sub> + k</code> this gives <code>a<sub>n</sub> = c<sup>n</sup>·a<sub>0</sub> + k(c<sup>n−1</sup> + … + c + 1)</code>, and the geometric-series formula turns that sum into a closed form. Always check a closed form against at least three computed terms, and note whether the sequence starts at <code>a<sub>0</sub></code> or <code>a<sub>1</sub></code>. Recurrences also describe recursive algorithms: binary search satisfies <code>T(n) = T(n/2) + 1</code> and merge sort <code>T(n) = 2T(n/2) + n</code>.",
+      "points": [
+        "Starting at <code>a<sub>1</sub></code>: <code>a<sub>n</sub> = a<sub>1</sub> + (n − 1)d</code> and <code>a<sub>n</sub> = a<sub>1</sub>·r<sup>n−1</sup></code>",
+        "<code>1 + r + … + r<sup>n</sup> = (r<sup>n+1</sup> − 1)/(r − 1)</code> and <code>1 + 2 + … + n = n(n + 1)/2</code>",
+        "Binary search is <code>Θ(log n)</code>; merge sort is <code>Θ(n log n)</code>",
+        "A formula that matches the first two terms can still be wrong; test a third",
+        "Recurrences were the second-most-tested area for one Apr 2026 passer"
+      ]
+    },
+    {
+      "title": "Functions: injective, surjective, bijective",
+      "eli5": "Think of a function as assigning people to seats: injective means no two people share a seat, surjective means every seat gets filled, and bijective means both, a perfect one-to-one pairing.",
+      "detail": "A function <code>f: A → B</code> is injective (one-to-one) if <code>f(a<sub>1</sub>) = f(a<sub>2</sub>)</code> forces <code>a<sub>1</sub> = a<sub>2</sub></code>, so different inputs always give different outputs. It is surjective (onto) if every element of the codomain <code>B</code> equals <code>f(a)</code> for some <code>a</code> in <code>A</code>. It is bijective if it is both, and only bijections have inverse functions. The answer depends on the domain and codomain: <code>f(x) = 2x + 1</code> is a bijection from ℝ to ℝ but only injective from ℤ to ℤ, because even integers are never hit. In counting, the bijection rule says two finite sets have the same size when a bijection connects them.",
+      "points": [
+        "To disprove injective, find two inputs with the same output",
+        "To disprove surjective, find a codomain value that nothing maps to",
+        "Finite sets: an injection <code>A → B</code> needs <code>|A| ≤ |B|</code>; a surjection needs <code>|A| ≥ |B|</code>",
+        "Between two finite sets of the same size, injective and surjective go together",
+        "Floor and ceiling make good test cases: <code>⌊n/2⌋</code> on ℤ hits every integer exactly twice"
+      ]
+    },
+    {
+      "title": "Counting: product rule, permutations, combinations and multisets",
+      "eli5": "Counting is choosing a recipe: decide whether the order of your picks matters and whether you can pick the same thing twice, and those two answers tell you the formula.",
+      "detail": "The product rule multiplies the number of options at each step of a sequence of choices, and the sum rule adds the counts of cases that can't overlap. Ordered selections without repetition are permutations, <code>P(n, k) = n!/(n − k)!</code>; unordered selections without repetition are combinations, <code>C(n, k) = n!/(k!(n − k)!)</code>; ordered selections with repetition give <code>n<sup>k</sup></code>. Unordered selections with repetition are multisets: choosing <code>k</code> items from <code>n</code> types gives <code>C(n + k − 1, k)</code>, the stars-and-bars count. When some variables have minimums, hand those out first and count what's left. Arrangements of letters with repeats use <code>n!/(n<sub>1</sub>!·n<sub>2</sub>!·…)</code>.",
+      "points": [
+        "Ask 'does order matter?' and 'are repeats allowed?' before touching a formula",
+        "Roles, ranks and sequences (president, first place, a PIN) mean order matters; committees, hands and sets mean it doesn't",
+        "Stars and bars: <code>k</code> identical items into <code>n</code> bins = <code>C(k + n − 1, n − 1)</code>",
+        "Multi-stage problems multiply the stages: officers (permutation) times committee (combination)",
+        "TI-84: <code>nPr</code>, <code>nCr</code> and <code>!</code> are in the MATH key's probability menu (reported)"
+      ]
+    },
+    {
+      "title": "Inclusion–exclusion, complements and pigeonhole",
+      "eli5": "If you count people who like pizza and people who like tacos, anyone who likes both got counted twice, so you subtract them once. And with 13 people and only 12 birth months, at least two people must share a month.",
+      "detail": "Inclusion–exclusion for two sets is <code>|A ∪ B| = |A| + |B| − |A ∩ B|</code>; for three sets, add the singles, subtract the pairwise overlaps, and add back the triple overlap. In 'divisible by a or b' problems, the overlap is the numbers divisible by <code>lcm(a, b)</code>, which equals <code>a·b</code> only when <code>a</code> and <code>b</code> have no common factor other than 1. Counting by complement finds 'at least one' as the total minus the count with none. The pigeonhole principle says <code>N</code> objects in <code>k</code> boxes put at least <code>⌈N/k⌉</code> in some box, and the same idea gives the smallest number of objects that guarantees a given count.",
+      "points": [
+        "Multiples of <code>d</code> from 1 to <code>N</code>: <code>⌊N/d⌋</code>",
+        "Three sets: <code>|A∪B∪C| = |A| + |B| + |C| − |A∩B| − |A∩C| − |B∩C| + |A∩B∩C|</code>",
+        "'At least one' = total − none (counting) or <code>1 − P(none)</code> (probability)",
+        "To force <code>r</code> objects into one of <code>k</code> boxes you need <code>k(r − 1) + 1</code> objects",
+        "Several 2026 passers called counting one of the hardest topics, and one said it fades within a day, so revisit it every few days"
+      ]
+    },
+    {
+      "title": "Probability: conditional probability, independence and Bayes",
+      "eli5": "Conditional probability shrinks the world to just the cases where the condition happened. Bayes' theorem flips the question around: given that the smoke alarm went off, how likely is a real fire?",
+      "detail": "With equally likely outcomes, <code>P(E) = |E|/|S|</code>, so counting skills carry straight over. <code>P(A | B) = P(A ∩ B)/P(B)</code>, and <code>A</code> and <code>B</code> are independent exactly when <code>P(A ∩ B) = P(A)·P(B)</code>, which is different from being mutually exclusive. The law of total probability gives <code>P(B) = P(B | A)P(A) + P(B | A<sup>c</sup>)P(A<sup>c</sup>)</code>, and Bayes' theorem divides the branch you care about by that total: <code>P(A | B) = P(B | A)P(A)/P(B)</code>. A tree diagram, with the prior probabilities on the first branches and the conditional rates on the second, keeps the arithmetic straight. A 2026 passer notes that Bayes questions follow the same process every time once you recognize the wording.",
+      "points": [
+        "Bayes denominator = every path that leads to the evidence (true positives plus false positives)",
+        "Don't swap <code>P(A | B)</code> and <code>P(B | A)</code>: catching 90% of phishing doesn't mean 90% of flagged email is phishing",
+        "Independent: <code>P(A ∩ B) = P(A)·P(B)</code>; mutually exclusive events with nonzero probabilities are never independent",
+        "<code>P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</code> and <code>P(A<sup>c</sup>) = 1 − P(A)</code>",
+        "Bayes and expected value were named again and again in 2026 OA reports"
+      ]
+    },
+    {
+      "title": "Binomial distribution, 'at least one' and expected value",
+      "eli5": "The binomial formula counts the ways to get exactly k successes in n tries and weights each way by its probability. Expected value is the average payoff per game you'd get if you played forever.",
+      "detail": "For <code>n</code> independent trials with success probability <code>p</code>, <code>P(X = k) = C(n, k)·p<sup>k</sup>·(1 − p)<sup>n−k</sup></code> and <code>E[X] = n·p</code>. For 'at least one' success, use the complement <code>1 − (1 − p)<sup>n</sup></code>; for 'at least two', subtract both <code>P(X = 0)</code> and <code>P(X = 1)</code> from 1. Expected value is <code>E[X] = Σ x·P(X = x)</code>, the probability-weighted average of the values, and linearity says <code>E[X + Y] = E[X] + E[Y]</code> even when <code>X</code> and <code>Y</code> are dependent. For a game, define <code>X</code> as your net gain (what you receive minus what you paid) on each outcome before taking the weighted sum. To find how many trials push P(at least one) past a target, solve <code>1 − (1 − p)<sup>n</sup> &gt; t</code> with logs or by trying values of <code>n</code>.",
+      "points": [
+        "'Exactly k' needs the <code>C(n, k)</code> factor; leaving it out is the classic binomial error",
+        "'At least one' = <code>1 − (1 − p)<sup>n</sup></code>",
+        "Net gain = payoff minus cost, on every outcome",
+        "Expected sum of two dice = 3.5 + 3.5 = 7, by linearity",
+        "A probability outside 0 to 1 is impossible, a quick way to cross off answer choices"
+      ]
+    },
+    {
+      "title": "Finite-state machines: DFA and NFA tracing",
+      "eli5": "A DFA is like a vending machine with a few states: each coin (symbol) moves it along exactly one arrow, and at the end it either lights up (accept) or doesn't. An NFA may try several paths at once and accepts if any path lights up.",
+      "detail": "A DFA is a 5-tuple <code>(Q, Σ, δ, q<sub>0</sub>, F)</code> whose transition function gives exactly one next state for every state and input symbol. To trace, start in <code>q<sub>0</sub></code>, follow one arrow per symbol, and accept only if you finish in a state of <code>F</code>. An NFA may have zero, one or several arrows for a symbol, plus ε-moves that read no input, and it accepts if at least one path ends in an accept state. Every NFA has an equivalent DFA, built by the subset construction, where each DFA state is a set of NFA states. Typical questions ask whether a string is accepted, which state you end in, or which language a machine recognizes.",
+      "points": [
+        "Write the trace out (<code>S0 →0 S0 →1 S1 …</code>) so you don't lose your place",
+        "Common languages: ends with a pattern, contains a pattern, even or odd counts, divisibility",
+        "NFA: track the set of states you could be in after each symbol",
+        "Students call this the easiest unit and report roughly 6 to 10 quick questions on it; don't skip it",
+        "Whether Unit 6 also covers regular expressions or Turing machines is unconfirmed; the official competency names DFAs and NFAs"
+      ]
+    }
+  ],
+  "keyFacts": [
+    {
+      "label": "Big-O, Ω, Θ",
+      "value": "<code>f</code> is <code>O(g)</code> if <code>|f(n)| ≤ c·|g(n)|</code> for all <code>n ≥ n<sub>0</sub></code>, for some <code>c &gt; 0</code> and <code>n<sub>0</sub></code>",
+      "note": "Ω flips the inequality; Θ means both O and Ω hold."
+    },
+    {
+      "label": "Growth order",
+      "value": "<code>1 &lt; log n &lt; √n &lt; n &lt; n log n &lt; n² &lt; n³ &lt; 2<sup>n</sup> &lt; n! &lt; n<sup>n</sup></code>",
+      "note": "Log base doesn't matter inside Big-O; any exponential beats any polynomial."
+    },
+    {
+      "label": "Search and sort, worst case",
+      "value": "Linear search <code>Θ(n)</code>; binary search <code>Θ(log n)</code>; bubble, insertion, selection sort <code>Θ(n²)</code>; merge sort <code>Θ(n log n)</code>",
+      "note": "Binary search needs sorted input."
+    },
+    {
+      "label": "Loop counts",
+      "value": "<code>for i = 1..n, for j = 1..i</code> runs <code>n(n + 1)/2</code> times; a halving or doubling loop runs about <code>log<sub>2</sub> n</code> times",
+      "note": "Nested loops multiply; loops in sequence add."
+    },
+    {
+      "label": "Division algorithm",
+      "value": "<code>a = d·q + r</code> with <code>0 ≤ r &lt; d</code>; <code>a mod d = r</code> is never negative",
+      "note": "<code>−17 mod 5 = 3</code> because <code>−17 = 5·(−4) + 3</code>; the C or Java <code>%</code> operator would give −2."
+    },
+    {
+      "label": "Euclid's algorithm",
+      "value": "<code>gcd(a, b) = gcd(b, a mod b)</code>, repeated until the remainder is 0",
+      "note": "<code>gcd(a, b)·lcm(a, b) = a·b</code>"
+    },
+    {
+      "label": "Modular inverse",
+      "value": "<code>a⁻¹ mod m</code> exists only when <code>gcd(a, m) = 1</code>; from <code>s·a + t·m = 1</code>, the inverse is <code>s mod m</code>",
+      "note": "Check that <code>a·a⁻¹ mod m = 1</code>."
+    },
+    {
+      "label": "Fast modular exponentiation",
+      "value": "Square repeatedly mod <code>m</code> (<code>a, a², a⁴, a⁸, …</code>) and multiply the powers that match the 1-bits of the exponent",
+      "note": "Reduce mod m after every multiplication."
+    },
+    {
+      "label": "Base conversion",
+      "value": "To decimal: <code>Σ d<sub>i</sub>·b<sup>i</sup></code>. From decimal: divide by the base and read the remainders bottom-up; A = 10, B = 11",
+      "note": "Base 7 to base 12: go through decimal. Hex digit = 4 bits; octal digit = 3 bits."
+    },
+    {
+      "label": "RSA keys",
+      "value": "<code>n = p·q</code>, <code>φ(n) = (p − 1)(q − 1)</code>, <code>gcd(e, φ(n)) = 1</code>, <code>d = e⁻¹ mod φ(n)</code>",
+      "note": "Public key (n, e); private key d."
+    },
+    {
+      "label": "RSA encrypt and decrypt",
+      "value": "<code>c = m<sup>e</sup> mod n</code>; <code>m = c<sup>d</sup> mod n</code>",
+      "note": "Security rests on how hard it is to factor n."
+    },
+    {
+      "label": "Induction",
+      "value": "Prove <code>P(b)</code>; assume <code>P(k)</code>; use it to prove <code>P(k + 1)</code>",
+      "note": "Right side of P(k + 1): replace every n with (k + 1)."
+    },
+    {
+      "label": "Proof styles",
+      "value": "Direct: assume p, derive q. Contrapositive: prove <code>¬q → ¬p</code>. Contradiction: assume the statement is false and reach an impossibility."
+    },
+    {
+      "label": "Arithmetic and geometric sequences",
+      "value": "<code>a<sub>n</sub> = a<sub>0</sub> + n·d</code>; <code>a<sub>n</sub> = a<sub>0</sub>·r<sup>n</sup></code>",
+      "note": "Starting at a<sub>1</sub>: <code>a<sub>1</sub> + (n − 1)d</code> and <code>a<sub>1</sub>·r<sup>n−1</sup></code>."
+    },
+    {
+      "label": "Sums",
+      "value": "<code>1 + 2 + … + n = n(n + 1)/2</code>; <code>1 + r + … + r<sup>n</sup> = (r<sup>n+1</sup> − 1)/(r − 1)</code>"
+    },
+    {
+      "label": "Unrolling",
+      "value": "<code>a<sub>n</sub> = c·a<sub>n−1</sub> + k</code> gives <code>a<sub>n</sub> = c<sup>n</sup>·a<sub>0</sub> + k(c<sup>n−1</sup> + … + c + 1)</code>",
+      "note": "Check the closed form on three terms."
+    },
+    {
+      "label": "Recurrences of recursive algorithms",
+      "value": "Binary search <code>T(n) = T(n/2) + 1</code> → <code>Θ(log n)</code>; merge sort <code>T(n) = 2T(n/2) + n</code> → <code>Θ(n log n)</code>"
+    },
+    {
+      "label": "Characteristic equation",
+      "value": "<code>a<sub>n</sub> = c<sub>1</sub>a<sub>n−1</sub> + c<sub>2</sub>a<sub>n−2</sub></code>: solve <code>r² = c<sub>1</sub>r + c<sub>2</sub></code>; distinct roots give <code>A·r<sub>1</sub><sup>n</sup> + B·r<sub>2</sub><sup>n</sup></code>, a repeated root <code>(A + Bn)r<sup>n</sup></code>",
+      "note": "In the source textbooks' recurrence chapters; confirm your zyBook covers it."
+    },
+    {
+      "label": "Function types",
+      "value": "Injective: <code>f(a) = f(b) ⇒ a = b</code>. Surjective: every codomain value is hit. Bijective: both.",
+      "note": "Only bijections have inverse functions."
+    },
+    {
+      "label": "Counting decision table",
+      "value": "Order + repeats: <code>n<sup>k</sup></code>. Order, no repeats: <code>P(n, k) = n!/(n − k)!</code>. No order, no repeats: <code>C(n, k) = n!/(k!(n − k)!)</code>. No order, repeats: <code>C(n + k − 1, k)</code>."
+    },
+    {
+      "label": "Stars and bars",
+      "value": "<code>k</code> identical items into <code>n</code> bins: <code>C(k + n − 1, n − 1)</code>",
+      "note": "Give out any minimums first, then count the rest."
+    },
+    {
+      "label": "Repeated letters",
+      "value": "<code>n!/(n<sub>1</sub>!·n<sub>2</sub>!·…)</code>",
+      "note": "LETTER: 6!/(2!·2!) = 180."
+    },
+    {
+      "label": "Inclusion–exclusion",
+      "value": "<code>|A ∪ B| = |A| + |B| − |A ∩ B|</code>; for three sets add the singles, subtract the pairs, add the triple",
+      "note": "For 'divisible by a or b', the overlap uses lcm(a, b)."
+    },
+    {
+      "label": "Pigeonhole",
+      "value": "<code>N</code> objects in <code>k</code> boxes: some box holds at least <code>⌈N/k⌉</code>"
+    },
+    {
+      "label": "Probability rules",
+      "value": "<code>P(A<sup>c</sup>) = 1 − P(A)</code>; <code>P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</code>; <code>P(A | B) = P(A ∩ B)/P(B)</code>",
+      "note": "Independent: P(A ∩ B) = P(A)·P(B). Mutually exclusive is not the same as independent."
+    },
+    {
+      "label": "Bayes' theorem",
+      "value": "<code>P(A | B) = P(B | A)P(A) / [P(B | A)P(A) + P(B | A<sup>c</sup>)P(A<sup>c</sup>)]</code>",
+      "note": "The denominator is P(B): every path that leads to the evidence."
+    },
+    {
+      "label": "Binomial distribution",
+      "value": "<code>P(X = k) = C(n, k)·p<sup>k</sup>(1 − p)<sup>n−k</sup></code>; <code>E[X] = np</code>",
+      "note": "At least one success: <code>1 − (1 − p)<sup>n</sup></code>."
+    },
+    {
+      "label": "Expected value",
+      "value": "<code>E[X] = Σ x·P(X = x)</code>; <code>E[X + Y] = E[X] + E[Y]</code>"
+    },
+    {
+      "label": "DFA vs. NFA",
+      "value": "DFA: exactly one arrow per state per symbol; accept only if the run ends in an accept state. NFA: any number of arrows plus ε-moves; accept if any path ends in an accept state.",
+      "note": "Every NFA has an equivalent DFA (subset construction)."
+    },
+    {
+      "label": "TI-84 Plus built-ins (reported)",
+      "value": "<code>nPr</code>, <code>nCr</code>, <code>!</code> (MATH, PROB/PRB menu), <code>gcd(</code>, and <code>remainder(</code> for mod",
+      "note": "No C960 calculator policy was found; plan on built-ins only and confirm your model with the instructor."
+    }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Set up and take a baseline",
+      "tasks": [
+        "Open the course and find the six units, the Unit Review Forms (Supplemental Resources) and the supplemental worksheets on WGU Connect.",
+        "Take the course planning tool cold as a diagnostic, then book the instructor review of its report (that review is the course's first competency).",
+        "Ask the instructor to confirm your calculator, then get a TI-84 Plus (built-ins: nPr, nCr, !, gcd, remainder) and a 12 × 14 in whiteboard with spare fine-tip markers.",
+        "Start a one-page decision sheet (formulas plus 'which method when') and add to it after every unit."
+      ]
+    },
+    {
+      "day": "Days 2-5",
+      "focus": "Unit 1: algorithms, tracing and Big-O",
+      "tasks": [
+        "Trace pseudocode with loops and conditionals to its output, then recursive procedures 3 to 4 levels deep from the base cases up.",
+        "Count loop iterations (nested, triangular, halving) and give worst-case Θ bounds; learn the search and sort worst cases.",
+        "Big-O, Ω and Θ definitions with witnesses c and n<sub>0</sub>; rank growth rates.",
+        "Unit 1 Review Form, unaided; rework every miss."
+      ]
+    },
+    {
+      "day": "Days 6-10",
+      "focus": "Unit 2, part 1: mod arithmetic, Euclid and bases",
+      "tasks": [
+        "Division algorithm and mod with negative numbers; the rules for adding and multiplying mod m.",
+        "Euclid's algorithm, then extended Euclid and inverses: 10+ from a blank page, checking a·a⁻¹ mod m = 1 each time.",
+        "Base conversion: binary, octal, hex, and arbitrary bases such as base 7 to base 12 (through decimal).",
+        "Watch the instructor Euclidean-algorithm videos on WGU Connect; keep holidays light."
+      ]
+    },
+    {
+      "day": "Days 11-14",
+      "focus": "Unit 2, part 2: fast exponentiation and RSA",
+      "tasks": [
+        "Successive squaring for a<sup>k</sup> mod m, reducing after every multiplication.",
+        "RSA end to end at least 5 times: n, φ(n), e, d by extended Euclid, encrypt, decrypt, verify.",
+        "Practice the test-each-choice check for d: e·d mod φ(n) must equal 1.",
+        "Unit 2 Review Form and worksheet; rework misses."
+      ]
+    },
+    {
+      "day": "Days 15-19",
+      "focus": "Unit 3: proofs, induction and recurrences",
+      "tasks": [
+        "Proof styles: direct, contrapositive, contradiction; identify which one a given argument uses.",
+        "Induction: base case, hypothesis, and the P(k + 1) target found by substituting k + 1 for n; then strong induction.",
+        "Recursive definitions and recurrences: arithmetic, geometric, and unrolling to a closed form checked on three terms.",
+        "Unit 3 Review Form. Don't skip this unit: a 2026 student failed after skipping it."
+      ]
+    },
+    {
+      "day": "Days 20-25",
+      "focus": "Unit 4: functions and counting",
+      "tasks": [
+        "Injective, surjective and bijective, with examples and counterexamples on ℤ, ℝ and finite sets.",
+        "Product and sum rules, permutations versus combinations, arrangements with repeated letters.",
+        "Multisets and stars and bars with minimums; inclusion–exclusion with lcm; pigeonhole.",
+        "Book a live instructor session or counting cohort; Unit 4 Review Form; mixed counting sets until the order-and-repetition call is automatic."
+      ]
+    },
+    {
+      "day": "Days 26-31",
+      "focus": "Unit 5: discrete probability",
+      "tasks": [
+        "Sample spaces from counting; complement and union rules; conditional probability and independence.",
+        "Bayes with a tree diagram until the setup is the same every time; total probability for the denominator.",
+        "Binomial probabilities, 'at least one' by complement, expected value and linearity.",
+        "Probability or Bayes cohort or drop-in session; Unit 5 Review Form; rework misses."
+      ]
+    },
+    {
+      "day": "Days 32-33",
+      "focus": "Unit 6: DFAs and NFAs",
+      "tasks": [
+        "Trace strings through DFAs from diagrams and transition tables; name the language a machine accepts.",
+        "NFA tracing (track the set of possible states, including ε-moves) and the NFA-to-DFA subset construction.",
+        "Unit 6 Review Form; these are reportedly quick points, so make them automatic."
+      ]
+    },
+    {
+      "day": "Days 34-38",
+      "focus": "Mixed review (keep the holidays light)",
+      "tasks": [
+        "Rewrite the decision sheet from memory and fill the gaps.",
+        "Redo every missed Review Form and worksheet item from Units 1-6, shuffled together rather than unit by unit.",
+        "Work the course planning tool questions again, then take the end-of-course review unaided."
+      ]
+    },
+    {
+      "day": "Day 39",
+      "focus": "Pre-assessment under exam conditions",
+      "tasks": [
+        "Timed like the OA (about 2.5 hours), whiteboard and calculator only, no notes, one sitting.",
+        "Note which items took longest, not just which ones you missed."
+      ]
+    },
+    {
+      "day": "Days 40-44",
+      "focus": "Review every PA miss",
+      "tasks": [
+        "Sort misses by unit and rework each missed type 5 times from a blank page.",
+        "Book a 1:1 instructor session (about 45 minutes) and bring the missed PA items.",
+        "Go or no-go: if the PA wasn't comfortable or any Review Form is under about 80%, add a week of targeted practice; otherwise schedule the OA for Days 47-48."
+      ]
+    },
+    {
+      "day": "Days 45-48",
+      "focus": "Take the OA",
+      "tasks": [
+        "Light review only: the decision sheet from memory, one RSA, one Bayes tree, one stars and bars.",
+        "Run WGU's system check, install the Guardian Browser, clear the desk, and have the whiteboard and spare markers ready.",
+        "Take the OA by about Day 48: quick items first, flag long computations, check the clock at the one-third and two-thirds marks.",
+        "If it doesn't go your way, students report extra worksheets or quizzes (Review Forms A for weak chapters) and instructor approval before a retake; start them right away, while your term still has time."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "Trace this procedure. What does <code>F(6)</code> return?<br><code>procedure F(n: positive integer)</code><br><code>  if n = 1 or n = 2 then return 1</code><br><code>  else return F(n − 1) + 3·F(n − 2)</code>",
+      "choices": [
+        "19",
+        "40",
+        "97",
+        "142"
+      ],
+      "answer": "40",
+      "why": "Build up from the base cases: F(1) = 1, F(2) = 1, F(3) = 1 + 3·1 = 4, F(4) = 4 + 3·1 = 7, F(5) = 7 + 3·4 = 19, F(6) = 19 + 3·7 = 40.<br>19 is F(5), one level short. 97 comes from treating the base cases as F(0) and F(1), a starting-index slip. 142 swaps the coefficients (3·F(n − 1) + F(n − 2))."
+    },
+    {
+      "q": "What is the worst-case time complexity of this algorithm as a function of n?<br><code>total := 0</code><br><code>for i := 1 to n</code><br><code>  for j := 1 to i</code><br><code>    k := n</code><br><code>    while k &gt; 1</code><br><code>      k := ⌊k / 2⌋</code><br><code>      total := total + 1</code>",
+      "choices": [
+        "Θ(n log n)",
+        "Θ(n²)",
+        "Θ(n² log n)",
+        "Θ(n³)"
+      ],
+      "answer": "Θ(n² log n)",
+      "why": "The two for loops run their body 1 + 2 + … + n = n(n + 1)/2 times, which is Θ(n²). Each time, the while loop halves k from n down to 1, which takes ⌊log<sub>2</sub> n⌋ steps (for n = 16: 16 → 8 → 4 → 2 → 1 is 4 steps).<br>Multiply: n(n + 1)/2 · ⌊log<sub>2</sub> n⌋ is Θ(n² log n). For n = 16, total ends at 136 · 4 = 544."
+    },
+    {
+      "q": "Convert 2356<sub>7</sub> to base 12. (Use A for ten and B for eleven.)",
+      "choices": [
+        "60A<sub>12</sub>",
+        "A06<sub>12</sub>",
+        "72A<sub>12</sub>",
+        "1444<sub>12</sub>"
+      ],
+      "answer": "60A<sub>12</sub>",
+      "why": "First go to decimal: 2·7³ + 3·7² + 5·7 + 6 = 686 + 147 + 35 + 6 = 874.<br>Then divide by 12: 874 = 12·72 + 10 (A), 72 = 12·6 + 0, 6 = 12·0 + 6. Reading the remainders from last to first gives 60A<sub>12</sub>. Check: 6·144 + 0·12 + 10 = 874.<br>A06 reads the remainders in the wrong order, 72A stops dividing too early (72 isn't a single base-12 digit), and 1444 treats 2356 as a decimal number."
+    },
+    {
+      "q": "Use the extended Euclidean algorithm to find the multiplicative inverse of 17 modulo 43.",
+      "choices": [
+        "5",
+        "23",
+        "29",
+        "38"
+      ],
+      "answer": "38",
+      "why": "Euclid: 43 = 2·17 + 9; 17 = 1·9 + 8; 9 = 1·8 + 1.<br>Back-substitute: 1 = 9 − 8 = 9 − (17 − 9) = 2·9 − 17 = 2·(43 − 2·17) − 17 = 2·43 − 5·17.<br>So −5·17 ≡ 1 (mod 43), and the inverse is −5 mod 43 = 38. Check: 17·38 = 646 = 15·43 + 1. Choosing 5 is the sign slip (17·5 = 85 ≡ 42 ≡ −1), and 23 and 29 give 4 and 20."
+    },
+    {
+      "q": "Use successive squaring to compute 5<sup>45</sup> mod 47.",
+      "choices": [
+        "19",
+        "32",
+        "34",
+        "37"
+      ],
+      "answer": "19",
+      "why": "45 = 32 + 8 + 4 + 1 (binary 101101). Square and reduce mod 47: 5¹ = 5, 5² = 25, 5⁴ = 625 ≡ 14, 5⁸ ≡ 14² = 196 ≡ 8, 5<sup>16</sup> ≡ 8² = 64 ≡ 17, 5<sup>32</sup> ≡ 17² = 289 ≡ 7.<br>Multiply the needed powers, reducing as you go: 7·8 = 56 ≡ 9; 9·14 = 126 ≡ 32; 32·5 = 160 ≡ 19.<br>Optional cross-check with Fermat's little theorem (47 is prime): 5<sup>46</sup> ≡ 1, so 5<sup>45</sup> ≡ 5⁻¹ ≡ 19 because 5·19 = 95 = 2·47 + 1. 32 forgets the final ·5, 34 adds the powers instead of multiplying, and 37 is 5·45 mod 47."
+    },
+    {
+      "q": "RSA with p = 5, q = 13 and public exponent e = 11. Find n, φ(n) and the private key d, then encrypt the message m = 3 and decrypt the result to check your work.",
+      "answer": "n = 65, φ(n) = 48, d = 35, ciphertext c = 22 (and 22<sup>35</sup> mod 65 = 3)",
+      "why": "n = 5·13 = 65 and φ(n) = 4·12 = 48. gcd(11, 48) = 1, so e = 11 is valid.<br>Extended Euclid: 48 = 4·11 + 4; 11 = 2·4 + 3; 4 = 1·3 + 1. Back-substitute: 1 = 4 − 3 = 4 − (11 − 2·4) = 3·4 − 11 = 3·(48 − 4·11) − 11 = 3·48 − 13·11, so d = −13 mod 48 = 35. Check: 11·35 = 385 = 8·48 + 1.<br>Encrypt by successive squaring mod 65: 3² = 9, 3⁴ = 81 ≡ 16, 3⁸ ≡ 16² = 256 ≡ 61. Since 11 = 8 + 2 + 1, c = 61·9·3 = 1647 ≡ 22.<br>Decrypt: 22² = 484 ≡ 29, 22⁴ ≡ 29² = 841 ≡ 61, 22⁸ ≡ 61² = 3721 ≡ 16, 22<sup>16</sup> ≡ 16² = 256 ≡ 61, 22<sup>32</sup> ≡ 16. Since 35 = 32 + 2 + 1, the result is 16·29·22 = 10208 ≡ 3, the original message.<br>Trap: 11⁻¹ mod 65 is 6, but d must be the inverse mod φ(n) = 48, not mod n."
+    },
+    {
+      "q": "You are proving 1 + 4 + 7 + … + (3n − 2) = n(3n − 1)/2 for all n ≥ 1 by induction. After assuming P(k), which expression is the right-hand side of P(k + 1) that you must reach?",
+      "choices": [
+        "(k + 1)(3k − 1)/2",
+        "(k + 1)(3k + 1)/2",
+        "k(3k − 1)/2 + (3k − 2)",
+        "(k + 1)(3k + 2)/2"
+      ],
+      "answer": "(k + 1)(3k + 2)/2",
+      "why": "Substitute k + 1 for every n: (k + 1)(3(k + 1) − 1)/2 = (k + 1)(3k + 2)/2.<br>To get there, add the next term, 3(k + 1) − 2 = 3k + 1, to the inductive hypothesis: k(3k − 1)/2 + (3k + 1) = (3k² + 5k + 2)/2 = (k + 1)(3k + 2)/2. The base case n = 1 checks out: 1 = 1·2/2.<br>The other choices substitute only one n, simplify 3(k + 1) − 1 wrongly, or add the kth term again instead of the (k + 1)th."
+    },
+    {
+      "q": "A sequence is defined by a<sub>0</sub> = 1 and a<sub>n</sub> = 2a<sub>n−1</sub> + 3 for n ≥ 1. Which closed form is correct?",
+      "choices": [
+        "a<sub>n</sub> = 2<sup>n</sup> + 3n",
+        "a<sub>n</sub> = 2<sup>n+2</sup> − 3",
+        "a<sub>n</sub> = 3·2<sup>n</sup> − 2",
+        "a<sub>n</sub> = 2<sup>n+1</sup> − 1"
+      ],
+      "answer": "a<sub>n</sub> = 2<sup>n+2</sup> − 3",
+      "why": "Unroll: a<sub>n</sub> = 2a<sub>n−1</sub> + 3 = 4a<sub>n−2</sub> + 2·3 + 3 = … = 2<sup>n</sup>a<sub>0</sub> + 3(2<sup>n−1</sup> + … + 2 + 1) = 2<sup>n</sup> + 3(2<sup>n</sup> − 1) = 4·2<sup>n</sup> − 3 = 2<sup>n+2</sup> − 3.<br>Check three terms: the recurrence gives a<sub>0</sub> = 1, a<sub>1</sub> = 5, a<sub>2</sub> = 13, and 2² − 3 = 1, 2³ − 3 = 5, 2⁴ − 3 = 13. The trap is 2<sup>n</sup> + 3n: it matches a<sub>0</sub> and a<sub>1</sub> but gives 10 for a<sub>2</sub>."
+    },
+    {
+      "q": "Let f: ℤ → ℤ be defined by f(n) = ⌊n/2⌋. Which statement is true?",
+      "choices": [
+        "f is injective but not surjective",
+        "f is a bijection",
+        "f is neither injective nor surjective",
+        "f is surjective but not injective"
+      ],
+      "answer": "f is surjective but not injective",
+      "why": "Surjective: for any integer m, f(2m) = ⌊2m/2⌋ = m, so every integer is hit.<br>Not injective: f(0) = ⌊0⌋ = 0 and f(1) = ⌊0.5⌋ = 0, two inputs with the same output (likewise f(−2) = f(−1) = −1). Failing injectivity also rules out a bijection."
+    },
+    {
+      "q": "A 9-person team picks a captain and a co-captain, then picks a 3-person planning group from the 7 people left. How many different outcomes are possible?",
+      "choices": [
+        "126",
+        "1,260",
+        "2,520",
+        "15,120"
+      ],
+      "answer": "2,520",
+      "why": "The two officer roles are different, so order matters: P(9, 2) = 9·8 = 72. The planning group has no roles, so order doesn't matter: C(7, 3) = 35. By the product rule, 72·35 = 2,520.<br>1,260 treats the officers as unordered (C(9, 2)·35 = 36·35); 15,120 orders the group too (72·P(7, 3) = 72·210); 126 = C(9, 5) ignores the roles entirely."
+    },
+    {
+      "q": "A bagel shop sells 4 kinds of bagels. How many different bags of 12 bagels can you buy if the bag must contain at least 2 sesame bagels and at least 1 plain bagel? (Bagels of the same kind are identical.)",
+      "choices": [
+        "165",
+        "220",
+        "455",
+        "495"
+      ],
+      "answer": "220",
+      "why": "Put the required 2 sesame and 1 plain in the bag first, leaving 12 − 3 = 9 bagels to choose freely from 4 kinds. That's a multiset (stars and bars): C(9 + 4 − 1, 4 − 1) = C(12, 3) = 220.<br>455 = C(15, 3) ignores the minimums, 495 = C(12, 4) uses the wrong lower number, and 165 = C(11, 3) is an off-by-one slip."
+    },
+    {
+      "q": "4% of the email a company receives is phishing. Its filter flags 90% of phishing emails and also flags 3% of legitimate emails. An email is flagged. What is the probability that it is phishing?",
+      "choices": [
+        "0.036",
+        "0.065",
+        "0.556",
+        "0.900"
+      ],
+      "answer": "0.556",
+      "why": "P(phishing and flagged) = 0.04·0.90 = 0.036. P(legitimate and flagged) = 0.96·0.03 = 0.0288. P(flagged) = 0.036 + 0.0288 = 0.0648.<br>Bayes: P(phishing | flagged) = 0.036 / 0.0648 = 5/9 ≈ 0.556.<br>0.900 is P(flagged | phishing), the reversed condition; 0.036 forgets to divide; 0.065 is P(flagged)."
+    },
+    {
+      "q": "A player makes each free throw with probability 1/3, independently. She takes 5 shots. What is the probability that she makes at least 2?",
+      "choices": [
+        "80/243",
+        "112/243",
+        "131/243",
+        "211/243"
+      ],
+      "answer": "131/243",
+      "why": "Use the complement: P(X ≥ 2) = 1 − P(X = 0) − P(X = 1).<br>P(X = 0) = (2/3)⁵ = 32/243. P(X = 1) = C(5, 1)·(1/3)·(2/3)⁴ = 5·16/243 = 80/243.<br>So P(X ≥ 2) = 1 − 112/243 = 131/243 ≈ 0.539. 211/243 is 'at least one' (only P(X = 0) subtracted), 112/243 is the part you should subtract, and 80/243 is P(X = 1)."
+    },
+    {
+      "q": "A game costs $2 to play. You roll a fair die and receive $6 for a 6, $3 for a 5, and nothing otherwise. What is your expected net gain per game?",
+      "choices": [
+        "−$0.50",
+        "$0.17",
+        "$0.50",
+        "$1.50"
+      ],
+      "answer": "−$0.50",
+      "why": "Net gain on each outcome: a 6 gives 6 − 2 = +$4, a 5 gives 3 − 2 = +$1, and 1 through 4 give −$2.<br>E = 4·(1/6) + 1·(1/6) + (−2)·(4/6) = (4 + 1 − 8)/6 = −3/6 = −$0.50.<br>Same answer another way: the expected payout is 6/6 + 3/6 = $1.50, minus the $2 cost. $1.50 forgets the cost, and $0.17 charges the cost only on losing rolls."
+    },
+    {
+      "q": "A DFA over {0, 1} has start state S0 and one accepting state, S2. Transitions: S0 on 0 → S0, S0 on 1 → S1; S1 on 0 → S2, S1 on 1 → S1; S2 on 0 → S0, S2 on 1 → S1. Which input string does it accept?",
+      "choices": [
+        "1001",
+        "0101",
+        "1100",
+        "0110"
+      ],
+      "answer": "0110",
+      "why": "Trace each string from S0:<br>1001: S0 →1 S1 →0 S2 →0 S0 →1 S1, rejected.<br>0101: S0 →0 S0 →1 S1 →0 S2 →1 S1, rejected.<br>1100: S0 →1 S1 →1 S1 →0 S2 →0 S0, rejected.<br>0110: S0 →0 S0 →1 S1 →1 S1 →0 S2, ends in S2, accepted.<br>The machine accepts exactly the strings that end in 10."
+    }
+  ],
+  "pitfalls": [
+    "Studying passively. A 2026 passer lost three weeks to watching videos before switching to problems; others say to work hundreds of problems by hand.",
+    "Skipping a unit. A 2026 student failed after skipping the recursion and induction chapter, and results are reported by competency. Unit 6 is quick points, so don't skip it either.",
+    "Negative remainders: discrete-math mod is always 0 to <code>m − 1</code>, so <code>−23 mod 7 = 5</code>, not −2 (the C or Java <code>%</code> result).",
+    "RSA: inverting <code>e</code> mod <code>n</code> instead of mod <code>φ(n)</code>, or never checking that <code>e·d mod φ(n) = 1</code>.",
+    "Typing a huge power such as <code>22<sup>35</sup></code> straight into a calculator. It keeps about 14 significant digits, so the remainder comes out wrong; reduce mod <code>n</code> after every multiplication.",
+    "Counting: using combinations when order matters (or the reverse), forgetting to hand out minimums before stars and bars, and using <code>a·b</code> instead of <code>lcm(a, b)</code> for overlaps in inclusion–exclusion.",
+    "Bayes: swapping <code>P(A | B)</code> and <code>P(B | A)</code>, or leaving the false-positive branch out of the denominator.",
+    "Off-by-one starting indexes in recursive pseudocode and sequences (<code>a<sub>0</sub></code> versus <code>a<sub>1</sub></code>), and trusting a closed form after checking only two terms.",
+    "Exam-day logistics: a small whiteboard, one marker and no pacing plan. A 2026 student's marker died and they had to guess through the end; do quick items first and flag long computations.",
+    "Trusting AI tutors without checking. 2026 students report AI giving wrong answers or offering no correct option; verify steps against answer keys or by back-substituting."
+  ],
+  "resources": [
+    {
+      "label": "Course zyBook (WGU's six-unit Discrete Mathematics II text)",
+      "kind": "official",
+      "note": "Units: Algorithms; Number Theory and Cryptography; Recursion and Induction; Counting; Discrete Probability; Modeling Computation. Work its examples and exercises rather than just reading."
+    },
+    {
+      "label": "Unit Review Forms (course Supplemental Resources)",
+      "kind": "practice",
+      "note": "An instructor reportedly told students these are the most aligned with the OA. Do each one unaided, then rework every miss."
+    },
+    {
+      "label": "Supplemental unit worksheets on WGU Connect",
+      "kind": "practice",
+      "note": "Extra, older practice sets with more reps per topic; a 2026 first-try passer says the worksheets, unit reviews and PA together covered nearly the whole OA."
+    },
+    {
+      "label": "Course planning tool, end-of-course review and pre-assessment",
+      "kind": "practice",
+      "note": "One 2026 passer says the planning tool had OA-style questions that weren't on the PA. Take the end-of-course review unaided before the PA."
+    },
+    {
+      "label": "Course instructors: daily drop-ins, 1:1 appointments, cohorts and WGU Connect videos",
+      "kind": "official",
+      "note": "2026 passers credit 1:1 sessions built around missed PA items (about 5 questions per 45 minutes), cohorts for counting, probability and Bayes, and the Euclidean-algorithm videos. Try more than one instructor."
+    },
+    {
+      "label": "Course formula sheet",
+      "kind": "official",
+      "note": "2026 passers say to get fluent with it and know which formula goes where. Whether it's available during the OA isn't confirmed, so also practice writing your own decision sheet from memory."
+    },
+    {
+      "label": "James Wenson's 'Math 2200' lectures (YouTube)",
+      "kind": "video",
+      "note": "Reported to follow the zyBook closely (about 80 to 90%). Search a section title plus 'Math 2200'; Discrete Math II material starts at section 7. It skips factoring and primality testing and all of Unit 6."
+    },
+    {
+      "label": "Kimberly Brehm (YouTube)",
+      "kind": "video",
+      "note": "Recommended by 2026 students, especially for combinatorics."
+    },
+    {
+      "label": "Rosen, Discrete Mathematics and Its Applications",
+      "kind": "practice",
+      "note": "Chapters 3 to 8 and 13 match the course topics; one 2026 student says Rosen is what finally made the material click. Use it for extra exercises."
+    },
+    {
+      "label": "TI-84 Plus and a large whiteboard",
+      "kind": "tool",
+      "note": "Built-ins students use: nPr, nCr, !, gcd( and remainder(. Confirm your model is allowed, and bring a board about 12 × 14 in with spare fine-tip markers."
+    },
+    {
+      "label": "AI tutor, with guardrails",
+      "kind": "tool",
+      "note": "Students use ChatGPT, Claude or Gemini to generate similar practice problems and check steps, but report wrong answers. Ask whether each step is on track, and verify with back-substitution or an answer key."
+    },
+    {
+      "label": "r/WGU_CompSci: 'C960 - How To Pass Discrete Math 2 in 2026'",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1twfpdz/c960_how_to_pass_discrete_math_2_in_2026/",
+      "kind": "community",
+      "note": "A 2026 passer's checklist of what you should be able to do before the OA, with comments on the Review Forms and the planning tool."
+    }
+  ],
+  "community": {
+    "summary": "Posts from mid to late 2026 agree that C960 is one of the hardest BSCS courses: most passers needed one to three months, while a few with strong math finished in about 32 to 48 focused hours. The recipe that works is heavy hand-worked practice with WGU's own material (Unit Review Forms, worksheets, the course planning tool, the end-of-course review and the PA) plus early live instructor help, especially for counting, probability and Bayes. The OA mixes units and words questions differently from the zyBook, so recognizing problem types matters more than memorizing examples; number theory and RSA, recursion tracing and recurrences, probability, and quick DFA and NFA items come up again and again. Failures are usually narrow, and a retake reportedly means extra assigned work and instructor approval, so passers advise waiting until the PA and Review Forms feel solid.",
+    "coverage": "20 posts, Jun 2025 - Oct 2026, r/WGU_CompSci and r/WGU",
+    "posts": [
+      {
+        "title": "Passing C960 DM2 was the hardest class!!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1x2xo5k/passing_c960_dm2_was_the_hardest_class/",
+        "date": "Oct 2026",
+        "takeaway": "About 45 focused hours; failed once after skipping chapter 3 (recursion and induction). A live instructor session helped, and counting was the hardest part."
+      },
+      {
+        "title": "Failed my first attempt at discrete math 2",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1wup6w3/",
+        "date": "Oct 2026",
+        "takeaway": "The poster failed after rushing to test near a term extension; commenters urged deeper mastery and instructor sessions before retaking. (Summarized through Gemini.)"
+      },
+      {
+        "title": "Passed C960 Discrete Math II First Try",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1wlhums/passed_c960_discrete_math_ii_first_try/",
+        "date": "Sep 2026",
+        "takeaway": "zyBook plus tutoring; the worksheets, unit reviews and PA covered nearly the whole OA. Finish them before the PA, and lean on instructors over AI."
+      },
+      {
+        "title": "C960 DM2 passed by luck",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1wf4oj1/c960_dm2_passed_by_luck/",
+        "date": "Sep 2026",
+        "takeaway": "A narrow pass on the second attempt; the OA mixes chapters, and counting and probability need reasoning, not recall. Commenters describe multi-month, multi-attempt journeys and push high practice volume."
+      },
+      {
+        "title": "Passed Discrete Math II (C960) in 6 days",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vwpibe/passed_discrete_math_ii_c960_in_6_days/",
+        "date": "Aug 2026",
+        "takeaway": "About 45 focused hours over five study days using zyBook reviews, WGU videos, YouTube and AI; only about three OA questions felt unfamiliar."
+      },
+      {
+        "title": "C960: 4 hours to complete my OA. How long did it take you?",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vu6s4j/c960_4_hours_to_complete_my_oa_how_long_did_it/",
+        "date": "Aug 2026",
+        "takeaway": "About three months of study; the poster had extended time, and a commenter used the full standard 2.5 hours. Know the formula sheet cold and use chapter reviews and live sessions."
+      },
+      {
+        "title": "C960 Discrete Math II Completion",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vtsbnn/c960_discrete_math_ii_completion/",
+        "date": "Aug 2026",
+        "takeaway": "Found the OA far harder than the practice exam and flagged more than ten unclear questions."
+      },
+      {
+        "title": "Having mini panic attacks bc I'm stuck studying c960, 3.5 mos into my final term with 4 classes left untouched",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vmozht/having_mini_panic_attacks_bc_im_stuck_studying/",
+        "date": "Aug 2026",
+        "takeaway": "The richest 2026 thread: practice over reading, AI with guardrails, cohorts for probability and counting, TI-84 remainder, nPr and nCr, retake requirements, and reports of about ten FSM items and two RSA private-key questions."
+      },
+      {
+        "title": "I CONQUERED C960",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1u0tb78/i_conquered_c960/",
+        "date": "Jun 2026",
+        "takeaway": "Lost three weeks to passive videos before switching to practice; credits Wenson's lectures and the WGU Connect Euclid videos, and calls the retake requirements harsh."
+      },
+      {
+        "title": "C960 - How To Pass Discrete Math 2 in 2026",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1twfpdz/c960_how_to_pass_discrete_math_2_in_2026/",
+        "date": "Jun 2026",
+        "takeaway": "A checklist of OA skills (recursion tracing, extended Euclid, base 7 to base 12, RSA, induction, functions, counting, Bayes, DFA and NFA). Commenters relay that an instructor called the Unit Review Forms the most OA-aligned."
+      },
+      {
+        "title": "C960-Discrete Math 2 CONQUERED",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tsm5sd/c960discrete_math_2_conquered/",
+        "date": "May 2026",
+        "takeaway": "A full-time student passed in about two weeks with the zyBook plus AI-generated practice exams."
+      },
+      {
+        "title": "C960 - Discrete Math 2 (PA to OA Improvement)",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tqoyo0/c960_discrete_math_2_pa_to_oa_improvement/",
+        "date": "May 2026",
+        "takeaway": "1:1 instructor sessions (about five questions per 45 minutes) built around missed PA items closed gaps like Bayes; try more than one instructor."
+      },
+      {
+        "title": "Barely Passed Discrete Math 2",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1tpmq20/",
+        "date": "May 2026",
+        "takeaway": "Passed despite time pressure and slips on the whiteboard and calculator; commenters felt the OA matched the practice material less closely. (Summarized through Gemini.)"
+      },
+      {
+        "title": "C960",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1to1yz5/c960/",
+        "date": "May 2026",
+        "takeaway": "About 32 hours over a long weekend; the state-machine questions were the easiest, and the OA felt easier than the practice material."
+      },
+      {
+        "title": "Passed C960 finally",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s96xox/passed_c960_finally/",
+        "date": "Apr 2026",
+        "takeaway": "About 48 hours; number theory dominated (Euclid, extended Euclid, RSA, mod), then recurrences, then probability. The whiteboard filled up, and an earlier attempt failed when the term ended without an OA attempt."
+      },
+      {
+        "title": "Passed C960 - Discrete Mathematics II - my recommendation for a resource I loved that I havent seen mentioned yet.",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s3vvvi/passed_c960_discrete_mathematics_ii_my/",
+        "date": "Mar 2026",
+        "takeaway": "Recommends James Wenson's 'Math 2200' lectures (most of the zyBook, but not Unit 6); calls Unit 6 the easiest and believes the course changed around mid-2025."
+      },
+      {
+        "title": "C960 Discrete Math 2 - Passed",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rr0ikx/c960_discrete_math_2_passed/",
+        "date": "Mar 2026",
+        "takeaway": "About a month: chapter reviews, AI tutors, daily drop-in instructors, a big whiteboard, and the TI-84+ remainder, nPr and nCr functions. The OA was not harder than the PA for this poster."
+      },
+      {
+        "title": "Completed C950 Discrete Math 2 in 15 days! Woo!",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rlbs63/completed_c950_discrete_math_2_in_15_days_woo/",
+        "date": "Mar 2026",
+        "takeaway": "The poster meant C960. Fifteen days at 4 to 12 hours a day; the first attempt missed by about 3 to 5 questions because the OA's wording differed from the study material."
+      },
+      {
+        "title": "It's Finally Over, C960 Passed",
+        "subreddit": "r/WGU",
+        "url": "https://www.reddit.com/r/WGU/comments/1rf5w5l/its_finally_over_c960_passed/",
+        "date": "Feb 2026",
+        "takeaway": "More than 100 hours over two attempts; discrete probability was the worst unit."
+      },
+      {
+        "title": "C960, Discrete Math II, Passed! 2025 write-up! How to take this class the easy way.",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1lint0z/",
+        "date": "Jun 2025",
+        "takeaway": "Use the TI-84 Plus built-ins and the Unit Review Forms; for induction, substitute n + 1 for every n. One 2026 comment says add-on calculator programs aren't allowed, and another warns that AI answers need checking."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "WGU Institutional Catalog, July 2026 (C960 = MATH 2810, 4 CUs; course description; term-end and proctoring rules)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/catalog-july-2026.pdf"
+    },
+    {
+      "label": "WGU B.S. Computer Science Program Guidebook, catalog version 202611 (competencies)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf"
+    },
+    {
+      "label": "WGU B.S. Computer Science program page",
+      "url": "https://www.wgu.edu/online-it-degrees/computer-science.html"
+    },
+    {
+      "label": "zyBooks catalog: Discrete Mathematics (chapter list)",
+      "url": "https://www.zybooks.com/catalog/discrete-mathematics/"
+    },
+    {
+      "label": "McGraw-Hill: Rosen, Discrete Mathematics and Its Applications 7e, table of contents",
+      "url": "https://highered.mheducation.com/sites/0073383090/information_center_view0/table_of_contents.html"
+    },
+    {
+      "label": "r/WGU_CompSci, Jun 2026: C960 - How To Pass Discrete Math 2 in 2026",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1twfpdz/c960_how_to_pass_discrete_math_2_in_2026/"
+    },
+    {
+      "label": "r/WGU_CompSci, Aug 2026: thread on format, calculators and retakes (Having mini panic attacks...)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vmozht/having_mini_panic_attacks_bc_im_stuck_studying/"
+    },
+    {
+      "label": "r/WGU_CompSci, Aug 2026: C960: 4 hours to complete my OA",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1vu6s4j/c960_4_hours_to_complete_my_oa_how_long_did_it/"
+    },
+    {
+      "label": "r/WGU_CompSci, Apr 2026: Passed C960 finally",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1s96xox/passed_c960_finally/"
+    },
+    {
+      "label": "r/WGU_CompSci, Mar 2026: C960 Discrete Math 2 - Passed",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1rr0ikx/c960_discrete_math_2_passed/"
+    },
+    {
+      "label": "r/WGU_CompSci, Jun 2025: C960, Discrete Math II, Passed! 2025 write-up",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1lint0z/"
+    },
+    {
+      "label": "r/WGU_CompSci, Oct 2026: Passing C960 DM2 was the hardest class!!",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1x2xo5k/passing_c960_dm2_was_the_hardest_class/"
+    },
+    {
+      "label": "r/WGU_CompSci, Sep 2026: Passed C960 Discrete Math II First Try",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1wlhums/passed_c960_discrete_math_ii_first_try/"
+    }
+  ],
+  "caveats": [
+    "No official source gives the OA's question count, time limit or cut score. The 2.5-hour window and four-option format come from 2026 student posts; the 72- and 55-question figures are from 2021 and 2024, before a course update students believe happened around mid-2025 (a Jan 2026 r/WGU comment also listed C960 among recently revised courses).",
+    "Calculator rules: WGU's catalog requires devices to be approved in advance, but no C960-specific list was found, and 2026 students disagree about add-on programs. Confirm your model and what's allowed with your instructor.",
+    "Unit 6 scope beyond DFAs and NFAs (Turing machines, regular expressions, grammars) is unconfirmed; the official competency names only deterministic and nondeterministic finite-state machines. The characteristic-equation method for recurrences is in the source textbooks, but whether your zyBook tests it is unconfirmed.",
+    "zyBook section numbers quoted by students (for example 2.6 for base conversion) may shift between versions, so this guide is organized by topic.",
+    "Some study sites list graph theory and trees under C960; WGU's guidebook puts graphs and trees in Discrete Math I.",
+    "The retake steps (extra worksheets, Review Forms A, instructor approval, a readiness check before a third attempt) come from student reports, not official policy text.",
+    "Some posts were summarized through Google Gemini and not opened directly: the takeaways for the Oct 2026 failure thread and the May 2026 'Barely Passed' post come from Gemini summaries. Treat them as unverified. The failure thread's month is also uncertain: one note dates it Sep 2026 and another Oct 2026.",
+    "The practice questions are original, written from the official competencies and textbook topics. They aim to match the style and difficulty students describe, not to reproduce actual OA items."
+  ]
+}

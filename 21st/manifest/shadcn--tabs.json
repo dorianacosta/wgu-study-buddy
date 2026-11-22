@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/tabs",
+  "title": "Tabs | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "@radix-ui/react-tabs",
+  "promptFile": "21st/prompts/shadcn--tabs.md",
+  "chars": 10294,
+  "sha256": "9783707b2c2cd28e0eb64a39b8ccc8285bacbfc8546ce6fbee3b4854af1564f9",
+  "sha256Of": "file bytes",
+  "capturedSha256": "9786714763494a65d648cab0808d4e154d7ab74b13042a9f97e9241751aca562",
+  "verified": true,
+  "notes": "Copied with the page's Copy prompt menu, 'Claude Code' option. Verified on first attempt. Info tab lists only @radix-ui/react-tabs; the prompt also bundles shadcn button, card, input and label and asks to install @radix-ui/react-slot, class-variance-authority, @radix-ui/react-label.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (10294) is the text's length in UTF-16 code units and equals the file's."
+}

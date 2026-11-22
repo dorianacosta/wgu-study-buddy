@@ -1,0 +1,48 @@
+# Netlify builds the site from this repo on every push to main. On the Free plan each production deploy costs
+# 15 of the 300 monthly credits; Deploy Previews of pull requests cost none.
+# The app is one page with hash routes (#home, #learn/d281, ...), so it needs no routing redirects: the one
+# [[redirects]] rule below only rate-limits.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Rate limit: each visitor (IP address) may make 60 requests a minute. A visit is a few requests (the page, then one
+# study-guide file per course opened, which the browser keeps; see the /guides/* headers below), so only floods and
+# scrapers reach the limit; Netlify answers them with 429 Too Many Requests.
+# Netlify's built-in DDoS protection runs before this rule. The rule rewrites every path to itself, so it
+# changes nothing else.
+[[redirects]]
+  from = "/*"
+  to = "/:splat"
+  status = 200
+  force = true
+  [redirects.rate_limit]
+    window_limit = 60
+    window_size = 60
+    aggregate_by = ["ip", "domain"]
+
+# Security headers. The page's own Content-Security-Policy (its one inline script, no frames, and no network
+# requests except connect-src 'self', so this hosted build can fetch /guides/*.json) is a <meta> tag that
+# vite.config.ts writes at build time. WGU_Study_Buddy.html carries one too, without connect-src: it fetches
+# nothing. A <meta> policy cannot set frame-ancestors, so that part is sent here.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "frame-ancestors 'none'"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
+
+# Guide files (dist/guides/<course>.<content hash>.json, written by vite.config.ts) never change under the same name,
+# so browsers keep them for a year: a returning student doesn't download a guide again.
+[[headers]]
+  for = "/guides/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

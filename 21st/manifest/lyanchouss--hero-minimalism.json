@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@lyanchouss/components/hero-minimalism",
+  "title": "Hero Minimalism | Community Components | 21st",
+  "license": "not listed",
+  "published": "9/6/2025",
+  "dependencies": "none listed",
+  "promptFile": "21st/prompts/lyanchouss--hero-minimalism.md",
+  "chars": 9339,
+  "sha256": "f4f03e1a13376bad69a3b3544310b0ebf479b962fcc0c12f6f48667d8bbefeaa",
+  "sha256Of": "file bytes",
+  "capturedSha256": "55f754c75a5f786e2573df108610f0bf003b0cdb6c7788260b0d0ec5e1d79433",
+  "verified": true,
+  "notes": "Info tab shows only the Published date (no License or Dependencies section). Prompt copied via Change copy action > Claude Code. The prompt has no npm dependencies beyond React; it imports the Hubot Sans font from fonts.cdnfonts.com inside a style tag. get_page_text collapsed a double blank line before demo.tsx; restored and hash verified.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (9339) is the text's length in UTF-16 code units and equals the file's."
+}

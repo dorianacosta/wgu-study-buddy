@@ -1,0 +1,1170 @@
+{
+  "aceternity--glowing-effect": {
+    "files": [
+      {
+        "file": "glowing-effect.tsx",
+        "named": "glowing-effect.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 6594
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 3547
+      }
+    ],
+    "npm": [
+      "motion",
+      "lucide-react"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "aceternity--timeline": {
+    "files": [
+      {
+        "file": "timeline.tsx",
+        "named": "timeline.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 3362
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 9122
+      }
+    ],
+    "npm": [
+      "framer-motion"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "ayushmxxn--tubelight-navbar": {
+    "files": [
+      {
+        "file": "tubelight-navbar.tsx",
+        "named": "tubelight-navbar.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2745
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 409
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "framer-motion"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "dillionverma--glyph-matrix": {
+    "files": [
+      {
+        "file": "glyph-matrix.tsx",
+        "named": "glyph-matrix.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 4630
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 747
+      }
+    ],
+    "npm": [
+      "next-themes"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": [
+      "interface GlyphMatrixProps extends React.HTMLAttributes<HTMLCanvasElement> {"
+    ]
+  },
+  "jahed--dot-text": {
+    "files": [
+      {
+        "file": "dot-text.tsx",
+        "named": "dot-text.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 9305
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1235
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": [
+      "export interface DotMatrixTextProps extends React.HTMLAttributes<HTMLDivElement> {"
+    ]
+  },
+  "johuniq--liquid-metal-button": {
+    "files": [
+      {
+        "file": "liquid-metal-button.tsx",
+        "named": "liquid-metal-button.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 11361
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 384
+      }
+    ],
+    "npm": [
+      "clsx",
+      "lucide-react",
+      "tailwind-merge",
+      "@paper-design/shaders"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "lyanchouss--hero-minimalism": {
+    "files": [
+      {
+        "file": "hero-minimalism.tsx",
+        "named": "hero-minimalism.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 8671
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 124
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": [
+      "/* keyframes */",
+      "@import url('https://fonts.cdnfonts.com/css/hubot-sans');",
+      "@keyframes drawX {",
+      "@keyframes drawY {",
+      "@keyframes shimmer {"
+    ]
+  },
+  "magicui--animated-circular-progress-bar": {
+    "files": [
+      {
+        "file": "animated-circular-progress-bar.tsx",
+        "named": "animated-circular-progress-bar.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 3467
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 742
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "magicui--bento-grid": {
+    "files": [
+      {
+        "file": "bento-grid.tsx",
+        "named": "bento-grid.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2310
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1985
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-icons",
+      "@radix-ui/react-slot",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "magicui--blur-fade": {
+    "files": [
+      {
+        "file": "blur-fade.tsx",
+        "named": "blur-fade.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1444
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 527
+      }
+    ],
+    "npm": [
+      "framer-motion"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "magicui--border-beam": {
+    "files": [
+      {
+        "file": "border-beam.tsx",
+        "named": "border-beam.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1510
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 665
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "magicui--dot-pattern": {
+    "files": [
+      {
+        "file": "dot-pattern.tsx",
+        "named": "dot-pattern.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1043
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 623
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "magicui--number-ticker": {
+    "files": [
+      {
+        "file": "number-ticker.tsx",
+        "named": "number-ticker.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1422
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 548
+      }
+    ],
+    "npm": [
+      "framer-motion"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "meschacirung--stats--stats-info": {
+    "files": [
+      {
+        "file": "stats.tsx",
+        "named": "stats.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1549
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1685
+      },
+      {
+        "file": "deps/card.tsx",
+        "named": "shadcn/card",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1879
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "sean0205--base-badge": {
+    "files": [
+      {
+        "file": "base-badge.tsx",
+        "named": "base-badge.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 10182
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 483
+      }
+    ],
+    "npm": [
+      "class-variance-authority",
+      "@base-ui-components/react"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": [
+      "export interface BadgeButtonProps extends useRender.ComponentProps<'button'>, VariantProps<typeof badgeButtonVariants> {",
+      "export interface BadgeProps extends useRender.ComponentProps<'span'>, VariantProps<typeof badgeVariants> {"
+    ]
+  },
+  "serafimcloud--empty-state": {
+    "files": [
+      {
+        "file": "empty-state.tsx",
+        "named": "empty-state.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2837
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1743
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-slot",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "serafimcloud--question-tool--multiple-choice": {
+    "files": [
+      {
+        "file": "question-tool.tsx",
+        "named": "question-tool.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 18754
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1459
+      }
+    ],
+    "npm": [
+      "clsx",
+      "tailwind-merge"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--accordion": {
+    "files": [
+      {
+        "file": "accordion.tsx",
+        "named": "accordion.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1992
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1029
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-accordion"
+    ],
+    "css": [],
+    "other_blocks": [
+      {
+        "file": "block-2.js",
+        "after": "Extend existing tailwind.config.js with this code:",
+        "chars": 548
+      }
+    ],
+    "notes": [
+      "Extend existing tailwind.config.js with this code:"
+    ]
+  },
+  "shadcn--alert-dialog": {
+    "files": [
+      {
+        "file": "alert-dialog.tsx",
+        "named": "alert-dialog.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 4434
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1054
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-alert-dialog",
+      "@radix-ui/react-slot",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--alert": {
+    "files": [
+      {
+        "file": "alert.tsx",
+        "named": "alert.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1585
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 720
+      }
+    ],
+    "npm": [
+      "class-variance-authority",
+      "lucide-react"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--button": {
+    "files": [
+      {
+        "file": "button.tsx",
+        "named": "button.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1837
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1342
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "lucide-react"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--card": {
+    "files": [
+      {
+        "file": "card.tsx",
+        "named": "card.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1879
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 3945
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      },
+      {
+        "file": "deps/input.tsx",
+        "named": "shadcn/input",
+        "lang": "tsx",
+        "after": "",
+        "chars": 845
+      },
+      {
+        "file": "deps/label.tsx",
+        "named": "shadcn/label",
+        "lang": "tsx",
+        "after": "",
+        "chars": 725
+      },
+      {
+        "file": "deps/select.tsx",
+        "named": "shadcn/select",
+        "lang": "tsx",
+        "after": "",
+        "chars": 5635
+      },
+      {
+        "file": "deps/switch.tsx",
+        "named": "shadcn/switch",
+        "lang": "tsx",
+        "after": "",
+        "chars": 1155
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "@radix-ui/react-label",
+      "@radix-ui/react-select",
+      "@radix-ui/react-switch"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--checkbox": {
+    "files": [
+      {
+        "file": "checkbox.tsx",
+        "named": "checkbox.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1071
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1413
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-checkbox"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--collapsible": {
+    "files": [
+      {
+        "file": "collapsible.tsx",
+        "named": "collapsible.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 329
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1353
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-collapsible",
+      "lucide-react",
+      "@radix-ui/react-slot",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--dialog": {
+    "files": [
+      {
+        "file": "dialog.tsx",
+        "named": "dialog.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 3703
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2938
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      },
+      {
+        "file": "deps/input.tsx",
+        "named": "shadcn/input",
+        "lang": "tsx",
+        "after": "",
+        "chars": 845
+      },
+      {
+        "file": "deps/label.tsx",
+        "named": "shadcn/label",
+        "lang": "tsx",
+        "after": "",
+        "chars": 725
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "@radix-ui/react-label"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--kbd": {
+    "files": [
+      {
+        "file": "kbd.tsx",
+        "named": "kbd.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 862
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 394
+      },
+      {
+        "file": "deps/button-group.tsx",
+        "named": "shadcn/button-group",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 2209
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "",
+        "chars": 1837
+      },
+      {
+        "file": "deps/dropdown-menu.tsx",
+        "named": "shadcn/dropdown-menu",
+        "lang": "tsx",
+        "after": "",
+        "chars": 7316
+      },
+      {
+        "file": "deps/separator.tsx",
+        "named": "shadcn/separator",
+        "lang": "tsx",
+        "after": "",
+        "chars": 770
+      },
+      {
+        "file": "deps/tooltip.tsx",
+        "named": "shadcn/tooltip",
+        "lang": "tsx",
+        "after": "",
+        "chars": 1160
+      },
+      {
+        "file": "deps/label.tsx",
+        "named": "shadcn/label",
+        "lang": "tsx",
+        "after": "",
+        "chars": 725
+      },
+      {
+        "file": "deps/input-group.tsx",
+        "named": "shadcn/input-group",
+        "lang": "tsx",
+        "after": "",
+        "chars": 5065
+      },
+      {
+        "file": "deps/input.tsx",
+        "named": "shadcn/input",
+        "lang": "tsx",
+        "after": "",
+        "chars": 845
+      },
+      {
+        "file": "deps/textarea.tsx",
+        "named": "shadcn/textarea",
+        "lang": "tsx",
+        "after": "",
+        "chars": 772
+      },
+      {
+        "file": "deps/popover.tsx",
+        "named": "shadcn/popover",
+        "lang": "tsx",
+        "after": "",
+        "chars": 1244
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "lucide-react",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-label",
+      "@radix-ui/react-popover"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--label": {
+    "files": [
+      {
+        "file": "label.tsx",
+        "named": "label.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 725
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 331
+      },
+      {
+        "file": "deps/checkbox.tsx",
+        "named": "shadcn/checkbox",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1071
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-label",
+      "class-variance-authority",
+      "lucide-react",
+      "@radix-ui/react-checkbox"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--progress": {
+    "files": [
+      {
+        "file": "progress.tsx",
+        "named": "progress.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 792
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 377
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-progress"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--radio-group": {
+    "files": [
+      {
+        "file": "radio-group.tsx",
+        "named": "radio-group.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1482
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 722
+      },
+      {
+        "file": "deps/label.tsx",
+        "named": "shadcn/label",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 725
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-radio-group",
+      "@radix-ui/react-label",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--select": {
+    "files": [
+      {
+        "file": "select.tsx",
+        "named": "select.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 5635
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 3732
+      }
+    ],
+    "npm": [
+      "lucide-react",
+      "@radix-ui/react-select"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--separator": {
+    "files": [
+      {
+        "file": "separator.tsx",
+        "named": "separator.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 770
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 645
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-separator"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--slider": {
+    "files": [
+      {
+        "file": "slider.tsx",
+        "named": "slider.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1092
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 358
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-slider"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--switch": {
+    "files": [
+      {
+        "file": "switch.tsx",
+        "named": "switch.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1155
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 299
+      },
+      {
+        "file": "deps/label.tsx",
+        "named": "shadcn/label",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 725
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-switch",
+      "@radix-ui/react-label",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--table": {
+    "files": [
+      {
+        "file": "table.tsx",
+        "named": "table.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2768
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2068
+      }
+    ],
+    "npm": [],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--tabs": {
+    "files": [
+      {
+        "file": "tabs.tsx",
+        "named": "tabs.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1900
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 2302
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      },
+      {
+        "file": "deps/card.tsx",
+        "named": "shadcn/card",
+        "lang": "tsx",
+        "after": "",
+        "chars": 1879
+      },
+      {
+        "file": "deps/input.tsx",
+        "named": "shadcn/input",
+        "lang": "tsx",
+        "after": "",
+        "chars": 845
+      },
+      {
+        "file": "deps/label.tsx",
+        "named": "shadcn/label",
+        "lang": "tsx",
+        "after": "",
+        "chars": 725
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-slot",
+      "class-variance-authority",
+      "@radix-ui/react-label"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "shadcn--tooltip": {
+    "files": [
+      {
+        "file": "tooltip.tsx",
+        "named": "tooltip.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1160
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 477
+      },
+      {
+        "file": "deps/button.tsx",
+        "named": "shadcn/button",
+        "lang": "tsx",
+        "after": "Copy-paste these files for dependencies:",
+        "chars": 1837
+      }
+    ],
+    "npm": [
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-slot",
+      "class-variance-authority"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": []
+  },
+  "vilqor--wordmark-footer": {
+    "files": [
+      {
+        "file": "wordmark-footer.tsx",
+        "named": "wordmark-footer.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 5549
+      },
+      {
+        "file": "demo.tsx",
+        "named": "demo.tsx",
+        "lang": "tsx",
+        "after": "Copy-paste this component to /components/ui folder:",
+        "chars": 1812
+      }
+    ],
+    "npm": [
+      "clsx",
+      "lucide-react",
+      "tailwind-merge"
+    ],
+    "css": [],
+    "other_blocks": [],
+    "notes": [
+      "const serif = \"var(--font-display, var(--font-serif, ui-serif, Georgia, serif))\"",
+      "export interface WordmarkFooterProps extends React.HTMLAttributes<HTMLElement> {"
+    ]
+  }
+}

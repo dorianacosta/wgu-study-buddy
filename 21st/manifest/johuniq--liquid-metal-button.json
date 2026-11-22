@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@johuniq/components/liquid-metal-button",
+  "title": "Liquid Metal Button | Community Components | 21st",
+  "license": "MIT License",
+  "published": "3/11/2026",
+  "dependencies": "clsx, lucide-react, tailwind-merge, @paper-design/shaders",
+  "promptFile": "21st/prompts/johuniq--liquid-metal-button.md",
+  "chars": 12390,
+  "sha256": "d75b758937ad1a1b54c78cd00dd942626918c45fb00c0f80e0d9e7ee62126880",
+  "sha256Of": "file bytes",
+  "capturedSha256": "b008d310c6947bf7026a99718a25f5860e4735f3ee609d996caf59cac68432b7",
+  "verified": true,
+  "notes": "Captured via Copy prompt > Change copy action > Optimized for: Claude Code (tab viewport 1440x900 so the desktop copy menu is shown). Source listed on Info tab: jolyui.dev/docs/components/buttons/liquid-metal-button. The component file as copied has no \"use client\" directive and uses useEffect/useState plus document APIs. Raw byte sha256 of the saved file also equals the page copy (d75b758937ad1a1b54c78cd00dd942626918c45fb00c0f80e0d9e7ee62126880).",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (12390) is the text's length in UTF-16 code units and equals the file's."
+}

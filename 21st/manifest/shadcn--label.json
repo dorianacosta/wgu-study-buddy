@@ -1,0 +1,15 @@
+{
+  "url": "https://21st.dev/@shadcn/components/label",
+  "title": "Label | Community Components | 21st",
+  "license": "MIT License",
+  "published": "10/9/2024",
+  "dependencies": "0, @radix-ui/react-label, class-variance-authority",
+  "promptFile": "21st/prompts/shadcn--label.md",
+  "chars": 2858,
+  "sha256": "f97b85eb63c1aa0ac7f43e38bea5ea69e6a12743beaf3fff8a947cc2ab9ec3c3",
+  "sha256Of": "file bytes",
+  "capturedSha256": "5da3952c4f593aaea48714a240dcb55990ed15768d5e0eb4417b227077e3bd2e",
+  "verified": true,
+  "notes": "Copied via Change copy action > Claude Code (tab viewport emulated at 1440x900 so the desktop copy menu was visible). The Info tab's Dependencies list shows a stray entry \"0\" before @radix-ui/react-label and class-variance-authority (recorded as shown; likely a data quirk on 21st.dev). The prompt also bundles shadcn/checkbox and its NPM list is: @radix-ui/react-label, class-variance-authority, lucide-react, @radix-ui/react-checkbox. Verified on first write.",
+  "note": "Why sha256 changed (2026-11-20): capturedSha256 is the SHA-256 of this prompt's text with the trailing spaces cut from 2 line ends (line 4 (2 spaces), line 10 (1 space)) and without the file's final newline; hashing that form of the saved file reproduces it exactly. sha256 is now the SHA-256 of the file bytes, which keep those spaces and the final newline. Cause: trailing spaces plus the trailing newline only; no CRLF, no blank-line collapse, no content change. chars (2858) is the text's length in UTF-16 code units and equals the file's."
+}

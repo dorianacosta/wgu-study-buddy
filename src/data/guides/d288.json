@@ -1,0 +1,591 @@
+{
+  "code": "D288",
+  "summary": "D288 has no exam: you pass by building the Spring Boot back end that connects a provided Angular front end to a MySQL database for a vacation-booking site, where customers pick a vacation, add excursions and check out. In general terms, you write JPA entities that match the schema, repositories, a checkout service and REST controller, validation and sample data. Then you place a test order to show it all works, with your work committed to WGU's GitLab. A Dec 2025 passer called it the most involved course so far, with real-world-style debugging, and both community posts point to exact names, CORS and Lombok set-up as the main trouble spots.",
+  "updated": "Nov 2026",
+  "author": "Dorian Acosta",
+  "license": "MIT",
+  "assessment": {
+    "type": "Performance assessment (Spring Boot back end for a provided Angular and MySQL vacation-booking app)",
+    "format": "1 project in several parts · Java and Spring Boot code in WGU's GitLab plus screenshots · evaluator-graded against a rubric, no exam",
+    "details": [
+      "<b>The scenario:</b> a travel-agency site where customers browse vacations, add excursions and check out. WGU provides the Angular front end, a MySQL script that builds the schema and some data, and ERD and UML diagrams; you write the Spring Boot back end in between. The front end isn't modified, and a 2024 student says no Angular knowledge is needed.",
+      "<b>The task in general terms</b> (your task page has the exact requirements): you set up a Spring Boot project that connects to MySQL and lives in your WGU GitLab repository. Then you build the back end layer by layer: entities that match the provided schema and diagrams, repositories, a checkout service, validation, a REST controller and sample data. You finish by running an order through the unmodified front end and capturing the screenshots your task page asks for. Commit and push after each part.",
+      "<b>Environment:</b> WGU's lab environment works, or install IntelliJ, a JDK 17, MySQL with MySQL Workbench, and Node.js with the Angular CLI. Students report Spring Boot 3.3.1 (a Dec 2025 passer) or 3.3.6 (a 2024 commenter), Java 17 and Lombok 1.18.36. Upstream, Spring Boot 4.2 is current (Nov 2026) and the 3.x line left open-source support on June 30, 2026. Spring Initializr no longer lists any 3.x version, so a new project is Spring Boot 4 unless you edit <code>pom.xml</code>; ask your instructor which version to use before you start.",
+      "<b>Grading:</b> evaluators check the work against the rubric and send it back with feedback when something is missing (WGU program guidebook). The course is 3 CUs with no formal prerequisite, but its description expects intermediate Java and OOP; a 2024 student advises taking D287 Java Frameworks first, and basic SQL from D426 helps."
+    ],
+    "tips": [
+      "On day one, turn every rubric line into a checklist item, and commit and push after each part with a message that names it.",
+      "Copy table and column names from the SQL script instead of retyping them, and name Java fields after the Angular models' properties. Cross-check the ERD, the UML diagram, the SQL script and the front-end models, because students report small errors in the provided diagrams.",
+      "Add <code>@CrossOrigin</code> to every repository interface and to the checkout controller before you test in the browser: the front end on port 4200 and the API on port 8080 are different origins.",
+      "Test from the outside in. Open a GET endpoint such as <code>localhost:8080/api/vacations</code> directly first: missing fields in that JSON point to Lombok or a name mismatch, while good JSON with an empty page points to CORS or the front end's expectations (DevTools → Network and Console).",
+      "Spring Initializr now lists only Spring Boot 4.x (4.0–4.2 in Nov 2026), but students report using Spring Boot 3.3.x with Java 17 and Lombok 1.18.36, so ask your instructor which version to use before you start. To match the reports, edit the generated <code>pom.xml</code>: set the <code>spring-boot-starter-parent</code> version to a 3.3.x release such as 3.3.6 (whose default Lombok version is 1.18.36), and swap the Boot 4-only <code>spring-boot-starter-data-jpa-test</code> and <code>spring-boot-starter-data-rest-test</code> for <code>spring-boot-starter-test</code>. Never pick a SNAPSHOT, enable annotation processing in IntelliJ, and when generated getters and setters seem to vanish, fully restart IntelliJ and run <code>mvn clean install</code>.",
+      "For the service and controller, follow the checkout section of Chad Darby's Udemy course, reading his order as this project's cart, and return an error message instead of a tracking number when the cart is empty, as a 2024 student did.",
+      "Guard the sample-data code with a <code>count()</code> check, so restarts don't add duplicates.",
+      "In MySQL Workbench, use Database → Reverse Engineer to draw an interactive diagram of the live schema, and query the tables after every test order."
+    ]
+  },
+  "competencies": [
+    "Course planning: discuss your Course Planning Tool report with your instructor and build a personalized course plan together.",
+    "The learner develops object-oriented applications that can be integrated with relational databases.",
+    "The learner implements design patterns for object-oriented applications.",
+    "The learner writes code for object-oriented applications using Spring framework."
+  ],
+  "topics": [
+    {
+      "title": "Architecture: three tiers and the patterns inside the back end",
+      "eli5": "The Angular site is the shop window, MySQL is the stockroom, and your Spring Boot back end is the clerk who carries orders between them.",
+      "detail": "The browser loads the Angular front end from its dev server on port 4200, and Angular calls your back end over HTTP on port 8080 (Spring Boot's default), sending and receiving JSON. Spring turns that JSON into Java objects, and Spring Data JPA with Hibernate turns the objects into SQL against MySQL on port 3306. Inside the back end, each layer is a design pattern you can name for the competency: a REST controller handles HTTP, a service layer holds the business logic behind an interface, repositories (the Repository pattern) hide data access, entities map tables, and data transfer objects (DTOs) carry the JSON shapes. Spring's container wires the layers together by dependency injection, so each class asks for the interface it needs instead of building it. Because the front end and the database already exist, the back end must match both: the JSON property names the Angular models expect, and the table and column names in the SQL script. Most D288 bugs are mismatches at one of those two seams.",
+      "points": [
+        "Ports: 4200 Angular dev server · 8080 Spring Boot · 3306 MySQL",
+        "Read paths (vacations, excursions and the other lists the pages show) come from Spring Data REST repositories; the one write path, placing an order, goes through your checkout controller.",
+        "Request path: controller → service (logic and transaction) → repository → entity → table",
+        "Patterns to name in your own words: Repository, DTO, service layer, dependency injection and inversion of control, MVC-style controllers; Spring beans are singletons by default.",
+        "Start MySQL, then the Spring Boot app, then <code>ng serve</code>; the front end shows nothing useful while the API is down."
+      ]
+    },
+    {
+      "title": "Project set-up: Spring Initializr, Maven and application.properties",
+      "eli5": "Spring Initializr hands you a starter kit, and application.properties is the sticky note that tells it where the database lives and how to log in.",
+      "detail": "Students describe generating the project with Spring Initializr and four dependencies: Spring Data JPA (repositories and Hibernate), Rest Repositories (Spring Data REST, which publishes repositories as REST endpoints), MySQL Driver and Lombok. Maven reads <code>pom.xml</code> and downloads them, and Spring Boot's dependency management picks compatible versions, so you normally choose only the Spring Boot version and override a library (for example the <code>lombok.version</code> property) when you must. The properties point Spring at the database with <code>spring.datasource.url=jdbc:mysql://localhost:3306/&lt;schema&gt;</code>, <code>spring.datasource.username</code> and <code>spring.datasource.password</code>, and <code>spring.data.rest.base-path=/api</code> puts every repository endpoint under /api. WGU's SQL script owns the schema, so keep Hibernate from rebuilding it: <code>spring.jpa.hibernate.ddl-auto</code> should stay <code>none</code> (Spring Boot's default for MySQL) or <code>validate</code>, never <code>create</code> or <code>create-drop</code>, which wipe the provided data.",
+      "points": [
+        "Spring Boot 3.x and 4.x need Java 17 or later; the Dec 2025 passer used Java 17.",
+        "Spring Boot 3 moved from <code>javax.persistence</code> to <code>jakarta.persistence</code>, so imports copied from older tutorials won't compile.",
+        "Use a release version, not a SNAPSHOT or milestone build; 2024 commenters traced errors to snapshot versions of Spring Boot.",
+        "<code>mvn clean install</code> rebuilds from scratch; IntelliJ's run button or <code>mvn spring-boot:run</code> starts the app.",
+        "On JDK 23 and later, javac no longer runs annotation processors it merely finds on the class path, so Lombok must be declared as an annotation processor in the Maven compiler plugin, or you stay on JDK 17."
+      ]
+    },
+    {
+      "title": "Entities and column mapping",
+      "eli5": "An entity is a Java class that mirrors one table: each field is a column, and the annotations are the labels saying which column it is.",
+      "detail": "Mark each class <code>@Entity</code> and give it <code>@Table(name = \"...\")</code> with the exact table name. The primary key gets <code>@Id</code> plus <code>@GeneratedValue(strategy = GenerationType.IDENTITY)</code>, which lets MySQL's AUTO_INCREMENT assign it, and other fields get <code>@Column(name = \"...\")</code> with the exact column name from the SQL script. Java field names matter too: Jackson builds JSON property names from your getters, so a field named differently from the Angular model's property, even only in capitalization, produces a JSON key the page never reads, and the value silently disappears (a 2024 commenter's missing images came from exactly this). Use <code>BigDecimal</code> for money, a date or java.time type for timestamps (Hibernate's <code>@CreationTimestamp</code> and <code>@UpdateTimestamp</code> fill them for you), and <code>@Enumerated(EnumType.STRING)</code> for a status enum so the column stores the constant's name; the default, ORDINAL, stores its position number instead. JPA also needs a no-argument constructor on every entity.",
+      "points": [
+        "Copy names from the SQL script: a typo in a table or column name fails at runtime, often with a vague SQL error.",
+        "Cross-check the ERD, the UML diagram, the SQL script and the Angular models; students report small errors in the provided diagrams.",
+        "With <code>EnumType.STRING</code>, constants must match the stored text exactly, including the spelling this schema uses: <code>canceled</code>, with one l.",
+        "Put <code>nullable = false</code> only where the schema really requires a value; a misplaced one broke order creation for a Dec 2025 commenter.",
+        "If you write your own constructor, add a no-argument one too (Lombok's <code>@NoArgsConstructor</code> works)."
+      ]
+    },
+    {
+      "title": "JPA relationships: one-to-many, many-to-one and many-to-many",
+      "eli5": "A team has many players but each player has one team, while a student can join many clubs and a club has many students, so a separate join table keeps the student-club pairs.",
+      "detail": "In a one-to-many pair, the many side owns the relationship because its table holds the foreign key. On Player, put <code>@ManyToOne</code> with <code>@JoinColumn(name = \"team_id\")</code>; on Team, put <code>@OneToMany(mappedBy = \"team\")</code> on the collection, where mappedBy names the owning side's Java field, not a column. In a many-to-many, either side can own: the owner declares <code>@ManyToMany</code> with <code>@JoinTable(name = \"student_club\", joinColumns = @JoinColumn(name = \"student_id\"), inverseJoinColumns = @JoinColumn(name = \"club_id\"))</code>, joinColumns pointing at its own key, and the other side uses <code>@ManyToMany(mappedBy = \"clubs\")</code>. JPA writes the relationship only from the owning side, so set that side before saving; an add helper that sets both sides keeps them in sync. <code>cascade = CascadeType.ALL</code> on a parent's collection makes saving the parent also save its new children, which is how one save can write a whole order. In the project, find the same shapes in the ERD: which tables hold foreign keys, and which table only links two others.",
+      "points": [
+        "<code>mappedBy</code> takes a Java field name; <code>@JoinColumn</code> and <code>@JoinTable</code> take database names.",
+        "<code>@ManyToOne</code> never has mappedBy; it's always the owner.",
+        "Default fetch types: <code>@ManyToOne</code> and <code>@OneToOne</code> eager; <code>@OneToMany</code> and <code>@ManyToMany</code> lazy.",
+        "Initialize collections (<code>new HashSet&lt;&gt;()</code>) so add helpers never hit null.",
+        "A join table that holds only two foreign keys needs no entity of its own; Hibernate writes its rows from the owner's collection.",
+        "Cascade types: PERSIST, MERGE, REMOVE, REFRESH, DETACH, ALL."
+      ]
+    },
+    {
+      "title": "Lombok without surprises",
+      "eli5": "Lombok is a robot that writes your getters and setters while the code compiles, and if the robot never gets switched on, the code it should have written just isn't there.",
+      "detail": "Lombok is an annotation processor: <code>@Getter</code> and <code>@Setter</code> generate accessors at compile time, and <code>@Data</code> bundles getters, setters, <code>toString</code>, <code>equals</code>, <code>hashCode</code> and a required-arguments constructor. Jackson serializes through getters, so missing getters mean missing JSON fields. That's why an API response with empty objects, or a front end that throws while reading a property, often points to Lombok rather than your logic. Lombok must support your JDK (1.18.36 added JDK 23; the latest, 1.18.48, shipped in Sep 2026), IntelliJ needs annotation processing enabled, and on JDK 23 or later Maven must list Lombok as an annotation processor. Avoid <code>@Data</code> on entities with two-way relationships: its <code>toString</code>, <code>equals</code> and <code>hashCode</code> use every field, so they walk the relationship back and forth until a StackOverflowError. <code>@Getter</code> and <code>@Setter</code> are the safer pair.",
+      "points": [
+        "IntelliJ: Settings → Build, Execution, Deployment → Compiler → Annotation Processors → Enable annotation processing, with the Lombok plugin enabled.",
+        "Versions students report working: Spring Boot 3.3.1 with Java 17 and Lombok 1.18.36 (a Dec 2025 passer), and Spring Boot 3.3.6 with Lombok 1.18.36 (a 2024 commenter).",
+        "Fixes that worked: a full IntelliJ restart (Dec 2025) and <code>mvn clean install</code> (2024).",
+        "Check the raw JSON first: <code>{}</code> or missing fields means the getters were never generated.",
+        "If you need <code>toString</code> on a related entity, exclude the back-reference with <code>@ToString.Exclude</code> (and <code>@EqualsAndHashCode.Exclude</code>)."
+      ]
+    },
+    {
+      "title": "Repositories and Spring Data REST",
+      "eli5": "You write an empty interface, and Spring builds the whole filing cabinet behind it, from save and find to a web address for every drawer.",
+      "detail": "An interface such as <code>PlayerRepository extends JpaRepository&lt;Player, Long&gt;</code> inherits <code>save</code>, <code>saveAll</code>, <code>findById</code>, <code>findAll</code>, <code>count</code> and <code>deleteById</code> with no code, and Spring generates the implementation at runtime. With the Rest Repositories dependency, Spring Data REST also publishes each repository over HTTP. The default path is the entity's class name with only its first letter lowercased, then pluralized (Person becomes /persons, CartItem becomes /cartItems), and with <code>spring.data.rest.base-path=/api</code> it sits under /api. Collections come back as HAL JSON: the items under <code>_embedded</code>, keyed by the collection's rel name, next to <code>_links</code> and a <code>page</code> block, with a default page size of 20. <code>@RepositoryRestResource(collectionResourceRel = \"...\", path = \"...\")</code> renames the JSON key and the path when the front end expects names the defaults wouldn't produce. Spring Data REST also leaves entity IDs out of the JSON body unless a configuration calls <code>exposeIdsFor(...)</code>, the kind of setting a provided config class takes care of.",
+      "points": [
+        "Default: Person → <code>/api/persons</code>, items under <code>_embedded.persons</code>",
+        "A wrong rel or path doesn't throw an error; the front end just shows an empty list.",
+        "Derived queries come from the method name: <code>findByLastName(String lastName)</code> becomes a query and a <code>/search/findByLastName</code> endpoint.",
+        "A list that stops at 20 items is paging, not missing data.",
+        "Repository pattern: callers depend on the interface, and Spring supplies the implementation."
+      ]
+    },
+    {
+      "title": "CORS: letting port 4200 talk to port 8080",
+      "eli5": "The browser is a strict doorman: a page from one address may read answers from another address only if that address says the page is allowed.",
+      "detail": "An origin is scheme + host + port, so localhost:4200 and localhost:8080 are different origins even on one machine. A browser won't let a page's JavaScript read a cross-origin response unless the server answers with an <code>Access-Control-Allow-Origin</code> header naming that origin (or <code>*</code>). A JSON POST isn't a simple request, so before the real POST the browser sends an OPTIONS preflight asking whether the method and the Content-Type header are allowed. In Spring, <code>@CrossOrigin</code> on a controller class or method enables CORS; by default it allows all origins and headers and the methods that handler is mapped to, with a 30-minute max age and credentials off. Spring Data REST repositories need their own CORS setup, either <code>@CrossOrigin</code> on each repository interface or a <code>RepositoryRestConfigurer</code>, because Spring's docs say existing Spring MVC CORS configuration isn't applied to Spring Data REST.",
+      "points": [
+        "Symptom: the page loads but lists are empty, and the console reports a request blocked by CORS policy; the server may still have handled it.",
+        "Narrow it if you like: <code>@CrossOrigin</code> can list just the front end's origin (localhost on port 4200).",
+        "The checkout controller needs CORS too, or the order POST dies at the preflight.",
+        "JavaScript sees only a generic failure; the reason is in DevTools → Console, and the headers are in the Network tab."
+      ]
+    },
+    {
+      "title": "DTOs, the service layer and transactions",
+      "eli5": "The front end sends one big envelope with the customer, the cart and its items; the service opens it, files each piece in the right drawer, and hands back a receipt with a tracking number.",
+      "detail": "A data transfer object (DTO) is a plain class shaped like the JSON a client sends or receives, not like a table. In a checkout flow, a request DTO bundles everything the front end sends for one order, and a response DTO carries back what the client needs, such as a tracking number. The business logic lives in a service: an interface and an implementation annotated <code>@Service</code>, which Spring injects into the controller. The implementation typically links the object graph (items into the cart, the cart onto its customer), sets the status, generates a unique tracking number such as <code>UUID.randomUUID().toString()</code>, and saves through a repository, letting cascades write the children. Annotate the method <code>@Transactional</code> so the whole order commits or rolls back as one unit; Spring rolls back by default on unchecked exceptions (RuntimeException and Error) but not on checked ones.",
+      "points": [
+        "Interface plus implementation is programming to an interface: the controller never sees the concrete class.",
+        "Check before saving: a 2024 student returns an error message instead of a tracking number when the cart is empty.",
+        "<code>UUID.randomUUID()</code> gives a random version 4 UUID (122 random bits), so you don't need to check the database for duplicates.",
+        "Leave the ids of new objects null. Spring Data's save() merges anything whose id is set, and since Hibernate 6.6 (Spring Boot 3.4 and later) merging a generated id with no matching row throws; a 2024 commenter fixed a save error by nulling the new cart's id.",
+        "A 2024 student followed Chad Darby's checkout section; his order is this project's cart."
+      ]
+    },
+    {
+      "title": "The REST controller and HTTP basics",
+      "eli5": "The controller is the front desk: it listens at one address, takes the order form the browser hands over, passes it to the service and gives back the receipt.",
+      "detail": "<code>@RestController</code> is <code>@Controller</code> plus <code>@ResponseBody</code>, so return values are written as JSON instead of being treated as view names. A class-level <code>@RequestMapping(\"/api/orders\")</code> sets a base path, and <code>@PostMapping(\"/place\")</code> on a method handles POST requests to the combined path, /api/orders/place in this example; the front end's service code (or DevTools → Network) shows the exact URL your mapping must match. <code>@RequestBody</code> tells Spring to have Jackson turn the request's JSON into your DTO, matching JSON property names to field or setter names, so they must line up with what Angular sends. Inject the service through the controller's constructor, return the response DTO, and Jackson writes it back as JSON with 200 OK by default.",
+      "points": [
+        "<code>@GetMapping</code> reads, <code>@PostMapping</code> creates; <code>@PathVariable</code> and <code>@RequestParam</code> read parts of the URL, <code>@RequestBody</code> reads the body.",
+        "A browser tab can test GETs; test POSTs through the front end, curl, Postman or IntelliJ's HTTP client.",
+        "End-to-end testing only works once the controller exists, as the Dec 2025 passer also found.",
+        "Status codes: 200 OK · 201 Created · 400 bad request body · 404 wrong path · 405 wrong method for that path · 500 an exception (read the IntelliJ console)."
+      ]
+    },
+    {
+      "title": "Validation",
+      "eli5": "Validation is the bouncer who checks that the required fields are filled in before anything gets saved.",
+      "detail": "Validation can live in three places. The Angular form checks input in the browser, but client-side checks can be bypassed, so the back end should enforce its own rules too. At the mapping level, <code>@Column(nullable = false)</code> declares that a column can't be null, and MySQL's NOT NULL constraint rejects a bad insert. With Bean Validation (the spring-boot-starter-validation dependency), annotations such as <code>@NotNull</code>, <code>@NotBlank</code> and <code>@Size</code> on fields, plus <code>@Valid</code> on the <code>@RequestBody</code> parameter, reject bad input with a 400 before it reaches the service. A 2024 student used <code>nullable = false</code> on required columns. Remember that a wrong constraint can break the order flow: constrain only what the front end and schema truly require.",
+      "points": [
+        "<code>@NotNull</code> not null · <code>@NotBlank</code> not null, empty or whitespace-only (strings) · <code>@Size(min, max)</code> · <code>@Email</code> · <code>@Pattern</code>",
+        "Without <code>@Valid</code> on the parameter, Bean Validation annotations on a request DTO are ignored.",
+        "Check each constraint against the SQL script; a misplaced <code>nullable = false</code> broke checkout for a Dec 2025 commenter.",
+        "Let the required fields in the Angular checkout form guide which inputs you enforce."
+      ]
+    },
+    {
+      "title": "Seeding sample data with CommandLineRunner",
+      "eli5": "A CommandLineRunner is a note Spring reads right after it wakes up, saying \"if the sample customers aren't there yet, add them.\"",
+      "detail": "A bean (an <code>@Component</code> class) that implements <code>CommandLineRunner</code> gets its <code>run(String... args)</code> method called once the application context is ready, just before startup finishes, which makes it a natural place to insert sample rows through your repositories. Guard the insert so it runs only when needed, for example by checking <code>repository.count()</code> first; otherwise every restart adds the rows again. If a SQL script already inserts some rows, compare the count with what the script adds, not with zero. Each sample row must satisfy the same constraints as real data, including any required foreign keys. When you have several runners, <code>@Order</code> sets their order.",
+      "points": [
+        "Constructor-inject the repositories the runner needs.",
+        "Save through the repository so IDs and timestamps are generated the normal way.",
+        "Idempotent means a second start changes nothing: restart twice and count the rows.",
+        "<code>ApplicationRunner</code> works the same way but receives parsed arguments."
+      ]
+    },
+    {
+      "title": "Debugging and proving it works",
+      "eli5": "When the page looks wrong, follow the order like a package: did the browser send it, did the server get it, and did the database store it?",
+      "detail": "Work along the request path. In the browser, DevTools → Network shows each call's URL, method, status, request payload and response, and the Console shows CORS errors and front-end exceptions. Opening a GET endpoint directly (for example <code>localhost:8080/api/vacations</code>) shows the raw JSON without Angular in the way. In IntelliJ's run console, Spring and Hibernate print the real exception: an unknown-column error means a <code>@Column</code> name doesn't match the schema, a merge or optimistic-locking error on a new order usually means it carried an id, and a StackOverflowError usually means a two-way relationship being printed or compared forever. In MySQL Workbench, query the tables after each test order, and reverse-engineer the schema into a diagram to see the real keys. Finish with the screenshots the task asks for and a GitLab history with a commit for each part.",
+      "points": [
+        "Set <code>spring.jpa.show-sql=true</code> while debugging to see the SQL Hibernate runs.",
+        "When a list is empty, suspect in this order: CORS, then the endpoint or JSON key, then missing getters (Lombok), then column names.",
+        "After a test order, check that the carts, cart items and join tables gained rows that point at each other and at the right customer.",
+        "Use one test order for all your screenshots so the evidence tells one consistent story."
+      ]
+    }
+  ],
+  "keyFacts": [
+    { "label": "Ports", "value": "4200 Angular dev server · 8080 Spring Boot · 3306 MySQL", "note": "Different ports mean different origins, so CORS applies" },
+    { "label": "Initializr dependencies", "value": "Spring Data JPA · Rest Repositories (<code>spring-boot-starter-data-rest</code>) · MySQL Driver · Lombok", "note": "As students describe the project's set-up" },
+    { "label": "Datasource properties", "value": "<code>spring.datasource.url=jdbc:mysql://localhost:3306/&lt;schema&gt;</code> · <code>spring.datasource.username</code> · <code>spring.datasource.password</code>" },
+    { "label": "REST base path", "value": "<code>spring.data.rest.base-path=/api</code>", "note": "Every Spring Data REST endpoint then starts with /api" },
+    { "label": "ddl-auto values", "value": "<code>none</code> · <code>validate</code> · <code>update</code> · <code>create</code> · <code>create-drop</code>", "note": "Default none for MySQL; keep none or validate when a SQL script owns the schema" },
+    { "label": "Entity basics", "value": "<code>@Entity</code> · <code>@Table(name)</code> · <code>@Id</code> · <code>@GeneratedValue(strategy = GenerationType.IDENTITY)</code> · <code>@Column(name, nullable)</code>", "note": "JPA also needs a no-argument constructor" },
+    { "label": "Owning side", "value": "<code>@ManyToOne</code> + <code>@JoinColumn(name)</code> owns (its table holds the FK) · <code>@OneToMany(mappedBy = \"field\")</code> is the inverse", "note": "mappedBy takes a Java field name, not a column" },
+    { "label": "Many-to-many", "value": "Owner: <code>@ManyToMany</code> + <code>@JoinTable(name, joinColumns, inverseJoinColumns)</code> · other side: <code>@ManyToMany(mappedBy = \"field\")</code>", "note": "Join-table rows are written only from the owner's collection" },
+    { "label": "Fetch defaults", "value": "Eager: <code>@ManyToOne</code>, <code>@OneToOne</code> · Lazy: <code>@OneToMany</code>, <code>@ManyToMany</code>" },
+    { "label": "Enum mapping", "value": "<code>@Enumerated(EnumType.STRING)</code> stores the constant's name · default <code>ORDINAL</code> stores 0, 1, 2 …", "note": "This schema spells it canceled" },
+    { "label": "Cascade types", "value": "PERSIST · MERGE · REMOVE · REFRESH · DETACH · ALL" },
+    { "label": "Timestamps", "value": "Hibernate <code>@CreationTimestamp</code> (set on insert) · <code>@UpdateTimestamp</code> (set on insert and again on every update)" },
+    { "label": "Lombok annotations", "value": "<code>@Getter</code> <code>@Setter</code> · <code>@Data</code> = getters + setters + <code>@ToString</code> + <code>@EqualsAndHashCode</code> + <code>@RequiredArgsConstructor</code> · <code>@NoArgsConstructor</code> · <code>@AllArgsConstructor</code>", "note": "Avoid <code>@Data</code> on two-way JPA relationships" },
+    { "label": "Lombok and JDK versions", "value": "1.18.36 (Nov 2024) adds JDK 23 · 1.18.40 adds JDK 25 · latest 1.18.48 (Sep 2026)", "note": "The Dec 2025 passer used 1.18.36 with Java 17" },
+    { "label": "JDK 23+ annotation processing", "value": "javac defaults to <code>-proc:none</code>; declare Lombok as an annotation processor or pass <code>-proc:full</code>" },
+    { "label": "JpaRepository", "value": "<code>JpaRepository&lt;Entity, IdType&gt;</code> → <code>save</code>, <code>saveAll</code>, <code>findById</code>, <code>findAll</code>, <code>count</code>, <code>deleteById</code>" },
+    { "label": "Spring Data REST defaults", "value": "Path = class name with its first letter lowercased, then pluralized (Person → /persons, CartItem → /cartItems) · items under <code>_embedded.&lt;rel&gt;</code> · page size 20 · IDs hidden unless <code>exposeIdsFor</code>", "note": "<code>@RepositoryRestResource(collectionResourceRel, path)</code> renames the key and path" },
+    { "label": "CORS facts", "value": "Origin = scheme + host + port · JSON POST → OPTIONS preflight · <code>@CrossOrigin</code> defaults: all origins and headers, the handler's mapped methods, 30-minute max age", "note": "Spring MVC global CORS isn't applied to Spring Data REST; annotate the repositories or use a RepositoryRestConfigurer" },
+    { "label": "Web annotations", "value": "<code>@RestController</code> · <code>@RequestMapping</code> · <code>@GetMapping</code> · <code>@PostMapping</code> · <code>@RequestBody</code> · <code>@PathVariable</code> · <code>@RequestParam</code> · <code>@CrossOrigin</code>" },
+    { "label": "Stereotypes", "value": "<code>@Component</code> · <code>@Service</code> · <code>@Repository</code> · <code>@RestController</code>", "note": "All become beans through component scanning; singletons by default" },
+    { "label": "@Transactional", "value": "All writes commit together or roll back · default rollback on RuntimeException and Error, not on checked exceptions", "note": "<code>rollbackFor</code> adds checked exceptions" },
+    { "label": "Tracking number", "value": "<code>UUID.randomUUID().toString()</code> → 36 characters, 122 random bits" },
+    { "label": "CommandLineRunner", "value": "<code>run(String... args)</code> runs once, just before startup finishes · order several with <code>@Order</code>", "note": "Guard seed data with <code>count()</code>" },
+    { "label": "Bean Validation", "value": "<code>@NotNull</code> · <code>@NotBlank</code> · <code>@Size</code> · <code>@Email</code>, enforced by <code>@Valid</code> on the <code>@RequestBody</code>", "note": "Needs spring-boot-starter-validation" },
+    { "label": "Status codes", "value": "200 OK · 201 Created · 400 bad request · 404 not found · 405 method not allowed · 500 server exception" },
+    { "label": "Spring Boot versions", "value": "4.2.0 current (Nov 2026) · Spring Initializr offers only 4.x · 3.x open-source support ended June 30, 2026 · Java 17 minimum", "note": "Students report 3.3.1 or 3.3.6, set in <code>pom.xml</code>; Boot 3 and later use <code>jakarta.*</code> imports" },
+    { "label": "Maven commands", "value": "<code>mvn clean install</code> · <code>mvn spring-boot:run</code> · <code>mvn -v</code> (shows the Maven and Java versions in use)" },
+    { "label": "MySQL Workbench", "value": "Database → Reverse Engineer → an EER diagram of the live schema" }
+  ],
+  "plan": [
+    {
+      "day": "Day 1",
+      "focus": "Course plan, task and tools",
+      "tasks": [
+        "Review your Course Planning Tool report with your instructor, then read the task directions, the rubric and the Course Tips (the Dec 2025 passer found the first setup video the most useful).",
+        "Choose the lab environment or a local set-up: IntelliJ, a JDK 17, MySQL and MySQL Workbench, Node.js and the Angular CLI.",
+        "Run the provided SQL script, reverse-engineer the schema in Workbench, and lay the ERD, the UML diagram and the Angular models side by side.",
+        "Budget about 2 hours on weekdays and 4–5 on weekend days; this plan assumes D287 is done."
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Project, GitLab and packages",
+      "tasks": [
+        "Generate the Spring Boot project with the four dependencies, add the provided properties, and confirm it starts and connects to MySQL.",
+        "Connect it to your GitLab repository and push a first commit; from now on, commit and push after every part.",
+        "Set up the package structure your task page asks for, one package per layer."
+      ]
+    },
+    {
+      "day": "Days 3-4",
+      "focus": "Entities and the enum",
+      "tasks": [
+        "Map each table with <code>@Entity</code>, <code>@Table</code>, <code>@Id</code>, <code>@GeneratedValue</code> and <code>@Column</code>, copying names from the SQL script.",
+        "Add the relationships: <code>@ManyToOne</code> plus <code>@JoinColumn</code> on the foreign-key side, <code>@OneToMany(mappedBy)</code> on the other, and <code>@ManyToMany</code> with <code>@JoinTable</code> for the join table.",
+        "Map the status enum with <code>EnumType.STRING</code>, use <code>@Getter</code> and <code>@Setter</code> instead of <code>@Data</code>, and start the app once with ddl-auto at validate, which stops startup on a misspelled table or column name (none skips that check) and also reports column-type differences."
+      ]
+    },
+    {
+      "day": "Day 5",
+      "focus": "Repositories, Spring Data REST and CORS",
+      "tasks": [
+        "Write one <code>JpaRepository</code> interface per entity the front end reads, each with <code>@CrossOrigin</code>.",
+        "Open the /api endpoints in the browser and compare each JSON key and field with the Angular models.",
+        "Start <code>ng serve</code> and click through the vacation and excursion pages with DevTools → Network open."
+      ]
+    },
+    {
+      "day": "Day 6",
+      "focus": "Learn the checkout pattern",
+      "tasks": [
+        "Watch the checkout sections of Chad Darby's Udemy course (his order is your cart), and section 17 on JPA relationships of the newer Beginner to Guru course if relationships still feel shaky.",
+        "Place a dummy order in the front end and read the request payload in the Network tab: that JSON shape is what your request DTO must match.",
+        "Sketch the object graph the service must link (customer → cart → cart items → excursions) before writing code."
+      ]
+    },
+    {
+      "day": "Days 7-8",
+      "focus": "Services and the controller",
+      "tasks": [
+        "Write the request and response DTOs, a service interface and its <code>@Service</code> implementation with <code>@Transactional</code>.",
+        "Link the graph, set the status, generate a UUID tracking number, return an error message for an empty cart, and leave the ids of new objects null.",
+        "Add the checkout <code>@RestController</code> with its POST mapping and <code>@CrossOrigin</code>, then place a test order and watch the IntelliJ console."
+      ]
+    },
+    {
+      "day": "Day 9",
+      "focus": "Validation and sample data",
+      "tasks": [
+        "Add constraints for the inputs the front end requires, checking each against the SQL script.",
+        "Write a <code>CommandLineRunner</code> that seeds sample customers behind a <code>count()</code> guard.",
+        "Restart twice and confirm the customer count doesn't change."
+      ]
+    },
+    {
+      "day": "Day 10",
+      "focus": "End-to-end run and evidence",
+      "tasks": [
+        "Place a test order through the unmodified front end.",
+        "Capture the screenshots your task directions list, and check that each one shows what it should.",
+        "Query the join table to confirm each excursion is linked to its cart item."
+      ]
+    },
+    {
+      "day": "Day 11",
+      "focus": "Rubric review and submission",
+      "tasks": [
+        "Walk the rubric line by line against your code, screenshots and GitLab history.",
+        "Remove debug leftovers, make sure the last commit is pushed, and write the submission notes clearly and professionally.",
+        "Submit, and keep the project running locally in case you need to revise."
+      ]
+    },
+    {
+      "day": "Days 12-14",
+      "focus": "Buffer for a revision",
+      "tasks": [
+        "If the task comes back, fix exactly what the evaluator flagged, then recheck the related rubric lines.",
+        "Book an instructor appointment for anything unclear; instructors can help debug and may share extra material on request."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "q": "A Team has many Players, and the <code>players</code> table holds a <code>team_id</code> foreign key. Which mapping makes Player the owning side?",
+      "choices": [
+        "Player: <code>@ManyToOne @JoinColumn(name = \"team_id\") Team team;</code> · Team: <code>@OneToMany(mappedBy = \"team\") Set&lt;Player&gt; players;</code>",
+        "Player: <code>@ManyToOne(mappedBy = \"players\") Team team;</code> · Team: <code>@OneToMany @JoinColumn(name = \"team_id\") Set&lt;Player&gt; players;</code>",
+        "Player: <code>@ManyToOne Team team;</code> · Team: <code>@OneToMany(mappedBy = \"team_id\") Set&lt;Player&gt; players;</code>",
+        "Player: <code>@ManyToMany @JoinTable(name = \"team_id\") Set&lt;Team&gt; teams;</code> · Team: <code>@ManyToMany(mappedBy = \"teams\") Set&lt;Player&gt; players;</code>"
+      ],
+      "answer": "Player: <code>@ManyToOne @JoinColumn(name = \"team_id\") Team team;</code> · Team: <code>@OneToMany(mappedBy = \"team\") Set&lt;Player&gt; players;</code>",
+      "why": "The table that holds the foreign key owns the relationship, and in a one-to-many pair that's always the many side. <code>@ManyToOne</code> has no mappedBy attribute at all, so the second option can't compile. In the third, mappedBy names a column (team_id) instead of the owning side's Java field (team). The fourth describes a many-to-many with a join table, a different relationship."
+    },
+    {
+      "q": "Students join many clubs and clubs have many students; the links live in a <code>student_club</code> table. Student owns the relationship through its <code>clubs</code> field. What goes on Club's <code>students</code> field?",
+      "choices": [
+        "<code>@ManyToMany @JoinTable(name = \"student_club\")</code>",
+        "<code>@OneToMany(mappedBy = \"clubs\")</code>",
+        "<code>@ManyToMany(mappedBy = \"clubs\")</code>",
+        "<code>@ManyToOne @JoinColumn(name = \"club_id\")</code>"
+      ],
+      "answer": "<code>@ManyToMany(mappedBy = \"clubs\")</code>",
+      "why": "Only the owner declares the join table, with joinColumns pointing at its own key and inverseJoinColumns at the other entity's. The inverse side just says <code>@ManyToMany(mappedBy = \"clubs\")</code>, naming Student's field. A second <code>@JoinTable</code> would create two independent mappings of the same table, <code>@OneToMany</code> describes a different multiplicity, and a <code>@ManyToOne</code> field holds one object, not many. Hibernate writes join-table rows only from the owner, so add clubs to a student's set before saving."
+    },
+    {
+      "q": "The Angular app on <code>localhost:4200</code> loads, but every list is empty, and the console says a request to <code>localhost:8080/api/...</code> was blocked by CORS policy. Opening that URL directly shows good JSON. What's the most likely fix?",
+      "choices": [
+        "Point the front end at <code>127.0.0.1:8080</code> instead of localhost",
+        "Add <code>@CrossOrigin</code> to the Spring Data REST repository interfaces",
+        "Add a global <code>WebMvcConfigurer.addCorsMappings</code> rule and nothing else",
+        "Set <code>spring.jpa.hibernate.ddl-auto=update</code> so the tables refresh"
+      ],
+      "answer": "Add <code>@CrossOrigin</code> to the Spring Data REST repository interfaces",
+      "why": "Ports 4200 and 8080 make two different origins, and the direct visit works because no cross-origin page is involved. The browser needs an Access-Control-Allow-Origin header on the response, which <code>@CrossOrigin</code> on each repository provides. Spring Data REST's docs say existing Spring MVC CORS configuration isn't applied to its resources, so a WebMvcConfigurer rule alone doesn't cover them (a RepositoryRestConfigurer would). 127.0.0.1 is yet another origin, and ddl-auto has nothing to do with CORS."
+    },
+    {
+      "q": "A <code>tickets</code> table stores priority as the text values <code>low</code>, <code>medium</code> and <code>high</code>, and your Java enum has constants with exactly those names. Which mapping reads and writes them correctly?",
+      "choices": [
+        "No annotation, because JPA stores enums as text by default",
+        "<code>@Enumerated(EnumType.ORDINAL)</code>",
+        "<code>@Column(columnDefinition = \"varchar(10)\")</code> on its own",
+        "<code>@Enumerated(EnumType.STRING)</code>"
+      ],
+      "answer": "<code>@Enumerated(EnumType.STRING)</code>",
+      "why": "<code>EnumType.STRING</code> converts using the constant's <code>name()</code>, which must match the stored text exactly in spelling and case. The default is ORDINAL, which stores 0, 1 and 2 by declaration order: it fails against a text column and silently changes meaning if anyone reorders the constants. A column definition only changes the column type in generated DDL, not how the enum is converted."
+    },
+    {
+      "q": "Author has <code>@OneToMany(mappedBy = \"author\")</code> books and Book has <code>@ManyToOne</code> author, and both classes use Lombok's <code>@Data</code>. Logging an author throws StackOverflowError. Why?",
+      "choices": [
+        "Author's and Book's generated <code>toString</code> methods call each other forever",
+        "<code>@Data</code> makes every field final, so Hibernate can't set the relationship",
+        "<code>@Data</code> turns off lazy loading, so the whole database is loaded into memory",
+        "Lombok can't generate code for fields that carry JPA annotations"
+      ],
+      "answer": "Author's and Book's generated <code>toString</code> methods call each other forever",
+      "why": "<code>@Data</code> includes <code>@ToString</code> and <code>@EqualsAndHashCode</code>, which use every non-static field by default, so a two-way relationship makes <code>toString</code> (and <code>hashCode</code>) bounce between the two classes until the stack overflows. Use <code>@Getter</code> and <code>@Setter</code> on such entities, or exclude the back-reference with <code>@ToString.Exclude</code> and <code>@EqualsAndHashCode.Exclude</code>. <code>@Data</code> generates setters for non-final fields rather than making fields final, it doesn't change fetch types, and Lombok works alongside JPA annotations."
+    },
+    {
+      "q": "IntelliJ's editor shows no errors, but <code>mvn clean install</code> on JDK 24 fails with \"cannot find symbol: method getName()\" for a class annotated <code>@Getter</code>. What's the most likely cause?",
+      "choices": [
+        "Lombok makes the getters it generates private unless you set <code>AccessLevel.PUBLIC</code>",
+        "Since JDK 23, javac skips annotation processors found only on the class path",
+        "Maven needs IntelliJ's Lombok plugin to compile classes that use <code>@Getter</code>",
+        "<code>@Getter</code> works only on Java records, not on ordinary classes"
+      ],
+      "answer": "Since JDK 23, javac skips annotation processors found only on the class path",
+      "why": "From JDK 23, javac's default is <code>-proc:none</code> unless you pass an annotation-processing option, so a Lombok jar that's merely on the class path is ignored and the getters never exist. Declare Lombok in the Maven compiler plugin's annotation processor paths, pass <code>-proc:full</code>, or build with JDK 17 as the Dec 2025 passer did. The editor can look fine because IntelliJ's Lombok plugin understands the annotations even when the compiler doesn't run them, but Maven never uses that plugin. Lombok's accessors are public by default (a private one would fail with \"has private access\", not \"cannot find symbol\"), and <code>@Getter</code> works on ordinary classes."
+    },
+    {
+      "q": "With <code>spring.data.rest.base-path=/api</code>, a repository <code>TicketRepository extends JpaRepository&lt;Ticket, Long&gt;</code> and no <code>@RepositoryRestResource</code>, where does Spring Data REST publish the tickets, and under which JSON key?",
+      "choices": [
+        "<code>/api/ticket</code>, under <code>_embedded.ticket</code>",
+        "<code>/tickets</code>, under <code>data.tickets</code>",
+        "<code>/api/TicketRepository</code>, under <code>items</code>",
+        "<code>/api/tickets</code>, under <code>_embedded.tickets</code>"
+      ],
+      "answer": "<code>/api/tickets</code>, under <code>_embedded.tickets</code>",
+      "why": "Spring Data REST names the resource after the domain class with its first letter lowercased, then pluralized (a CartItem class would give cartItems), and the base path goes in front: /api/tickets. Collections are HAL JSON, with the items under <code>_embedded</code> keyed by the collection rel (tickets by default) next to <code>_links</code> and a <code>page</code> block. When the front end expects another key or path, <code>@RepositoryRestResource(collectionResourceRel = ..., path = ...)</code> changes them; a mismatch shows up as an empty list, not an error."
+    },
+    {
+      "q": "A <code>@Transactional</code> checkout method saves a cart, saves its items, then throws <code>IllegalStateException</code> because an excursion id doesn't exist, and nothing catches it. What ends up in the database?",
+      "choices": [
+        "Only the cart, because it was saved before the exception",
+        "The cart and the items saved before the exception",
+        "Nothing from this order, because the transaction rolls back",
+        "Everything, because Spring rolls back only on checked exceptions"
+      ],
+      "answer": "Nothing from this order, because the transaction rolls back",
+      "why": "<code>IllegalStateException</code> is a RuntimeException, and Spring's default rule rolls back on unchecked exceptions and Errors, so every write in that transaction is undone. The last option reverses the rule: checked exceptions don't trigger a rollback unless you add <code>rollbackFor</code>. Without <code>@Transactional</code> on the method, each repository save would commit on its own, and you could be left with a half-written order."
+    },
+    {
+      "q": "In a library app, a <code>@Component</code> that implements <code>CommandLineRunner</code> inserts three sample books in <code>run()</code>, and a SQL script inserts two books of its own. After three starts the table holds 11 books. Which change keeps it at five?",
+      "choices": [
+        "Move the three inserts into the Book entity's constructor",
+        "Annotate the runner with <code>@Transactional</code> so the three inserts are atomic",
+        "Add <code>@Order(1)</code> so the runner runs before any other runner",
+        "Insert only when <code>bookRepository.count()</code> is 2 or less"
+      ],
+      "answer": "Insert only when <code>bookRepository.count()</code> is 2 or less",
+      "why": "<code>run()</code> executes on every start, so an unguarded seeder adds three rows each time: 2 + 3 × 3 = 11. Checking the count first makes it idempotent: the first start adds three (five in total), and later starts see more than two rows and skip. <code>@Transactional</code> makes the three inserts atomic but still repeats them, and <code>@Order</code> only orders runners. Entity constructors run whenever Hibernate loads a row, which would be far worse."
+    },
+    {
+      "q": "WGU's SQL script already created the schema and inserted the sample vacations. Which <code>spring.jpa.hibernate.ddl-auto</code> setting is safest for this project?",
+      "choices": [
+        "<code>create-drop</code>",
+        "<code>none</code> or <code>validate</code>",
+        "<code>create</code>",
+        "<code>update</code>, so Hibernate fixes mismatched names"
+      ],
+      "answer": "<code>none</code> or <code>validate</code>",
+      "why": "<code>create</code> drops and re-creates the tables at startup, and <code>create-drop</code> also drops them at shutdown, so both wipe the provided data. <code>update</code> alters tables to fit your entities, which can quietly add a misspelled column instead of exposing your mapping mistake. <code>none</code> leaves the schema alone (Spring Boot's default for a non-embedded database such as MySQL), and <code>validate</code> checks your mappings against the existing tables and fails fast on a mismatch."
+    },
+    {
+      "q": "A client posts <code>{\"buyer\": {...}, \"basket\": {...}, \"lines\": [...]}</code> to your order endpoint. What lets Spring build your <code>Purchase</code> object from it?",
+      "choices": [
+        "<code>@PathVariable Purchase purchase</code>",
+        "<code>@RequestParam Purchase purchase</code>",
+        "<code>@RequestBody Purchase purchase</code>",
+        "<code>@ResponseBody Purchase purchase</code>"
+      ],
+      "answer": "<code>@RequestBody Purchase purchase</code>",
+      "why": "<code>@RequestBody</code> hands the request body to Jackson, which matches JSON property names to the DTO's fields or setters, so Purchase needs fields named exactly buyer, basket and lines: lines won't fill a field called items, and with Spring's usual Jackson settings the unmatched property is quietly ignored. <code>@PathVariable</code> and <code>@RequestParam</code> read parts of the URL and query string, and <code>@ResponseBody</code> applies to what a method returns, which <code>@RestController</code> already adds to every method."
+    },
+    {
+      "q": "Your entities use <code>@GeneratedValue(strategy = GenerationType.IDENTITY)</code> with Long ids. A brand-new cart reaches your service with its id already set to 7, and no row 7 exists. On Hibernate 6.6 or later (Spring Boot 3.4 and later), what does <code>cartRepository.save(cart)</code> do?",
+      "choices": [
+        "Inserts the cart as row 7, keeping the id it was given",
+        "Inserts the cart with the next AUTO_INCREMENT value and quietly ignores the 7",
+        "Merges it because its id isn't null, then throws an optimistic-locking error",
+        "Does nothing and returns the cart unchanged, with no error"
+      ],
+      "answer": "Merges it because its id isn't null, then throws an optimistic-locking error",
+      "why": "Spring Data's <code>save()</code> persists entities it considers new and merges the rest, and with a wrapper-type id it decides \"new\" by <code>id == null</code>. A non-null id sends the cart to merge, and Hibernate's 6.6 migration guide says merging an entity with a generated id and no matching row now throws an OptimisticLockException instead of quietly inserting. Leave the ids of new objects null so MySQL assigns them; a 2024 commenter fixed a save error exactly this way. Older Hibernate versions inserted a new row with the next AUTO_INCREMENT id instead, which is why the same code behaves differently across Spring Boot versions."
+    },
+    {
+      "q": "Your controller depends only on a <code>CheckoutService</code> interface, and Spring creates the <code>@Service</code> implementation and passes it to the controller's constructor. Which two ideas does this show?",
+      "choices": [
+        "The Singleton and Observer patterns",
+        "Dependency injection and programming to an interface",
+        "Inheritance and method overloading",
+        "The Active Record and Builder patterns"
+      ],
+      "answer": "Dependency injection and programming to an interface",
+      "why": "Spring's container (inversion of control) builds the bean and injects it, and because the controller depends on the abstraction, the implementation can change or be replaced by a test double without touching the controller. Spring beans are singletons by default, but that describes how many instances exist, not the decoupling, and Observer is about event listeners. Active Record puts persistence methods on the entity itself, the opposite of the Repository approach Spring Data uses."
+    },
+    {
+      "q": "Why can <code>UUID.randomUUID().toString()</code> serve as an order tracking number without checking the database for duplicates?",
+      "choices": [
+        "It's derived from the order's database id, so it's unique by construction",
+        "It increments a counter that the JVM keeps between runs",
+        "MySQL guarantees uniqueness for any 36-character text column",
+        "Its 122 random bits make a collision vanishingly unlikely"
+      ],
+      "answer": "Its 122 random bits make a collision vanishingly unlikely",
+      "why": "<code>randomUUID()</code> returns a version 4 UUID from a cryptographically strong random generator: 128 bits, of which 6 are fixed to mark the version and variant, leaving 122 random ones. At this scale a duplicate is practically impossible. It has no connection to the row id or any counter, and a column is unique only if it has a UNIQUE constraint."
+    },
+    {
+      "q": "You place a test order, and DevTools → Network shows the POST came back <b>405 Method Not Allowed</b>. What's the most likely cause?",
+      "choices": [
+        "The URL exists, but nothing there is mapped for POST",
+        "MySQL rejected the insert because of a NOT NULL constraint",
+        "The browser blocked the response because of CORS",
+        "Lombok didn't generate setters on the DTO"
+      ],
+      "answer": "The URL exists, but nothing there is mapped for POST",
+      "why": "405 means the server recognized the path but not for that HTTP method, so check that the handler uses <code>@PostMapping</code> rather than <code>@GetMapping</code> and that the URL matches the class-level <code>@RequestMapping</code> plus the method's mapping. A failed database constraint surfaces as a 500 with an exception in the IntelliJ console, a CORS block shows as a console error about a missing Access-Control-Allow-Origin header, and missing setters usually leave DTO fields null without changing the status code."
+    }
+  ],
+  "pitfalls": [
+    "<b>Retyping names.</b> One wrong letter in a <code>@Table</code>, <code>@Column</code> or <code>@JoinTable</code> name fails at runtime, and a Java field named differently from the Angular model's property silently drops that value from the page (a 2024 commenter's images vanished over capitalization). The same goes for enum constants: the schema spells it canceled. Copy names from the SQL script and the Angular models.",
+    "<b>Trusting one diagram.</b> Students report small errors in the provided ERD and UML diagrams. When they disagree, the SQL script decides table and column names and the Angular models decide field names.",
+    "<b>CORS gaps.</b> Forgetting <code>@CrossOrigin</code> on a repository or on the checkout controller, or relying on a global Spring MVC rule that Spring Data REST ignores. The Dec 2025 passer names a missing CORS setting as a common cause of a blank front end.",
+    "<b>Lombok that never ran.</b> Annotation processing off in IntelliJ, a Lombok too old for your JDK, or JDK 23+ without Lombok declared as an annotation processor. The symptoms are missing getters, empty JSON fields and front-end errors while reading a property.",
+    "<b><code>@Data</code> on two-way entities.</b> The generated <code>toString</code>, <code>equals</code> and <code>hashCode</code> follow the relationship in both directions and can overflow the stack; use <code>@Getter</code> and <code>@Setter</code>.",
+    "<b>Constraints in the wrong place.</b> A <code>nullable = false</code> on a column the order flow leaves empty breaks checkout (Dec 2025). Add constraints only where the schema and the front end require a value.",
+    "<b>Seeding on every start.</b> An unguarded <code>CommandLineRunner</code> adds the sample customers again with each restart; check the count first.",
+    "<b>Ids on new objects.</b> Saving a new object that already carries an id makes Spring Data merge instead of insert, and Hibernate 6.6 or later then throws. Leave new ids null and let MySQL assign them.",
+    "<b>Unstable versions.</b> SNAPSHOT Spring Boot builds caused errors in 2024. Stick to release versions that students report (Spring Boot 3.3.x, Java 17, Lombok 1.18.36) unless your instructor says otherwise, and be ready for older tutorials' <code>javax</code> imports to fail on Spring Boot 3 or later.",
+    "<b>Borrowing a finished project.</b> Completed D288 repositories circulate online. Submitting one, or code adapted from one, is an academic-integrity violation; learn the patterns from the Udemy courses and the docs and write your own."
+  ],
+  "resources": [
+    {
+      "label": "Task directions, rubric and Course Tips (course page)",
+      "kind": "official",
+      "note": "The source of truth for every part. The Dec 2025 passer says to read the tips in WGU Connect first and found the first setup video the most helpful."
+    },
+    {
+      "label": "WGU Connect and the course instructors",
+      "kind": "official",
+      "note": "Course page → Course Community → Join WGU Connect → Resources. Instructors can help you debug in an appointment and may share extra material on request."
+    },
+    {
+      "label": "WGU Program Guidebook, B.S. Computer Science (catalog 202611)",
+      "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf",
+      "kind": "official",
+      "note": "The official course description and competency list (a course-planning step plus three competencies), and how evaluators grade performance assessments."
+    },
+    {
+      "label": "Chad Darby: Full Stack: Angular and Java Spring Boot E-Commerce Website (Udemy)",
+      "url": "https://www.udemy.com/course/full-stack-angular-spring-boot-tutorial/",
+      "kind": "video",
+      "note": "The checkout service and controller pattern a 2024 student followed; his order is this project's cart. WGU students get access through WGU's Udemy account."
+    },
+    {
+      "label": "[NEW] Spring Boot 4, Spring Framework 7: Beginner to Guru (Udemy)",
+      "url": "https://www.udemy.com/course/spring-framework-6-beginner-to-guru/",
+      "kind": "video",
+      "note": "John Thompson's course. A Dec 2025 commenter says it replaces the older one; section 17 covers JPA relationship mappings and section 19 introduces Spring Data REST. Its examples use Spring Boot 4 and Java 25. WGU students get access through WGU's Udemy account."
+    },
+    {
+      "label": "Spring guide: Accessing JPA Data with REST",
+      "url": "https://spring.io/guides/gs/accessing-data-rest/",
+      "kind": "tool",
+      "note": "A short official walk-through of an entity, a repository and the HAL JSON that Spring Data REST returns; a good warm-up before the repositories part."
+    },
+    {
+      "label": "Spring guide: Accessing data with MySQL",
+      "url": "https://spring.io/guides/gs/accessing-data-mysql/",
+      "kind": "tool",
+      "note": "Shows the <code>spring.datasource</code> properties and the MySQL Driver dependency. It runs MySQL through Docker Compose and sets <code>ddl-auto=update</code>; don't copy that setting, because WGU's SQL script owns this project's schema (keep <code>none</code> or <code>validate</code>)."
+    },
+    {
+      "label": "Spring Data REST reference: Configuring CORS",
+      "url": "https://docs.spring.io/spring-data/rest/reference/customizing/configuring-cors.html",
+      "kind": "tool",
+      "note": "<code>@CrossOrigin</code> on repositories, RepositoryRestConfigurer, and why Spring MVC's CORS settings don't apply here."
+    },
+    {
+      "label": "Spring Framework reference: CORS",
+      "url": "https://docs.spring.io/spring-framework/reference/web/webmvc-cors.html",
+      "kind": "tool",
+      "note": "<code>@CrossOrigin</code> defaults and placement on controllers."
+    },
+    {
+      "label": "Project Lombok: @Data",
+      "url": "https://projectlombok.org/features/Data",
+      "kind": "tool",
+      "note": "What each annotation generates; the changelog (linked from the site) shows which Lombok version supports your JDK."
+    },
+    {
+      "label": "MDN: Cross-Origin Resource Sharing (CORS)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS",
+      "kind": "tool",
+      "note": "Origins, preflight requests and why CORS errors only show up in the console."
+    },
+    {
+      "label": "MySQL Workbench manual: reverse engineering a live database",
+      "url": "https://dev.mysql.com/doc/workbench/en/wb-reverse-engineer-live.html",
+      "kind": "tool",
+      "note": "Draws a diagram from the real schema so you can check keys and join tables against the provided ERD."
+    },
+    {
+      "label": "D288 finished, some tips + thoughts (r/WGU_CompSci, Dec 2025)",
+      "url": "https://www.reddit.com/r/WGU_CompSci/comments/1pqq1bq/d288_finished_some_tips_thoughts/",
+      "kind": "community",
+      "note": "The newest write-up: versions that worked and a debugging order."
+    }
+  ],
+  "community": {
+    "summary": "Two detailed r/WGU_CompSci posts and their comments cover D288, and they agree on the trouble spots: table, column and field names that must match exactly, cross-origin support for the Angular front end, and Lombok set-up. The newer one (Dec 2025) calls it the most involved course so far, with real-world-style debugging; the Oct 2024 post advises taking D287 first, leaving the Angular front end alone and following Chad Darby's checkout pattern. Versions that worked were Spring Boot 3.3.1 or 3.3.6, Java 17 and Lombok 1.18.36, and reported fixes include enabling annotation processing, restarting IntelliJ, running mvn clean install, avoiding SNAPSHOT versions and setting the new cart's id to null. The newer post adds that testing only really works once the controller is in place, and that the Course Tips in WGU Connect are worth reading first.",
+    "coverage": "2 posts with their comment threads, Oct 2024 – Dec 2025, r/WGU_CompSci (the Oct 2024 one isn't linked)",
+    "posts": [
+      {
+        "title": "D288 finished, some tips + thoughts",
+        "subreddit": "r/WGU_CompSci",
+        "url": "https://www.reddit.com/r/WGU_CompSci/comments/1pqq1bq/d288_finished_some_tips_thoughts/",
+        "date": "Dec 2025",
+        "takeaway": "Calls it the most involved course so far, with real-world-style debugging. Spring Boot 3.3.1, Java 17 and Lombok 1.18.36 worked, and a full IntelliJ restart fixed missing getters and setters. Copy names exactly, check the Network tab for CORS errors and the raw API for missing data, and expect testing to work only once the controller exists. Comments add that a misplaced nullable = false broke order creation, that a newer Udemy course replaces the older one (section 17 covers JPA relationships), and that MySQL Workbench can reverse-engineer an ERD."
+      }
+    ]
+  },
+  "sources": [
+    { "label": "WGU Program Guidebook, B.S. Computer Science, catalog 202611 (D288 description and competencies; how evaluators grade)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/information-technology/BSCS.pdf" },
+    { "label": "WGU Institutional Catalog, November 2026 (D288 Back-End Programming, 3 CUs, in BSCS 202611)", "url": "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/institutional-catalog/2026/WGU%20Institutional%20Catalog%20-%20November%202026.pdf" },
+    { "label": "Spring Data REST reference: Configuring CORS", "url": "https://docs.spring.io/spring-data/rest/reference/customizing/configuring-cors.html" },
+    { "label": "Spring Data REST reference: Getting started (starter, base path)", "url": "https://docs.spring.io/spring-data/rest/reference/introduction/getting-started.html" },
+    { "label": "Spring Data REST reference: Configuring the REST URL path (default naming)", "url": "https://docs.spring.io/spring-data/rest/reference/customizing/configuring-the-rest-url-path.html" },
+    { "label": "Spring Data REST API: RepositoryRestConfiguration (exposeIdsFor, default page size)", "url": "https://docs.spring.io/spring-data/rest/docs/current/api/org/springframework/data/rest/core/config/RepositoryRestConfiguration.html" },
+    { "label": "Spring Framework reference: CORS (@CrossOrigin defaults)", "url": "https://docs.spring.io/spring-framework/reference/web/webmvc-cors.html" },
+    { "label": "Spring Framework reference: Rolling back a declarative transaction", "url": "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/rolling-back.html" },
+    { "label": "Spring Boot reference: SpringApplication (CommandLineRunner and ApplicationRunner)", "url": "https://docs.spring.io/spring-boot/reference/features/spring-application.html" },
+    { "label": "Spring Boot 4.2.0 system requirements (Java 17 minimum)", "url": "https://docs.spring.io/spring-boot/system-requirements.html" },
+    { "label": "endoflife.date: Spring Boot release and support dates", "url": "https://endoflife.date/spring-boot" },
+    { "label": "Jakarta Persistence 3.2 specification (owning and inverse sides, join-table defaults, cascades)", "url": "https://jakarta.ee/specifications/persistence/3.2/jakarta-persistence-spec-3.2" },
+    { "label": "Hibernate ORM 6.6 migration guide (merging a detached entity with no matching row)", "url": "https://docs.hibernate.org/orm/6.6/migration-guide/migration-guide.html" },
+    { "label": "Project Lombok changelog (JDK support by version)", "url": "https://projectlombok.org/changelog" },
+    { "label": "inside.java: JDK 23 changes the default annotation-processing policy", "url": "https://inside.java/2024/06/18/quality-heads-up/" }
+  ],
+  "caveats": [
+    "WGU's task directions and rubric are behind the student login, so this guide describes the task only in general terms, based on student write-ups from 2024–2025. Check every requirement and deliverable against your own task page.",
+    "Versions: students report Spring Boot 3.3.x, Java 17 and Lombok 1.18.36, but the 3.x line left open-source support on June 30, 2026 and Spring Boot 4.2 is now current. No post in this research describes doing D288 on Spring Boot 4, which also moves to Spring Framework 7, Jackson 3 and Hibernate 7, so ask your instructor which versions evaluators expect before you start, since Spring Initializr now offers only Spring Boot 4.",
+    "Community coverage is thin. The notes behind this guide condense two Reddit posts and their comments, with dates estimated from Reddit's relative timestamps, and Reddit couldn't be opened directly during this research, so newer threads may say otherwise.",
+    "The lab environment, the Course Tips and the setup videos are known only from student descriptions; check the course page for what's current.",
+    "The practice questions are original concept checks. Some use neutral examples (teams, clubs, tickets, authors and books) and others are set in the project's own front end, database, checkout and cart; none is copied from WGU's task or rubric, and none gives code to submit."
+  ]
+}
